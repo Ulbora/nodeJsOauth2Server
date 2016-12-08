@@ -1,0 +1,23 @@
+{
+    "name": "Oauth2Server",
+    "version": "1.0.0",
+    "keywords": ["util", "functional", "server", "client", "browser"],
+    "author": "ken",
+    "contributors": [],
+    "dependencies": {},
+    "scripts": {
+        "start": "node server.js"
+    },
+    "dependencies": {
+        "body-parser": "~1.13.2",
+        "express": "~4.13.1",        
+        "btoa": "~1.1.2" 
+    },
+    "devDependencies": {
+        "grunt-mocha-test": "^0.12.7",
+        "grunt": "~0.4.5",
+        "grunt-ts": "~5.4.0",        
+        "mocha": "*"
+    }
+
+}
