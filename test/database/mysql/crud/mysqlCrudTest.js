@@ -29,9 +29,9 @@ describe('MYSQLCrud', function () {
                 enabled: true
             };
             setTimeout(function () {
-                db.insert(q, args, function (id) {
-                    if (id > -1) {
-                        insertId = id
+                db.insert(q, args, function (result) {
+                    if (result.id > -1) {
+                        insertId = result.id;
                         assert(true);
                     } else {
                         assert(false);
@@ -48,7 +48,7 @@ describe('MYSQLCrud', function () {
             var args = ['ulbora labs', insertId];
             setTimeout(function () {
                 db.update(q, args, function (result) {
-                    if (result) {                        
+                    if (result.success) {                        
                         assert(true);
                     } else {
                         assert(false);

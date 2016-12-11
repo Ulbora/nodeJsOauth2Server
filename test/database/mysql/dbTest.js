@@ -18,19 +18,20 @@ describe('mysql DB', function () {
     });
     
     describe('#addClient()', function () {
-        it('should add a client', function (done) {            
-            var args = {
+        it('should add a client', function (done) { 
+            
+           var json = {
                 secret: '12345',
-                redirect_uri: 'http://ulboralabs.com',
+                redirectUri: 'http://ulboralabs.com',
                 name: 'ulbora',
-                web_site: 'www.ulboralabs.com',
+                webSite: 'www.ulboralabs.com',
                 email: 'ulbora@ulbora.com',
                 enabled: true
             };
             setTimeout(function () {
-                db.addClient(args, function (id) {
-                    if (id > -1) {
-                        insertId = id;
+                db.addClient(json, function (result) {
+                    if (result.clientId > -1) {
+                        insertId = result.clientId;
                         assert(true);
                     } else {
                         assert(false);
@@ -41,6 +42,33 @@ describe('mysql DB', function () {
         });
     });
     
+    
+    /*
+    describe('#updateClient()', function () {
+        it('should add a client', function (done) { 
+            
+           var json = {
+                secret: '12345',
+                redirectUri: 'http://ulboralabs.com',
+                name: 'ulbora',
+                webSite: 'www.ulboralabs.com',
+                email: 'ulbora@ulbora.com',
+                enabled: true
+            };
+            setTimeout(function () {
+                db.updateClient(json, function (id) {
+                    if (id > -1) {
+                        insertId = id;
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 2000);           
+        });
+    });
+    */
 
 });
 

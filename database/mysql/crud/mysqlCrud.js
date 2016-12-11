@@ -20,14 +20,21 @@ exports.testConnection = function (callback) {
     });
 };
 
-exports.insert = function (query, args, callback) {
-    var rtn = -1;
+exports.insert = function (query, args, callback) {    
+    var rtn = {
+        id : -1,
+        success: false,
+        message: ""
+    };
     pool.query(query, args, function (err, result) {
+        console.log("result in mysqlCrud: " + JSON.stringify(result))
         if (!err && result.insertId) {
-            rtn = result.insertId;
+            rtn.id = result.insertId;
+            rtn.success = true;
             callback(rtn);
         }else{
             console.error("Database Insert error: " +JSON.stringify(err));
+            rtn.message = "Database Insert failed."
             callback(rtn);
         }        
     });
@@ -45,12 +52,18 @@ exports.get = function (query, args, callback) {
     });
 };
 
-exports.update = function (query, args, callback) {    
+exports.update = function (query, args, callback) { 
+    var rtn = {
+        success: false,
+        message: ""
+    };
     pool.query(query, args, function (err, result) {
-        if (!err && result) {            
-            callback(result);
+        if (!err && result.affectedRows && result.affectedRows > 0) { 
+            rtn.success = true;
+            callback(rtn);
         }else{
             console.error("Database update error: " +JSON.stringify(err));
+            rtn.message = "Dababase update failed."
             callback(result);
         }        
     });
