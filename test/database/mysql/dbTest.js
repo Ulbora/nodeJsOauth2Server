@@ -43,22 +43,22 @@ describe('mysql DB', function () {
     });
     
     
-    /*
+    
     describe('#updateClient()', function () {
         it('should add a client', function (done) { 
             
            var json = {
-                secret: '12345',
+                secret: '123456',
                 redirectUri: 'http://ulboralabs.com',
-                name: 'ulbora',
+                name: 'ulbora ulbora',
                 webSite: 'www.ulboralabs.com',
                 email: 'ulbora@ulbora.com',
-                enabled: true
+                enabled: false,
+                clientId: insertId
             };
             setTimeout(function () {
-                db.updateClient(json, function (id) {
-                    if (id > -1) {
-                        insertId = id;
+                db.updateClient(json, function (result) {
+                    if (result.success) {                        
                         assert(true);
                     } else {
                         assert(false);
@@ -68,7 +68,38 @@ describe('mysql DB', function () {
             }, 2000);           
         });
     });
-    */
+    
+    
+    describe('#getClient()', function () {
+        it('should read client', function (done) {           
+            setTimeout(function () {                
+                db.getClient( insertId, function (result) {
+                    if (result && result.name === 'ulbora ulbora' && result.enabled === false) {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 3000);           
+        });
+    });
+    
+    describe('#deleteClient()', function () {
+        it('should delete client', function (done) {           
+            setTimeout(function () {                
+                db.deleteClient( insertId, function (result) {
+                    if (result.success) {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 4000);           
+        });
+    });
+    
 
 });
 

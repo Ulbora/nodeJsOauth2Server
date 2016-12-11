@@ -61,11 +61,11 @@ describe('MYSQLCrud', function () {
     
     describe('#get()', function () {
         it('should read row from db', function (done) {
-            var q = "SELECT secret, name FROM client WHERE client_id = ?";
+            var q = "SELECT secret, name, enabled FROM client WHERE client_id = ?";
             var queryId = [insertId];
             setTimeout(function () {
                 db.get(q, queryId, function (result) {
-                    if (result[0].name === 'ulbora labs') {                        
+                    if (result.success && result.data[0].name === 'ulbora labs') {                        
                         assert(true);
                     } else {
                         assert(false);
@@ -82,7 +82,7 @@ describe('MYSQLCrud', function () {
             var queryId = [insertId];
             setTimeout(function () {
                 db.delete(q, queryId, function (result) {
-                    if (result.affectedRows) {                        
+                    if (result.success) {                        
                         assert(true);
                     } else {
                         assert(false);

@@ -40,14 +40,22 @@ exports.insert = function (query, args, callback) {
     });
 };
 
-exports.get = function (query, args, callback) {    
+exports.get = function (query, args, callback) {   
+    var rtn = {
+        success: false,
+        message: "",
+        data: null
+    }
     pool.query(query, args, function (err, result) {
         if (!err && result) {  
             console.log("found data: " + JSON.stringify(result))
-            callback(result);
+            rtn.success = true;
+            rtn.data = result;
+            callback(rtn);
         }else{
             console.error("Database get error: " +JSON.stringify(err));
-            callback(result);
+            rtn.message = "Database get failed"
+            callback(rtn);
         }        
     });
 };
@@ -64,20 +72,26 @@ exports.update = function (query, args, callback) {
         }else{
             console.error("Database update error: " +JSON.stringify(err));
             rtn.message = "Dababase update failed."
-            callback(result);
+            callback(rtn);
         }        
     });
 };
 
 
-exports.delete = function (query, args, callback) {    
+exports.delete = function (query, args, callback) {  
+    var rtn = {
+        success: false,
+        message: ""
+    };
     pool.query(query, args, function (err, result) {
-        if (!err && result) {  
+        if (!err && result.affectedRows && result.affectedRows > 0) {  
             console.log("deleted rows: " + JSON.stringify(result))            
-            callback(result);
+            rtn.success = true;
+            callback(rtn);
         }else{
             console.error("Database delete error: " +JSON.stringify(err));
-            callback(result);
+            rtn.message = "Dababase delete failed."
+            callback(rtn);
         }        
     });
 };

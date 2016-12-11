@@ -29,10 +29,6 @@ exports.addClient = function (json, callback) {
 
 
 exports.updateClient = function (json, callback) {
-    var rtn = {
-        success: false,
-        message: ""
-    }
     var args = [
         json.secret,
         json.redirectUri,
@@ -43,6 +39,30 @@ exports.updateClient = function (json, callback) {
         json.clientId
     ];
     crud.update(clientQueries.CLIENT_UPDATE_QUERY, args, callback);
+};
+
+exports.getClient = function (clientId, callback) {
+    var queryId = [clientId];
+    crud.get(clientQueries.CLIENT_GET_BY_ID_QUERY, queryId, function (result) {
+        if (result.success && result.data.length > 0) {
+            var rtn = {
+                clientId : result.data[0].client_id,
+                redirectUri : result.data[0].redirect_uri,
+                name: result.data[0].name,
+                webSite: result.data[0].web_site,
+                email: result.data[0].email,
+                enabled: (result.data[0].enabled === 1)  ? true : false
+            };
+            callback(rtn);
+        }else{
+            callback(null);
+        }
+    });
+};
+
+exports.deleteClient = function(clientId, callback){
+     var queryId = [clientId];
+     crud.delete(clientQueries.CLIENT_DELETE_QUERY, queryId, callback);
 };
 
 
