@@ -1,8 +1,10 @@
 var assert = require('assert');
 var db = require("../../../database/mysql/db");
-var insertId;
+var clientId;
+var clientAllowedUriId;
+
 describe('mysql DB', function () {
-    this.timeout(5000);
+    this.timeout(20000);
     describe('#connect()', function () {
         it('should connect to db and create pool', function (done) {
             db.connect("localhost", "admin", "admin", "ulbora_oauth2_server", 5);
@@ -31,7 +33,7 @@ describe('mysql DB', function () {
             setTimeout(function () {
                 db.addClient(json, function (result) {
                     if (result.clientId > -1) {
-                        insertId = result.clientId;
+                        clientId = result.clientId;
                         assert(true);
                     } else {
                         assert(false);
@@ -54,7 +56,7 @@ describe('mysql DB', function () {
                 webSite: 'www.ulboralabs.com',
                 email: 'ulbora@ulbora.com',
                 enabled: false,
-                clientId: insertId
+                clientId: clientId
             };
             setTimeout(function () {
                 db.updateClient(json, function (result) {
@@ -73,7 +75,7 @@ describe('mysql DB', function () {
     describe('#getClient()', function () {
         it('should read client', function (done) {           
             setTimeout(function () {                
-                db.getClient( insertId, function (result) {
+                db.getClient( clientId, function (result) {
                     if (result && result.name === 'ulbora ulbora' && result.enabled === false) {                        
                         assert(true);
                     } else {
@@ -85,11 +87,18 @@ describe('mysql DB', function () {
         });
     });
     
-    describe('#deleteClient()', function () {
-        it('should delete client', function (done) {           
-            setTimeout(function () {                
-                db.deleteClient( insertId, function (result) {
-                    if (result.success) {                        
+    
+    describe('#addClientAllowedUri()', function () {
+        it('should add a client allowed URI', function (done) { 
+            
+           var json = {                
+                uri: 'http://ulboralabs.com',
+                clientId: clientId
+            };
+            setTimeout(function () {
+                db.addClientAllowedUri(json, function (result) {
+                    if (result.id > -1) {
+                        clientAllowedUriId = result.id;
                         assert(true);
                     } else {
                         assert(false);
@@ -99,6 +108,39 @@ describe('mysql DB', function () {
             }, 4000);           
         });
     });
+    
+    describe('#deleteClientAllowedUri()', function () {
+        it('should delete client allowed URI', function (done) {           
+            setTimeout(function () {                
+                db.deleteClientAllowedUri( clientAllowedUriId, function (result) {
+                    if (result.success) {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 5000);           
+        });
+    });
+    
+    
+    
+    describe('#deleteClient()', function () {
+        it('should delete client', function (done) {           
+            setTimeout(function () {                
+                db.deleteClient( clientId, function (result) {
+                    if (result.success) {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 6000);           
+        });
+    });
+    
     
 
 });
