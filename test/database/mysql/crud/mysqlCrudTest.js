@@ -2,7 +2,7 @@ var assert = require('assert');
 var db = require("../../../../database/mysql/crud/mysqlCrud");
 var insertId;
 describe('MYSQLCrud', function () {
-    this.timeout(5000);
+    this.timeout(6000);
     describe('#connect()', function () {
         it('should connect to db and create pool', function (done) {
             db.connect("localhost", "admin", "admin", "ulbora_oauth2_server", 5);
@@ -76,6 +76,22 @@ describe('MYSQLCrud', function () {
         });
     });
     
+    describe('#getList()', function () {
+        it('should read row from db', function (done) {
+            var q = "SELECT * FROM client";            
+            setTimeout(function () {
+                db.getList(q, function (result) {
+                    if (result.success && result.data.length > 0) {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 4000);           
+        });
+    });
+    
     describe('#delete()', function () {
         it('should delete row from db', function (done) {
             var q = "DELETE FROM client WHERE client_id = ?";
@@ -89,7 +105,7 @@ describe('MYSQLCrud', function () {
                     }
                     done();
                 });
-            }, 4000);           
+            }, 5000);           
         });
     });
 });

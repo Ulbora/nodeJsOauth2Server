@@ -88,6 +88,23 @@ describe('mysql DB', function () {
     });
     
     
+    describe('#getClientList()', function () {
+        it('should read client list', function (done) {           
+            setTimeout(function () {                
+                db.getClientList(function (result) {
+                    if (result && result.length > 0) {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 4000);           
+        });
+    });
+    
+    
+    
     describe('#addClientAllowedUri()', function () {
         it('should add a client allowed URI', function (done) { 
             
@@ -105,7 +122,7 @@ describe('mysql DB', function () {
                     }
                     done();
                 });
-            }, 4000);           
+            }, 5000);           
         });
     });
     
@@ -120,7 +137,7 @@ describe('mysql DB', function () {
                     }
                     done();
                 });
-            }, 5000);           
+            }, 6000);           
         });
     });
     
@@ -137,7 +154,7 @@ describe('mysql DB', function () {
                     }
                     done();
                 });
-            }, 6000);           
+            }, 7000);           
         });
     });
     
