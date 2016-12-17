@@ -12,6 +12,7 @@ describe('ClientAllowedUriProcessor', function () {
             crud.testConnection(function (con) {
                 if (con) {
                     clintProcessor.init(crud);
+                    clintUriProcessor.init(crud)
                     assert(true);
                 } else {
                     assert(false);
@@ -67,6 +68,21 @@ describe('ClientAllowedUriProcessor', function () {
         });
     });
     
+    describe('#getClientAllowedUriList()', function () {
+        it('should read client list in processor', function (done) {           
+            setTimeout(function () {                
+                clintUriProcessor.getClientAllowedUriList(clientId, function (result) {
+                    if (result && result.length > 0 && result[0].uri === "http://ulboralabs.com") {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 3000);           
+        });
+    });
+    
     describe('#deleteClientAllowedUri()', function () {
         it('should delete client allowed URI', function (done) {           
             setTimeout(function () {                
@@ -78,7 +94,7 @@ describe('ClientAllowedUriProcessor', function () {
                     }
                     done();
                 });
-            }, 3000);           
+            }, 4000);           
         });
     });
     
@@ -94,7 +110,7 @@ describe('ClientAllowedUriProcessor', function () {
                     }
                     done();
                 });
-            }, 4000);           
+            }, 5000);           
         });
     });
     

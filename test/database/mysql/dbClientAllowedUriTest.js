@@ -3,7 +3,7 @@ var db = require("../../../database/mysql/db");
 var clientId;
 var clientAllowedUriId;
 
-describe('mysql DB', function () {
+describe('mysql DB client allow uri', function () {
     this.timeout(20000);
     describe('#connect()', function () {
         it('should connect to db and create pool', function (done) {
@@ -65,6 +65,21 @@ describe('mysql DB', function () {
         });
     });
     
+    describe('#getClientAllowedUriList()', function () {
+        it('should read client allowed uri list', function (done) {           
+            setTimeout(function () {                
+                db.getClientAllowedUriList(clientId, function (result) {
+                    if (result && result.length > 0 && result[0].uri === "http://ulboralabs.com") {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 3000);           
+        });
+    });
+    
     describe('#deleteClientAllowedUri()', function () {
         it('should delete client allowed URI', function (done) {           
             setTimeout(function () {                
@@ -76,7 +91,7 @@ describe('mysql DB', function () {
                     }
                     done();
                 });
-            }, 3000);           
+            }, 4000);           
         });
     });        
     
@@ -91,7 +106,7 @@ describe('mysql DB', function () {
                     }
                     done();
                 });
-            }, 4000);           
+            }, 5000);           
         });
     });       
 });

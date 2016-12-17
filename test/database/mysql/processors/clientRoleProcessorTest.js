@@ -1,13 +1,18 @@
 var assert = require('assert');
-var db = require("../../../database/mysql/db");
+var crud = require("../../../../database/mysql/crud/mysqlCrud");
+var clintProcessor = require("../../../../database/mysql/processors/clientProcessor");
+var clintRoleProcessor = require("../../../../database/mysql/processors/clientRoleProcessor");
 var clientId;
-describe('mysql DB client', function () {
-    this.timeout(20000);
+var clientRoleId;
+describe('ClientRoleProcessor', function () {
+    this.timeout(6000);
     describe('#connect()', function () {
         it('should connect to db and create pool', function (done) {
-            db.connect("localhost", "admin", "admin", "ulbora_oauth2_server", 5);
-            db.testConnection(function (con) {
+            crud.connect("localhost", "admin", "admin", "ulbora_oauth2_server", 5);
+            crud.testConnection(function (con) {
                 if (con) {
+                    clintProcessor.init(crud);
+                    clintRoleProcessor.init(crud);
                     assert(true);
                 } else {
                     assert(false);
@@ -16,9 +21,9 @@ describe('mysql DB client', function () {
             });
         });
     });
-    
-    describe('#addClient()', function () {
-        it('should add a client', function (done) { 
+
+   describe('#addClient()', function () {
+        it('should add a client in clientProcessor', function (done) { 
             
            var json = {
                 secret: '12345',
@@ -29,7 +34,7 @@ describe('mysql DB client', function () {
                 enabled: true
             };
             setTimeout(function () {
-                db.addClient(json, function (result) {
+                clintProcessor.addClient(json, function (result) {
                     if (result.clientId > -1) {
                         clientId = result.clientId;
                         assert(true);
@@ -40,23 +45,19 @@ describe('mysql DB client', function () {
                 });
             }, 1000);           
         });
-    });    
-        
-    describe('#updateClient()', function () {
-        it('should add a client', function (done) { 
+    });
+    
+   describe('#addClientRole()', function () {
+        it('should add a client Role', function (done) { 
             
-           var json = {
-                secret: '123456',
-                redirectUri: 'http://ulboralabs.com',
-                name: 'ulbora ulbora',
-                webSite: 'www.ulboralabs.com',
-                email: 'ulbora@ulbora.com',
-                enabled: false,
+           var json = {                
+                role: 'user',
                 clientId: clientId
             };
             setTimeout(function () {
-                db.updateClient(json, function (result) {
-                    if (result.success) {                        
+                clintRoleProcessor.addClientRole(json, function (result) {
+                    if (result.id > -1) {
+                        clientRoleId = result.id;
                         assert(true);
                     } else {
                         assert(false);
@@ -67,12 +68,11 @@ describe('mysql DB client', function () {
         });
     });
     
-    
-    describe('#getClient()', function () {
-        it('should read client', function (done) {           
+    describe('#getClientRoleiList()', function () {
+        it('should read client role list in processor', function (done) {           
             setTimeout(function () {                
-                db.getClient( clientId, function (result) {
-                    if (result && result.name === 'ulbora ulbora' && result.enabled === false) {                        
+                clintRoleProcessor.getClientRoleList(clientId, function (result) {
+                    if (result && result.length > 0 && result[0].role === "user") {                        
                         assert(true);
                     } else {
                         assert(false);
@@ -83,12 +83,11 @@ describe('mysql DB client', function () {
         });
     });
     
-    
-    describe('#getClientList()', function () {
-        it('should read client list', function (done) {           
+    describe('#deleteClientRole()', function () {
+        it('should delete client role', function (done) {           
             setTimeout(function () {                
-                db.getClientList(function (result) {
-                    if (result && result.length > 0) {                        
+                clintRoleProcessor.deleteClientRole( clientRoleId, function (result) {
+                    if (result.success) {                        
                         assert(true);
                     } else {
                         assert(false);
@@ -97,12 +96,13 @@ describe('mysql DB client', function () {
                 });
             }, 4000);           
         });
-    });  
+    });
+    
     
     describe('#deleteClient()', function () {
         it('should delete client', function (done) {           
             setTimeout(function () {                
-                db.deleteClient( clientId, function (result) {
+                clintProcessor.deleteClient( clientId, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {
@@ -112,6 +112,7 @@ describe('mysql DB client', function () {
                 });
             }, 5000);           
         });
-    });    
+    });
+    
 });
 

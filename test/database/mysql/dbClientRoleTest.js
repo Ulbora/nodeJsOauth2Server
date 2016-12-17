@@ -1,7 +1,9 @@
 var assert = require('assert');
 var db = require("../../../database/mysql/db");
 var clientId;
-describe('mysql DB client', function () {
+var clientRoleId;
+
+describe('mysql DB client allow uri', function () {
     this.timeout(20000);
     describe('#connect()', function () {
         it('should connect to db and create pool', function (done) {
@@ -40,23 +42,19 @@ describe('mysql DB client', function () {
                 });
             }, 1000);           
         });
-    });    
-        
-    describe('#updateClient()', function () {
-        it('should add a client', function (done) { 
+    });
+     
+    describe('#addClientRole()', function () {
+        it('should add a client role', function (done) { 
             
-           var json = {
-                secret: '123456',
-                redirectUri: 'http://ulboralabs.com',
-                name: 'ulbora ulbora',
-                webSite: 'www.ulboralabs.com',
-                email: 'ulbora@ulbora.com',
-                enabled: false,
+           var json = {                
+                role: 'superuser',
                 clientId: clientId
             };
             setTimeout(function () {
-                db.updateClient(json, function (result) {
-                    if (result.success) {                        
+                db.addClientRole(json, function (result) {
+                    if (result.id > -1) {
+                        clientRoleId = result.id;
                         assert(true);
                     } else {
                         assert(false);
@@ -67,12 +65,11 @@ describe('mysql DB client', function () {
         });
     });
     
-    
-    describe('#getClient()', function () {
-        it('should read client', function (done) {           
+    describe('#getClientRoleList()', function () {
+        it('should read client role list', function (done) {           
             setTimeout(function () {                
-                db.getClient( clientId, function (result) {
-                    if (result && result.name === 'ulbora ulbora' && result.enabled === false) {                        
+                db.getClientRoleList(clientId, function (result) {
+                    if (result && result.length > 0 && result[0].role === "superuser") {                        
                         assert(true);
                     } else {
                         assert(false);
@@ -83,12 +80,11 @@ describe('mysql DB client', function () {
         });
     });
     
-    
-    describe('#getClientList()', function () {
-        it('should read client list', function (done) {           
+    describe('#deleteClientRole()', function () {
+        it('should delete client role', function (done) {           
             setTimeout(function () {                
-                db.getClientList(function (result) {
-                    if (result && result.length > 0) {                        
+                db.deleteClientRole( clientRoleId, function (result) {
+                    if (result.success) {                        
                         assert(true);
                     } else {
                         assert(false);
@@ -97,7 +93,7 @@ describe('mysql DB client', function () {
                 });
             }, 4000);           
         });
-    });  
+    });        
     
     describe('#deleteClient()', function () {
         it('should delete client', function (done) {           
@@ -112,6 +108,6 @@ describe('mysql DB client', function () {
                 });
             }, 5000);           
         });
-    });    
+    });       
 });
 
