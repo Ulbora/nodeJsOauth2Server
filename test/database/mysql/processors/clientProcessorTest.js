@@ -1,15 +1,15 @@
 var assert = require('assert');
-var db = require("../../../database/mysql/db");
+var crud = require("../../../../database/mysql/crud/mysqlCrud");
+var clintProcessor = require("../../../../database/mysql/processors/clientProcessor");
 var clientId;
-var clientAllowedUriId;
-
-describe('mysql DB', function () {
-    this.timeout(20000);
+describe('ClientProcessor', function () {
+    this.timeout(6000);
     describe('#connect()', function () {
         it('should connect to db and create pool', function (done) {
-            db.connect("localhost", "admin", "admin", "ulbora_oauth2_server", 5);
-            db.testConnection(function (con) {
+            crud.connect("localhost", "admin", "admin", "ulbora_oauth2_server", 5);
+            crud.testConnection(function (con) {
                 if (con) {
+                    clintProcessor.init(crud);
                     assert(true);
                 } else {
                     assert(false);
@@ -18,9 +18,9 @@ describe('mysql DB', function () {
             });
         });
     });
-    
-    describe('#addClient()', function () {
-        it('should add a client', function (done) { 
+
+   describe('#addClient()', function () {
+        it('should add a client in clientProcessor', function (done) { 
             
            var json = {
                 secret: '12345',
@@ -31,7 +31,7 @@ describe('mysql DB', function () {
                 enabled: true
             };
             setTimeout(function () {
-                db.addClient(json, function (result) {
+                clintProcessor.addClient(json, function (result) {
                     if (result.clientId > -1) {
                         clientId = result.clientId;
                         assert(true);
@@ -44,10 +44,8 @@ describe('mysql DB', function () {
         });
     });
     
-    
-    
     describe('#updateClient()', function () {
-        it('should add a client', function (done) { 
+        it('should add a client in processor', function (done) { 
             
            var json = {
                 secret: '123456',
@@ -59,7 +57,7 @@ describe('mysql DB', function () {
                 clientId: clientId
             };
             setTimeout(function () {
-                db.updateClient(json, function (result) {
+                clintProcessor.updateClient(json, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {
@@ -71,11 +69,10 @@ describe('mysql DB', function () {
         });
     });
     
-    
     describe('#getClient()', function () {
-        it('should read client', function (done) {           
+        it('should read client in processor', function (done) {           
             setTimeout(function () {                
-                db.getClient( clientId, function (result) {
+                clintProcessor.getClient( clientId, function (result) {
                     if (result && result.name === 'ulbora ulbora' && result.enabled === false) {                        
                         assert(true);
                     } else {
@@ -89,9 +86,9 @@ describe('mysql DB', function () {
     
     
     describe('#getClientList()', function () {
-        it('should read client list', function (done) {           
+        it('should read client list in processor', function (done) {           
             setTimeout(function () {                
-                db.getClientList(function (result) {
+                clintProcessor.getClientList(function (result) {
                     if (result && result.length > 0) {                        
                         assert(true);
                     } else {
@@ -103,19 +100,11 @@ describe('mysql DB', function () {
         });
     });
     
-    
-    
-    describe('#addClientAllowedUri()', function () {
-        it('should add a client allowed URI', function (done) { 
-            
-           var json = {                
-                uri: 'http://ulboralabs.com',
-                clientId: clientId
-            };
-            setTimeout(function () {
-                db.addClientAllowedUri(json, function (result) {
-                    if (result.id > -1) {
-                        clientAllowedUriId = result.id;
+    describe('#deleteClient()', function () {
+        it('should delete client', function (done) {           
+            setTimeout(function () {                
+                clintProcessor.deleteClient( clientId, function (result) {
+                    if (result.success) {                        
                         assert(true);
                     } else {
                         assert(false);
@@ -126,39 +115,5 @@ describe('mysql DB', function () {
         });
     });
     
-    describe('#deleteClientAllowedUri()', function () {
-        it('should delete client allowed URI', function (done) {           
-            setTimeout(function () {                
-                db.deleteClientAllowedUri( clientAllowedUriId, function (result) {
-                    if (result.success) {                        
-                        assert(true);
-                    } else {
-                        assert(false);
-                    }
-                    done();
-                });
-            }, 6000);           
-        });
-    });
-    
-    
-    
-    describe('#deleteClient()', function () {
-        it('should delete client', function (done) {           
-            setTimeout(function () {                
-                db.deleteClient( clientId, function (result) {
-                    if (result.success) {                        
-                        assert(true);
-                    } else {
-                        assert(false);
-                    }
-                    done();
-                });
-            }, 7000);           
-        });
-    });
-    
-    
-
 });
 
