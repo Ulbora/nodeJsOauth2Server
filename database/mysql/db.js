@@ -20,6 +20,10 @@ exports.testConnection = function (callback) {
     crud.testConnection(callback);
 };
 
+exports.getConnection = function (callback) {
+    crud.getConnection(callback);
+};
+
 //client operations---------------------------------------
 exports.addClient = function(con, json, callback){
     clientProcessor.addClient(con, json, callback);
