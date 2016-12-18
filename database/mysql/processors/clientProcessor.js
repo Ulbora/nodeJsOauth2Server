@@ -4,7 +4,7 @@ var crud;
 exports.init = function(c){
     crud = c;
 };
-exports.addClient = function (json, callback) {
+exports.addClient = function (con, json, callback) {
     var args = {
         secret: json.secret,
         redirect_uri: json.redirectUri,
@@ -13,7 +13,7 @@ exports.addClient = function (json, callback) {
         email: json.email,
         enabled: json.enabled
     };
-    crud.insert(clientQueries.CLIENT_INSERT_QUERY, args, function (result) {
+    crud.insert(con, clientQueries.CLIENT_INSERT_QUERY, args, function (result) {
         var rtn = {
             clientId: result.id,
             success: result.success,
@@ -23,7 +23,7 @@ exports.addClient = function (json, callback) {
     });
 };
 
-exports.updateClient = function (json, callback) {
+exports.updateClient = function (con, json, callback) {
     var args = [
         json.secret,
         json.redirectUri,
@@ -33,7 +33,7 @@ exports.updateClient = function (json, callback) {
         json.enabled,
         json.clientId
     ];
-    crud.update(clientQueries.CLIENT_UPDATE_QUERY, args, callback);
+    crud.update(con, clientQueries.CLIENT_UPDATE_QUERY, args, callback);
 };
 
 
@@ -78,7 +78,7 @@ exports.getClientList = function (callback) {
     });
 };
 
-exports.deleteClient = function (clientId, callback) {
+exports.deleteClient = function (con, clientId, callback) {
     var queryId = [clientId];
-    crud.delete(clientQueries.CLIENT_DELETE_QUERY, queryId, callback);
+    crud.delete(con, clientQueries.CLIENT_DELETE_QUERY, queryId, callback);
 };

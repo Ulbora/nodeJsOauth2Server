@@ -25,7 +25,7 @@ describe('RefreshTokenProcessor', function () {
                 token: 'djfjoiqjldksflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf'
             };
             setTimeout(function () {
-                refreshTokenProcessor.addRefreshToken(json, function (result) {
+                refreshTokenProcessor.addRefreshToken(null, json, function (result) {
                     if (result.id > -1) {
                         tokenId = result.id;
                         assert(true);
@@ -59,7 +59,7 @@ describe('RefreshTokenProcessor', function () {
     describe('#deleteRefreshToken()', function () {
         it('should delete refresh token', function (done) {           
             setTimeout(function () {                
-                refreshTokenProcessor.deleteRefreshToken( tokenId, function (result) {
+                refreshTokenProcessor.deleteRefreshToken(null, tokenId, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {

@@ -5,12 +5,12 @@ exports.init = function(c){
 };
 
 //client allowed URI --------------------------
-exports.addClientAllowedUri = function (json, callback) {
+exports.addClientAllowedUri = function (con, json, callback) {
     var args = {
         uri: json.uri,
         client_id: json.clientId
     };
-    crud.insert(clientQueries.CLIENT_ALLOWED_URI_INSERT_QUERY, args, function (result) {
+    crud.insert(con, clientQueries.CLIENT_ALLOWED_URI_INSERT_QUERY, args, function (result) {
         var rtn = {
             id: result.id,
             success: result.success,
@@ -40,8 +40,8 @@ exports.getClientAllowedUriList = function (clientId, callback) {
     });
 };
 
-exports.deleteClientAllowedUri = function (id, callback) {
+exports.deleteClientAllowedUri = function (con, id, callback) {
     var queryId = [id];
-    crud.delete(clientQueries.CLIENT_ALLOWED_URI_DELETE_QUERY, queryId, callback);
+    crud.delete(con, clientQueries.CLIENT_ALLOWED_URI_DELETE_QUERY, queryId, callback);
 };
 

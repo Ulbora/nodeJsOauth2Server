@@ -20,13 +20,19 @@ exports.testConnection = function (callback) {
     });
 };
 
-exports.insert = function (query, args, callback) {    
+exports.insert = function (con, query, args, callback) {    
     var rtn = {
         id : -1,
         success: false,
         message: ""
     };
-    pool.query(query, args, function (err, result) {
+    var c;
+    if(con){
+        c = con;
+    }else{
+        c = pool;
+    }
+    c.query(query, args, function (err, result) {
         console.log("result in mysqlCrud: " + JSON.stringify(result));
         if (!err && result.insertId) {
             rtn.id = result.insertId;
@@ -40,12 +46,18 @@ exports.insert = function (query, args, callback) {
     });
 };
 
-exports.insertNoId = function (query, args, callback) {    
+exports.insertNoId = function (con, query, args, callback) {    
     var rtn = {        
         success: false,
         message: ""
     };
-    pool.query(query, args, function (err, result) {
+    var c;
+    if(con){
+        c = con;
+    }else{
+        c = pool;
+    }    
+    c.query(query, args, function (err, result) {
         console.log("result in mysqlCrud: " + JSON.stringify(result));
         if (!err) {            
             rtn.success = true;
@@ -98,12 +110,18 @@ exports.getList = function (query, callback) {
     });
 };
 
-exports.update = function (query, args, callback) { 
+exports.update = function (con, query, args, callback) { 
     var rtn = {
         success: false,
         message: ""
     };
-    pool.query(query, args, function (err, result) {
+    var c;
+    if(con){
+        c = con;
+    }else{
+        c = pool;
+    }    
+    c.query(query, args, function (err, result) {
         if (!err && result.affectedRows && result.affectedRows > 0) { 
             rtn.success = true;
             callback(rtn);
@@ -116,12 +134,18 @@ exports.update = function (query, args, callback) {
 };
 
 
-exports.delete = function (query, args, callback) {  
+exports.delete = function (con, query, args, callback) {  
     var rtn = {
         success: false,
         message: ""
     };
-    pool.query(query, args, function (err, result) {
+    var c;
+    if(con){
+        c = con;
+    }else{
+        c = pool;
+    }    
+    c.query(query, args, function (err, result) {
         if (!err && result.affectedRows && result.affectedRows > 0) {  
             console.log("deleted rows: " + JSON.stringify(result));            
             rtn.success = true;

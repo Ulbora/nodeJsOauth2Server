@@ -24,7 +24,7 @@ describe('mysql DB client allow uri', function () {
                 token: 'djfjoiqjldksflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf'
             };
             setTimeout(function () {
-                db.addRefreshToken(json, function (result) {
+                db.addRefreshToken(null, json, function (result) {
                     if (result.id > -1) {
                         tokenId = result.id;
                         assert(true);
@@ -58,7 +58,7 @@ describe('mysql DB client allow uri', function () {
     describe('#deleteRefreshToken()', function () {
         it('should delete refresh token in db', function (done) {           
             setTimeout(function () {                
-                db.deleteRefreshToken( tokenId, function (result) {
+                db.deleteRefreshToken(null, tokenId, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {

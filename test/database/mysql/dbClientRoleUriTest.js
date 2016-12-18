@@ -32,7 +32,7 @@ describe('mysql DB client allow uri', function () {
                 enabled: true
             };
             setTimeout(function () {
-                db.addClient(json, function (result) {
+                db.addClient(null, json, function (result) {
                     if (result.clientId > -1) {
                         clientId = result.clientId;
                         assert(true);
@@ -53,7 +53,7 @@ describe('mysql DB client allow uri', function () {
                 clientId: clientId
             };
             setTimeout(function () {
-                db.addClientRole(json, function (result) {
+                db.addClientRole(null, json, function (result) {
                     if (result.id > -1) {
                         clientRoleId = result.id;
                         assert(true);
@@ -74,7 +74,7 @@ describe('mysql DB client allow uri', function () {
                 clientId: clientId
             };
             setTimeout(function () {
-                db.addClientAllowedUri(json, function (result) {
+                db.addClientAllowedUri(null, json, function (result) {
                     if (result.id > -1) {
                         clientAllowedUriId = result.id;
                         assert(true);
@@ -95,7 +95,7 @@ describe('mysql DB client allow uri', function () {
                 clientAllowedUriId: clientAllowedUriId
             };
             setTimeout(function () {
-                db.addClientRoleUri(json, function (result) {
+                db.addClientRoleUri(null, json, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {
@@ -129,7 +129,7 @@ describe('mysql DB client allow uri', function () {
                 clientAllowedUriId: clientAllowedUriId
             };
             setTimeout(function () {
-                db.deleteClientRoleUri(json, function (result) {
+                db.deleteClientRoleUri(null, json, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {
@@ -144,7 +144,7 @@ describe('mysql DB client allow uri', function () {
     describe('#deleteClientRole()', function () {
         it('should delete client role', function (done) {           
             setTimeout(function () {                
-                db.deleteClientRole( clientRoleId, function (result) {
+                db.deleteClientRole(null, clientRoleId, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {
@@ -159,7 +159,7 @@ describe('mysql DB client allow uri', function () {
     describe('#deleteClientAllowedUri()', function () {
         it('should delete client allowed URI', function (done) {           
             setTimeout(function () {                
-                db.deleteClientAllowedUri( clientAllowedUriId, function (result) {
+                db.deleteClientAllowedUri(null, clientAllowedUriId, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {
@@ -174,7 +174,7 @@ describe('mysql DB client allow uri', function () {
     describe('#deleteClient()', function () {
         it('should delete client', function (done) {           
             setTimeout(function () {                
-                db.deleteClient( clientId, function (result) {
+                db.deleteClient(null, clientId, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {

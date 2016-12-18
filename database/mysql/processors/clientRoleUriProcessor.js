@@ -5,12 +5,12 @@ exports.init = function(c){
 };
 
 //client allowed URI --------------------------
-exports.addClientRoleUri = function (json, callback) {
+exports.addClientRoleUri = function (con, json, callback) {
     var args = {
         client_role_id: json.clientRoleId,
         client_allowed_uri_id: json.clientAllowedUriId
     };
-    crud.insertNoId(clientQueries.CLIENT_ROLE_URI_INSERT_QUERY, args, function (result) {
+    crud.insertNoId(con, clientQueries.CLIENT_ROLE_URI_INSERT_QUERY, args, function (result) {
         console.log("clientRoleUri insert: " + JSON.stringify(result));
         var rtn = {            
             success: result.success,
@@ -39,9 +39,9 @@ exports.getClientRoleAllowedUriList = function (clientRoleId, callback) {
     });
 };
 
-exports.deleteClientRoleUri = function (json, callback) {
+exports.deleteClientRoleUri = function (con, json, callback) {
     var queryId = [json.clientRoleId, json.clientAllowedUriId];
-    crud.delete(clientQueries.CLIENT_ROLE_URI_DELETE_QUERY, queryId, callback);
+    crud.delete(con, clientQueries.CLIENT_ROLE_URI_DELETE_QUERY, queryId, callback);
 };
 
 

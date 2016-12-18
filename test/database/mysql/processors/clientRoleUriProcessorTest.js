@@ -39,7 +39,7 @@ describe('ClientRoleUriProcessor', function () {
                 enabled: true
             };
             setTimeout(function () {
-                clintProcessor.addClient(json, function (result) {
+                clintProcessor.addClient(null, json, function (result) {
                     if (result.clientId > -1) {
                         clientId = result.clientId;
                         assert(true);
@@ -60,7 +60,7 @@ describe('ClientRoleUriProcessor', function () {
                 clientId: clientId
             };
             setTimeout(function () {
-                clintRoleProcessor.addClientRole(json, function (result) {
+                clintRoleProcessor.addClientRole(null, json, function (result) {
                     if (result.id > -1) {
                         clientRoleId = result.id;
                         assert(true);
@@ -81,7 +81,7 @@ describe('ClientRoleUriProcessor', function () {
                 clientId: clientId
             };
             setTimeout(function () {
-                clintUriProcessor.addClientAllowedUri(json, function (result) {
+                clintUriProcessor.addClientAllowedUri(null, json, function (result) {
                     if (result.id > -1) {
                         clientAllowedUriId = result.id;
                         assert(true);
@@ -102,7 +102,7 @@ describe('ClientRoleUriProcessor', function () {
                 clientAllowedUriId: clientAllowedUriId
             };
             setTimeout(function () {
-                clintRoleUriProcessor.addClientRoleUri(json, function (result) {
+                clintRoleUriProcessor.addClientRoleUri(null, json, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {
@@ -137,7 +137,7 @@ describe('ClientRoleUriProcessor', function () {
                 clientAllowedUriId: clientAllowedUriId
             };
             setTimeout(function () {
-                clintRoleUriProcessor.deleteClientRoleUri(json, function (result) {
+                clintRoleUriProcessor.deleteClientRoleUri(null, json, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {
@@ -152,7 +152,7 @@ describe('ClientRoleUriProcessor', function () {
     describe('#deleteClientRole()', function () {
         it('should delete client role', function (done) {           
             setTimeout(function () {                
-                clintRoleProcessor.deleteClientRole( clientRoleId, function (result) {
+                clintRoleProcessor.deleteClientRole(null, clientRoleId, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {
@@ -167,7 +167,7 @@ describe('ClientRoleUriProcessor', function () {
      describe('#deleteClientAllowedUri()', function () {
         it('should delete client allowed URI', function (done) {           
             setTimeout(function () {                
-                clintUriProcessor.deleteClientAllowedUri( clientAllowedUriId, function (result) {
+                clintUriProcessor.deleteClientAllowedUri(null, clientAllowedUriId, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {
@@ -182,7 +182,7 @@ describe('ClientRoleUriProcessor', function () {
     describe('#deleteClient()', function () {
         it('should delete client', function (done) {           
             setTimeout(function () {                
-                clintProcessor.deleteClient( clientId, function (result) {
+                clintProcessor.deleteClient(null, clientId, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {

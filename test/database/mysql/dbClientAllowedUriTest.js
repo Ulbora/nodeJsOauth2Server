@@ -31,7 +31,7 @@ describe('mysql DB client allow uri', function () {
                 enabled: true
             };
             setTimeout(function () {
-                db.addClient(json, function (result) {
+                db.addClient(null, json, function (result) {
                     if (result.clientId > -1) {
                         clientId = result.clientId;
                         assert(true);
@@ -52,7 +52,7 @@ describe('mysql DB client allow uri', function () {
                 clientId: clientId
             };
             setTimeout(function () {
-                db.addClientAllowedUri(json, function (result) {
+                db.addClientAllowedUri(null, json, function (result) {
                     if (result.id > -1) {
                         clientAllowedUriId = result.id;
                         assert(true);
@@ -83,7 +83,7 @@ describe('mysql DB client allow uri', function () {
     describe('#deleteClientAllowedUri()', function () {
         it('should delete client allowed URI', function (done) {           
             setTimeout(function () {                
-                db.deleteClientAllowedUri( clientAllowedUriId, function (result) {
+                db.deleteClientAllowedUri(null, clientAllowedUriId, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {
@@ -98,7 +98,7 @@ describe('mysql DB client allow uri', function () {
     describe('#deleteClient()', function () {
         it('should delete client', function (done) {           
             setTimeout(function () {                
-                db.deleteClient( clientId, function (result) {
+                db.deleteClient(null, clientId, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {

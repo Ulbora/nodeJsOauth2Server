@@ -29,7 +29,7 @@ describe('mysql DB client', function () {
                 enabled: true
             };
             setTimeout(function () {
-                db.addClient(json, function (result) {
+                db.addClient(null, json, function (result) {
                     if (result.clientId > -1) {
                         clientId = result.clientId;
                         assert(true);
@@ -55,7 +55,7 @@ describe('mysql DB client', function () {
                 clientId: clientId
             };
             setTimeout(function () {
-                db.updateClient(json, function (result) {
+                db.updateClient(null, json, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {
@@ -102,7 +102,7 @@ describe('mysql DB client', function () {
     describe('#deleteClient()', function () {
         it('should delete client', function (done) {           
             setTimeout(function () {                
-                db.deleteClient( clientId, function (result) {
+                db.deleteClient(null, clientId, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {

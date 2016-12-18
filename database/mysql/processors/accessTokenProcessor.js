@@ -5,14 +5,14 @@ exports.init = function(c){
 };
 
 //access token --------------------------
-exports.addAccessToken = function (json, callback) {
+exports.addAccessToken = function (con, json, callback) {
     var args = {
         token: json.token,
         expires: json.expires,
         refresh_token_id: json.refreshTokenId
     };
     console.log("json in add access token :" + JSON.stringify(json));
-    crud.insert(tokenQueries.ACCESS_TOKEN_INSERT_QUERY, args, function (result) {
+    crud.insert(con, tokenQueries.ACCESS_TOKEN_INSERT_QUERY, args, function (result) {
         var rtn = {
             id: result.id,
             success: result.success,
@@ -43,9 +43,9 @@ exports.getAccessToken = function (id, callback) {
     });
 };
 
-exports.deleteAccessToken = function (id, callback) {
+exports.deleteAccessToken = function (con, id, callback) {
     var queryId = [id];
-    crud.delete(tokenQueries.ACCESS_TOKEN_DELETE_QUERY, queryId, callback);
+    crud.delete(con, tokenQueries.ACCESS_TOKEN_DELETE_QUERY, queryId, callback);
 };
 
 

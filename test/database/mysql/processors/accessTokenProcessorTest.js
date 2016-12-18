@@ -28,7 +28,7 @@ describe('AccessTokenProcessor', function () {
                 token: 'djfjoiqjldksflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf'
             };
             setTimeout(function () {
-                refreshTokenProcessor.addRefreshToken(json, function (result) {
+                refreshTokenProcessor.addRefreshToken(null, json, function (result) {
                     if (result.id > -1) {
                         refreshTokenId = result.id;
                         assert(true);
@@ -51,7 +51,7 @@ describe('AccessTokenProcessor', function () {
                 refreshTokenId: refreshTokenId
             };
             setTimeout(function () {
-                accessTokenProcessor.addAccessToken(json, function (result) {
+                accessTokenProcessor.addAccessToken(null, json, function (result) {
                     if (result.id > -1) {
                         tokenId = result.id;
                         assert(true);
@@ -84,7 +84,7 @@ describe('AccessTokenProcessor', function () {
     describe('#deleteAccessToken()', function () {
         it('should delete access token', function (done) {           
             setTimeout(function () {                
-                accessTokenProcessor.deleteAccessToken( tokenId, function (result) {
+                accessTokenProcessor.deleteAccessToken(null, tokenId, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {
@@ -99,7 +99,7 @@ describe('AccessTokenProcessor', function () {
     describe('#deleteRefreshToken()', function () {
         it('should delete refresh token', function (done) {           
             setTimeout(function () {                
-                refreshTokenProcessor.deleteRefreshToken( refreshTokenId, function (result) {
+                refreshTokenProcessor.deleteRefreshToken(null, refreshTokenId, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {

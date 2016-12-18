@@ -5,11 +5,11 @@ exports.init = function(c){
 };
 
 //refresh token --------------------------
-exports.addRefreshToken = function (json, callback) {
+exports.addRefreshToken = function (con, json, callback) {
     var args = {
         token: json.token
     };
-    crud.insert(tokenQueries.REFRESH_TOKEN_INSERT_QUERY, args, function (result) {
+    crud.insert(con, tokenQueries.REFRESH_TOKEN_INSERT_QUERY, args, function (result) {
         var rtn = {
             id: result.id,
             success: result.success,
@@ -38,9 +38,9 @@ exports.getRefreshToken = function (id, callback) {
     });
 };
 
-exports.deleteRefreshToken = function (id, callback) {
+exports.deleteRefreshToken = function (con, id, callback) {
     var queryId = [id];
-    crud.delete(tokenQueries.REFRESH_TOKEN_DELETE_QUERY, queryId, callback);
+    crud.delete(con, tokenQueries.REFRESH_TOKEN_DELETE_QUERY, queryId, callback);
 };
 
 

@@ -5,12 +5,12 @@ exports.init = function(c){
 };
 
 //client allowed URI --------------------------
-exports.addClientScope = function (json, callback) {
+exports.addClientScope = function (con, json, callback) {
     var args = {
         scope: json.scope,
         client_id: json.clientId
     };
-    crud.insert(clientQueries.CLIENT_SCOPE_INSERT_QUERY, args, function (result) {
+    crud.insert(con, clientQueries.CLIENT_SCOPE_INSERT_QUERY, args, function (result) {
         var rtn = {
             id: result.id,
             success: result.success,
@@ -40,9 +40,9 @@ exports.getClientScopeList = function (clientId, callback) {
     });
 };
 
-exports.deleteClientScope = function (id, callback) {
+exports.deleteClientScope = function (con, id, callback) {
     var queryId = [id];
-    crud.delete(clientQueries.CLIENT_SCOPE_DELETE_QUERY, queryId, callback);
+    crud.delete(con, clientQueries.CLIENT_SCOPE_DELETE_QUERY, queryId, callback);
 };
 
 

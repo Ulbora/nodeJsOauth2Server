@@ -29,7 +29,7 @@ describe('MYSQLCrud', function () {
                 enabled: true
             };
             setTimeout(function () {
-                db.insert(q, args, function (result) {
+                db.insert(null, q, args, function (result) {
                     if (result.id > -1) {
                         insertId = result.id;
                         assert(true);
@@ -47,7 +47,7 @@ describe('MYSQLCrud', function () {
             var q = "UPDATE client SET name = ? WHERE client_id = ?";
             var args = ['ulbora labs', insertId];
             setTimeout(function () {
-                db.update(q, args, function (result) {
+                db.update(null, q, args, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {
@@ -97,7 +97,7 @@ describe('MYSQLCrud', function () {
             var q = "DELETE FROM client WHERE client_id = ?";
             var queryId = [insertId];
             setTimeout(function () {
-                db.delete(q, queryId, function (result) {
+                db.delete(null, q, queryId, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {

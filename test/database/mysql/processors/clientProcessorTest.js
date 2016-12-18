@@ -31,7 +31,7 @@ describe('ClientProcessor', function () {
                 enabled: true
             };
             setTimeout(function () {
-                clintProcessor.addClient(json, function (result) {
+                clintProcessor.addClient(null, json, function (result) {
                     if (result.clientId > -1) {
                         clientId = result.clientId;
                         assert(true);
@@ -57,7 +57,7 @@ describe('ClientProcessor', function () {
                 clientId: clientId
             };
             setTimeout(function () {
-                clintProcessor.updateClient(json, function (result) {
+                clintProcessor.updateClient(null, json, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {
@@ -103,7 +103,7 @@ describe('ClientProcessor', function () {
     describe('#deleteClient()', function () {
         it('should delete client', function (done) {           
             setTimeout(function () {                
-                clintProcessor.deleteClient( clientId, function (result) {
+                clintProcessor.deleteClient(null, clientId, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {

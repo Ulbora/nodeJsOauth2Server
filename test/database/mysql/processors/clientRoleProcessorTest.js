@@ -34,7 +34,7 @@ describe('ClientRoleProcessor', function () {
                 enabled: true
             };
             setTimeout(function () {
-                clintProcessor.addClient(json, function (result) {
+                clintProcessor.addClient(null, json, function (result) {
                     if (result.clientId > -1) {
                         clientId = result.clientId;
                         assert(true);
@@ -55,7 +55,7 @@ describe('ClientRoleProcessor', function () {
                 clientId: clientId
             };
             setTimeout(function () {
-                clintRoleProcessor.addClientRole(json, function (result) {
+                clintRoleProcessor.addClientRole(null, json, function (result) {
                     if (result.id > -1) {
                         clientRoleId = result.id;
                         assert(true);
@@ -86,7 +86,7 @@ describe('ClientRoleProcessor', function () {
     describe('#deleteClientRole()', function () {
         it('should delete client role', function (done) {           
             setTimeout(function () {                
-                clintRoleProcessor.deleteClientRole( clientRoleId, function (result) {
+                clintRoleProcessor.deleteClientRole(null, clientRoleId, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {
@@ -102,7 +102,7 @@ describe('ClientRoleProcessor', function () {
     describe('#deleteClient()', function () {
         it('should delete client', function (done) {           
             setTimeout(function () {                
-                clintProcessor.deleteClient( clientId, function (result) {
+                clintProcessor.deleteClient(null, clientId, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {

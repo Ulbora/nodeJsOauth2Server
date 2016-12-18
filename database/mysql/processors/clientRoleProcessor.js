@@ -5,12 +5,12 @@ exports.init = function(c){
 };
 
 //client allowed URI --------------------------
-exports.addClientRole = function (json, callback) {
+exports.addClientRole = function (con, json, callback) {
     var args = {
         role: json.role,
         client_id: json.clientId
     };
-    crud.insert(clientQueries.CLIENT_ROLE_INSERT_QUERY, args, function (result) {
+    crud.insert(con, clientQueries.CLIENT_ROLE_INSERT_QUERY, args, function (result) {
         var rtn = {
             id: result.id,
             success: result.success,
@@ -40,9 +40,9 @@ exports.getClientRoleList = function (clientId, callback) {
     });
 };
 
-exports.deleteClientRole = function (id, callback) {
+exports.deleteClientRole = function (con, id, callback) {
     var queryId = [id];
-    crud.delete(clientQueries.CLIENT_ROLE_DELETE_QUERY, queryId, callback);
+    crud.delete(con, clientQueries.CLIENT_ROLE_DELETE_QUERY, queryId, callback);
 };
 
 

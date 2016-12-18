@@ -34,7 +34,7 @@ describe('ClientAllowedUriProcessor', function () {
                 enabled: true
             };
             setTimeout(function () {
-                clintProcessor.addClient(json, function (result) {
+                clintProcessor.addClient(null, json, function (result) {
                     if (result.clientId > -1) {
                         clientId = result.clientId;
                         assert(true);
@@ -55,7 +55,7 @@ describe('ClientAllowedUriProcessor', function () {
                 clientId: clientId
             };
             setTimeout(function () {
-                clintUriProcessor.addClientAllowedUri(json, function (result) {
+                clintUriProcessor.addClientAllowedUri(null, json, function (result) {
                     if (result.id > -1) {
                         clientAllowedUriId = result.id;
                         assert(true);
@@ -86,7 +86,7 @@ describe('ClientAllowedUriProcessor', function () {
     describe('#deleteClientAllowedUri()', function () {
         it('should delete client allowed URI', function (done) {           
             setTimeout(function () {                
-                clintUriProcessor.deleteClientAllowedUri( clientAllowedUriId, function (result) {
+                clintUriProcessor.deleteClientAllowedUri(null, clientAllowedUriId, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {
@@ -102,7 +102,7 @@ describe('ClientAllowedUriProcessor', function () {
     describe('#deleteClient()', function () {
         it('should delete client', function (done) {           
             setTimeout(function () {                
-                clintProcessor.deleteClient( clientId, function (result) {
+                clintProcessor.deleteClient(null, clientId, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {

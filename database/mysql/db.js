@@ -21,12 +21,12 @@ exports.testConnection = function (callback) {
 };
 
 //client operations---------------------------------------
-exports.addClient = function(json, callback){
-    clientProcessor.addClient(json, callback);
+exports.addClient = function(con, json, callback){
+    clientProcessor.addClient(con, json, callback);
 };
 
-exports.updateClient = function (json, callback) {
-    clientProcessor.updateClient(json, callback);
+exports.updateClient = function (con, json, callback) {
+    clientProcessor.updateClient(con, json, callback);
 };
 
 exports.getClient = function (clientId, callback) {
@@ -37,92 +37,92 @@ exports.getClientList = function (callback) {
     clientProcessor.getClientList(callback);
 };
 
-exports.deleteClient = function (clientId, callback) {
-    clientProcessor.deleteClient(clientId, callback);
+exports.deleteClient = function (con, clientId, callback) {
+    clientProcessor.deleteClient(con, clientId, callback);
 };
 //end client operations ---------------------------------
 
 
 //client allowed URI --------------------------
-exports.addClientAllowedUri = function (json, callback) {
-    clientAllowedUriProcessor.addClientAllowedUri(json, callback);
+exports.addClientAllowedUri = function (con, json, callback) {
+    clientAllowedUriProcessor.addClientAllowedUri(con, json, callback);
 };
 
 exports.getClientAllowedUriList = function (clientId, callback) {
     clientAllowedUriProcessor.getClientAllowedUriList(clientId, callback);
 };
 
-exports.deleteClientAllowedUri = function (id, callback) {
-    clientAllowedUriProcessor.deleteClientAllowedUri(id, callback);
+exports.deleteClientAllowedUri = function (con, id, callback) {
+    clientAllowedUriProcessor.deleteClientAllowedUri(con, id, callback);
 };
 // end client allowed URI ------------------------------
 
 //client role
-exports.addClientRole = function (json, callback) {
-    clientRoleProcessor.addClientRole(json, callback);
+exports.addClientRole = function (con, json, callback) {
+    clientRoleProcessor.addClientRole(con, json, callback);
 };
 
 exports.getClientRoleList = function (clientId, callback) {
     clientRoleProcessor.getClientRoleList(clientId, callback);
 };
 
-exports.deleteClientRole = function (id, callback) {
-    clientRoleProcessor.deleteClientRole(id, callback);
+exports.deleteClientRole = function (con, id, callback) {
+    clientRoleProcessor.deleteClientRole(con, id, callback);
 };
 //end client role
 
 //client scope
-exports.addClientScope = function (json, callback) {
-    clientScopeProcessor.addClientScope(json, callback);
+exports.addClientScope = function (con, json, callback) {
+    clientScopeProcessor.addClientScope(con, json, callback);
 };
 
 exports.getClientScopeList = function (clientId, callback) {
     clientScopeProcessor.getClientScopeList(clientId, callback);
 };
 
-exports.deleteClientScope = function (id, callback) {
-    clientScopeProcessor.deleteClientScope(id, callback);
+exports.deleteClientScope = function (con, id, callback) {
+    clientScopeProcessor.deleteClientScope(con, id, callback);
 };
 //end client scope
 
 //client role uri
-exports.addClientRoleUri = function (json, callback) {
-    clientRoleUriProcessor.addClientRoleUri(json, callback);
+exports.addClientRoleUri = function (con, json, callback) {
+    clientRoleUriProcessor.addClientRoleUri(con, json, callback);
 };
 
 exports.getClientRoleAllowedUriList = function (clientRoleId, callback) {
     clientRoleUriProcessor.getClientRoleAllowedUriList(clientRoleId, callback);
 };
 
-exports.deleteClientRoleUri = function (json, callback) {
-    clientRoleUriProcessor.deleteClientRoleUri(json, callback);
+exports.deleteClientRoleUri = function (con, json, callback) {
+    clientRoleUriProcessor.deleteClientRoleUri(con, json, callback);
 };
 //end client role uri
 
 //refresh token
-exports.addRefreshToken = function (json, callback) {
-    refreshTokenProcessor.addRefreshToken(json, callback);
+exports.addRefreshToken = function (con, json, callback) {
+    refreshTokenProcessor.addRefreshToken(con, json, callback);
 };
 
 exports.getRefreshToken = function (id, callback) {
     refreshTokenProcessor.getRefreshToken(id, callback);
 };
 
-exports.deleteRefreshToken = function (id, callback) {
-    refreshTokenProcessor.deleteRefreshToken(id, callback);
+exports.deleteRefreshToken = function (con, id, callback) {
+    refreshTokenProcessor.deleteRefreshToken(con, id, callback);
 };
 //end refresh token
 
 //access token
-exports.addAccessToken = function (json, callback) {
-    accessTokenProcessor.addAccessToken(json, callback);
+exports.addAccessToken = function (con, json, callback) {
+    accessTokenProcessor.addAccessToken(con, json, callback);
 };
 
 exports.getAccessToken = function (id, callback) {
     accessTokenProcessor.getAccessToken(id, callback);
 };
 
-exports.deleteAccessToken = function (id, callback) {
-    accessTokenProcessor.deleteAccessToken(id, callback);
+exports.deleteAccessToken = function (con, id, callback) {
+    accessTokenProcessor.deleteAccessToken(con, id, callback);
 };
 //end access token
