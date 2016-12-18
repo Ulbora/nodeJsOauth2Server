@@ -3,6 +3,7 @@ var clientProcessor = require("./processors/clientProcessor");
 var clientAllowedUriProcessor = require("./processors/clientAllowedUriProcessor");
 var clientRoleProcessor = require("./processors/clientRoleProcessor");
 var clientScopeProcessor = require("./processors/clientScopeProcessor");
+var clientRoleUriProcessor = require("./processors/clientRoleUriProcessor");
 var refreshTokenProcessor = require("./processors/refreshTokenProcessor");
 exports.connect = function (host, user, pw, db, cpnum) {
     crud.connect(host, user, pw, db, cpnum);
@@ -10,6 +11,7 @@ exports.connect = function (host, user, pw, db, cpnum) {
     clientAllowedUriProcessor.init(crud);
     clientRoleProcessor.init(crud);
     clientScopeProcessor.init(crud);
+    clientRoleUriProcessor.init(crud);
     refreshTokenProcessor.init(crud);
 };
 exports.testConnection = function (callback) {
@@ -80,6 +82,20 @@ exports.deleteClientScope = function (id, callback) {
     clientScopeProcessor.deleteClientScope(id, callback);
 };
 //end client scope
+
+//client role uri
+exports.addClientRoleUri = function (json, callback) {
+    clientRoleUriProcessor.addClientRoleUri(json, callback);
+};
+
+exports.getClientRoleAllowedUriList = function (clientRoleId, callback) {
+    clientRoleUriProcessor.getClientRoleAllowedUriList(clientRoleId, callback);
+};
+
+exports.deleteClientRoleUri = function (json, callback) {
+    clientRoleUriProcessor.deleteClientRoleUri(json, callback);
+};
+//end client role uri
 
 //refresh token
 exports.addRefreshToken = function (json, callback) {

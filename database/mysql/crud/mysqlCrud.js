@@ -40,6 +40,24 @@ exports.insert = function (query, args, callback) {
     });
 };
 
+exports.insertNoId = function (query, args, callback) {    
+    var rtn = {        
+        success: false,
+        message: ""
+    };
+    pool.query(query, args, function (err, result) {
+        console.log("result in mysqlCrud: " + JSON.stringify(result));
+        if (!err) {            
+            rtn.success = true;
+            callback(rtn);
+        }else{
+            console.error("Database Insert error: " +JSON.stringify(err));
+            rtn.message = "Database Insert failed.";
+            callback(rtn);
+        }        
+    });
+};
+
 exports.get = function (query, args, callback) {   
     var rtn = {
         success: false,
