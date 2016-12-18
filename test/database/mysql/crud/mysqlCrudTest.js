@@ -6,8 +6,8 @@ describe('MYSQLCrud', function () {
     describe('#connect()', function () {
         it('should connect to db and create pool', function (done) {
             db.connect("localhost", "admin", "admin", "ulbora_oauth2_server", 5);
-            db.testConnection(function (con) {
-                if (con) {
+            db.testConnection(function (success) {
+                if (success) {                   
                     assert(true);
                 } else {
                     assert(false);

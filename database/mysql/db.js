@@ -5,6 +5,7 @@ var clientRoleProcessor = require("./processors/clientRoleProcessor");
 var clientScopeProcessor = require("./processors/clientScopeProcessor");
 var clientRoleUriProcessor = require("./processors/clientRoleUriProcessor");
 var refreshTokenProcessor = require("./processors/refreshTokenProcessor");
+var accessTokenProcessor = require("./processors/accessTokenProcessor");
 exports.connect = function (host, user, pw, db, cpnum) {
     crud.connect(host, user, pw, db, cpnum);
     clientProcessor.init(crud);
@@ -13,6 +14,7 @@ exports.connect = function (host, user, pw, db, cpnum) {
     clientScopeProcessor.init(crud);
     clientRoleUriProcessor.init(crud);
     refreshTokenProcessor.init(crud);
+    accessTokenProcessor.init(crud);
 };
 exports.testConnection = function (callback) {
     crud.testConnection(callback);
@@ -112,5 +114,15 @@ exports.deleteRefreshToken = function (id, callback) {
 //end refresh token
 
 //access token
+exports.addAccessToken = function (json, callback) {
+    accessTokenProcessor.addAccessToken(json, callback);
+};
 
+exports.getAccessToken = function (id, callback) {
+    accessTokenProcessor.getAccessToken(id, callback);
+};
+
+exports.deleteAccessToken = function (id, callback) {
+    accessTokenProcessor.deleteAccessToken(id, callback);
+};
 //end access token

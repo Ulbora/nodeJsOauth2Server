@@ -12,8 +12,8 @@ describe('ClientRoleUriProcessor', function () {
     describe('#connect()', function () {
         it('should connect to db and create pool', function (done) {
             crud.connect("localhost", "admin", "admin", "ulbora_oauth2_server", 5);
-            crud.testConnection(function (con) {
-                if (con) {
+            crud.testConnection(function (success) {
+                if (success) {                    
                     clintProcessor.init(crud);
                     clintRoleProcessor.init(crud);
                     clintUriProcessor.init(crud);
