@@ -1,9 +1,10 @@
 var assert = require('assert');
 var db = require("../../../database/mysql/db");
 var tokenId;
-var refreshTokenId;
+var clientId;
+var acId;
 
-describe('mysql DB access token', function () {
+describe('mysql DB authorization code', function () {
     this.timeout(20000);
     describe('#connect()', function () {
         it('should connect to db and create pool', function (done) {
@@ -19,24 +20,7 @@ describe('mysql DB access token', function () {
         });
     });
     
-    describe('#addRefreshToken()', function () {
-        it('should add a refresh token in db', function (done) {             
-           var json = {
-                token: 'djfjoiqjldksflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf'
-            };
-            setTimeout(function () {
-                db.addRefreshToken(null, json, function (result) {
-                    if (result.id > -1) {
-                        refreshTokenId = result.id;
-                        assert(true);
-                    } else {
-                        assert(false);
-                    }
-                    done();
-                });
-            }, 1000);           
-        });
-    });
+    
     
    describe('#addAccessToken()', function () {
         it('should add a access token in processor', function (done) { 
@@ -44,8 +28,7 @@ describe('mysql DB access token', function () {
            today.setTime(today.getTime() + (8*60*60*1000)); 
            var json = {
                 token: 'djfjoiqjldktrtryrtyrytrsflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf',
-                expires: today,
-                refreshTokenId: refreshTokenId
+                expires: today
             };
             setTimeout(function () {
                 db.addAccessToken(null, json, function (result) {
@@ -57,23 +40,49 @@ describe('mysql DB access token', function () {
                     }
                     done();
                 });
+            }, 1000);           
+        });
+    });
+    
+   describe('#addClient()', function () {
+        it('should add a client', function (done) { 
+            
+           var json = {
+                secret: '12345',
+                redirectUri: 'http://ulboralabs.com',
+                name: 'ulbora',
+                webSite: 'www.ulboralabs.com',
+                email: 'ulbora@ulbora.com',
+                enabled: true
+            };
+            setTimeout(function () {
+                db.addClient(null, json, function (result) {
+                    if (result.clientId > -1) {
+                        clientId = result.clientId;
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
             }, 2000);           
         });
     });
     
-    describe('#updateAccessToken()', function () {
-        it('should update a access token in db', function (done) { 
+    describe('#addAuthorizationCode()', function () {
+        it('should add an authorization code in processor', function (done) { 
            var today = new Date();
            today.setTime(today.getTime() + (8*60*60*1000)); 
            var json = {
-                token: '111djfjoiqjldktrtryrtyrytrsflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf',
+                clientId: clientId,
+                userId: "admin",
                 expires: today,
-                refreshTokenId: refreshTokenId,
-                id: tokenId
+                accessTokenId: tokenId
             };
             setTimeout(function () {
-                db.updateAccessToken(null, json, function (result) {
-                    if (result.success) {                        
+                db.addAuthorizationCode(null, json, function (result) {
+                    if (result.authorizationCode > -1) {
+                        acId = result.authorizationCode;
                         assert(true);
                     } else {
                         assert(false);
@@ -83,13 +92,12 @@ describe('mysql DB access token', function () {
             }, 3000);           
         });
     });
-   
-    describe('#getAccessToken()', function () {
-        it('should read access token in processor', function (done) {           
+    
+    describe('#getAuthorizationCode()', function () {
+        it('should read AuthorizationCode in processor', function (done) {           
             setTimeout(function () {                
-                db.getAccessToken( tokenId, function (result) {
-                    console.log("access token result:" + JSON.stringify(result));
-                    if (result && result.token === '111djfjoiqjldktrtryrtyrytrsflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf') {                        
+                db.getAuthorizationCode( clientId, function (result) {
+                    if (result && result.userId === 'admin') {                        
                         assert(true);
                     } else {
                         assert(false);
@@ -99,6 +107,21 @@ describe('mysql DB access token', function () {
             }, 4000);           
         });
     });
+    
+    describe('#deleteAuthorizationCode()', function () {
+        it('should delete authorization code', function (done) {           
+            setTimeout(function () {                
+                db.deleteAuthorizationCode(null, clientId, function (result) {
+                    if (result.success) {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 5000);           
+        });
+    });   
     
     describe('#deleteAccessToken()', function () {
         it('should delete access token', function (done) {           
@@ -111,16 +134,14 @@ describe('mysql DB access token', function () {
                     }
                     done();
                 });
-            }, 5000);           
+            }, 6000);           
         });
     });    
     
-    
-    
-    describe('#deleteRefreshToken()', function () {
-        it('should delete refresh token in db', function (done) {           
+    describe('#deleteClient()', function () {
+        it('should delete client', function (done) {           
             setTimeout(function () {                
-                db.deleteRefreshToken(null, refreshTokenId, function (result) {
+                db.deleteClient(null, clientId, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {
@@ -128,8 +149,9 @@ describe('mysql DB access token', function () {
                     }
                     done();
                 });
-            }, 6000);           
+            }, 7000);           
         });
-    });    
+    });       
+            
 });
 

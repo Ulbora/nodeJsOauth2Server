@@ -27,6 +27,8 @@ var clientScopeProcessor = require("./processors/clientScopeProcessor");
 var clientRoleUriProcessor = require("./processors/clientRoleUriProcessor");
 var refreshTokenProcessor = require("./processors/refreshTokenProcessor");
 var accessTokenProcessor = require("./processors/accessTokenProcessor");
+var authorizationCodeProcessor = require("./processors/authorizationCodeProcessor");
+
 exports.connect = function (host, user, pw, db, cpnum) {
     crud.connect(host, user, pw, db, cpnum);
     clientProcessor.init(crud);
@@ -36,6 +38,7 @@ exports.connect = function (host, user, pw, db, cpnum) {
     clientRoleUriProcessor.init(crud);
     refreshTokenProcessor.init(crud);
     accessTokenProcessor.init(crud);
+    authorizationCodeProcessor.init(crud);
 };
 exports.testConnection = function (callback) {
     crud.testConnection(callback);
@@ -129,6 +132,10 @@ exports.addRefreshToken = function (con, json, callback) {
     refreshTokenProcessor.addRefreshToken(con, json, callback);
 };
 
+exports.updateRefreshToken = function (con, json, callback) {
+    refreshTokenProcessor.updateRefreshToken(con, json, callback);
+};
+
 exports.getRefreshToken = function (id, callback) {
     refreshTokenProcessor.getRefreshToken(id, callback);
 };
@@ -143,6 +150,10 @@ exports.addAccessToken = function (con, json, callback) {
     accessTokenProcessor.addAccessToken(con, json, callback);
 };
 
+exports.updateAccessToken = function (con, json, callback) {
+    accessTokenProcessor.updateAccessToken(con, json, callback);
+};
+
 exports.getAccessToken = function (id, callback) {
     accessTokenProcessor.getAccessToken(id, callback);
 };
@@ -153,5 +164,15 @@ exports.deleteAccessToken = function (con, id, callback) {
 //end access token
 
 //authorization code
+exports.addAuthorizationCode = function (con, json, callback) {
+    authorizationCodeProcessor.addAuthorizationCode(con, json, callback);
+};
 
+exports.getAuthorizationCode = function (id, callback) {
+    authorizationCodeProcessor.getAuthorizationCode(id, callback);
+};
+
+exports.deleteAuthorizationCode = function (con, id, callback) {
+    authorizationCodeProcessor.deleteAuthorizationCode(con, id, callback);
+};
 //end authorization code

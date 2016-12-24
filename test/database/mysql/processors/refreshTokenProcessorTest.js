@@ -38,13 +38,16 @@ describe('RefreshTokenProcessor', function () {
         });
     });
     
-   
-    describe('#getRefreshToken()', function () {
-        it('should read refresh token in processor', function (done) {           
-            setTimeout(function () {                
-                refreshTokenProcessor.getRefreshToken( tokenId, function (result) {
-                    console.log("refresh token value:" + result.token);
-                    if (result && result.token === 'djfjoiqjldksflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf') {                        
+    
+    describe('#updateRefreshToken()', function () {
+        it('should update a refresh token in processor', function (done) {             
+           var json = {
+                token: '111djfjoiqjldksflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf',
+                id: tokenId
+            };
+            setTimeout(function () {
+                refreshTokenProcessor.updateRefreshToken(null, json, function (result) {
+                    if (result.success) {                        
                         assert(true);
                     } else {
                         assert(false);
@@ -52,6 +55,22 @@ describe('RefreshTokenProcessor', function () {
                     done();
                 });
             }, 2000);           
+        });
+    });
+   
+    describe('#getRefreshToken()', function () {
+        it('should read refresh token in processor', function (done) {           
+            setTimeout(function () {                
+                refreshTokenProcessor.getRefreshToken( tokenId, function (result) {
+                    console.log("refresh token value:" + result.token);
+                    if (result && result.token === '111djfjoiqjldksflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf') {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 3000);           
         });
     });
     
@@ -67,7 +86,7 @@ describe('RefreshTokenProcessor', function () {
                     }
                     done();
                 });
-            }, 3000);           
+            }, 4000);           
         });
     });    
 });

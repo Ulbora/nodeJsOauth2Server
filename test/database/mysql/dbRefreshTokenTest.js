@@ -2,7 +2,7 @@ var assert = require('assert');
 var db = require("../../../database/mysql/db");
 var tokenId;
 
-describe('mysql DB client allow uri', function () {
+describe('mysql DB refresh token', function () {
     this.timeout(20000);
     describe('#connect()', function () {
         it('should connect to db and create pool', function (done) {
@@ -37,13 +37,15 @@ describe('mysql DB client allow uri', function () {
         });
     });
     
-   
-    describe('#getRefreshToken()', function () {
-        it('should read refresh token in db', function (done) {           
-            setTimeout(function () {                
-                db.getRefreshToken( tokenId, function (result) {
-                    console.log("refresh token value:" + result.token);
-                    if (result && result.token === 'djfjoiqjldksflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf') {                        
+    describe('#updateRefreshToken()', function () {
+        it('should update a refresh token in db', function (done) {             
+           var json = {
+                token: '111djfjoiqjldksflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf',
+                id: tokenId
+            };
+            setTimeout(function () {
+                db.updateRefreshToken(null, json, function (result) {
+                    if (result.success) {                        
                         assert(true);
                     } else {
                         assert(false);
@@ -51,6 +53,22 @@ describe('mysql DB client allow uri', function () {
                     done();
                 });
             }, 2000);           
+        });
+    });
+   
+    describe('#getRefreshToken()', function () {
+        it('should read refresh token in db', function (done) {           
+            setTimeout(function () {                
+                db.getRefreshToken( tokenId, function (result) {
+                    console.log("refresh token value:" + result.token);
+                    if (result && result.token === '111djfjoiqjldksflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf') {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 3000);           
         });
     });
     
@@ -66,7 +84,7 @@ describe('mysql DB client allow uri', function () {
                     }
                     done();
                 });
-            }, 3000);           
+            }, 4000);           
         });
     });    
 });

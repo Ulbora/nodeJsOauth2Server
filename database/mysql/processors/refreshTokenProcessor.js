@@ -40,6 +40,13 @@ exports.addRefreshToken = function (con, json, callback) {
     });
 };
 
+exports.updateRefreshToken = function (con, json, callback) {
+    var args = [        
+        json.token,
+        json.id
+    ];
+    crud.update(con, tokenQueries.REFRESH_TOKEN_UPDATE_QUERY, args, callback);
+};
 
 exports.getRefreshToken = function (id, callback) {
     var queryId = [id];

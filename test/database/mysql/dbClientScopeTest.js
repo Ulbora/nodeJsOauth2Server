@@ -3,7 +3,7 @@ var db = require("../../../database/mysql/db");
 var clientId;
 var clientScopeId;
 
-describe('mysql DB client allow uri', function () {
+describe('mysql DB client scope', function () {
     this.timeout(20000);
     describe('#connect()', function () {
         it('should connect to db and create pool', function (done) {

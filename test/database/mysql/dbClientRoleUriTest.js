@@ -4,7 +4,7 @@ var clientId;
 var clientRoleId;
 var clientAllowedUriId;
 
-describe('mysql DB client allow uri', function () {
+describe('mysql DB client roles uri', function () {
     this.timeout(20000);
     describe('#connect()', function () {
         it('should connect to db and create pool', function (done) {

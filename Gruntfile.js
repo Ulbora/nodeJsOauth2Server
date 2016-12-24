@@ -15,10 +15,50 @@ module.exports = function (grunt) {
                     clearRequireCache: false // Optionally clear the require cache before running tests (defaults to false) 
                 },
                 src: ['test/**/*Test.js']
+            },
+            testMysql: {
+                options: {
+                    reporter: 'spec',
+                    //captureFile: 'results.txt', // Optionally capture the reporter output to a file 
+                    quiet: false, // Optionally suppress output to standard out (defaults to false) 
+                    clearRequireCache: false // Optionally clear the require cache before running tests (defaults to false) 
+                },
+                src: ['test/database/mysql/**/*Test.js']
+            },
+            testMysqlProcessors: {
+                options: {
+                    reporter: 'spec',
+                    //captureFile: 'results.txt', // Optionally capture the reporter output to a file 
+                    quiet: false, // Optionally suppress output to standard out (defaults to false) 
+                    clearRequireCache: false // Optionally clear the require cache before running tests (defaults to false) 
+                },
+                src: ['test/database/mysql/processors/**/*Test.js']
+            },
+            testMysqlDbOnly: {
+                options: {
+                    reporter: 'spec',
+                    //captureFile: 'results.txt', // Optionally capture the reporter output to a file 
+                    quiet: false, // Optionally suppress output to standard out (defaults to false) 
+                    clearRequireCache: false // Optionally clear the require cache before running tests (defaults to false) 
+                },
+                src: ['test/database/mysql/**/db*Test.js']
+            },
+            testMysqlIndividualDbOnly: {
+                options: {
+                    reporter: 'spec',
+                    //captureFile: 'results.txt', // Optionally capture the reporter output to a file 
+                    quiet: false, // Optionally suppress output to standard out (defaults to false) 
+                    clearRequireCache: false // Optionally clear the require cache before running tests (defaults to false) 
+                },
+                src: ['test/database/mysql/**/dbAccessTokenTest.js']
             }
         }
     });
-    
+
     grunt.loadNpmTasks('grunt-mocha-test');
-    grunt.registerTask('mocha-test', 'mochaTest');
+    grunt.registerTask('mocha-mysqlTest', 'mochaTest:testMysql');
+    grunt.registerTask('mocha-mysqlProcessorTest', 'mochaTest:testMysqlProcessors');
+    grunt.registerTask('mocha-mysqlDbOnlyTest', 'mochaTest:testMysqlDbOnly');
+    grunt.registerTask('mocha-mysqlDbIndividualOnlyTest', 'mochaTest:testMysqlIndividualDbOnly');
+
 };

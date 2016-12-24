@@ -5,7 +5,7 @@ var refreshTokenProcessor = require("../../../../database/mysql/processors/refre
 var tokenId;
 var refreshTokenId;
 describe('AccessTokenProcessor', function () {
-    this.timeout(6000);
+    this.timeout(7000);
     describe('#connect()', function () {
         it('should connect to db and create pool', function (done) {
             crud.connect("localhost", "admin", "admin", "ulbora_oauth2_server", 5);
@@ -64,13 +64,19 @@ describe('AccessTokenProcessor', function () {
         });
     });
     
-   
-    describe('#getAccessToken()', function () {
-        it('should read access token in processor', function (done) {           
-            setTimeout(function () {                
-                accessTokenProcessor.getAccessToken( tokenId, function (result) {
-                    console.log("access token result:" + JSON.stringify(result));
-                    if (result && result.token === 'djfjoiqjldktrtryrtyrytrsflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf') {                        
+    describe('#updateAccessToken()', function () {
+        it('should update a access token in processor', function (done) { 
+           var today = new Date();
+           today.setTime(today.getTime() + (8*60*60*1000)); 
+           var json = {
+                token: '111djfjoiqjldktrtryrtyrytrsflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf',
+                expires: today,
+                refreshTokenId: refreshTokenId,
+                id: tokenId
+            };
+            setTimeout(function () {
+                accessTokenProcessor.updateAccessToken(null, json, function (result) {
+                    if (result.success) {                        
                         assert(true);
                     } else {
                         assert(false);
@@ -78,6 +84,23 @@ describe('AccessTokenProcessor', function () {
                     done();
                 });
             }, 3000);           
+        });
+    });
+    
+   
+    describe('#getAccessToken()', function () {
+        it('should read access token in processor', function (done) {           
+            setTimeout(function () {                
+                accessTokenProcessor.getAccessToken( tokenId, function (result) {
+                    console.log("access token result:" + JSON.stringify(result));
+                    if (result && result.token === '111djfjoiqjldktrtryrtyrytrsflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf') {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 4000);           
         });
     });
     
@@ -92,7 +115,7 @@ describe('AccessTokenProcessor', function () {
                     }
                     done();
                 });
-            }, 4000);           
+            }, 5000);           
         });
     });    
     
@@ -107,7 +130,7 @@ describe('AccessTokenProcessor', function () {
                     }
                     done();
                 });
-            }, 5000);           
+            }, 6000);           
         });
     });    
 });
