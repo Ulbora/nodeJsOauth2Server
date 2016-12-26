@@ -129,6 +129,10 @@ exports.deleteClientRoleUri = function (con, json, callback) {
 };
 //end client role uri
 
+//client grant types
+//-------------------------------------------------------------------
+//end client grant types
+
 //refresh token
 exports.addRefreshToken = function (con, json, callback) {
     refreshTokenProcessor.addRefreshToken(con, json, callback);
@@ -196,3 +200,5 @@ exports.deleteAuthorizationCodeScopeList = function (con, authorizationCode, cal
     authorizationCodeScopeProcessor.deleteAuthorizationCodeScopeList(con, authorizationCode, callback);
 };
 //end authorization code scope
+
+// add allowed grant types----------------------------------
