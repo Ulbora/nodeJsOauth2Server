@@ -45,7 +45,7 @@ exports.addAuthorizationCodeScope = function (con, json, callback) {
 
 exports.getAuthorizationCodeScopeList = function (authorizationCode, callback) {
      var queryId = [authorizationCode];
-    crud.get(authorizationCodeQueries.AUTHORIZATION_CODE_SCOPE_GET_BY_ID_QUERY, queryId, function (result) {
+    crud.get(authorizationCodeQueries.AUTHORIZATION_CODE_SCOPE_GET_BY_CODE_QUERY, queryId, function (result) {
         if (result.success && result.data.length > 0) {
             var rtnList = [];
             for (var cnt = 0; cnt < result.data.length; cnt++) {
@@ -69,8 +69,8 @@ exports.deleteAuthorizationCodeScope = function (con, id, callback) {
 };
 
 
-exports.deleteAuthorizationCodeScopeList = function (con, id, callback) {
-    var queryId = [id];
+exports.deleteAuthorizationCodeScopeList = function (con, authorizationCode, callback) {
+    var queryId = [authorizationCode];
     crud.delete(con, authorizationCodeQueries.AUTHORIZATION_CODE_SCOPE_DELETE_ALL_QUERY, queryId, callback);
 };
 

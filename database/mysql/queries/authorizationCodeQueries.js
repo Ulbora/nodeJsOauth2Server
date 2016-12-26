@@ -27,7 +27,7 @@ exports.AUTHORIZATION_CODE_DELETE_QUERY = "DELETE FROM authorization_code WHERE 
 
 
 exports.AUTHORIZATION_CODE_SCOPE_INSERT_QUERY = "INSERT INTO auth_code_scope Set ?";
-exports.AUTHORIZATION_CODE_SCOPE_GET_BY_ID_QUERY = "SELECT id, scope, authorization_code "+
+exports.AUTHORIZATION_CODE_SCOPE_GET_BY_CODE_QUERY = "SELECT id, scope, authorization_code "+
                                              "FROM auth_code_scope WHERE authorization_code = ?";
 exports.AUTHORIZATION_CODE_SCOPE_DELETE_QUERY = "DELETE FROM auth_code_scope WHERE id = ?";
 

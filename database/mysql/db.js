@@ -28,6 +28,7 @@ var clientRoleUriProcessor = require("./processors/clientRoleUriProcessor");
 var refreshTokenProcessor = require("./processors/refreshTokenProcessor");
 var accessTokenProcessor = require("./processors/accessTokenProcessor");
 var authorizationCodeProcessor = require("./processors/authorizationCodeProcessor");
+var authorizationCodeScopeProcessor = require("./processors/authorizationCodeScopeProcessor");
 
 exports.connect = function (host, user, pw, db, cpnum) {
     crud.connect(host, user, pw, db, cpnum);
@@ -39,6 +40,7 @@ exports.connect = function (host, user, pw, db, cpnum) {
     refreshTokenProcessor.init(crud);
     accessTokenProcessor.init(crud);
     authorizationCodeProcessor.init(crud);
+    authorizationCodeScopeProcessor.init(crud);
 };
 exports.testConnection = function (callback) {
     crud.testConnection(callback);
@@ -176,3 +178,21 @@ exports.deleteAuthorizationCode = function (con, id, callback) {
     authorizationCodeProcessor.deleteAuthorizationCode(con, id, callback);
 };
 //end authorization code
+
+//authorization code scope
+exports.addAuthorizationCodeScope = function (con, json, callback) {
+    authorizationCodeScopeProcessor.addAuthorizationCodeScope(con, json, callback);
+};
+
+exports.getAuthorizationCodeScopeList = function (authorizationCode, callback) {
+    authorizationCodeScopeProcessor.getAuthorizationCodeScopeList(authorizationCode, callback);
+};
+
+exports.deleteAuthorizationCodeScope = function (con, id, callback) {
+    authorizationCodeScopeProcessor.deleteAuthorizationCodeScope(con, id, callback);
+};
+
+exports.deleteAuthorizationCodeScopeList = function (con, authorizationCode, callback) {
+    authorizationCodeScopeProcessor.deleteAuthorizationCodeScopeList(con, authorizationCode, callback);
+};
+//end authorization code scope
