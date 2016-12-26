@@ -48,3 +48,9 @@ exports.CLIENT_SCOPE_LIST_QUERY = "SELECT * FROM client_scope WHERE client_id = 
 exports.CLIENT_ROLE_URI_INSERT_QUERY = "INSERT INTO uri_role Set ?";
 exports.CLIENT_ROLE_URI_DELETE_QUERY = "DELETE FROM uri_role WHERE client_role_id = ? and client_allowed_uri_id = ?";
 exports.CLIENT_ROLE_URI_LIST_QUERY = "SELECT * FROM uri_role WHERE client_role_id = ?";
+
+
+//client grant type
+exports.CLIENT_GRANT_TYPE_INSERT_QUERY = "INSERT INTO client_grant_type Set ?";
+exports.CLIENT_GRANT_TYPE_DELETE_QUERY = "DELETE FROM client_grant_type WHERE id = ?";
+exports.CLIENT_GRANT_TYPE_LIST_QUERY = "SELECT * FROM client_grant_type WHERE client_id = ?";

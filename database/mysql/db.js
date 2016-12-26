@@ -23,6 +23,7 @@ var crud = require("./crud/mysqlCrud");
 var clientProcessor = require("./processors/clientProcessor");
 var clientAllowedUriProcessor = require("./processors/clientAllowedUriProcessor");
 var clientRoleProcessor = require("./processors/clientRoleProcessor");
+var clientGrantTypeProcessor = require("./processors/clientGrantTypeProcessor");
 var clientScopeProcessor = require("./processors/clientScopeProcessor");
 var clientRoleUriProcessor = require("./processors/clientRoleUriProcessor");
 var refreshTokenProcessor = require("./processors/refreshTokenProcessor");
@@ -35,6 +36,7 @@ exports.connect = function (host, user, pw, db, cpnum) {
     clientProcessor.init(crud);
     clientAllowedUriProcessor.init(crud);
     clientRoleProcessor.init(crud);
+    clientGrantTypeProcessor.init(crud);
     clientScopeProcessor.init(crud);
     clientRoleUriProcessor.init(crud);
     refreshTokenProcessor.init(crud);
@@ -42,10 +44,12 @@ exports.connect = function (host, user, pw, db, cpnum) {
     authorizationCodeProcessor.init(crud);
     authorizationCodeScopeProcessor.init(crud);
 };
+// for testing only
 exports.testConnection = function (callback) {
     crud.testConnection(callback);
 };
 
+// for testing only
 exports.getConnection = function (callback) {
     crud.getConnection(callback);
 };
@@ -201,4 +205,16 @@ exports.deleteAuthorizationCodeScopeList = function (con, authorizationCode, cal
 };
 //end authorization code scope
 
-// add allowed grant types----------------------------------
+// allowed grant types
+exports.addClientGrantType = function (con, json, callback) {
+    clientGrantTypeProcessor.addClientGrantType(con, json, callback);
+};
+
+exports.getClientGrantTypeList = function (clientId, callback) {
+    clientGrantTypeProcessor.getClientGrantTypeList(clientId, callback);
+};
+
+exports.deleteClientGrantType = function (con, id, callback) {
+    clientGrantTypeProcessor.deleteClientGrantType(con, id, callback);
+};
+//end grant types
