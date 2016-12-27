@@ -19,24 +19,23 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-var authorizationCodeQueries = require("../queries/authorizationCodeQueries");
+var implicitGrantQueries = require("../queries/implicitGrantQueries");
 var crud;
 exports.init = function(c){
     crud = c;
 };
 
 //access token --------------------------
-exports.addAuthorizationCode = function (con, json, callback) {
+exports.addImplicitGrant = function (con, json, callback) {
     var args = {
         client_id: json.clientId,
-        user_id: json.userId,
-        expires: json.expires,
+        user_id: json.userId,        
         access_token_id: json.accessTokenId
     };
     console.log("json in add authorizationCode :" + JSON.stringify(json));
-    crud.insert(con, authorizationCodeQueries.AUTHORIZATION_CODE_INSERT_QUERY, args, function (result) {
+    crud.insert(con, implicitGrantQueries.IMPLICIT_GRANT_INSERT_QUERY, args, function (result) {
         var rtn = {
-            authorizationCode: result.id,
+            id: result.id,
             success: result.success,
             message: result.message
         };
@@ -44,26 +43,18 @@ exports.addAuthorizationCode = function (con, json, callback) {
     });
 };
 
-exports.updateAuthorizationCode = function (con, json, callback) {
-    var args = [        
-        json.expires,
-        json.authorizationCode
-    ];
-    crud.update(con, authorizationCodeQueries.AUTHORIZATION_CODE_UPDATE_QUERY, args, callback);
-};
 
-exports.getAuthorizationCode = function (clientId, userId, callback) {
+exports.getImplicitGrant = function (clientId, userId, callback) {
     var queryId = [clientId, userId];
-    crud.get(authorizationCodeQueries.AUTHORIZATION_CODE_GET_BY_ID_QUERY, queryId, function (result) {
+    crud.get(implicitGrantQueries.IMPLICIT_GRANT_GET_BY_ID_QUERY, queryId, function (result) {
         //console.log("get refresh token:" +JSON.stringify(result));
         //console.log("get refresh token value:" + result.data[0].token);
         //console.log("get refresh token length:" + result.data[0].token.length);
         if (result.success && result.data.length > 0 ) {
             var rtn = {
-                authorizationCode: result.data[0].authorization_code,
+                id: result.data[0].id,
                 clientId: result.data[0].client_id,
-                userId: result.data[0].user_id,
-                expires: result.data[0].expires,
+                userId: result.data[0].user_id,                
                 accessTokenId: result.data[0].access_token_id
             };
             callback(rtn);
@@ -73,9 +64,9 @@ exports.getAuthorizationCode = function (clientId, userId, callback) {
     });
 };
 
-exports.deleteAuthorizationCode = function (con, clientId, userId, callback) {
+exports.deleteImplicitGrant = function (con, clientId, userId, callback) {
     var queryId = [clientId, userId];
-    crud.delete(con, authorizationCodeQueries.AUTHORIZATION_CODE_DELETE_QUERY, queryId, callback);
+    crud.delete(con, implicitGrantQueries.IMPLICIT_GRANT_DELETE_QUERY, queryId, callback);
 };
 
 

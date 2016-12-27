@@ -55,7 +55,7 @@ exports.getConnection = function (callback) {
 };
 
 //client operations---------------------------------------
-exports.addClient = function(con, json, callback){
+exports.addClient = function (con, json, callback) {
     clientProcessor.addClient(con, json, callback);
 };
 
@@ -174,16 +174,155 @@ exports.deleteAccessToken = function (con, id, callback) {
 //end access token
 
 //authorization code
-exports.addAuthorizationCode = function (con, json, callback) {
-    authorizationCodeProcessor.addAuthorizationCode(con, json, callback);
+exports.addAuthorizationCode = function (authCodeJson, accessTokenJson, refreshTokenJson, callback) {
+    var rtn = {
+        authorizationCode: null,
+        success: false,
+        message: null
+    };
+    crud.getConnection(function (err, con) {
+        if (!err && con) {
+            con.beginTransaction(function (err) {
+                if (!err) {
+                    if (refreshTokenJson) {
+                        refreshTokenProcessor.addRefreshToken(con, refreshTokenJson, function (refreshResult) {
+                            if (refreshResult.id > -1) {
+                                var accTokenJson = accessTokenJson;
+                                accTokenJson.refreshTokenId = refreshResult.id;
+                                doAuthCodeAdd(con, rtn, authCodeJson, accTokenJson, function (acRtn) {
+                                    callback(acRtn);
+                                });
+                            } else {
+                                con.rollback();
+                                callback(rtn);
+                            }
+                        });
+                    } else {
+                        doAuthCodeAdd(con, rtn, authCodeJson, accessTokenJson, function (acRtn) {
+                            callback(acRtn);
+                        });
+                    }
+
+                } else {
+                    callback(rtn);
+                }
+            });
+        } else {
+            callback(rtn);
+        }
+    });
 };
 
-exports.getAuthorizationCode = function (id, callback) {
-    authorizationCodeProcessor.getAuthorizationCode(id, callback);
+var doAuthCodeAdd = function (con, rtn, authCodeJson, accTokenJson, callback) {
+    accessTokenProcessor.addAccessToken(con, accTokenJson, function (accessResult) {
+        if (accessResult.id > -1) {
+            var acJson = authCodeJson;
+            acJson.expires = accTokenJson.expires;
+            acJson.accessTokenId = accessResult.id;
+            authorizationCodeProcessor.addAuthorizationCode(con, acJson, function (acResult) {
+                if (acResult.authorizationCode > -1) {
+                    con.commit(function (err) {
+                        if (err) {
+                            con.rollback();
+                            callback(rtn);
+                        } else {
+                            rtn.authorizationCode = acResult.authorizationCode;
+                            rtn.success = true;
+                            callback(rtn);
+                        }
+                    });
+                } else {
+                    con.rollback();
+                    callback(rtn);
+                }
+            });
+        } else {
+            con.rollback();
+            callback(rtn);
+        }
+    });
 };
 
-exports.deleteAuthorizationCode = function (con, id, callback) {
-    authorizationCodeProcessor.deleteAuthorizationCode(con, id, callback);
+exports.getAuthorizationCode = function (clientId, userId, callback) {
+    authorizationCodeProcessor.getAuthorizationCode(clientId, userId, callback);
+};
+
+exports.updateAuthorizationCode = function (con, json, callback) {
+    authorizationCodeProcessor.updateAuthorizationCode(con, json, callback);
+};
+
+exports.deleteAuthorizationCode = function (clientId, userId, callback) {
+    var rtn = {
+        success: false,
+        message: ""
+    };
+    crud.getConnection(function (err, con) {
+        if (!err && con) {
+            con.beginTransaction(function (err) {
+                if (!err) {
+                    var refreshTokenId;
+                    authorizationCodeProcessor.getAuthorizationCode(clientId, userId, function (acResult) {
+                        if (acResult && acResult.accessTokenId) {
+                            accessTokenProcessor.getAccessToken(acResult.accessTokenId, function (accTokenResult) {
+                                if (accTokenResult && accTokenResult.refreshTokenId) {
+                                    refreshTokenId = accTokenResult.refreshTokenId;
+                                }
+                                authorizationCodeProcessor.deleteAuthorizationCode(con, clientId, userId, function (acDelResult) {
+                                    if (acDelResult.success) {
+                                        accessTokenProcessor.deleteAccessToken(con, acResult.accessTokenId, function (accTokenDelResult) {
+                                            if (accTokenDelResult.success) {
+                                                if (refreshTokenId) {
+                                                    refreshTokenProcessor.deleteRefreshToken(con, refreshTokenId, function (rfTokenDelResult) {
+                                                        if (rfTokenDelResult.success) {
+                                                            con.commit(function (err) {
+                                                                if (err) {
+                                                                    con.rollback();
+                                                                    callback(rtn);
+                                                                } else {
+                                                                    rtn.success = true;
+                                                                    callback(rtn);
+                                                                }
+                                                            });
+                                                        } else {
+                                                            con.rollback();
+                                                            callback(rtn);
+                                                        }
+                                                    });
+                                                } else {
+                                                    con.commit(function (err) {
+                                                        if (err) {
+                                                            con.rollback();
+                                                            callback(rtn);
+                                                        } else {
+                                                            rtn.success = true;
+                                                            callback(rtn);
+                                                        }
+                                                    });
+                                                }
+                                            } else {
+                                                con.rollback();
+                                                callback(rtn);
+                                            }
+                                        });
+                                    } else {
+                                        con.rollback();
+                                        callback(rtn);
+                                    }
+                                });
+                            });
+                        } else {
+                            con.rollback();
+                            callback(rtn);
+                        }
+                    });
+                } else {
+                    callback(rtn);
+                }
+            });
+        } else {
+            callback(rtn);
+        }
+    });
 };
 //end authorization code
 

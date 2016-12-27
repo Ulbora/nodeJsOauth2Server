@@ -97,12 +97,18 @@ describe('authorizationCodeProcessor', function () {
             }, 3000);           
         });
     });
-   
-   describe('#getAuthorizationCode()', function () {
-        it('should read AuthorizationCode in processor', function (done) {           
-            setTimeout(function () {                
-                authorizationCodeProcessor.getAuthorizationCode( clientId, function (result) {
-                    if (result && result.userId === 'admin') {                        
+    
+    describe('#updateAuthorizationCode()', function () {
+        it('should update an authorization code in processor', function (done) { 
+           var today = new Date();
+           today.setTime(today.getTime() + (8*60*60*1000)); 
+           var json = {                
+                expires: today,
+                authorizationCode: acId
+            };
+            setTimeout(function () {
+                authorizationCodeProcessor.updateAuthorizationCode(null, json, function (result) {
+                    if (result.success) {                          
                         assert(true);
                     } else {
                         assert(false);
@@ -113,11 +119,11 @@ describe('authorizationCodeProcessor', function () {
         });
     });
    
-   describe('#deleteAuthorizationCode()', function () {
-        it('should delete authorization code', function (done) {           
+   describe('#getAuthorizationCode()', function () {
+        it('should read AuthorizationCode in processor', function (done) {           
             setTimeout(function () {                
-                authorizationCodeProcessor.deleteAuthorizationCode(null, clientId, function (result) {
-                    if (result.success) {                        
+                authorizationCodeProcessor.getAuthorizationCode( clientId, "admin", function (result) {
+                    if (result && result.userId === 'admin') {                        
                         assert(true);
                     } else {
                         assert(false);
@@ -125,6 +131,21 @@ describe('authorizationCodeProcessor', function () {
                     done();
                 });
             }, 5000);           
+        });
+    });
+   
+   describe('#deleteAuthorizationCode()', function () {
+        it('should delete authorization code', function (done) {           
+            setTimeout(function () {                
+                authorizationCodeProcessor.deleteAuthorizationCode(null, clientId, "admin", function (result) {
+                    if (result.success) {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 6000);           
         });
     });   
     
@@ -139,7 +160,7 @@ describe('authorizationCodeProcessor', function () {
                     }
                     done();
                 });
-            }, 6000);           
+            }, 7000);           
         });
     });   
     
@@ -154,7 +175,7 @@ describe('authorizationCodeProcessor', function () {
                     }
                     done();
                 });
-            }, 7000);           
+            }, 8000);           
         });
     });
     

@@ -192,7 +192,7 @@ describe('authorizationCodeScopeProcessor', function () {
     describe('#deleteAuthorizationCode()', function () {
         it('should delete authorization code', function (done) {
             setTimeout(function () {
-                authorizationCodeProcessor.deleteAuthorizationCode(null, clientId, function (result) {
+                authorizationCodeProcessor.deleteAuthorizationCode(null, clientId, "admin", function (result) {
                     if (result.success) {
                         assert(true);
                     } else {
@@ -205,7 +205,6 @@ describe('authorizationCodeScopeProcessor', function () {
     });
 
     
-
     describe('#deleteAccessToken()', function () {
         it('should delete access token', function (done) {
             setTimeout(function () {

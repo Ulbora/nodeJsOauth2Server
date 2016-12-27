@@ -50,7 +50,7 @@ module.exports = function (grunt) {
                     quiet: false, // Optionally suppress output to standard out (defaults to false) 
                     clearRequireCache: false // Optionally clear the require cache before running tests (defaults to false) 
                 },
-                src: ['test/database/mysql/**/dbClientGrantTypeTest.js']
+                src: ['test/database/mysql/**/authorizationCodeScopeProcessorTest.js']
             }
         }
     });

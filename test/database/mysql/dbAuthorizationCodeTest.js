@@ -19,30 +19,7 @@ describe('mysql DB authorization code', function () {
             });
         });
     });
-    
-    
-    
-   describe('#addAccessToken()', function () {
-        it('should add a access token in processor', function (done) { 
-           var today = new Date();
-           today.setTime(today.getTime() + (8*60*60*1000)); 
-           var json = {
-                token: 'djfjoiqjldktrtryrtyrytrsflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf',
-                expires: today
-            };
-            setTimeout(function () {
-                db.addAccessToken(null, json, function (result) {
-                    if (result.id > -1) {
-                        tokenId = result.id;
-                        assert(true);
-                    } else {
-                        assert(false);
-                    }
-                    done();
-                });
-            }, 1000);           
-        });
-    });
+        
     
    describe('#addClient()', function () {
         it('should add a client', function (done) { 
@@ -73,31 +50,23 @@ describe('mysql DB authorization code', function () {
         it('should add an authorization code in processor', function (done) { 
            var today = new Date();
            today.setTime(today.getTime() + (8*60*60*1000)); 
-           var json = {
+           var authCodeJson = {
                 clientId: clientId,
                 userId: "admin",
-                expires: today,
-                accessTokenId: tokenId
+                expires: null,
+                accessTokenId: null
+            };
+            var accessTokenJson = {
+                token: 'djfjoiqjldktrtryrtyrytrsflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf',
+                expires: today
+            };
+            var refreshTokenJson = {
+                token: 'djfjoiqjldksflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf'
             };
             setTimeout(function () {
-                db.addAuthorizationCode(null, json, function (result) {
+                db.addAuthorizationCode(authCodeJson, accessTokenJson, refreshTokenJson, function (result) {
                     if (result.authorizationCode > -1) {
                         acId = result.authorizationCode;
-                        assert(true);
-                    } else {
-                        assert(false);
-                    }
-                    done();
-                });
-            }, 3000);           
-        });
-    });
-    
-    describe('#getAuthorizationCode()', function () {
-        it('should read AuthorizationCode in processor', function (done) {           
-            setTimeout(function () {                
-                db.getAuthorizationCode( clientId, function (result) {
-                    if (result && result.userId === 'admin') {                        
                         assert(true);
                     } else {
                         assert(false);
@@ -108,11 +77,11 @@ describe('mysql DB authorization code', function () {
         });
     });
     
-    describe('#deleteAuthorizationCode()', function () {
-        it('should delete authorization code', function (done) {           
+    describe('#getAuthorizationCode()', function () {
+        it('should read AuthorizationCode in processor', function (done) {           
             setTimeout(function () {                
-                db.deleteAuthorizationCode(null, clientId, function (result) {
-                    if (result.success) {                        
+                db.getAuthorizationCode( clientId, "admin", function (result) {
+                    if (result && result.userId === 'admin') {                        
                         assert(true);
                     } else {
                         assert(false);
@@ -121,13 +90,19 @@ describe('mysql DB authorization code', function () {
                 });
             }, 5000);           
         });
-    });   
+    });
     
-    describe('#deleteAccessToken()', function () {
-        it('should delete access token', function (done) {           
-            setTimeout(function () {                
-                db.deleteAccessToken(null, tokenId, function (result) {
-                    if (result.success) {                        
+    describe('#updateAuthorizationCode()', function () {
+        it('should update an authorization code in db', function (done) { 
+           var today = new Date();
+           today.setTime(today.getTime() + (8*60*60*1000)); 
+           var json = {                
+                expires: today,
+                authorizationCode: acId
+            };
+            setTimeout(function () {
+                db.updateAuthorizationCode(null, json, function (result) {
+                    if (result.success) {                          
                         assert(true);
                     } else {
                         assert(false);
@@ -136,7 +111,22 @@ describe('mysql DB authorization code', function () {
                 });
             }, 6000);           
         });
-    });    
+    });
+    
+    describe('#deleteAuthorizationCode()', function () {
+        it('should delete authorization code', function (done) {           
+            setTimeout(function () {                
+                db.deleteAuthorizationCode(clientId, "admin", function (result) {
+                    if (result.success) {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 7000);           
+        });
+    });   
     
     describe('#deleteClient()', function () {
         it('should delete client', function (done) {           
@@ -149,9 +139,8 @@ describe('mysql DB authorization code', function () {
                     }
                     done();
                 });
-            }, 7000);           
+            }, 8000);           
         });
-    });       
-            
+    });   
 });
 
