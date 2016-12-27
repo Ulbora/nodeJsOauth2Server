@@ -30,6 +30,7 @@ var refreshTokenProcessor = require("./processors/refreshTokenProcessor");
 var accessTokenProcessor = require("./processors/accessTokenProcessor");
 var authorizationCodeProcessor = require("./processors/authorizationCodeProcessor");
 var authorizationCodeScopeProcessor = require("./processors/authorizationCodeScopeProcessor");
+var implicitGrantProcessor = require("./processors/implicitGrantProcessor");
 
 exports.connect = function (host, user, pw, db, cpnum) {
     crud.connect(host, user, pw, db, cpnum);
@@ -43,6 +44,7 @@ exports.connect = function (host, user, pw, db, cpnum) {
     accessTokenProcessor.init(crud);
     authorizationCodeProcessor.init(crud);
     authorizationCodeScopeProcessor.init(crud);
+    implicitGrantProcessor.init(crud);
 };
 // for testing only
 exports.testConnection = function (callback) {
@@ -357,3 +359,106 @@ exports.deleteClientGrantType = function (con, id, callback) {
     clientGrantTypeProcessor.deleteClientGrantType(con, id, callback);
 };
 //end grant types
+
+//implicit grant
+//authorization code
+exports.addImplicitGrant = function (implicitJson, accessTokenJson, callback) {
+    var rtn = {
+        id: null,
+        success: false,
+        message: null
+    };
+    crud.getConnection(function (err, con) {
+        if (!err && con) {
+            con.beginTransaction(function (err) {
+                if (!err) {
+                    accessTokenProcessor.addAccessToken(con, accessTokenJson, function (accessResult) {
+                        if (accessResult.id > -1) {
+                            var impJson = implicitJson;
+                            impJson.accessTokenId = accessResult.id;
+                            implicitGrantProcessor.addImplicitGrant(con, implicitJson, function (impResult) {
+                                if (impResult.id > -1) {
+                                    con.commit(function (err) {
+                                        if (err) {
+                                            con.rollback();
+                                            callback(rtn);
+                                        } else {
+                                            rtn.id = impResult.id;
+                                            rtn.success = true;
+                                            callback(rtn);
+                                        }
+                                    });
+                                } else {
+                                    con.rollback();
+                                    callback(rtn);
+                                }
+                            });
+                        } else {
+                            con.rollback();
+                            callback(rtn);
+                        }
+                    });
+                } else {
+                    callback(rtn);
+                }
+            });
+        } else {
+            callback(rtn);
+        }
+    });
+};
+
+exports.getImplicitGrant = function (clientId, userId, callback) {
+    implicitGrantProcessor.getImplicitGrant(clientId, userId, callback);
+};
+
+
+exports.deleteImplicitGrant = function (clientId, userId, callback) {
+    var rtn = {
+        success: false,
+        message: ""
+    };
+    crud.getConnection(function (err, con) {
+        if (!err && con) {
+            con.beginTransaction(function (err) {
+                if (!err) {
+                    implicitGrantProcessor.getImplicitGrant(clientId, userId, function (imResult) {
+                        if (imResult && imResult.accessTokenId) {
+                            implicitGrantProcessor.deleteImplicitGrant(con, clientId, userId, function (imDelResult) {
+                                if (imDelResult.success) {
+                                    accessTokenProcessor.deleteAccessToken(con, imResult.accessTokenId, function (accTokenDelResult) {
+                                        if (accTokenDelResult.success) {
+                                            con.commit(function (err) {
+                                                if (err) {
+                                                    con.rollback();
+                                                    callback(rtn);
+                                                } else {
+                                                    rtn.success = true;
+                                                    callback(rtn);
+                                                }
+                                            });
+                                        } else {
+                                            con.rollback();
+                                            callback(rtn);
+                                        }
+                                    });
+                                } else {
+                                    con.rollback();
+                                    callback(rtn);
+                                }
+                            });
+                        } else {
+                            con.rollback();
+                            callback(rtn);
+                        }
+                    });
+                } else {
+                    callback(rtn);
+                }
+            });
+        } else {
+            callback(rtn);
+        }
+    });
+};
+//end implicit grant
