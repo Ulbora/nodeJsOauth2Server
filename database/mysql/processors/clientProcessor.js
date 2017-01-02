@@ -28,7 +28,6 @@ exports.init = function(c){
 exports.addClient = function (con, json, callback) {
     var args = {
         secret: json.secret,
-        redirect_uri: json.redirectUri,
         name: json.name,
         web_site: json.webSite,
         email: json.email,
@@ -46,8 +45,7 @@ exports.addClient = function (con, json, callback) {
 
 exports.updateClient = function (con, json, callback) {
     var args = [
-        json.secret,
-        json.redirectUri,
+        json.secret,        
         json.name,
         json.webSite,
         json.email,
@@ -63,8 +61,7 @@ exports.getClient = function (clientId, callback) {
     crud.get(clientQueries.CLIENT_GET_BY_ID_QUERY, queryId, function (result) {
         if (result.success && result.data.length > 0) {
             var rtn = {
-                clientId: result.data[0].client_id,
-                redirectUri: result.data[0].redirect_uri,
+                clientId: result.data[0].client_id,                
                 name: result.data[0].name,
                 webSite: result.data[0].web_site,
                 email: result.data[0].email,
@@ -83,8 +80,7 @@ exports.getClientList = function (callback) {
             var rtnList = [];
             for (var cnt = 0; cnt < result.data.length; cnt++) {
                 var rtn = {
-                    clientId: result.data[cnt].client_id,
-                    redirectUri: result.data[cnt].redirect_uri,
+                    clientId: result.data[cnt].client_id,                    
                     name: result.data[cnt].name,
                     webSite: result.data[cnt].web_site,
                     email: result.data[cnt].email,

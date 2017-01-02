@@ -7,7 +7,7 @@ describe('mysql DB client', function () {
         it('should connect to db and create pool', function (done) {
             db.connect("localhost", "admin", "admin", "ulbora_oauth2_server", 5);
             db.testConnection(function (success) {
-                if (success) {                    
+                if (success) {
                     assert(true);
                 } else {
                     assert(false);
@@ -16,20 +16,29 @@ describe('mysql DB client', function () {
             });
         });
     });
-    
+
     describe('#addClient()', function () {
-        it('should add a client', function (done) { 
-            
-           var json = {
+        it('should add a client', function (done) {
+
+            var clientJson = {
                 secret: '12345',
-                redirectUri: 'http://ulboralabs.com',
                 name: 'ulbora',
                 webSite: 'www.ulboralabs.com',
                 email: 'ulbora@ulbora.com',
                 enabled: true
             };
+            var uriList = [
+                {
+                    uri: 'http://www.google.com',
+                    clientId: null
+                },
+                {
+                    uri: 'http://www.ulboralabs.com',
+                    clientId: null
+                }
+            ];
             setTimeout(function () {
-                db.addClient(null, json, function (result) {
+                db.addClient(clientJson, uriList, function (result) {
                     if (result.clientId > -1) {
                         clientId = result.clientId;
                         assert(true);
@@ -38,14 +47,14 @@ describe('mysql DB client', function () {
                     }
                     done();
                 });
-            }, 1000);           
+            }, 1000);
         });
-    });    
-        
+    });
+
     describe('#updateClient()', function () {
-        it('should add a client', function (done) { 
-            
-           var json = {
+        it('should add a client', function (done) {
+
+            var json = {
                 secret: '123456',
                 redirectUri: 'http://ulboralabs.com',
                 name: 'ulbora ulbora',
@@ -56,62 +65,62 @@ describe('mysql DB client', function () {
             };
             setTimeout(function () {
                 db.updateClient(null, json, function (result) {
-                    if (result.success) {                        
+                    if (result.success) {
                         assert(true);
                     } else {
                         assert(false);
                     }
                     done();
                 });
-            }, 2000);           
+            }, 2000);
         });
     });
-    
-    
+
+
     describe('#getClient()', function () {
-        it('should read client', function (done) {           
-            setTimeout(function () {                
-                db.getClient( clientId, function (result) {
-                    if (result && result.name === 'ulbora ulbora' && result.enabled === false) {                        
+        it('should read client', function (done) {
+            setTimeout(function () {
+                db.getClient(clientId, function (result) {
+                    if (result && result.name === 'ulbora ulbora' && result.enabled === false) {
                         assert(true);
                     } else {
                         assert(false);
                     }
                     done();
                 });
-            }, 3000);           
+            }, 3000);
         });
     });
-    
-    
+
+
     describe('#getClientList()', function () {
-        it('should read client list', function (done) {           
-            setTimeout(function () {                
+        it('should read client list', function (done) {
+            setTimeout(function () {
                 db.getClientList(function (result) {
-                    if (result && result.length > 0) {                        
+                    if (result && result.length > 0) {
                         assert(true);
                     } else {
                         assert(false);
                     }
                     done();
                 });
-            }, 4000);           
+            }, 4000);
         });
-    });  
-    
+    });
+
     describe('#deleteClient()', function () {
-        it('should delete client', function (done) {           
-            setTimeout(function () {                
-                db.deleteClient(null, clientId, function (result) {
-                    if (result.success) {                        
+        it('should delete client', function (done) {
+            setTimeout(function () {
+                db.deleteClient(clientId, function (result) {
+                    if (result.success) {
                         assert(true);
                     } else {
                         assert(false);
                     }
                     done();
                 });
-            }, 5000);           
+            }, 5000);
         });
-    });    
+    });
 });
 

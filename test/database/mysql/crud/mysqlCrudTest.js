@@ -21,8 +21,7 @@ describe('MYSQLCrud', function () {
         it('should insert into db', function (done) {
             var q = "INSERT INTO client Set ?";
             var args = {
-                secret: '1234',
-                redirect_uri: 'http://ulboralabs.com',
+                secret: '1234',                
                 name: 'ulbora',
                 web_site: 'www.ulboralabs.com',
                 email: 'ulbora@ulbora.com',

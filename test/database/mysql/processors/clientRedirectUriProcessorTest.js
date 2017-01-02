@@ -1,15 +1,18 @@
 var assert = require('assert');
-var db = require("../../../database/mysql/db");
+var crud = require("../../../../database/mysql/crud/mysqlCrud");
+var clintProcessor = require("../../../../database/mysql/processors/clientProcessor");
+var clientRedirectUriProcessor = require("../../../../database/mysql/processors/clientRedirectUriProcessor");
 var clientId;
-var clientAllowedUriId;
-
-describe('mysql DB client allow uri', function () {
-    this.timeout(20000);
+var clientRedirectUriId;
+describe('ClientRedirectUriProcessor', function () {
+    this.timeout(6000);
     describe('#connect()', function () {
         it('should connect to db and create pool', function (done) {
-            db.connect("localhost", "admin", "admin", "ulbora_oauth2_server", 5);
-            db.testConnection(function (success) {
+            crud.connect("localhost", "admin", "admin", "ulbora_oauth2_server", 5);
+            crud.testConnection(function (success) {
                 if (success) {                    
+                    clintProcessor.init(crud);
+                    clientRedirectUriProcessor.init(crud);
                     assert(true);
                 } else {
                     assert(false);
@@ -18,9 +21,9 @@ describe('mysql DB client allow uri', function () {
             });
         });
     });
-    
-    describe('#addClient()', function () {
-        it('should add a client', function (done) { 
+
+   describe('#addClient()', function () {
+        it('should add a client in clientProcessor', function (done) { 
             
            var json = {
                 secret: '12345',                
@@ -30,7 +33,7 @@ describe('mysql DB client allow uri', function () {
                 enabled: true
             };
             setTimeout(function () {
-                db.addClient(json, [], function (result) {
+                clintProcessor.addClient(null, json, function (result) {
                     if (result.clientId > -1) {
                         clientId = result.clientId;
                         assert(true);
@@ -42,18 +45,18 @@ describe('mysql DB client allow uri', function () {
             }, 1000);           
         });
     });
-     
-    describe('#addClientAllowedUri()', function () {
-        it('should add a client allowed URI', function (done) { 
+    
+   describe('#addClientRedirectUri()', function () {
+        it('should add a client redirect uri', function (done) { 
             
            var json = {                
-                uri: 'http://ulboralabs.com',
+                uri: 'http://www.google.com',
                 clientId: clientId
             };
             setTimeout(function () {
-                db.addClientAllowedUri(null, json, function (result) {
+                clientRedirectUriProcessor.addClientRedirectUri(null, json, function (result) {
                     if (result.id > -1) {
-                        clientAllowedUriId = result.id;
+                        clientRedirectUriId = result.id;
                         assert(true);
                     } else {
                         assert(false);
@@ -64,11 +67,11 @@ describe('mysql DB client allow uri', function () {
         });
     });
     
-    describe('#getClientAllowedUriList()', function () {
-        it('should read client allowed uri list', function (done) {           
+    describe('#getClientRedirectUriList()', function () {
+        it('should read client redirect uri list in processor', function (done) {           
             setTimeout(function () {                
-                db.getClientAllowedUriList(clientId, function (result) {
-                    if (result && result.length > 0 && result[0].uri === "http://ulboralabs.com") {                        
+                clientRedirectUriProcessor.getClientRedirectUriList(clientId, function (result) {
+                    if (result && result.length > 0 && result[0].uri === 'http://www.google.com') {                        
                         assert(true);
                     } else {
                         assert(false);
@@ -79,10 +82,10 @@ describe('mysql DB client allow uri', function () {
         });
     });
     
-    describe('#deleteClientAllowedUri()', function () {
-        it('should delete client allowed URI', function (done) {           
+    describe('#deleteClientRedirectUri()', function () {
+        it('should delete client redirect uri', function (done) {           
             setTimeout(function () {                
-                db.deleteClientAllowedUri(null, clientAllowedUriId, function (result) {
+                clientRedirectUriProcessor.deleteClientRedirectUri(null, clientRedirectUriId, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {
@@ -92,12 +95,13 @@ describe('mysql DB client allow uri', function () {
                 });
             }, 4000);           
         });
-    });        
+    });
+    
     
     describe('#deleteClient()', function () {
         it('should delete client', function (done) {           
             setTimeout(function () {                
-                db.deleteClient(clientId, function (result) {
+                clintProcessor.deleteClient(null, clientId, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {
@@ -107,6 +111,7 @@ describe('mysql DB client allow uri', function () {
                 });
             }, 5000);           
         });
-    });       
+    });
+    
 });
 

@@ -22,6 +22,7 @@
 var crud = require("./crud/mysqlCrud");
 var clientProcessor = require("./processors/clientProcessor");
 var clientAllowedUriProcessor = require("./processors/clientAllowedUriProcessor");
+var clientRedirectUriProcessor = require("./processors/clientRedirectUriProcessor");
 var clientRoleProcessor = require("./processors/clientRoleProcessor");
 var clientGrantTypeProcessor = require("./processors/clientGrantTypeProcessor");
 var clientScopeProcessor = require("./processors/clientScopeProcessor");
@@ -35,6 +36,7 @@ var implicitGrantProcessor = require("./processors/implicitGrantProcessor");
 exports.connect = function (host, user, pw, db, cpnum) {
     crud.connect(host, user, pw, db, cpnum);
     clientProcessor.init(crud);
+    clientRedirectUriProcessor.init(crud);
     clientAllowedUriProcessor.init(crud);
     clientRoleProcessor.init(crud);
     clientGrantTypeProcessor.init(crud);
@@ -57,8 +59,70 @@ exports.getConnection = function (callback) {
 };
 
 //client operations---------------------------------------
-exports.addClient = function (con, json, callback) {
-    clientProcessor.addClient(con, json, callback);
+exports.addClient = function (clientJson, redirectUrls, callback) {
+    var rtn = {
+        clientId: null,
+        success: false,
+        message: null
+    };
+    crud.getConnection(function (err, con) {
+        if (!err && con) {
+            con.beginTransaction(function (err) {
+                if (!err) {
+                    var insertedUri = 0;
+                    clientProcessor.addClient(con, clientJson, function (clientResult) {
+                        if (clientResult && clientResult.clientId > 0 && clientResult.success) {
+                            if (redirectUrls && redirectUrls.length > 0) {
+                                for (var cnt = 0; cnt < redirectUrls.length; cnt++) {
+                                    var redUriJson = redirectUrls[cnt];
+                                    redUriJson.clientId = clientResult.clientId;
+                                    clientRedirectUriProcessor.addClientRedirectUri(con, redUriJson, function (uriResult) {
+                                        if (uriResult && uriResult.id > 0) {
+                                            insertedUri++;
+                                            if (insertedUri === redirectUrls.length) {
+                                                con.commit(function (err) {
+                                                    if (err) {
+                                                        con.rollback();
+                                                        callback(rtn);
+                                                    } else {
+                                                        rtn.success = true;
+                                                        rtn.clientId = clientResult.clientId;
+                                                        callback(rtn);
+                                                    }
+                                                });
+                                            }
+                                        } else {
+                                            con.rollback();
+                                            callback(rtn);
+                                        }
+                                    });
+                                }
+                            } else {
+                                con.commit(function (err) {
+                                    if (err) {
+                                        con.rollback();
+                                        callback(rtn);
+                                    } else {
+                                        rtn.success = true;
+                                        rtn.clientId = clientResult.clientId;
+                                        callback(rtn);
+                                    }
+                                });
+                            }
+                        } else {
+                            con.rollback();
+                            callback(rtn);
+                        }
+                    });
+                } else {
+                    callback(rtn);
+                }
+            });
+        } else {
+            callback(rtn);
+        }
+    });
+
 };
 
 exports.updateClient = function (con, json, callback) {
@@ -73,8 +137,46 @@ exports.getClientList = function (callback) {
     clientProcessor.getClientList(callback);
 };
 
-exports.deleteClient = function (con, clientId, callback) {
-    clientProcessor.deleteClient(con, clientId, callback);
+exports.deleteClient = function (clientId, callback) {
+    var rtn = {
+        success: false,
+        message: ""
+    };
+    crud.getConnection(function (err, con) {
+        if (!err && con) {
+            con.beginTransaction(function (err) {
+                if (!err) {
+                    clientRedirectUriProcessor.deleteAllClientRedirectUri(con, clientId, function (uriDelResult) {
+                        if (uriDelResult.success) {
+                            clientProcessor.deleteClient(con, clientId, function (clientDelResult) {
+                                if (clientDelResult.success) {
+                                    con.commit(function (err) {
+                                        if (err) {
+                                            con.rollback();
+                                            callback(rtn);
+                                        } else {
+                                            rtn.success = true;
+                                            callback(rtn);
+                                        }
+                                    });
+                                } else {
+                                    con.rollback();
+                                    callback(rtn);
+                                }
+                            });
+                        } else {
+                            con.rollback();
+                            callback(rtn);
+                        }
+                    });
+                } else {
+                    callback(rtn);
+                }
+            });
+        } else {
+            callback(rtn);
+        }
+    });
 };
 //end client operations ---------------------------------
 
@@ -462,3 +564,7 @@ exports.deleteImplicitGrant = function (clientId, userId, callback) {
     });
 };
 //end implicit grant
+
+// implicit grant scope
+
+//end implicit scope

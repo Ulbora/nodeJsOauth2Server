@@ -173,7 +173,7 @@ exports.delete = function (con, query, args, callback) {
         c = pool;
     }
     c.query(query, args, function (err, result) {
-        if (!err && result.affectedRows && result.affectedRows > 0) {
+        if (!err && result) {
             console.log("deleted rows: " + JSON.stringify(result));
             rtn.success = true;
             callback(rtn);

@@ -25,15 +25,14 @@ describe('mysql DB authorization code', function () {
         it('should add a client', function (done) { 
             
            var json = {
-                secret: '12345',
-                redirectUri: 'http://ulboralabs.com',
+                secret: '12345',                
                 name: 'ulbora',
                 webSite: 'www.ulboralabs.com',
                 email: 'ulbora@ulbora.com',
                 enabled: true
             };
             setTimeout(function () {
-                db.addClient(null, json, function (result) {
+                db.addClient(json, [], function (result) {
                     if (result.clientId > -1) {
                         clientId = result.clientId;
                         assert(true);
@@ -109,7 +108,7 @@ describe('mysql DB authorization code', function () {
     describe('#deleteClient()', function () {
         it('should delete client', function (done) {           
             setTimeout(function () {                
-                db.deleteClient(null, clientId, function (result) {
+                db.deleteClient(clientId, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {

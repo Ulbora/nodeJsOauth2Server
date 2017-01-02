@@ -23,8 +23,7 @@ describe('ClientProcessor', function () {
         it('should add a client in clientProcessor', function (done) { 
             
            var json = {
-                secret: '12345',
-                redirectUri: 'http://ulboralabs.com',
+                secret: '12345',                
                 name: 'ulbora',
                 webSite: 'www.ulboralabs.com',
                 email: 'ulbora@ulbora.com',
@@ -48,8 +47,7 @@ describe('ClientProcessor', function () {
         it('should add a client in processor', function (done) { 
             
            var json = {
-                secret: '123456',
-                redirectUri: 'http://ulboralabs.com',
+                secret: '123456',                
                 name: 'ulbora ulbora',
                 webSite: 'www.ulboralabs.com',
                 email: 'ulbora@ulbora.com',

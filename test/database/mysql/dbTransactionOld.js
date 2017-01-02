@@ -31,15 +31,14 @@ describe('mysql DB transactions', function () {
                             assert(false);
                         } else {
                             var json = {
-                                secret: '12345',
-                                redirectUri: 'http://ulboralabs.com',
+                                secret: '12345',                                
                                 name: 'ulbora',
                                 webSite: 'www.ulboralabs.com',
                                 email: 'ulbora@ulbora.com',
                                 enabled: true
                             };
                             setTimeout(function () {
-                                db.addClient(con, json, function (result) {
+                                db.addClient(json, [], function (result) {
                                     console.log("client result in transaction:" + JSON.stringify(result));
                                     if (result.clientId > -1) {
                                         clientId = result.clientId;
@@ -93,15 +92,14 @@ describe('mysql DB transactions', function () {
                             assert(false);
                         } else {
                             var json = {
-                                secret: '12345',
-                                redirectUri: 'http://ulboralabs.com',
+                                secret: '12345',                                
                                 name: 'ulbora',
                                 webSite: 'www.ulboralabs.com',
                                 email: 'ulbora@ulbora.com',
                                 enabled: true
                             };
                             setTimeout(function () {
-                                db.addClient(con, json, function (result) {
+                                db.addClient(json, [], function (result) {
                                     console.log("client result in transaction:" + JSON.stringify(result));
                                     if (result.clientId > -1) {
                                         clientId2 = result.clientId;
@@ -110,7 +108,7 @@ describe('mysql DB transactions', function () {
                                             clientId: clientId2
                                         };
                                         setTimeout(function () {
-                                            db.addClientRole(con, json, function (result2) {
+                                            db.addClientRole(json, [], function (result2) {
                                                 if (result2.id > -1) {
                                                     console.log("client result2 in transaction:" + JSON.stringify(result2));
                                                     clientRoleId2 = result2.id;
@@ -127,7 +125,7 @@ describe('mysql DB transactions', function () {
                                                                             db.deleteClientRole(null, clientRoleId2, function (result) {
                                                                                 if (result.success) {
                                                                                     setTimeout(function () {
-                                                                                        db.deleteClient(null, clientId2, function (result) {
+                                                                                        db.deleteClient(clientId2, function (result) {
                                                                                             if (result.success) {
                                                                                                 assert(true);
                                                                                             } else {

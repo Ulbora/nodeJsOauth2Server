@@ -30,8 +30,7 @@ describe('implicitGrantProcessor', function () {
         it('should add a client in clientProcessor', function (done) { 
             
            var json = {
-                secret: '12345',
-                redirectUri: 'http://ulboralabs.com',
+                secret: '12345',                
                 name: 'ulbora',
                 webSite: 'www.ulboralabs.com',
                 email: 'ulbora@ulbora.com',
