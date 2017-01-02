@@ -605,21 +605,18 @@ exports.deleteImplicitGrant = function (clientId, userId, callback) {
 //end implicit grant
 
 // implicit grant scope
-/*
- exports.addAuthorizationCodeScope = function (con, json, callback) {
- authorizationCodeScopeProcessor.addAuthorizationCodeScope(con, json, callback);
+
+ exports.addImplicitGrantScope = function (con, json, callback) {
+ implicitGrantScopeProcessor.addImplicitGrantScope(con, json, callback);
  };
  
- exports.getAuthorizationCodeScopeList = function (authorizationCode, callback) {
- authorizationCodeScopeProcessor.getAuthorizationCodeScopeList(authorizationCode, callback);
+ exports.getImplicitGrantScopeList = function (implicitGrantId, callback) {
+ implicitGrantScopeProcessor.getImplicitGrantScopeList(implicitGrantId, callback);
  };
  
- exports.deleteAuthorizationCodeScope = function (con, id, callback) {
- authorizationCodeScopeProcessor.deleteAuthorizationCodeScope(con, id, callback);
+ exports.deleteImplicitGrantScope = function (con, id, callback) {
+ implicitGrantScopeProcessor.deleteImplicitGrantScope(con, id, callback);
  };
  
- exports.deleteAuthorizationCodeScopeList = function (con, authorizationCode, callback) {
- authorizationCodeScopeProcessor.deleteAuthorizationCodeScopeList(con, authorizationCode, callback);
- };
- */
+ 
 //end implicit scope
