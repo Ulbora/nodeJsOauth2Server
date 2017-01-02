@@ -60,7 +60,7 @@ describe('mysql DB authorization code', function () {
             };
             
             setTimeout(function () {
-                db.addImplicitGrant(impJson, accessTokenJson, function (result) {
+                db.addImplicitGrant(impJson, accessTokenJson, "read", function (result) {
                     if (result.id > -1) {
                         acId = result.id;
                         assert(true);

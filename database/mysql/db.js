@@ -32,6 +32,7 @@ var accessTokenProcessor = require("./processors/accessTokenProcessor");
 var authorizationCodeProcessor = require("./processors/authorizationCodeProcessor");
 var authorizationCodeScopeProcessor = require("./processors/authorizationCodeScopeProcessor");
 var implicitGrantProcessor = require("./processors/implicitGrantProcessor");
+var implicitGrantScopeProcessor = require("./processors/implicitGrantScopeProcessor");
 
 exports.connect = function (host, user, pw, db, cpnum) {
     crud.connect(host, user, pw, db, cpnum);
@@ -47,6 +48,7 @@ exports.connect = function (host, user, pw, db, cpnum) {
     authorizationCodeProcessor.init(crud);
     authorizationCodeScopeProcessor.init(crud);
     implicitGrantProcessor.init(crud);
+    implicitGrantScopeProcessor.init(crud);
 };
 // for testing only
 exports.testConnection = function (callback) {
@@ -483,7 +485,7 @@ exports.deleteClientGrantType = function (con, id, callback) {
 
 //implicit grant
 //authorization code
-exports.addImplicitGrant = function (implicitJson, accessTokenJson, callback) {
+exports.addImplicitGrant = function (implicitJson, accessTokenJson, scope, callback) {
     var rtn = {
         id: null,
         success: false,
@@ -499,13 +501,24 @@ exports.addImplicitGrant = function (implicitJson, accessTokenJson, callback) {
                             impJson.accessTokenId = accessResult.id;
                             implicitGrantProcessor.addImplicitGrant(con, implicitJson, function (impResult) {
                                 if (impResult.id > -1) {
-                                    con.commit(function (err) {
-                                        if (err) {
-                                            con.rollback();
-                                            callback(rtn);
+                                    var scopeJson = {
+                                        scope: scope,
+                                        implicitGrantId: impResult.id
+                                    }
+                                    implicitGrantScopeProcessor.addImplicitGrantScope(con, scopeJson, function (scopeResult) {
+                                        if (scopeResult.success) {
+                                            con.commit(function (err) {
+                                                if (err) {
+                                                    con.rollback();
+                                                    callback(rtn);
+                                                } else {
+                                                    rtn.id = impResult.id;
+                                                    rtn.success = true;
+                                                    callback(rtn);
+                                                }
+                                            });
                                         } else {
-                                            rtn.id = impResult.id;
-                                            rtn.success = true;
+                                            con.rollback();
                                             callback(rtn);
                                         }
                                     });
@@ -545,16 +558,23 @@ exports.deleteImplicitGrant = function (clientId, userId, callback) {
                 if (!err) {
                     implicitGrantProcessor.getImplicitGrant(clientId, userId, function (imResult) {
                         if (imResult && imResult.accessTokenId) {
-                            implicitGrantProcessor.deleteImplicitGrant(con, clientId, userId, function (imDelResult) {
-                                if (imDelResult.success) {
-                                    accessTokenProcessor.deleteAccessToken(con, imResult.accessTokenId, function (accTokenDelResult) {
-                                        if (accTokenDelResult.success) {
-                                            con.commit(function (err) {
-                                                if (err) {
-                                                    con.rollback();
-                                                    callback(rtn);
+                            implicitGrantScopeProcessor.deleteImplicitGrantScopeList(con, imResult.id, function (scopeResult) {
+                                if (scopeResult.success) {
+                                    implicitGrantProcessor.deleteImplicitGrant(con, clientId, userId, function (imDelResult) {
+                                        if (imDelResult.success) {
+                                            accessTokenProcessor.deleteAccessToken(con, imResult.accessTokenId, function (accTokenDelResult) {
+                                                if (accTokenDelResult.success) {
+                                                    con.commit(function (err) {
+                                                        if (err) {
+                                                            con.rollback();
+                                                            callback(rtn);
+                                                        } else {
+                                                            rtn.success = true;
+                                                            callback(rtn);
+                                                        }
+                                                    });
                                                 } else {
-                                                    rtn.success = true;
+                                                    con.rollback();
                                                     callback(rtn);
                                                 }
                                             });
@@ -585,5 +605,21 @@ exports.deleteImplicitGrant = function (clientId, userId, callback) {
 //end implicit grant
 
 // implicit grant scope
-
+/*
+ exports.addAuthorizationCodeScope = function (con, json, callback) {
+ authorizationCodeScopeProcessor.addAuthorizationCodeScope(con, json, callback);
+ };
+ 
+ exports.getAuthorizationCodeScopeList = function (authorizationCode, callback) {
+ authorizationCodeScopeProcessor.getAuthorizationCodeScopeList(authorizationCode, callback);
+ };
+ 
+ exports.deleteAuthorizationCodeScope = function (con, id, callback) {
+ authorizationCodeScopeProcessor.deleteAuthorizationCodeScope(con, id, callback);
+ };
+ 
+ exports.deleteAuthorizationCodeScopeList = function (con, authorizationCode, callback) {
+ authorizationCodeScopeProcessor.deleteAuthorizationCodeScopeList(con, authorizationCode, callback);
+ };
+ */
 //end implicit scope
