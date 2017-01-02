@@ -1,18 +1,15 @@
 var assert = require('assert');
-var crud = require("../../../../database/mysql/crud/mysqlCrud");
-var clintProcessor = require("../../../../database/mysql/processors/clientProcessor");
-var clientRedirectUriProcessor = require("../../../../database/mysql/processors/clientRedirectUriProcessor");
+var db = require("../../../database/mysql/db");
 var clientId;
 var clientRedirectUriId;
-describe('ClientRedirectUriProcessor', function () {
-    this.timeout(9000);
+
+describe('mysql DB client roles', function () {
+    this.timeout(20000);
     describe('#connect()', function () {
         it('should connect to db and create pool', function (done) {
-            crud.connect("localhost", "admin", "admin", "ulbora_oauth2_server", 5);
-            crud.testConnection(function (success) {
+            db.connect("localhost", "admin", "admin", "ulbora_oauth2_server", 5);
+            db.testConnection(function (success) {
                 if (success) {                    
-                    clintProcessor.init(crud);
-                    clientRedirectUriProcessor.init(crud);
                     assert(true);
                 } else {
                     assert(false);
@@ -21,9 +18,9 @@ describe('ClientRedirectUriProcessor', function () {
             });
         });
     });
-
-   describe('#addClient()', function () {
-        it('should add a client in clientProcessor', function (done) { 
+    
+    describe('#addClient()', function () {
+        it('should add a client', function (done) { 
             
            var json = {
                 secret: '12345',                
@@ -33,7 +30,7 @@ describe('ClientRedirectUriProcessor', function () {
                 enabled: true
             };
             setTimeout(function () {
-                clintProcessor.addClient(null, json, function (result) {
+                db.addClient(json, [], function (result) {
                     if (result.clientId > -1) {
                         clientId = result.clientId;
                         assert(true);
@@ -45,8 +42,8 @@ describe('ClientRedirectUriProcessor', function () {
             }, 1000);           
         });
     });
-    
-   describe('#addClientRedirectUri()', function () {
+     
+    describe('#addClientRedirectUri()', function () {
         it('should add a client redirect uri', function (done) { 
             
            var json = {                
@@ -54,7 +51,7 @@ describe('ClientRedirectUriProcessor', function () {
                 clientId: clientId
             };
             setTimeout(function () {
-                clientRedirectUriProcessor.addClientRedirectUri(null, json, function (result) {
+                db.addClientRedirectUri(null, json, function (result) {
                     if (result.id > -1) {
                         clientRedirectUriId = result.id;
                         assert(true);
@@ -76,7 +73,7 @@ describe('ClientRedirectUriProcessor', function () {
                 clientId: clientId
             };
             setTimeout(function () {
-                clientRedirectUriProcessor.addClientRedirectUri(null, json, function (result) {
+                db.addClientRedirectUri(null, json, function (result) {
                     if (result.id > -1) {
                         //clientRedirectUriId = result.id;
                         assert(true);
@@ -92,7 +89,7 @@ describe('ClientRedirectUriProcessor', function () {
     describe('#getClientRedirectUriList()', function () {
         it('should read client redirect uri list in processor', function (done) {           
             setTimeout(function () {                
-                clientRedirectUriProcessor.getClientRedirectUriList(clientId, function (result) {
+                db.getClientRedirectUriList(clientId, function (result) {
                     if (result && result.length > 0 && result[0].uri === 'http://www.google.com') {                        
                         assert(true);
                     } else {
@@ -107,7 +104,7 @@ describe('ClientRedirectUriProcessor', function () {
     describe('#deleteClientRedirectUri()', function () {
         it('should delete client redirect uri', function (done) {           
             setTimeout(function () {                
-                clientRedirectUriProcessor.deleteClientRedirectUri(null, clientRedirectUriId, function (result) {
+                db.deleteClientRedirectUri(null, clientRedirectUriId, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {
@@ -122,7 +119,7 @@ describe('ClientRedirectUriProcessor', function () {
     describe('#deleteAllClientRedirectUri()', function () {
         it('should delete client redirect uri', function (done) {           
             setTimeout(function () {                
-                clientRedirectUriProcessor.deleteAllClientRedirectUri(null, clientId, function (result) {
+                db.deleteAllClientRedirectUri(null, clientId, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {
@@ -138,7 +135,7 @@ describe('ClientRedirectUriProcessor', function () {
     describe('#deleteClient()', function () {
         it('should delete client', function (done) {           
             setTimeout(function () {                
-                clintProcessor.deleteClient(null, clientId, function (result) {
+                db.deleteClient(clientId, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {
@@ -148,7 +145,6 @@ describe('ClientRedirectUriProcessor', function () {
                 });
             }, 7000);           
         });
-    });
-    
+    });       
 });
 

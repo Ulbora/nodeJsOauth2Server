@@ -195,6 +195,25 @@ exports.deleteClientAllowedUri = function (con, id, callback) {
 };
 // end client allowed URI ------------------------------
 
+//client redirect uri
+exports.addClientRedirectUri = function (con, json, callback) {
+    clientRedirectUriProcessor.addClientRedirectUri(con, json, callback);
+};
+
+exports.getClientRedirectUriList = function (clientId, callback) {
+    clientRedirectUriProcessor.getClientRedirectUriList(clientId, callback);
+};
+
+exports.deleteClientRedirectUri = function (con, id, callback) {
+    clientRedirectUriProcessor.deleteClientRedirectUri(con, id, callback);
+};
+
+exports.deleteAllClientRedirectUri = function (con, clientId, callback) {
+    clientRedirectUriProcessor.deleteAllClientRedirectUri(con, clientId, callback);
+};
+//end client redirect uri
+
+
 //client role
 exports.addClientRole = function (con, json, callback) {
     clientRoleProcessor.addClientRole(con, json, callback);
