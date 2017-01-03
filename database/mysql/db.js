@@ -33,6 +33,7 @@ var authorizationCodeProcessor = require("./processors/authorizationCodeProcesso
 var authorizationCodeScopeProcessor = require("./processors/authorizationCodeScopeProcessor");
 var implicitGrantProcessor = require("./processors/implicitGrantProcessor");
 var implicitGrantScopeProcessor = require("./processors/implicitGrantScopeProcessor");
+var passwordGrantProcessor = require("./processors/passwordGrantProcessor");
 
 exports.connect = function (host, user, pw, db, cpnum) {
     crud.connect(host, user, pw, db, cpnum);
@@ -49,6 +50,7 @@ exports.connect = function (host, user, pw, db, cpnum) {
     authorizationCodeScopeProcessor.init(crud);
     implicitGrantProcessor.init(crud);
     implicitGrantScopeProcessor.init(crud);
+    passwordGrantProcessor.init(crud);
 };
 // for testing only
 exports.testConnection = function (callback) {
@@ -617,6 +619,154 @@ exports.deleteImplicitGrant = function (clientId, userId, callback) {
  exports.deleteImplicitGrantScope = function (con, id, callback) {
  implicitGrantScopeProcessor.deleteImplicitGrantScope(con, id, callback);
  };
- 
- 
+  
 //end implicit scope
+
+//password grant
+//
+//authorization code
+exports.addPasswordGrant = function (pwgJson, accessTokenJson, refreshTokenJson, callback) {
+    var rtn = {
+        id: null,
+        success: false,
+        message: null
+    };
+    crud.getConnection(function (err, con) {
+        if (!err && con) {
+            con.beginTransaction(function (err) {
+                if (!err) {
+                    if (refreshTokenJson) {
+                        refreshTokenProcessor.addRefreshToken(con, refreshTokenJson, function (refreshResult) {
+                            if (refreshResult.id > -1) {
+                                var accTokenJson = accessTokenJson;
+                                accTokenJson.refreshTokenId = refreshResult.id;
+                                doPwGrantAdd(con, rtn, pwgJson, accTokenJson, function (pwRtn) {
+                                    callback(pwRtn);
+                                });
+                            } else {
+                                con.rollback();
+                                callback(rtn);
+                            }
+                        });
+                    } else {
+                        doPwGrantAdd(con, rtn, pwgJson, accessTokenJson, function (acRtn) {
+                            callback(acRtn);
+                        });
+                    }
+                } else {
+                    callback(rtn);
+                }
+            });
+        } else {
+            callback(rtn);
+        }
+    });
+};
+
+var doPwGrantAdd = function (con, rtn, pwgJson, accTokenJson, callback) {
+    accessTokenProcessor.addAccessToken(con, accTokenJson, function (accessResult) {
+        if (accessResult.id > -1) {
+            var pJson = pwgJson;            
+            pJson.accessTokenId = accessResult.id;
+            passwordGrantProcessor.addPasswordGrant(con, pJson, function (pwResult) {
+                if (pwResult.id > -1) {
+                    con.commit(function (err) {
+                        if (err) {
+                            con.rollback();
+                            callback(rtn);
+                        } else {
+                            rtn.id = pwResult.id;
+                            rtn.success = true;
+                            callback(rtn);
+                        }
+                    });
+                } else {
+                    con.rollback();
+                    callback(rtn);
+                }
+            });
+        } else {
+            con.rollback();
+            callback(rtn);
+        }
+    });
+};
+
+exports.getPasswordGrant = function (clientId, userId, callback) {
+    passwordGrantProcessor.getPasswordGrant(clientId, userId, callback);
+};
+
+exports.deletePasswordGrant = function (clientId, userId, callback) {
+    var rtn = {
+        success: false,
+        message: ""
+    };
+    crud.getConnection(function (err, con) {
+        if (!err && con) {
+            con.beginTransaction(function (err) {
+                if (!err) {
+                    var refreshTokenId;
+                    passwordGrantProcessor.getPasswordGrant(clientId, userId, function (pwResult) {
+                        if (pwResult && pwResult.accessTokenId) {
+                            accessTokenProcessor.getAccessToken(pwResult.accessTokenId, function (accTokenResult) {
+                                if (accTokenResult && accTokenResult.refreshTokenId) {
+                                    refreshTokenId = accTokenResult.refreshTokenId;
+                                }
+                                passwordGrantProcessor.deletePasswordGrant(con, clientId, userId, function (pwDelResult) {
+                                    if (pwDelResult.success) {
+                                        accessTokenProcessor.deleteAccessToken(con, pwResult.accessTokenId, function (accTokenDelResult) {
+                                            if (accTokenDelResult.success) {
+                                                if (refreshTokenId) {
+                                                    refreshTokenProcessor.deleteRefreshToken(con, refreshTokenId, function (rfTokenDelResult) {
+                                                        if (rfTokenDelResult.success) {
+                                                            con.commit(function (err) {
+                                                                if (err) {
+                                                                    con.rollback();
+                                                                    callback(rtn);
+                                                                } else {
+                                                                    rtn.success = true;
+                                                                    callback(rtn);
+                                                                }
+                                                            });
+                                                        } else {
+                                                            con.rollback();
+                                                            callback(rtn);
+                                                        }
+                                                    });
+                                                } else {
+                                                    con.commit(function (err) {
+                                                        if (err) {
+                                                            con.rollback();
+                                                            callback(rtn);
+                                                        } else {
+                                                            rtn.success = true;
+                                                            callback(rtn);
+                                                        }
+                                                    });
+                                                }
+                                            } else {
+                                                con.rollback();
+                                                callback(rtn);
+                                            }
+                                        });
+                                    } else {
+                                        con.rollback();
+                                        callback(rtn);
+                                    }
+                                });
+                            });
+                        } else {
+                            con.rollback();
+                            callback(rtn);
+                        }
+                    });
+                } else {
+                    callback(rtn);
+                }
+            });
+        } else {
+            callback(rtn);
+        }
+    });
+};
+//end password grant
