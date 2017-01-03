@@ -34,6 +34,7 @@ var authorizationCodeScopeProcessor = require("./processors/authorizationCodeSco
 var implicitGrantProcessor = require("./processors/implicitGrantProcessor");
 var implicitGrantScopeProcessor = require("./processors/implicitGrantScopeProcessor");
 var passwordGrantProcessor = require("./processors/passwordGrantProcessor");
+var credentialsGrantProcessor = require("./processors/credentialsGrantProcessor");
 
 exports.connect = function (host, user, pw, db, cpnum) {
     crud.connect(host, user, pw, db, cpnum);
@@ -51,6 +52,7 @@ exports.connect = function (host, user, pw, db, cpnum) {
     implicitGrantProcessor.init(crud);
     implicitGrantScopeProcessor.init(crud);
     passwordGrantProcessor.init(crud);
+    credentialsGrantProcessor.init(crud);
 };
 // for testing only
 exports.testConnection = function (callback) {
@@ -501,7 +503,7 @@ exports.addImplicitGrant = function (implicitJson, accessTokenJson, scope, callb
                         if (accessResult.id > -1) {
                             var impJson = implicitJson;
                             impJson.accessTokenId = accessResult.id;
-                            implicitGrantProcessor.addImplicitGrant(con, implicitJson, function (impResult) {
+                            implicitGrantProcessor.addImplicitGrant(con, impJson, function (impResult) {
                                 if (impResult.id > -1) {
                                     var scopeJson = {
                                         scope: scope,
@@ -608,18 +610,18 @@ exports.deleteImplicitGrant = function (clientId, userId, callback) {
 
 // implicit grant scope
 
- exports.addImplicitGrantScope = function (con, json, callback) {
- implicitGrantScopeProcessor.addImplicitGrantScope(con, json, callback);
- };
- 
- exports.getImplicitGrantScopeList = function (implicitGrantId, callback) {
- implicitGrantScopeProcessor.getImplicitGrantScopeList(implicitGrantId, callback);
- };
- 
- exports.deleteImplicitGrantScope = function (con, id, callback) {
- implicitGrantScopeProcessor.deleteImplicitGrantScope(con, id, callback);
- };
-  
+exports.addImplicitGrantScope = function (con, json, callback) {
+    implicitGrantScopeProcessor.addImplicitGrantScope(con, json, callback);
+};
+
+exports.getImplicitGrantScopeList = function (implicitGrantId, callback) {
+    implicitGrantScopeProcessor.getImplicitGrantScopeList(implicitGrantId, callback);
+};
+
+exports.deleteImplicitGrantScope = function (con, id, callback) {
+    implicitGrantScopeProcessor.deleteImplicitGrantScope(con, id, callback);
+};
+
 //end implicit scope
 
 //password grant
@@ -666,7 +668,7 @@ exports.addPasswordGrant = function (pwgJson, accessTokenJson, refreshTokenJson,
 var doPwGrantAdd = function (con, rtn, pwgJson, accTokenJson, callback) {
     accessTokenProcessor.addAccessToken(con, accTokenJson, function (accessResult) {
         if (accessResult.id > -1) {
-            var pJson = pwgJson;            
+            var pJson = pwgJson;
             pJson.accessTokenId = accessResult.id;
             passwordGrantProcessor.addPasswordGrant(con, pJson, function (pwResult) {
                 if (pwResult.id > -1) {
@@ -770,3 +772,105 @@ exports.deletePasswordGrant = function (clientId, userId, callback) {
     });
 };
 //end password grant
+
+//credentials code
+exports.addCredentialsGrant = function (credJson, accessTokenJson, callback) {
+    var rtn = {
+        id: null,
+        success: false,
+        message: null
+    };
+    crud.getConnection(function (err, con) {
+        if (!err && con) {
+            con.beginTransaction(function (err) {
+                if (!err) {
+                    accessTokenProcessor.addAccessToken(con, accessTokenJson, function (accessResult) {
+                        if (accessResult.id > -1) {
+                            var cJson = credJson;
+                            cJson.accessTokenId = accessResult.id;
+                            credentialsGrantProcessor.addCredentialsGrant(con, cJson, function (impResult) {
+                                if (impResult.id > -1) {
+                                    con.commit(function (err) {
+                                        if (err) {
+                                            con.rollback();
+                                            callback(rtn);
+                                        } else {
+                                            rtn.id = impResult.id;
+                                            rtn.success = true;
+                                            callback(rtn);
+                                        }
+                                    });
+                                } else {
+                                    con.rollback();
+                                    callback(rtn);
+                                }
+                            });
+                        } else {
+                            con.rollback();
+                            callback(rtn);
+                        }
+                    });
+                } else {
+                    callback(rtn);
+                }
+            });
+        } else {
+            callback(rtn);
+        }
+    });
+};
+
+exports.getCredentialsGrant = function (clientId, callback) {
+    credentialsGrantProcessor.getCredentialsGrant(clientId, callback);
+};
+
+
+exports.deleteCredentialsGrant = function (clientId, callback) {
+    var rtn = {
+        success: false,
+        message: ""
+    };
+    crud.getConnection(function (err, con) {
+        if (!err && con) {
+            con.beginTransaction(function (err) {
+                if (!err) {
+                    credentialsGrantProcessor.getCredentialsGrant(clientId, function (imResult) {
+                        if (imResult && imResult.accessTokenId) {                            
+                            credentialsGrantProcessor.deleteCredentialsGrant(con, clientId, function (imDelResult) {
+                                if (imDelResult.success) {
+                                    accessTokenProcessor.deleteAccessToken(con, imResult.accessTokenId, function (accTokenDelResult) {
+                                        if (accTokenDelResult.success) {
+                                            con.commit(function (err) {
+                                                if (err) {
+                                                    con.rollback();
+                                                    callback(rtn);
+                                                } else {
+                                                    rtn.success = true;
+                                                    callback(rtn);
+                                                }
+                                            });
+                                        } else {
+                                            con.rollback();
+                                            callback(rtn);
+                                        }
+                                    });
+                                } else {
+                                    con.rollback();
+                                    callback(rtn);
+                                }
+                            });                            
+                        } else {
+                            con.rollback();
+                            callback(rtn);
+                        }
+                    });
+                } else {
+                    callback(rtn);
+                }
+            });
+        } else {
+            callback(rtn);
+        }
+    });
+};
+//end credentials grant
