@@ -21,7 +21,7 @@
 
 var clientQueries = require("../queries/clientQueries");
 var crud;
-exports.init = function(c){
+exports.init = function (c) {
     crud = c;
 };
 
@@ -42,7 +42,7 @@ exports.addClientAllowedUri = function (con, json, callback) {
 };
 
 exports.getClientAllowedUriList = function (clientId, callback) {
-     var queryId = [clientId];
+    var queryId = [clientId];
     crud.get(clientQueries.CLIENT_ALLOWED_URI_LIST_QUERY, queryId, function (result) {
         if (result.success && result.data.length > 0) {
             var rtnList = [];
@@ -57,6 +57,23 @@ exports.getClientAllowedUriList = function (clientId, callback) {
             callback(rtnList);
         } else {
             callback(rtnList);
+        }
+    });
+};
+
+exports.getClientAllowedUri = function (clientId, uri, callback) {
+    var queryId = [clientId, uri];
+    crud.get(clientQueries.CLIENT_ALLOWED_URI_QUERY, queryId, function (result) {
+        console.log("client uri: " + JSON.stringify(result));
+        if (result.success && result.data.length > 0) {            
+                var rtn = {
+                    id: result.data[0].id,
+                    uri: result.data[0].uri,
+                    clientId: result.data[0].client_id
+                };               
+            callback(rtn);
+        } else {
+            callback(null);
         }
     });
 };

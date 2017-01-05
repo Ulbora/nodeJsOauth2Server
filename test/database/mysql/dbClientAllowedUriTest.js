@@ -79,6 +79,21 @@ describe('mysql DB client allow uri', function () {
         });
     });
     
+    describe('#getClientAllowedUri', function () {
+        it('should read client uri in processor', function (done) {           
+            setTimeout(function () {                
+                db.getClientAllowedUri(clientId, 'http://ulboralabs.com', function (result) {
+                    if (result && result.uri === "http://ulboralabs.com") {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 3000);           
+        });
+    });
+    
     describe('#deleteClientAllowedUri()', function () {
         it('should delete client allowed URI', function (done) {           
             setTimeout(function () {                

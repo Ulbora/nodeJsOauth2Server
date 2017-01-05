@@ -196,6 +196,10 @@ exports.getClientAllowedUriList = function (clientId, callback) {
     clientAllowedUriProcessor.getClientAllowedUriList(clientId, callback);
 };
 
+exports.getClientAllowedUri = function (clientId, uri, callback) {
+    clientAllowedUriProcessor.getClientAllowedUri(clientId, uri, callback);
+};
+
 exports.deleteClientAllowedUri = function (id, callback) {
     clientAllowedUriProcessor.deleteClientAllowedUri(null, id, callback);
 };

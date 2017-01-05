@@ -57,6 +57,10 @@ exports.getClientAllowedUriList = function (clientId, callback) {
     db.getClientAllowedUriList(clientId, callback);
 };
 
+exports.getClientAllowedUri = function (clientId, uri, callback) {
+    db.getClientAllowedUri(clientId, uri, callback);
+};
+
 exports.deleteClientAllowedUri = function (id, callback) {
     db.deleteClientAllowedUri(id, callback);
 };

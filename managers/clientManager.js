@@ -19,33 +19,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-var HOST = "localhost";
-var DATABASE_HOST = "localhost";
-var DATABASE_NAME = "ulbora_oauth2_server";
-var DATABASE_USER_NAME = "admin";
-var DATABASE_USER_PASSWORD = "admin";
-var DATABASE_POOL_SIZE = 5;
-var PORT = 3000;
 
-//cors allowed origins
-var ALLOWED_ORIGINS = "*";
-var CORS_ENABLED = false;
-
-
-
-
-
-
-
-
-
-exports.HOST = HOST;
-exports.DATABASE_NAME = DATABASE_NAME;
-exports.PORT = PORT;
-exports.ALLOWED_ORIGINS = ALLOWED_ORIGINS;
-exports.CORS_ENABLED = CORS_ENABLED;
-exports.DATABASE_HOST = DATABASE_HOST;
-exports.DATABASE_USER_NAME = DATABASE_USER_NAME;
-exports.DATABASE_USER_PASSWORD = DATABASE_USER_PASSWORD;
-exports.DATABASE_NAME = DATABASE_NAME;
-exports.DATABASE_POOL_SIZE = DATABASE_POOL_SIZE;
+exports.addClient = function(json, callback){
+    
+};
