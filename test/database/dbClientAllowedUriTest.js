@@ -1,28 +1,20 @@
 var assert = require('assert');
-var db = require("../../../database/mysql/db");
-var tokenId;
+var db = require("../../database/db");
 var clientId;
-var acId;
-var igScope;
+var clientAllowedUriId;
 
-describe('mysql DB authorization code', function () {
+describe('DB client allow uri', function () {
     this.timeout(20000);
     describe('#connect()', function () {
         it('should connect to db and create pool', function (done) {
             db.connect("localhost", "admin", "admin", "ulbora_oauth2_server", 5);
-            db.testConnection(function (success) {
-                if (success) {                    
-                    assert(true);
-                } else {
-                    assert(false);
-                }
+            setTimeout(function () {
                 done();
-            });
+            }, 1000);
         });
     });
-        
     
-   describe('#addClient()', function () {
+    describe('#addClient()', function () {
         it('should add a client', function (done) { 
             
            var json = {
@@ -42,78 +34,50 @@ describe('mysql DB authorization code', function () {
                     }
                     done();
                 });
-            }, 1000);           
-        });
-    });
-    
-    describe('#addImplicitGrant()', function () {
-        it('should add an addImplicitGrant in db', function (done) { 
-           var today = new Date();
-           today.setTime(today.getTime() + (8*60*60*1000)); 
-           var impJson = {
-                clientId: clientId,
-                userId: "admin",                
-                accessTokenId: null
-            };
-            var accessTokenJson = {
-                token: 'djfjoiqjldktrtryrtyrytrsflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf',
-                expires: today
-            };
-            
-            setTimeout(function () {
-                db.addImplicitGrant(impJson, accessTokenJson, "read", function (result) {
-                    if (result.id > -1) {
-                        acId = result.id;
-                        assert(true);
-                    } else {
-                        assert(false);
-                    }
-                    done();
-                });
             }, 2000);           
         });
     });
-    
-    describe('#addImplicitGrantScope()', function () {
-        it('should add an ImplicitGrant scope in db', function (done) {            
-            var json = {
-                scope: "scopeTest",
-                implicitGrantId: acId
+     
+    describe('#addClientAllowedUri()', function () {
+        it('should add a client allowed URI', function (done) { 
+            
+           var json = {                
+                uri: 'http://ulboralabs.com',
+                clientId: clientId
             };
             setTimeout(function () {
-                db.addImplicitGrantScope(json, function (result) {
+                db.addClientAllowedUri(json, function (result) {
                     if (result.id > -1) {
-                        igScope = result.id;
+                        clientAllowedUriId = result.id;
                         assert(true);
                     } else {
                         assert(false);
                     }
                     done();
                 });
-            }, 3000);
+            }, 3000);           
         });
     });
     
-    describe('#deleteImplicitGrantScope()', function () {
-        it('should delete ImplicitGrant scope', function (done) {
-            setTimeout(function () {
-                db.deleteImplicitGrantScope(igScope, function (result) {
-                    if (result.success) {
-                        assert(true);
-                    } else {
-                        assert(false);
-                    }
-                    done();
-                });
-            }, 4000);
-        });
-    });
-   
-    
-    describe('#deleteImplicitGrant()', function () {
-        it('should delete ImplicitGrant in db', function (done) {           
+    describe('#getClientAllowedUriList()', function () {
+        it('should read client allowed uri list', function (done) {           
             setTimeout(function () {                
-                db.deleteImplicitGrant(clientId, "admin", function (result) {
+                db.getClientAllowedUriList(clientId, function (result) {
+                    if (result && result.length > 0 && result[0].uri === "http://ulboralabs.com") {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 4000);           
+        });
+    });
+    
+    describe('#deleteClientAllowedUri()', function () {
+        it('should delete client allowed URI', function (done) {           
+            setTimeout(function () {                
+                db.deleteClientAllowedUri(clientAllowedUriId, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {
@@ -123,7 +87,7 @@ describe('mysql DB authorization code', function () {
                 });
             }, 5000);           
         });
-    });   
+    });        
     
     describe('#deleteClient()', function () {
         it('should delete client', function (done) {           
@@ -138,6 +102,6 @@ describe('mysql DB authorization code', function () {
                 });
             }, 6000);           
         });
-    });   
+    });       
 });
 

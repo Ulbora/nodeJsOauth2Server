@@ -131,8 +131,8 @@ exports.addClient = function (clientJson, redirectUrls, callback) {
 
 };
 
-exports.updateClient = function (con, json, callback) {
-    clientProcessor.updateClient(con, json, callback);
+exports.updateClient = function (json, callback) {
+    clientProcessor.updateClient(null, json, callback);
 };
 
 exports.getClient = function (clientId, callback) {
@@ -188,77 +188,77 @@ exports.deleteClient = function (clientId, callback) {
 
 
 //client allowed URI --------------------------
-exports.addClientAllowedUri = function (con, json, callback) {
-    clientAllowedUriProcessor.addClientAllowedUri(con, json, callback);
+exports.addClientAllowedUri = function (json, callback) {
+    clientAllowedUriProcessor.addClientAllowedUri(null, json, callback);
 };
 
 exports.getClientAllowedUriList = function (clientId, callback) {
     clientAllowedUriProcessor.getClientAllowedUriList(clientId, callback);
 };
 
-exports.deleteClientAllowedUri = function (con, id, callback) {
-    clientAllowedUriProcessor.deleteClientAllowedUri(con, id, callback);
+exports.deleteClientAllowedUri = function (id, callback) {
+    clientAllowedUriProcessor.deleteClientAllowedUri(null, id, callback);
 };
 // end client allowed URI ------------------------------
 
 //client redirect uri
-exports.addClientRedirectUri = function (con, json, callback) {
-    clientRedirectUriProcessor.addClientRedirectUri(con, json, callback);
+exports.addClientRedirectUri = function (json, callback) {
+    clientRedirectUriProcessor.addClientRedirectUri(null, json, callback);
 };
 
 exports.getClientRedirectUriList = function (clientId, callback) {
     clientRedirectUriProcessor.getClientRedirectUriList(clientId, callback);
 };
 
-exports.deleteClientRedirectUri = function (con, id, callback) {
-    clientRedirectUriProcessor.deleteClientRedirectUri(con, id, callback);
+exports.deleteClientRedirectUri = function (id, callback) {
+    clientRedirectUriProcessor.deleteClientRedirectUri(null, id, callback);
 };
 
-exports.deleteAllClientRedirectUri = function (con, clientId, callback) {
-    clientRedirectUriProcessor.deleteAllClientRedirectUri(con, clientId, callback);
+exports.deleteAllClientRedirectUri = function (clientId, callback) {
+    clientRedirectUriProcessor.deleteAllClientRedirectUri(null, clientId, callback);
 };
 //end client redirect uri
 
 
 //client role
-exports.addClientRole = function (con, json, callback) {
-    clientRoleProcessor.addClientRole(con, json, callback);
+exports.addClientRole = function (json, callback) {
+    clientRoleProcessor.addClientRole(null, json, callback);
 };
 
 exports.getClientRoleList = function (clientId, callback) {
     clientRoleProcessor.getClientRoleList(clientId, callback);
 };
 
-exports.deleteClientRole = function (con, id, callback) {
-    clientRoleProcessor.deleteClientRole(con, id, callback);
+exports.deleteClientRole = function (id, callback) {
+    clientRoleProcessor.deleteClientRole(null, id, callback);
 };
 //end client role
 
 //client scope
-exports.addClientScope = function (con, json, callback) {
-    clientScopeProcessor.addClientScope(con, json, callback);
+exports.addClientScope = function (json, callback) {
+    clientScopeProcessor.addClientScope(null, json, callback);
 };
 
 exports.getClientScopeList = function (clientId, callback) {
     clientScopeProcessor.getClientScopeList(clientId, callback);
 };
 
-exports.deleteClientScope = function (con, id, callback) {
-    clientScopeProcessor.deleteClientScope(con, id, callback);
+exports.deleteClientScope = function (id, callback) {
+    clientScopeProcessor.deleteClientScope(null, id, callback);
 };
 //end client scope
 
 //client role uri
-exports.addClientRoleUri = function (con, json, callback) {
-    clientRoleUriProcessor.addClientRoleUri(con, json, callback);
+exports.addClientRoleUri = function (json, callback) {
+    clientRoleUriProcessor.addClientRoleUri(null, json, callback);
 };
 
 exports.getClientRoleAllowedUriList = function (clientRoleId, callback) {
     clientRoleUriProcessor.getClientRoleAllowedUriList(clientRoleId, callback);
 };
 
-exports.deleteClientRoleUri = function (con, json, callback) {
-    clientRoleUriProcessor.deleteClientRoleUri(con, json, callback);
+exports.deleteClientRoleUri = function (json, callback) {
+    clientRoleUriProcessor.deleteClientRoleUri(null, json, callback);
 };
 //end client role uri
 
@@ -267,38 +267,38 @@ exports.deleteClientRoleUri = function (con, json, callback) {
 //end client grant types
 
 //refresh token
-exports.addRefreshToken = function (con, json, callback) {
-    refreshTokenProcessor.addRefreshToken(con, json, callback);
+exports.addRefreshToken = function (json, callback) {
+    refreshTokenProcessor.addRefreshToken(null, json, callback);
 };
 
-exports.updateRefreshToken = function (con, json, callback) {
-    refreshTokenProcessor.updateRefreshToken(con, json, callback);
+exports.updateRefreshToken = function (json, callback) {
+    refreshTokenProcessor.updateRefreshToken(null, json, callback);
 };
 
 exports.getRefreshToken = function (id, callback) {
     refreshTokenProcessor.getRefreshToken(id, callback);
 };
 
-exports.deleteRefreshToken = function (con, id, callback) {
-    refreshTokenProcessor.deleteRefreshToken(con, id, callback);
+exports.deleteRefreshToken = function (id, callback) {
+    refreshTokenProcessor.deleteRefreshToken(null, id, callback);
 };
 //end refresh token
 
 //access token
-exports.addAccessToken = function (con, json, callback) {
-    accessTokenProcessor.addAccessToken(con, json, callback);
+exports.addAccessToken = function (json, callback) {
+    accessTokenProcessor.addAccessToken(null, json, callback);
 };
 
-exports.updateAccessToken = function (con, json, callback) {
-    accessTokenProcessor.updateAccessToken(con, json, callback);
+exports.updateAccessToken = function (json, callback) {
+    accessTokenProcessor.updateAccessToken(null, json, callback);
 };
 
 exports.getAccessToken = function (id, callback) {
     accessTokenProcessor.getAccessToken(id, callback);
 };
 
-exports.deleteAccessToken = function (con, id, callback) {
-    accessTokenProcessor.deleteAccessToken(con, id, callback);
+exports.deleteAccessToken = function (id, callback) {
+    accessTokenProcessor.deleteAccessToken(null, id, callback);
 };
 //end access token
 
@@ -376,8 +376,8 @@ exports.getAuthorizationCode = function (clientId, userId, callback) {
     authorizationCodeProcessor.getAuthorizationCode(clientId, userId, callback);
 };
 
-exports.updateAuthorizationCode = function (con, json, callback) {
-    authorizationCodeProcessor.updateAuthorizationCode(con, json, callback);
+exports.updateAuthorizationCode = function (json, callback) {
+    authorizationCodeProcessor.updateAuthorizationCode(null, json, callback);
 };
 
 exports.deleteAuthorizationCode = function (clientId, userId, callback) {
@@ -456,34 +456,34 @@ exports.deleteAuthorizationCode = function (clientId, userId, callback) {
 //end authorization code
 
 //authorization code scope
-exports.addAuthorizationCodeScope = function (con, json, callback) {
-    authorizationCodeScopeProcessor.addAuthorizationCodeScope(con, json, callback);
+exports.addAuthorizationCodeScope = function (json, callback) {
+    authorizationCodeScopeProcessor.addAuthorizationCodeScope(null, json, callback);
 };
 
 exports.getAuthorizationCodeScopeList = function (authorizationCode, callback) {
     authorizationCodeScopeProcessor.getAuthorizationCodeScopeList(authorizationCode, callback);
 };
 
-exports.deleteAuthorizationCodeScope = function (con, id, callback) {
-    authorizationCodeScopeProcessor.deleteAuthorizationCodeScope(con, id, callback);
+exports.deleteAuthorizationCodeScope = function (id, callback) {
+    authorizationCodeScopeProcessor.deleteAuthorizationCodeScope(null, id, callback);
 };
 
-exports.deleteAuthorizationCodeScopeList = function (con, authorizationCode, callback) {
-    authorizationCodeScopeProcessor.deleteAuthorizationCodeScopeList(con, authorizationCode, callback);
+exports.deleteAuthorizationCodeScopeList = function (authorizationCode, callback) {
+    authorizationCodeScopeProcessor.deleteAuthorizationCodeScopeList(null, authorizationCode, callback);
 };
 //end authorization code scope
 
 // allowed grant types
-exports.addClientGrantType = function (con, json, callback) {
-    clientGrantTypeProcessor.addClientGrantType(con, json, callback);
+exports.addClientGrantType = function (json, callback) {
+    clientGrantTypeProcessor.addClientGrantType(null, json, callback);
 };
 
 exports.getClientGrantTypeList = function (clientId, callback) {
     clientGrantTypeProcessor.getClientGrantTypeList(clientId, callback);
 };
 
-exports.deleteClientGrantType = function (con, id, callback) {
-    clientGrantTypeProcessor.deleteClientGrantType(con, id, callback);
+exports.deleteClientGrantType = function (id, callback) {
+    clientGrantTypeProcessor.deleteClientGrantType(null, id, callback);
 };
 //end grant types
 
@@ -610,16 +610,16 @@ exports.deleteImplicitGrant = function (clientId, userId, callback) {
 
 // implicit grant scope
 
-exports.addImplicitGrantScope = function (con, json, callback) {
-    implicitGrantScopeProcessor.addImplicitGrantScope(con, json, callback);
+exports.addImplicitGrantScope = function (json, callback) {
+    implicitGrantScopeProcessor.addImplicitGrantScope(null, json, callback);
 };
 
 exports.getImplicitGrantScopeList = function (implicitGrantId, callback) {
     implicitGrantScopeProcessor.getImplicitGrantScopeList(implicitGrantId, callback);
 };
 
-exports.deleteImplicitGrantScope = function (con, id, callback) {
-    implicitGrantScopeProcessor.deleteImplicitGrantScope(con, id, callback);
+exports.deleteImplicitGrantScope = function (id, callback) {
+    implicitGrantScopeProcessor.deleteImplicitGrantScope(null, id, callback);
 };
 
 //end implicit scope

@@ -100,7 +100,7 @@ describe('mysql DB authorization code', function () {
                 authorizationCode: acId
             };
             setTimeout(function () {
-                db.updateAuthorizationCode(null, json, function (result) {
+                db.updateAuthorizationCode(json, function (result) {
                     if (result.success) {                          
                         assert(true);
                     } else {

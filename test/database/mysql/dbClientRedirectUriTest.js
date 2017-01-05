@@ -51,7 +51,7 @@ describe('mysql DB client roles', function () {
                 clientId: clientId
             };
             setTimeout(function () {
-                db.addClientRedirectUri(null, json, function (result) {
+                db.addClientRedirectUri(json, function (result) {
                     if (result.id > -1) {
                         clientRedirectUriId = result.id;
                         assert(true);
@@ -73,7 +73,7 @@ describe('mysql DB client roles', function () {
                 clientId: clientId
             };
             setTimeout(function () {
-                db.addClientRedirectUri(null, json, function (result) {
+                db.addClientRedirectUri(json, function (result) {
                     if (result.id > -1) {
                         //clientRedirectUriId = result.id;
                         assert(true);
@@ -104,7 +104,7 @@ describe('mysql DB client roles', function () {
     describe('#deleteClientRedirectUri()', function () {
         it('should delete client redirect uri', function (done) {           
             setTimeout(function () {                
-                db.deleteClientRedirectUri(null, clientRedirectUriId, function (result) {
+                db.deleteClientRedirectUri(clientRedirectUriId, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {
@@ -119,7 +119,7 @@ describe('mysql DB client roles', function () {
     describe('#deleteAllClientRedirectUri()', function () {
         it('should delete client redirect uri', function (done) {           
             setTimeout(function () {                
-                db.deleteAllClientRedirectUri(null, clientId, function (result) {
+                db.deleteAllClientRedirectUri(clientId, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {

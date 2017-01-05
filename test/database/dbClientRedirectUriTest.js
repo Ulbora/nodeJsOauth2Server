@@ -1,28 +1,20 @@
 var assert = require('assert');
-var db = require("../../../database/mysql/db");
-var tokenId;
+var db = require("../../database/db");
 var clientId;
-var acId;
-var igScope;
+var clientRedirectUriId;
 
-describe('mysql DB authorization code', function () {
+describe('DB client redirect uri', function () {
     this.timeout(20000);
     describe('#connect()', function () {
         it('should connect to db and create pool', function (done) {
             db.connect("localhost", "admin", "admin", "ulbora_oauth2_server", 5);
-            db.testConnection(function (success) {
-                if (success) {                    
-                    assert(true);
-                } else {
-                    assert(false);
-                }
+            setTimeout(function () {
                 done();
-            });
+            }, 1000);
         });
     });
-        
     
-   describe('#addClient()', function () {
+    describe('#addClient()', function () {
         it('should add a client', function (done) { 
             
            var json = {
@@ -45,25 +37,18 @@ describe('mysql DB authorization code', function () {
             }, 1000);           
         });
     });
-    
-    describe('#addImplicitGrant()', function () {
-        it('should add an addImplicitGrant in db', function (done) { 
-           var today = new Date();
-           today.setTime(today.getTime() + (8*60*60*1000)); 
-           var impJson = {
-                clientId: clientId,
-                userId: "admin",                
-                accessTokenId: null
-            };
-            var accessTokenJson = {
-                token: 'djfjoiqjldktrtryrtyrytrsflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf',
-                expires: today
-            };
+     
+    describe('#addClientRedirectUri()', function () {
+        it('should add a client redirect uri', function (done) { 
             
+           var json = {                
+                uri: 'http://www.google.com',
+                clientId: clientId
+            };
             setTimeout(function () {
-                db.addImplicitGrant(impJson, accessTokenJson, "read", function (result) {
+                db.addClientRedirectUri(json, function (result) {
                     if (result.id > -1) {
-                        acId = result.id;
+                        clientRedirectUriId = result.id;
                         assert(true);
                     } else {
                         assert(false);
@@ -74,46 +59,47 @@ describe('mysql DB authorization code', function () {
         });
     });
     
-    describe('#addImplicitGrantScope()', function () {
-        it('should add an ImplicitGrant scope in db', function (done) {            
-            var json = {
-                scope: "scopeTest",
-                implicitGrantId: acId
+    
+    describe('#addClientRedirectUri()', function () {
+        it('should add another client redirect uri', function (done) { 
+            
+           var json = {                
+                uri: 'http://www.ulboralaba.com',
+                clientId: clientId
             };
             setTimeout(function () {
-                db.addImplicitGrantScope(json, function (result) {
+                db.addClientRedirectUri(json, function (result) {
                     if (result.id > -1) {
-                        igScope = result.id;
+                        //clientRedirectUriId = result.id;
                         assert(true);
                     } else {
                         assert(false);
                     }
                     done();
                 });
-            }, 3000);
+            }, 3000);           
         });
     });
     
-    describe('#deleteImplicitGrantScope()', function () {
-        it('should delete ImplicitGrant scope', function (done) {
-            setTimeout(function () {
-                db.deleteImplicitGrantScope(igScope, function (result) {
-                    if (result.success) {
-                        assert(true);
-                    } else {
-                        assert(false);
-                    }
-                    done();
-                });
-            }, 4000);
-        });
-    });
-   
-    
-    describe('#deleteImplicitGrant()', function () {
-        it('should delete ImplicitGrant in db', function (done) {           
+    describe('#getClientRedirectUriList()', function () {
+        it('should read client redirect uri list in processor', function (done) {           
             setTimeout(function () {                
-                db.deleteImplicitGrant(clientId, "admin", function (result) {
+                db.getClientRedirectUriList(clientId, function (result) {
+                    if (result && result.length > 0 && result[0].uri === 'http://www.google.com') {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 4000);           
+        });
+    });
+    
+    describe('#deleteClientRedirectUri()', function () {
+        it('should delete client redirect uri', function (done) {           
+            setTimeout(function () {                
+                db.deleteClientRedirectUri(clientRedirectUriId, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {
@@ -123,7 +109,23 @@ describe('mysql DB authorization code', function () {
                 });
             }, 5000);           
         });
-    });   
+    });
+    
+    describe('#deleteAllClientRedirectUri()', function () {
+        it('should delete client redirect uri', function (done) {           
+            setTimeout(function () {                
+                db.deleteAllClientRedirectUri(clientId, function (result) {
+                    if (result.success) {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 6000);           
+        });
+    });
+    
     
     describe('#deleteClient()', function () {
         it('should delete client', function (done) {           
@@ -136,8 +138,8 @@ describe('mysql DB authorization code', function () {
                     }
                     done();
                 });
-            }, 6000);           
+            }, 7000);           
         });
-    });   
+    });       
 });
 

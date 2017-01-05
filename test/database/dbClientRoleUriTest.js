@@ -1,22 +1,17 @@
 var assert = require('assert');
-var db = require("../../../database/mysql/db");
+var db = require("../../database/db");
 var clientId;
 var clientRoleId;
 var clientAllowedUriId;
 
-describe('mysql DB client roles uri', function () {
+describe('DB client roles uri', function () {
     this.timeout(20000);
     describe('#connect()', function () {
         it('should connect to db and create pool', function (done) {
             db.connect("localhost", "admin", "admin", "ulbora_oauth2_server", 5);
-            db.testConnection(function (success) {
-                if (success) {                    
-                    assert(true);
-                } else {
-                    assert(false);
-                }
+            setTimeout(function () {
                 done();
-            });
+            }, 1000);
         });
     });
     

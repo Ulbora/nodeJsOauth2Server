@@ -1,21 +1,16 @@
 var assert = require('assert');
-var db = require("../../../database/mysql/db");
+var db = require("../../database/db");
 var clientId;
-var clientGrantTypeId;
+var clientScopeId;
 
-describe('mysql DB client grant types', function () {
+describe('DB client scope', function () {
     this.timeout(20000);
     describe('#connect()', function () {
         it('should connect to db and create pool', function (done) {
             db.connect("localhost", "admin", "admin", "ulbora_oauth2_server", 5);
-            db.testConnection(function (success) {
-                if (success) {                    
-                    assert(true);
-                } else {
-                    assert(false);
-                }
+            setTimeout(function () {
                 done();
-            });
+            }, 1000);
         });
     });
     
@@ -43,17 +38,17 @@ describe('mysql DB client grant types', function () {
         });
     });
      
-     describe('#addClientGrantType()', function () {
-        it('should add a client grant type in db', function (done) { 
+    describe('#addClientScope()', function () {
+        it('should add a client scope', function (done) { 
             
            var json = {                
-                grantType: 'code',
+                scope: 'system',
                 clientId: clientId
             };
             setTimeout(function () {
-                db.addClientGrantType(json, function (result) {
+                db.addClientScope(json, function (result) {
                     if (result.id > -1) {
-                        clientGrantTypeId = result.id;
+                        clientScopeId = result.id;
                         assert(true);
                     } else {
                         assert(false);
@@ -63,13 +58,12 @@ describe('mysql DB client grant types', function () {
             }, 2000);           
         });
     });
-     
-     
-    describe('#getClientGrantTypeList()', function () {
-        it('should read client grant type list in db', function (done) {           
+    
+    describe('#getClientScopeList()', function () {
+        it('should read client scope list', function (done) {           
             setTimeout(function () {                
-                db.getClientGrantTypeList(clientId, function (result) {
-                    if (result && result.length > 0 && result[0].grantType === "code") {                        
+                db.getClientScopeList(clientId, function (result) {
+                    if (result && result.length > 0 && result[0].scope === "system") {                        
                         assert(true);
                     } else {
                         assert(false);
@@ -80,11 +74,10 @@ describe('mysql DB client grant types', function () {
         });
     });
     
-    
-    describe('#deleteClientGrantType()', function () {
-        it('should delete client grant type in db', function (done) {           
+    describe('#deleteClientScope()', function () {
+        it('should delete client scope', function (done) {           
             setTimeout(function () {                
-                db.deleteClientGrantType(clientGrantTypeId, function (result) {
+                db.deleteClientScope(clientScopeId, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {
@@ -94,7 +87,7 @@ describe('mysql DB client grant types', function () {
                 });
             }, 4000);           
         });
-    });
+    });        
     
     describe('#deleteClient()', function () {
         it('should delete client', function (done) {           

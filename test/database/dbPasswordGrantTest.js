@@ -1,23 +1,17 @@
 var assert = require('assert');
-var db = require("../../../database/mysql/db");
+var db = require("../../database/db");
 var tokenId;
 var clientId;
 var acId;
-var igScope;
 
-describe('mysql DB authorization code', function () {
+describe('DB password grant', function () {
     this.timeout(20000);
     describe('#connect()', function () {
         it('should connect to db and create pool', function (done) {
             db.connect("localhost", "admin", "admin", "ulbora_oauth2_server", 5);
-            db.testConnection(function (success) {
-                if (success) {                    
-                    assert(true);
-                } else {
-                    assert(false);
-                }
+            setTimeout(function () {
                 done();
-            });
+            }, 1000);
         });
     });
         
@@ -46,11 +40,11 @@ describe('mysql DB authorization code', function () {
         });
     });
     
-    describe('#addImplicitGrant()', function () {
-        it('should add an addImplicitGrant in db', function (done) { 
+    describe('#addPasswordGrant()', function () {
+        it('should add an password grant in db', function (done) { 
            var today = new Date();
            today.setTime(today.getTime() + (8*60*60*1000)); 
-           var impJson = {
+           var authCodeJson = {
                 clientId: clientId,
                 userId: "admin",                
                 accessTokenId: null
@@ -59,9 +53,11 @@ describe('mysql DB authorization code', function () {
                 token: 'djfjoiqjldktrtryrtyrytrsflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf',
                 expires: today
             };
-            
+            var refreshTokenJson = {
+                token: 'djfjoiqjldksflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf'
+            };
             setTimeout(function () {
-                db.addImplicitGrant(impJson, accessTokenJson, "read", function (result) {
+                db.addPasswordGrant(authCodeJson, accessTokenJson, refreshTokenJson, function (result) {
                     if (result.id > -1) {
                         acId = result.id;
                         assert(true);
@@ -74,46 +70,27 @@ describe('mysql DB authorization code', function () {
         });
     });
     
-    describe('#addImplicitGrantScope()', function () {
-        it('should add an ImplicitGrant scope in db', function (done) {            
-            var json = {
-                scope: "scopeTest",
-                implicitGrantId: acId
-            };
-            setTimeout(function () {
-                db.addImplicitGrantScope(json, function (result) {
-                    if (result.id > -1) {
-                        igScope = result.id;
-                        assert(true);
-                    } else {
-                        assert(false);
-                    }
-                    done();
-                });
-            }, 3000);
-        });
-    });
-    
-    describe('#deleteImplicitGrantScope()', function () {
-        it('should delete ImplicitGrant scope', function (done) {
-            setTimeout(function () {
-                db.deleteImplicitGrantScope(igScope, function (result) {
-                    if (result.success) {
-                        assert(true);
-                    } else {
-                        assert(false);
-                    }
-                    done();
-                });
-            }, 4000);
-        });
-    });
-   
-    
-    describe('#deleteImplicitGrant()', function () {
-        it('should delete ImplicitGrant in db', function (done) {           
+    describe('#getPasswordGrant()', function () {
+        it('should read password grant in db', function (done) {           
             setTimeout(function () {                
-                db.deleteImplicitGrant(clientId, "admin", function (result) {
+                db.getPasswordGrant( clientId, "admin", function (result) {
+                    if (result && result.userId === 'admin') {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 3000);           
+        });
+    });
+    
+    
+    
+    describe('#deletePasswordGrant()', function () {
+        it('should delete password grant in db', function (done) {           
+            setTimeout(function () {                
+                db.deletePasswordGrant(clientId, "admin", function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {
@@ -121,7 +98,7 @@ describe('mysql DB authorization code', function () {
                     }
                     done();
                 });
-            }, 5000);           
+            }, 4000);           
         });
     });   
     
@@ -136,7 +113,7 @@ describe('mysql DB authorization code', function () {
                     }
                     done();
                 });
-            }, 6000);           
+            }, 5000);           
         });
     });   
 });

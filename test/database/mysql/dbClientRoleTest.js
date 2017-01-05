@@ -51,7 +51,7 @@ describe('mysql DB client roles', function () {
                 clientId: clientId
             };
             setTimeout(function () {
-                db.addClientRole(null, json, function (result) {
+                db.addClientRole(json, function (result) {
                     if (result.id > -1) {
                         clientRoleId = result.id;
                         assert(true);
@@ -82,7 +82,7 @@ describe('mysql DB client roles', function () {
     describe('#deleteClientRole()', function () {
         it('should delete client role', function (done) {           
             setTimeout(function () {                
-                db.deleteClientRole(null, clientRoleId, function (result) {
+                db.deleteClientRole(clientRoleId, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {
