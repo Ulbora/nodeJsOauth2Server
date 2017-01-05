@@ -18,8 +18,38 @@
  You should have received a copy of the GNU Affero General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+var manager = require("./manager");
+
+var db;
+
+exports.init = function (database) {
+    db = database;
+};
 
 
-exports.addClient = function(json, callback){
-    
+exports.addClient = function (json, callback) {
+    var returnVal = {
+        success: false,
+        clientId: null,
+        message: ""
+    };
+    var isOk = manager.securityCheck(json);
+    if (isOk) {
+        var redirectUrls = json.redirectUrls;
+        if (redirectUrls) {
+            db.addClient(json, redirectUrls, function (result) {
+                if (result && result.success) {
+                    returnVal.success = result.success;
+                    returnVal.clientId = result.clientId;
+                    callback(returnVal);
+                } else {
+                    callback(returnVal);
+                }
+            });
+        } else {
+            callback(returnVal);
+        }
+    } else {
+        callback(returnVal);
+    }
 };
