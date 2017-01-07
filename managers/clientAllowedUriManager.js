@@ -27,35 +27,45 @@ exports.init = function (database) {
     db = database;
 };
 
-exports.addClientRole = function (json, callback) {
+exports.addClientAllowedUri = function (json, callback) {
     var returnVal = {
         success: false
     };
     var isOk = manager.securityCheck(json);
     if (isOk) {
-        db.addClientRole(json, callback);
+        db.addClientAllowedUri(json, callback);
     } else {
         callback(returnVal);
     }
 };
 
-exports.getClientRoleList = function (clientId, callback) {
+exports.getClientAllowedUriList = function (clientId, callback) {
     var isOk = manager.securityCheck(clientId);
     if (isOk) {
-        db.getClientRoleList(clientId, callback);
-    }else {
+        db.getClientAllowedUriList(clientId, callback);
+    } else {
         callback({});
-    }    
+    }
 };
 
-exports.deleteClientRole = function (id, callback) {
+exports.getClientAllowedUri = function (clientId, uri, callback) {
+    var idIsOk = manager.securityCheck(clientId);
+    var uriIsOk = manager.securityCheck(uri);
+    if (idIsOk && uriIsOk) {
+        db.getClientAllowedUri(clientId, uri, callback);
+    } else {
+        callback({});
+    }
+};
+
+exports.deleteClientAllowedUri = function (id, callback) {
     var returnVal = {
         success: false
     };
     var isOk = manager.securityCheck(id);
     if (isOk) {
-        db.deleteClientRole(id, callback);
+        db.deleteClientAllowedUri(id, callback);
     } else {
         callback(returnVal);
-    }    
+    }
 };
