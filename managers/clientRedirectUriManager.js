@@ -18,35 +18,35 @@
  You should have received a copy of the GNU Affero General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+var manager = require("./manager");
 
+var db;
 
-exports.securityCheck = function (obj) {
-    var returnVal = true;
-    if (obj !== undefined || obj !== null) {
-        var json = JSON.stringify(obj);
-        if (json !== undefined && json !== null) {
-            var n = json.indexOf("function");
-            if (n > -1) {
-                console.log("Security Alert: " + json);
-                returnVal = false;
-            }
-        } else {
-            returnVal = false;
-        }
-    } else {
-        returnVal = false;
-    }
-
-    return returnVal;
+exports.init = function (database) {
+    db = database;
 };
 
 
-exports.generateClientSecret = function(){
-     var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+exports.addClientRedirectUri = function (json, callback) {
+    var returnVal = {
+        success: false
+    };
+    var isOk = manager.securityCheck(json);
+    if (isOk) {
+        db.addClientRedirectUri(json, callback);
+    }else {
+        callback(returnVal);
+    }
+};
 
-    for( var i=0; i < 50; i++ )
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-    return text;
+exports.deleteClientRedirectUri = function (id, callback) {
+    var returnVal = {
+        success: false
+    };
+    var isOk = manager.securityCheck(id);
+    if (isOk) {
+        db.deleteClientRedirectUri(id, callback);
+    }else {
+        callback(returnVal);
+    }
 };

@@ -1,16 +1,18 @@
 var assert = require('assert');
 var db = require("../../database/db");
 var clientManager = require("../../managers/clientManager");
+var clientRedirectUriManager = require("../../managers/clientRedirectUriManager");
 var clientId;
 var clientObj;
 var redirectUriId
-describe('Client Manager', function () {
+describe('Client Redirect URI Manager', function () {
     this.timeout(20000);
     describe('#init()', function () {
         it('should init manager', function (done) {
             db.connect("localhost", "admin", "admin", "ulbora_oauth2_server", 5);
             setTimeout(function () {
                 clientManager.init(db);
+                clientRedirectUriManager.init(db);
                 done();
             }, 1000);
         });
@@ -51,30 +53,37 @@ describe('Client Manager', function () {
         });
     });
 
-    describe('#getClient()', function () {
-        it('should read client', function (done) {
+    
+
+    describe('#addClientRedirectUri()', function () {
+        it('should add a client redirect uri', function (done) { 
+            
+           var json = {                
+                uri: 'http://www.google.com',
+                clientId: clientId
+            };
             setTimeout(function () {
-                clientManager.getClient(clientId, function (result) {
-                    if (result && result.name === 'ulbora' && result.enabled === true) {
-                        clientObj = result;
-                        console.log("client: " + JSON.stringify(clientObj));
+                clientRedirectUriManager.addClientRedirectUri(json, function (result) {
+                    if (result.id > -1) {                        
                         assert(true);
                     } else {
                         assert(false);
                     }
                     done();
                 });
-            }, 3000);
+            }, 3000);           
         });
     });
 
 
-    describe('#updateClient()', function () {
-        it('should add a client', function (done) {
+    describe('#getClient()', function () {
+        it('should read client', function (done) {
             setTimeout(function () {
-                clientObj.enabled = false;
-                clientManager.updateClient(clientObj, function (result) {
-                    if (result.success) {
+                clientManager.getClient(clientId, function (result) {
+                    console.log("client after adding uri: " + JSON.stringify(result));
+                    if (result && result.name === 'ulbora' && result.enabled === true && 
+                            result.redirectUrls && result.redirectUrls.length === 3) {
+                        redirectUriId = result.redirectUrls[0].id;
                         assert(true);
                     } else {
                         assert(false);
@@ -85,40 +94,22 @@ describe('Client Manager', function () {
         });
     });
 
-
-    describe('#getClient()', function () {
-        it('should read client', function (done) {
-            setTimeout(function () {
-                clientManager.getClient(clientId, function (result) {
-                    console.log("client after adding uri: " + JSON.stringify(result));
-                    if (result && result.name === 'ulbora' && result.enabled === false && 
-                            result.redirectUrls && result.redirectUrls.length === 2) {
-                        redirectUriId = result.redirectUrls[0].id;
+    describe('#deleteClientRedirectUri()', function () {
+        it('should delete client redirect uri', function (done) {           
+            setTimeout(function () {                
+                clientRedirectUriManager.deleteClientRedirectUri(redirectUriId, function (result) {
+                    if (result.success) {                        
                         assert(true);
                     } else {
                         assert(false);
                     }
                     done();
                 });
-            }, 6000);
+            }, 5000);           
         });
     });
+    
 
-
-    describe('#getClientList()', function () {
-        it('should read client list', function (done) {
-            setTimeout(function () {
-                clientManager.getClientList(function (result) {
-                    if (result && result.length > 0) {
-                        assert(true);
-                    } else {
-                        assert(false);
-                    }
-                    done();
-                });
-            }, 7000);
-        });
-    });
     
      
     describe('#deleteClient()', function () {

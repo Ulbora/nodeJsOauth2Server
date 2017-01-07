@@ -37,6 +37,7 @@ exports.addClient = function (json, callback) {
     if (isOk) {
         var redirectUrls = json.redirectUrls;
         if (redirectUrls) {
+            json.secret = manager.generateClientSecret();
             db.addClient(json, redirectUrls, function (result) {
                 if (result && result.success) {
                     returnVal.success = result.success;
@@ -49,6 +50,67 @@ exports.addClient = function (json, callback) {
         } else {
             callback(returnVal);
         }
+    } else {
+        callback(returnVal);
+    }
+};
+
+exports.updateClient = function (json, callback) {
+    var returnVal = {
+        success: false,
+        message: ""
+    };
+    var isOk = manager.securityCheck(json);
+    if (isOk) {
+        if (!json.secret) {
+            json.secret = manager.generateClientSecret();
+        }
+        db.updateClient(json, function (result) {
+            if (result && result.success) {
+                returnVal.success = result.success;
+                callback(returnVal);
+            } else {
+                callback(returnVal);
+            }
+        });
+    } else {
+        callback(returnVal);
+    }
+};
+
+exports.getClient = function (clientId, callback) {
+    var isOk = manager.securityCheck(clientId);
+    if (isOk) {
+        db.getClient(clientId, function (result) {
+            if (result) {
+                db.getClientRedirectUriList(clientId, function (uriList) {
+                    if (uriList) {
+                        result.redirectUrls = uriList;
+                    }
+                    callback(result);
+                });
+            } else {
+                callback({});
+            }
+        });
+    } else {
+        callback({});
+    }
+};
+
+
+exports.getClientList = function (callback) {
+    db.getClientList(callback);
+};
+
+exports.deleteClient = function (clientId, callback) {
+    var returnVal = {
+        success: false,
+        message: ""
+    };
+    var isOk = manager.securityCheck(clientId);
+    if (isOk) {
+        db.deleteClient(clientId, callback);
     } else {
         callback(returnVal);
     }

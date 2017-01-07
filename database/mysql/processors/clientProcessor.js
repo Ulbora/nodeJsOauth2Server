@@ -61,7 +61,8 @@ exports.getClient = function (clientId, callback) {
     crud.get(clientQueries.CLIENT_GET_BY_ID_QUERY, queryId, function (result) {
         if (result.success && result.data.length > 0) {
             var rtn = {
-                clientId: result.data[0].client_id,                
+                clientId: result.data[0].client_id,  
+                secret: result.data[0].secret,
                 name: result.data[0].name,
                 webSite: result.data[0].web_site,
                 email: result.data[0].email,
