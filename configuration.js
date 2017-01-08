@@ -36,12 +36,10 @@ var CORS_ENABLED = false;
 
 //refresh tokens
 var ALLOW_REFRESH_TOKEN = true;
-var REFRESH_TOKEN_SECRET = "djfhfhFddsL5166Ffgsaaa5555124WeeeqQertkgfsgyoypewwncncnvm";
 var REFRESH_TOKEN_LIFE = 36000;// minutes -- 10 hours
 
 
 //access token 
-var ACCESS_TOKEN_SECRET = "dsdsyudsymbc245dsD245Hdd44vvFvfdsCV6551IotthgggFd11KjhgGvvxxxFggg444";
 var CODE_ACCESS_TOKEN_LIFE = 3600; //minutes -- 1 hour for code token
 var IMPLICIT_ACCESS_TOKEN_LIFE = 36000; // minutes -- 10 hours
 var CLIENT_ACCESS_TOKEN_LIFE = 36000; // minutes -- 10 hours
@@ -74,12 +72,10 @@ exports.DATABASE_POOL_SIZE = DATABASE_POOL_SIZE;
 
 //refresh tokens
 exports.ALLOW_REFRESH_TOKEN = ALLOW_REFRESH_TOKEN;
-exports.REFRESH_TOKEN_SECRET = REFRESH_TOKEN_SECRET;
 exports.REFRESH_TOKEN_LIFE = REFRESH_TOKEN_LIFE;
 
 
 //access token 
-exports.ACCESS_TOKEN_SECRET = ACCESS_TOKEN_SECRET;
 exports.CODE_ACCESS_TOKEN_LIFE = CODE_ACCESS_TOKEN_LIFE; 
 exports.IMPLICIT_ACCESS_TOKEN_LIFE = IMPLICIT_ACCESS_TOKEN_LIFE; 
 exports.CLIENT_ACCESS_TOKEN_LIFE = CLIENT_ACCESS_TOKEN_LIFE; 

@@ -35,6 +35,7 @@ var implicitGrantProcessor = require("./processors/implicitGrantProcessor");
 var implicitGrantScopeProcessor = require("./processors/implicitGrantScopeProcessor");
 var passwordGrantProcessor = require("./processors/passwordGrantProcessor");
 var credentialsGrantProcessor = require("./processors/credentialsGrantProcessor");
+var tokenKeyProcessor = require("./processors/tokenKeyProcessor");
 
 exports.connect = function (host, user, pw, db, cpnum) {
     crud.connect(host, user, pw, db, cpnum);
@@ -53,6 +54,7 @@ exports.connect = function (host, user, pw, db, cpnum) {
     implicitGrantScopeProcessor.init(crud);
     passwordGrantProcessor.init(crud);
     credentialsGrantProcessor.init(crud);
+    tokenKeyProcessor.init(crud);
 };
 // for testing only
 exports.testConnection = function (callback) {
@@ -878,3 +880,15 @@ exports.deleteCredentialsGrant = function (clientId, callback) {
     });
 };
 //end credentials grant
+
+//token keys
+
+exports.getAccessTokenKey = function (callback) {    
+    tokenKeyProcessor.getAccessTokenKey(callback);
+};
+
+
+exports.getRefreshTokenKey = function (callback) {    
+    tokenKeyProcessor.getRefreshTokenKey(callback);
+};
+//end token keys

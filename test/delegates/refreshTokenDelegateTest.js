@@ -1,10 +1,18 @@
 var assert = require('assert');
-
+var db = require("../../database/db");
 var refreshTokenDelegate = require("../../delegates/refreshTokenDelegate");
 var token;
 describe('Refresh token delegate', function () {
     this.timeout(20000);
-
+     describe('#init()', function () {
+        it('should init manager', function (done) {
+            db.connect("localhost", "admin", "admin", "ulbora_oauth2_server", 5);
+            setTimeout(function () {
+                refreshTokenDelegate.init(db);                
+                done();
+            }, 1000);
+        });
+    });
     describe('#generateRefreshToken()', function () {
         it('should generateRefreshToken', function (done) {
             var payload = {
@@ -23,7 +31,7 @@ describe('Refresh token delegate', function () {
                     }
                     done();
                 });
-            }, 1000);
+            }, 2000);
         });
     });
     
@@ -43,7 +51,7 @@ describe('Refresh token delegate', function () {
                     }
                     done();
                 });
-            }, 2000);
+            }, 3000);
         });
     });
 

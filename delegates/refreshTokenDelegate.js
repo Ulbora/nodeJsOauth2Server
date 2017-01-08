@@ -22,21 +22,32 @@
 var jwt = require('jsonwebtoken');
 var config = require("../configuration");
 
-exports.generateRefreshToken = function (json, callback) {    
-    if (json) {
-        json.iat = Math.floor(Date.now() / 1000);
-        json.tokenType = "refresh";
-        //options
-        var options = {};
-        options.expiresIn = config.REFRESH_TOKEN_LIFE;        
-        options.issuer = config.TOKEN_ISSUER;
-        jwt.sign(json, config.REFRESH_TOKEN_SECRET, options, function (err, token) {
-            if (err) {
-                console.log("refresh token error :" + err);
-            }
-            callback(token);
-        });
+var db;
 
+exports.init = function (database) {
+    db = database;
+};
+
+exports.generateRefreshToken = function (json, callback) {
+    if (json) {
+        db.getRefreshTokenKey(function (result) {
+            if (result && result.key) {
+                json.iat = Math.floor(Date.now() / 1000);
+                json.tokenType = "refresh";
+                //options
+                var options = {};
+                options.expiresIn = config.REFRESH_TOKEN_LIFE;
+                options.issuer = config.TOKEN_ISSUER;
+                jwt.sign(json, result.key, options, function (err, token) {
+                    if (err) {
+                        console.log("refresh token error :" + err);
+                    }
+                    callback(token);
+                });
+            } else {
+                callback();
+            }
+        });
     } else {
         callback();
     }
@@ -45,16 +56,22 @@ exports.generateRefreshToken = function (json, callback) {
 exports.validateRefreshToken = function (refreshToken, claims, callback) {
     var valid = false;
     console.log("refresh token: " + refreshToken);
-    jwt.verify(refreshToken, config.REFRESH_TOKEN_SECRET, function (err, decoded) {        
-        if (err) {
-            console.log("RefreshToken verify err: " + err);
+    db.getRefreshTokenKey(function (result) {
+        if (result && result.key) {
+            jwt.verify(refreshToken, result.key, function (err, decoded) {
+                if (err) {
+                    console.log("RefreshToken verify err: " + err);
+                }
+                if (decoded && decoded.tokenType === "refresh" && decoded.userId === claims.userId &&
+                        decoded.clientId === claims.clientId && decoded.iss === config.TOKEN_ISSUER) {
+                    console.log("decoded refresh token: " + JSON.stringify(decoded));
+                    valid = true;
+                }
+                callback(valid);
+            });
+        } else {
+            callback(valid);
         }
-        if (decoded.tokenType === "refresh" && decoded.userId === claims.userId && 
-                decoded.clientId === claims.clientId && decoded.iss === config.TOKEN_ISSUER) {
-            console.log("decoded refresh token: " + JSON.stringify(decoded));
-            valid = true;
-        }
-        callback(valid);    
     });
 };
 

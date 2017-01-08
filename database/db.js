@@ -271,3 +271,16 @@ exports.deleteCredentialsGrant = function (clientId, callback) {
     db.deleteCredentialsGrant(clientId, callback);
 };
 //end credentials grant
+
+
+//token keys
+
+exports.getAccessTokenKey = function (callback) {    
+    db.getAccessTokenKey(callback);
+};
+
+
+exports.getRefreshTokenKey = function (callback) {    
+    db.getRefreshTokenKey(callback);
+};
+//end token keys
