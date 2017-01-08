@@ -27,36 +27,35 @@ exports.init = function (database) {
     db = database;
 };
 
-
-exports.addClientGrantType = function (json, callback) {
+exports.addClientRoleUri = function (json, callback) {
     var returnVal = {
         success: false
     };
     var isOk = manager.securityCheck(json);
     if (isOk) {
-        db.addClientGrantType(json, callback);
+        db.addClientRoleUri(json, callback);
     } else {
         callback(returnVal);
     }
 };
 
-exports.getClientGrantTypeList = function (clientId, callback) {
-    var isOk = manager.securityCheck(clientId);
+exports.getClientRoleAllowedUriList = function (clientRoleId, callback) {
+    var isOk = manager.securityCheck(clientRoleId);
     if (isOk) {
-        db.getClientGrantTypeList(clientId, callback);
-    } else {
+        db.getClientRoleAllowedUriList(clientRoleId, callback);
+    }else {
         callback({});
-    }
+    }    
 };
 
-exports.deleteClientGrantType = function (id, callback) {
+exports.deleteClientRoleUri = function (json, callback) {
     var returnVal = {
         success: false
     };
-    var isOk = manager.securityCheck(id);
+    var isOk = manager.securityCheck(json);
     if (isOk) {
-        db.deleteClientGrantType(id, callback);
+        db.deleteClientRoleUri(json, callback);
     } else {
         callback(returnVal);
-    }
+    }    
 };

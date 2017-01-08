@@ -19,7 +19,6 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-var manager = require("./manager");
 
 var db;
 
@@ -27,36 +26,17 @@ exports.init = function (database) {
     db = database;
 };
 
-
-exports.addClientGrantType = function (json, callback) {
-    var returnVal = {
-        success: false
-    };
-    var isOk = manager.securityCheck(json);
-    if (isOk) {
-        db.addClientGrantType(json, callback);
-    } else {
-        callback(returnVal);
-    }
+exports.addNewCode = function(json, callback){    
+    var clientId = json.clientId;
+    var userId = json.userId;
+    var scope = json.scope;
+    
+    
+    
 };
 
-exports.getClientGrantTypeList = function (clientId, callback) {
-    var isOk = manager.securityCheck(clientId);
-    if (isOk) {
-        db.getClientGrantTypeList(clientId, callback);
-    } else {
-        callback({});
-    }
+exports.generateNewCode = function(authorizationCode, callback){
+    
 };
 
-exports.deleteClientGrantType = function (id, callback) {
-    var returnVal = {
-        success: false
-    };
-    var isOk = manager.securityCheck(id);
-    if (isOk) {
-        db.deleteClientGrantType(id, callback);
-    } else {
-        callback(returnVal);
-    }
-};
+    
