@@ -1,24 +1,22 @@
 var assert = require('assert');
-var db = require("../../../database/mysql/db");
+var db = require("../../database/db");
+var authorizationCodeDelegate = require("../../delegates/authorizationCodeDelegate");
 var clientId;
 var clientRoleId;
 var clientAllowedUriId;
 
-describe('mysql DB client roles uri', function () {
+describe('Authorization Code delegate', function () {
     this.timeout(20000);
-    describe('#connect()', function () {
-        it('should connect to db and create pool', function (done) {
+    describe('#init()', function () {
+        it('should init manager', function (done) {
             db.connect("localhost", "admin", "admin", "ulbora_oauth2_server", 5);
-            db.testConnection(function (success) {
-                if (success) {                    
-                    assert(true);
-                } else {
-                    assert(false);
-                }
+            setTimeout(function () {
+                authorizationCodeDelegate.init(db);
                 done();
-            });
+            }, 1000);
         });
     });
+    
     
     describe('#addClient()', function () {
         it('should add a client', function (done) { 
@@ -40,7 +38,7 @@ describe('mysql DB client roles uri', function () {
                     }
                     done();
                 });
-            }, 1000);           
+            }, 2000);           
         });
     });
      
@@ -61,7 +59,7 @@ describe('mysql DB client roles uri', function () {
                     }
                     done();
                 });
-            }, 2000);           
+            }, 3000);           
         });
     });
     
@@ -82,7 +80,7 @@ describe('mysql DB client roles uri', function () {
                     }
                     done();
                 });
-            }, 3000);           
+            }, 4000);           
         });
     });
     
@@ -102,40 +100,46 @@ describe('mysql DB client roles uri', function () {
                     }
                     done();
                 });
-            }, 4000);           
-        });
-    });
-    
-    describe('#getClientRoleUriList()', function () {
-        it('should get a client Role Uri list', function (done) {                       
-            setTimeout(function () {
-                db.getClientRoleAllowedUriList(clientRoleId, function (result) {
-                    if (result && result.length > 0 && result[0].clientAllowedUriId === clientAllowedUriId) {                        
-                        assert(true);
-                    } else {
-                        assert(false);
-                    }
-                    done();
-                });
             }, 5000);           
         });
     });
     
-    describe('#getClientRoleAllowedUriListByClientId()', function () {
-        it('should get a client Role Uri list by clientId', function (done) {                       
+     describe('#createAuthorizationCode()', function () {
+        it('should createAuthorizationCode', function (done) {
+            var json = {
+                clientId: clientId,
+                userId: "user1"
+            };
             setTimeout(function () {
-                db.getClientRoleAllowedUriListByClientId(clientId, function (result) {
-                    if (result && result.length > 0 && result[0].uriId === clientAllowedUriId) {                        
+                var scopes = ["read", "modify"];
+                authorizationCodeDelegate.createAuthorizationCode(json, scopes, function (acodeReslut) {
+                    console.log("authorization code: " + JSON.stringify(acodeReslut));
+                    if (acodeReslut.success) { 
                         assert(true);
                     } else {
                         assert(false);
                     }
                     done();
                 });
-            }, 6000);           
+            }, 6000);
         });
     });
     
+    describe('#deleteAuthorizationCode()', function () {
+        it('should delete authorization code', function (done) {
+            setTimeout(function () {
+                db.deleteAuthorizationCode(clientId, "user1", function (result) {
+                    if (result.success) {
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 7000);
+        });
+    });
+
     
     describe('#deleteClientRoleUri()', function () {
         it('should delete a client Role Uri', function (done) {             
@@ -152,7 +156,7 @@ describe('mysql DB client roles uri', function () {
                     }
                     done();
                 });
-            }, 7000);           
+            }, 8000);           
         });
     });
     
@@ -167,7 +171,7 @@ describe('mysql DB client roles uri', function () {
                     }
                     done();
                 });
-            }, 8000);           
+            }, 9000);           
         });
     }); 
     
@@ -182,7 +186,7 @@ describe('mysql DB client roles uri', function () {
                     }
                     done();
                 });
-            }, 9000);           
+            }, 10000);           
         });
     });
     
@@ -197,8 +201,11 @@ describe('mysql DB client roles uri', function () {
                     }
                     done();
                 });
-            }, 10000);           
+            }, 11000);           
         });
     });       
+      
 });
+
+
 

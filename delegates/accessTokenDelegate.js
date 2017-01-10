@@ -37,7 +37,7 @@ exports.generateAccessToken = function (json, callback) {
                 json.tokenType = "access";
                 //options
                 var options = {};
-                //options.expiresIn = config.REFRESH_TOKEN_LIFE;
+                options.expiresIn = json.expiresIn, //config.REFRESH_TOKEN_LIFE;
                 options.issuer = config.TOKEN_ISSUER;
                 jwt.sign(json, result.key, options, function (err, token) {
                     if (err) {
@@ -65,29 +65,31 @@ exports.validateAccessToken = function (refreshToken, claims, callback) {
                 }
                 if (decoded && decoded.tokenType === "access" && decoded.userId === claims.userId &&
                         decoded.clientId === claims.clientId && decoded.iss === config.TOKEN_ISSUER) {
-                    console.log("decoded access token: " + JSON.stringify(decoded));
-                    var useRole = false;
-                    var foundRole = false;
-                    var useUri = false;
-                    var foundUri = false;
-                    var roles = decoded.roles;
-                    var allowedUris = decoded.allowedUris;
-                    if(roles){
-                        useRole = true;
-                        foundRole = (roles.indexOf(claims.role) > -1)? true: false;
-                    }
-                    if(allowedUris){
-                        useUri = true;
-                        foundUri = (allowedUris.indexOf(claims.uri) > -1)? true: false;
-                    }
-                    if(!useRole){
-                        foundRole = true;
-                    }
-                    if(!useUri){
-                        foundUri = true;
-                    }
-                    console.log("foundRole: " + foundRole + " foundUri: "+ foundUri);
-                    if(foundRole && foundUri){
+                    //console.log("decoded access token: " + JSON.stringify(decoded));
+                    //console.log("claims: " + JSON.stringify(claims));                    
+                    var foundRoleUri = false;                    
+                    var roleUris = decoded.roleUris;
+                    var checkUris = [];
+                    if(roleUris && roleUris.length > 0){                        
+                        for(var cnt = 0; cnt < roleUris.length; cnt++){
+                            checkUris.push(roleUris[cnt].uri);
+                            if(roleUris[cnt].role === claims.role && roleUris[cnt].uri === claims.uri){
+                                foundRoleUri = true;
+                                break;
+                            }
+                        } 
+                        if(!foundRoleUri){
+                            //console.log("role uris not found fo far: ");
+                            //uri not mapped so token is valid
+                            //only uris that are mapped can be used to invalidate a token
+                            //console.log("index of: " + (checkUris.indexOf(claims.uri)));
+                            foundRoleUri = (checkUris.indexOf(claims.uri) === -1)? true: false;
+                        }                        
+                    }else{
+                        foundRoleUri = true;
+                    }                    
+                    console.log("foundRoleUri: " + foundRoleUri );
+                    if(foundRoleUri){
                         valid = true;
                     }  
                 }

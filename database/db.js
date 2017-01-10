@@ -122,6 +122,10 @@ exports.getClientRoleAllowedUriList = function (clientRoleId, callback) {
     db.getClientRoleAllowedUriList(clientRoleId, callback);
 };
 
+exports.getClientRoleAllowedUriListByClientId = function (clientId, callback) {
+    db.getClientRoleAllowedUriListByClientId(clientId, callback);
+};
+
 exports.deleteClientRoleUri = function (json, callback) {
     db.deleteClientRoleUri(json, callback);
 };
@@ -164,8 +168,8 @@ exports.deleteAccessToken = function (id, callback) {
 //end access token
 
 //authorization code
-exports.addAuthorizationCode = function (authCodeJson, accessTokenJson, refreshTokenJson, callback) {
-    db.addAuthorizationCode(authCodeJson, accessTokenJson, refreshTokenJson, callback);
+exports.addAuthorizationCode = function (authCodeJson, accessTokenJson, refreshTokenJson, scopeList, callback) {
+    db.addAuthorizationCode(authCodeJson, accessTokenJson, refreshTokenJson, scopeList, callback);
 };
 
 

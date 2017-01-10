@@ -8,7 +8,7 @@ var clientId;
 var clientRoleId;
 var clientAllowedUriId;
 describe('ClientRoleUriProcessor', function () {
-    this.timeout(10000);
+    this.timeout(20000);
     describe('#connect()', function () {
         it('should connect to db and create pool', function (done) {
             crud.connect("localhost", "admin", "admin", "ulbora_oauth2_server", 5);
@@ -128,6 +128,22 @@ describe('ClientRoleUriProcessor', function () {
         });
     });
     
+    describe('#getClientRoleUriListByClientId()', function () {
+        it('should get a client Role Uri list by client id', function (done) {                       
+            setTimeout(function () {
+                clintRoleUriProcessor.getClientRoleAllowedUriListByClientId(clientId, function (result) {
+                    console.log("role uris by client: " + JSON.stringify(result))
+                    console.log("clientAllowedUriId: " + clientAllowedUriId)
+                    if (result && result.length > 0 && result[0].uriId === clientAllowedUriId) {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 6000);           
+        });
+    });
     
     describe('#deleteClientRoleUri()', function () {
         it('should delete a client Role Uri', function (done) {             
@@ -144,7 +160,7 @@ describe('ClientRoleUriProcessor', function () {
                     }
                     done();
                 });
-            }, 6000);           
+            }, 7000);           
         });
     });
     
@@ -159,7 +175,7 @@ describe('ClientRoleUriProcessor', function () {
                     }
                     done();
                 });
-            }, 7000);           
+            }, 8000);           
         });
     });
     
@@ -174,7 +190,7 @@ describe('ClientRoleUriProcessor', function () {
                     }
                     done();
                 });
-            }, 8000);           
+            }, 9000);           
         });
     });
     
@@ -189,7 +205,7 @@ describe('ClientRoleUriProcessor', function () {
                     }
                     done();
                 });
-            }, 9000);           
+            }, 10000);           
         });
     });    
 });

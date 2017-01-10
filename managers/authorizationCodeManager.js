@@ -44,22 +44,51 @@ exports.authorize = function (json, callback) {
         db.getAuthorizationCode(clientId, userId, function (codeResult) {
             if (codeResult && codeResult.authorizationCode) {
                 db.getAuthorizationCodeScopeList(codeResult.authorizationCode, function (scopeList) {
+                    var scopeListToAdd = [];
                     var scopeFound = false;
                     for (var cnt = 0; cnt < scopeList.length; cnt++) {
                         if (scope === scopeList[cnt].scope) {
-                            returnVal.authorizationCode = codeResult.authorizationCode;
+                            //returnVal.authorizationCode = codeResult.authorizationCode;
                             scopeFound = true;
                             break;
                         }
                     }
-                    if(scopeFound){
-                        callback(returnVal);
-                    }else{
-                        
-                    }                    
+                    if (scopeFound) {
+                        // delete auth code
+                        for (var cnt = 0; cnt < scopeList.length; cnt++) {
+                            scopeListToAdd.push(scopeList[cnt].scope);
+                        }
+                        db.deleteAuthorizationCode(codeResult.authorizationCode, function (codeDelResult) {
+                            if (codeDelResult.success) {
+                                // create new auth code
+                            //callback(returnVal);
+                            } else {
+                                returnVal.error = "access_denied";
+                                callback(returnVal);
+                            }                            
+                        });
+                    } else {
+                        scopeListToAdd.push(scope);
+                        for (var cnt = 0; cnt < scopeList.length; cnt++) {
+                            scopeListToAdd.push(scopeList[cnt].scope);
+                        }
+                        // deleste all auth code
+                        db.deleteAuthorizationCode(codeResult.authorizationCode, function (codeDelResult) {
+                            if (codeDelResult.success) {
+                                // create new auth code
+                            //callback(returnVal);
+                            } else {
+                                returnVal.error = "access_denied";
+                                callback(returnVal);
+                            }               
+                            // create new auth code
+                            //callback(returnVal);
+                        });
+                        //create auth code
+                    }
                 });
             } else {
-
+                //create auth code
             }
         });
     } else {
@@ -67,12 +96,9 @@ exports.authorize = function (json, callback) {
         callback(returnVal);
     }
 
-
-
-
-
 };
 
 exports.authorizeApplication = function (json, callback) {
 
 };
+

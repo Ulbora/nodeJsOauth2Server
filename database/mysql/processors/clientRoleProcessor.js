@@ -21,7 +21,7 @@
 
 var clientQueries = require("../queries/clientQueries");
 var crud;
-exports.init = function(c){
+exports.init = function (c) {
     crud = c;
 };
 
@@ -41,11 +41,13 @@ exports.addClientRole = function (con, json, callback) {
     });
 };
 
+//add getClientRole //clientId, role
+
 exports.getClientRoleList = function (clientId, callback) {
-     var queryId = [clientId];
+    var queryId = [clientId];
     crud.get(clientQueries.CLIENT_ROLE_LIST_QUERY, queryId, function (result) {
+        var rtnList = [];
         if (result.success && result.data.length > 0) {
-            var rtnList = [];
             for (var cnt = 0; cnt < result.data.length; cnt++) {
                 var rtn = {
                     id: result.data[cnt].id,

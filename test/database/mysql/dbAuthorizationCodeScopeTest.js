@@ -64,7 +64,8 @@ describe('mysql DB authorization code scope', function () {
                 token: 'djfjoiqjldksflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf'
             };
             setTimeout(function () {
-                db.addAuthorizationCode(authCodeJson, accessTokenJson, refreshTokenJson, function (result) {
+                var scopeList = ["admin", "read"];
+                db.addAuthorizationCode(authCodeJson, accessTokenJson, refreshTokenJson, scopeList, function (result) {
                     if (result.authorizationCode > -1) {
                         acId = result.authorizationCode;
                         assert(true);
@@ -121,7 +122,7 @@ describe('mysql DB authorization code scope', function () {
         it('should read AuthorizationCodeScope in db', function (done) {
             setTimeout(function () {
                 db.getAuthorizationCodeScopeList(acId, function (result) {
-                    if (result && result.length > 1 && result[0].scope === "scopeTest") {
+                    if (result && result.length > 1 && result[2].scope === "scopeTest") {
                         assert(true);
                     } else {
                         assert(false);

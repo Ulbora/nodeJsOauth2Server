@@ -116,6 +116,22 @@ describe('DB client roles uri', function () {
         });
     });
     
+    describe('#getClientRoleAllowedUriListByClientId()', function () {
+        it('should get a client Role Uri list by clientId', function (done) {                       
+            setTimeout(function () {
+                db.getClientRoleAllowedUriListByClientId(clientId, function (result) {
+                    if (result && result.length > 0 && result[0].uriId === clientAllowedUriId) {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 6000);           
+        });
+    });
+    
+    
     describe('#deleteClientRoleUri()', function () {
         it('should delete a client Role Uri', function (done) {             
            var json = {                
@@ -131,7 +147,7 @@ describe('DB client roles uri', function () {
                     }
                     done();
                 });
-            }, 6000);           
+            }, 7000);           
         });
     });
     
@@ -146,7 +162,7 @@ describe('DB client roles uri', function () {
                     }
                     done();
                 });
-            }, 7000);           
+            }, 8000);           
         });
     }); 
     
@@ -161,7 +177,7 @@ describe('DB client roles uri', function () {
                     }
                     done();
                 });
-            }, 8000);           
+            }, 9000);           
         });
     });
     
@@ -176,7 +192,7 @@ describe('DB client roles uri', function () {
                     }
                     done();
                 });
-            }, 9000);           
+            }, 10000);           
         });
     });       
 });

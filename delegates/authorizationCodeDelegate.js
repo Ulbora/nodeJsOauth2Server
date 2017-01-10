@@ -19,24 +19,91 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+var refreshTokenDelegate = require("./refreshTokenDelegate");
+var accessTokenDelegate = require("./accessTokenDelegate");
+var config = require("../configuration");
 
 var db;
 
 exports.init = function (database) {
     db = database;
+    refreshTokenDelegate.init(db);
+    accessTokenDelegate.init(db);
 };
 
-exports.addNewCode = function(json, callback){    
+
+exports.createAuthorizationCode = function (json, scopes, callback) {
+    var rtn = {
+        authorizationCode: null,
+        success: false,
+        message: null
+    };
     var clientId = json.clientId;
     var userId = json.userId;
-    var scope = json.scope;
-    
-    
-    
+    // create refresh token
+    var refreshPayload = {
+        sub: "refresh",
+        userId: userId,
+        clientId: clientId
+    };
+    console.log("refresh token refreshPayload: " + JSON.stringify(refreshPayload));
+    refreshTokenDelegate.generateRefreshToken(refreshPayload, function (refreshToken) {
+        console.log("refresh token: " + refreshToken);
+        if (refreshToken) {
+            var rftJson = {
+                token: refreshToken
+            };
+            db.getClientRoleAllowedUriListByClientId(clientId, function (clientRoleUriList) {
+                console.log("clientRoleUriList: " + JSON.stringify(clientRoleUriList));
+                if (clientRoleUriList) {
+                    var roleUriList = [];
+                    for (var cnt = 0; cnt < clientRoleUriList.length; cnt++) {
+                        roleUriList.push(clientRoleUriList[cnt]);
+                    }
+                    var accessPayload = {
+                        sub: "access",
+                        userId: userId,
+                        clientId: clientId,
+                        roleUris: roleUriList,
+                        expiresIn: config.CODE_ACCESS_TOKEN_LIFE
+                    };
+                    accessTokenDelegate.generateAccessToken(accessPayload, function (accessToken) {
+                        if (accessToken) {
+                            var acTokenExpires = new Date();
+                            var accessTknJson = {
+                                token: accessToken,
+                                expires: acTokenExpires
+                            };
+                            var authCodeJson = {
+                                clientId: clientId,
+                                userId: userId,
+                                expires: acTokenExpires
+
+                            };
+                            db.addAuthorizationCode(authCodeJson, accessTknJson, rftJson, scopes, function (addAccessTknResult) {
+                                if (addAccessTknResult.success) {
+                                    rtn.authorizationCode = addAccessTknResult.authorizationCode;
+                                    rtn.success = true;
+                                    callback(rtn);
+                                } else {
+                                    callback(rtn);
+                                }
+                            });
+                        } else {
+                            callback(rtn);
+                        }
+                    });
+                } else {
+                    callback(rtn);
+                }
+            });
+        } else {
+            callback(rtn);
+        }
+    });
 };
 
-exports.generateNewCode = function(authorizationCode, callback){
-    
-};
+
+
 
     

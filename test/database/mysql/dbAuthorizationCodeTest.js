@@ -63,7 +63,8 @@ describe('mysql DB authorization code', function () {
                 token: 'djfjoiqjldksflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf'
             };
             setTimeout(function () {
-                db.addAuthorizationCode(authCodeJson, accessTokenJson, refreshTokenJson, function (result) {
+                var scopeList = ["admin", "read"];
+                db.addAuthorizationCode(authCodeJson, accessTokenJson, refreshTokenJson, scopeList, function (result) {
                     if (result.authorizationCode > -1) {
                         acId = result.authorizationCode;
                         assert(true);

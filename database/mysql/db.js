@@ -263,6 +263,10 @@ exports.getClientRoleAllowedUriList = function (clientRoleId, callback) {
     clientRoleUriProcessor.getClientRoleAllowedUriList(clientRoleId, callback);
 };
 
+exports.getClientRoleAllowedUriListByClientId = function (clientId, callback) {
+    clientRoleUriProcessor.getClientRoleAllowedUriListByClientId(clientId, callback);
+};
+
 exports.deleteClientRoleUri = function (json, callback) {
     clientRoleUriProcessor.deleteClientRoleUri(null, json, callback);
 };
@@ -309,7 +313,7 @@ exports.deleteAccessToken = function (id, callback) {
 //end access token
 
 //authorization code
-exports.addAuthorizationCode = function (authCodeJson, accessTokenJson, refreshTokenJson, callback) {
+exports.addAuthorizationCode = function (authCodeJson, accessTokenJson, refreshTokenJson, scopeList, callback) {
     var rtn = {
         authorizationCode: null,
         success: false,
@@ -321,10 +325,11 @@ exports.addAuthorizationCode = function (authCodeJson, accessTokenJson, refreshT
                 if (!err) {
                     if (refreshTokenJson) {
                         refreshTokenProcessor.addRefreshToken(con, refreshTokenJson, function (refreshResult) {
+                            console.log("refresh token: " + JSON.stringify(refreshResult));
                             if (refreshResult.id > -1) {
                                 var accTokenJson = accessTokenJson;
                                 accTokenJson.refreshTokenId = refreshResult.id;
-                                doAuthCodeAdd(con, rtn, authCodeJson, accTokenJson, function (acRtn) {
+                                doAuthCodeAdd(con, rtn, authCodeJson, accTokenJson, scopeList, function (acRtn) {
                                     callback(acRtn);
                                 });
                             } else {
@@ -333,7 +338,7 @@ exports.addAuthorizationCode = function (authCodeJson, accessTokenJson, refreshT
                             }
                         });
                     } else {
-                        doAuthCodeAdd(con, rtn, authCodeJson, accessTokenJson, function (acRtn) {
+                        doAuthCodeAdd(con, rtn, authCodeJson, accessTokenJson, scopeList, function (acRtn) {
                             callback(acRtn);
                         });
                     }
@@ -348,24 +353,55 @@ exports.addAuthorizationCode = function (authCodeJson, accessTokenJson, refreshT
     });
 };
 
-var doAuthCodeAdd = function (con, rtn, authCodeJson, accTokenJson, callback) {
+var doAuthCodeAdd = function (con, rtn, authCodeJson, accTokenJson, scopeList, callback) {
     accessTokenProcessor.addAccessToken(con, accTokenJson, function (accessResult) {
+        console.log("access token: " + JSON.stringify(accessResult));
         if (accessResult.id > -1) {
             var acJson = authCodeJson;
             acJson.expires = accTokenJson.expires;
             acJson.accessTokenId = accessResult.id;
             authorizationCodeProcessor.addAuthorizationCode(con, acJson, function (acResult) {
                 if (acResult.authorizationCode > -1) {
-                    con.commit(function (err) {
-                        if (err) {
-                            con.rollback();
-                            callback(rtn);
-                        } else {
-                            rtn.authorizationCode = acResult.authorizationCode;
-                            rtn.success = true;
-                            callback(rtn);
+                    if (scopeList && scopeList.length > 0) {
+                        var scopeCnt = 0;
+                        for (var cnt = 0; cnt < scopeList.length; cnt++) {
+                            var scopeJson = {
+                                scope: scopeList[cnt],
+                                authorizationCode: acResult.authorizationCode
+                            };
+                            authorizationCodeScopeProcessor.addAuthorizationCodeScope(con, scopeJson, function (scopeInsResult) {
+                                if (scopeInsResult.success) {
+                                    scopeCnt++;
+                                } else {
+                                    con.rollback();
+                                    callback(rtn);
+                                }
+                                if (scopeCnt === scopeList.length) {
+                                    con.commit(function (err) {
+                                        if (err) {
+                                            con.rollback();
+                                            callback(rtn);
+                                        } else {
+                                            rtn.authorizationCode = acResult.authorizationCode;
+                                            rtn.success = true;
+                                            callback(rtn);
+                                        }
+                                    });
+                                }
+                            });
                         }
-                    });
+                    } else {
+                        con.commit(function (err) {
+                            if (err) {
+                                con.rollback();
+                                callback(rtn);
+                            } else {
+                                rtn.authorizationCode = acResult.authorizationCode;
+                                rtn.success = true;
+                                callback(rtn);
+                            }
+                        });
+                    }
                 } else {
                     con.rollback();
                     callback(rtn);
@@ -402,13 +438,30 @@ exports.deleteAuthorizationCode = function (clientId, userId, callback) {
                                 if (accTokenResult && accTokenResult.refreshTokenId) {
                                     refreshTokenId = accTokenResult.refreshTokenId;
                                 }
-                                authorizationCodeProcessor.deleteAuthorizationCode(con, clientId, userId, function (acDelResult) {
-                                    if (acDelResult.success) {
-                                        accessTokenProcessor.deleteAccessToken(con, acResult.accessTokenId, function (accTokenDelResult) {
-                                            if (accTokenDelResult.success) {
-                                                if (refreshTokenId) {
-                                                    refreshTokenProcessor.deleteRefreshToken(con, refreshTokenId, function (rfTokenDelResult) {
-                                                        if (rfTokenDelResult.success) {
+                                authorizationCodeScopeProcessor.deleteAuthorizationCodeScopeList(con, acResult.authorizationCode, function (scopeDelResult) {
+                                    if (scopeDelResult.success) {
+                                        authorizationCodeProcessor.deleteAuthorizationCode(con, clientId, userId, function (acDelResult) {
+                                            if (acDelResult.success) {
+                                                accessTokenProcessor.deleteAccessToken(con, acResult.accessTokenId, function (accTokenDelResult) {
+                                                    if (accTokenDelResult.success) {
+                                                        if (refreshTokenId) {
+                                                            refreshTokenProcessor.deleteRefreshToken(con, refreshTokenId, function (rfTokenDelResult) {
+                                                                if (rfTokenDelResult.success) {
+                                                                    con.commit(function (err) {
+                                                                        if (err) {
+                                                                            con.rollback();
+                                                                            callback(rtn);
+                                                                        } else {
+                                                                            rtn.success = true;
+                                                                            callback(rtn);
+                                                                        }
+                                                                    });
+                                                                } else {
+                                                                    con.rollback();
+                                                                    callback(rtn);
+                                                                }
+                                                            });
+                                                        } else {
                                                             con.commit(function (err) {
                                                                 if (err) {
                                                                     con.rollback();
@@ -418,22 +471,12 @@ exports.deleteAuthorizationCode = function (clientId, userId, callback) {
                                                                     callback(rtn);
                                                                 }
                                                             });
-                                                        } else {
-                                                            con.rollback();
-                                                            callback(rtn);
                                                         }
-                                                    });
-                                                } else {
-                                                    con.commit(function (err) {
-                                                        if (err) {
-                                                            con.rollback();
-                                                            callback(rtn);
-                                                        } else {
-                                                            rtn.success = true;
-                                                            callback(rtn);
-                                                        }
-                                                    });
-                                                }
+                                                    } else {
+                                                        con.rollback();
+                                                        callback(rtn);
+                                                    }
+                                                });
                                             } else {
                                                 con.rollback();
                                                 callback(rtn);
@@ -841,7 +884,7 @@ exports.deleteCredentialsGrant = function (clientId, callback) {
             con.beginTransaction(function (err) {
                 if (!err) {
                     credentialsGrantProcessor.getCredentialsGrant(clientId, function (imResult) {
-                        if (imResult && imResult.accessTokenId) {                            
+                        if (imResult && imResult.accessTokenId) {
                             credentialsGrantProcessor.deleteCredentialsGrant(con, clientId, function (imDelResult) {
                                 if (imDelResult.success) {
                                     accessTokenProcessor.deleteAccessToken(con, imResult.accessTokenId, function (accTokenDelResult) {
@@ -864,7 +907,7 @@ exports.deleteCredentialsGrant = function (clientId, callback) {
                                     con.rollback();
                                     callback(rtn);
                                 }
-                            });                            
+                            });
                         } else {
                             con.rollback();
                             callback(rtn);
@@ -883,12 +926,12 @@ exports.deleteCredentialsGrant = function (clientId, callback) {
 
 //token keys
 
-exports.getAccessTokenKey = function (callback) {    
+exports.getAccessTokenKey = function (callback) {
     tokenKeyProcessor.getAccessTokenKey(callback);
 };
 
 
-exports.getRefreshTokenKey = function (callback) {    
+exports.getRefreshTokenKey = function (callback) {
     tokenKeyProcessor.getRefreshTokenKey(callback);
 };
 //end token keys

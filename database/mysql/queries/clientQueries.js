@@ -61,3 +61,12 @@ exports.CLIENT_ROLE_URI_LIST_QUERY = "SELECT * FROM uri_role WHERE client_role_i
 exports.CLIENT_GRANT_TYPE_INSERT_QUERY = "INSERT INTO client_grant_type Set ?";
 exports.CLIENT_GRANT_TYPE_DELETE_QUERY = "DELETE FROM client_grant_type WHERE id = ?";
 exports.CLIENT_GRANT_TYPE_LIST_QUERY = "SELECT * FROM client_grant_type WHERE client_id = ?";
+
+
+exports.CLIENT_ROLE_URI_JOIN_QUERY = "SELECT cr.id as role_id, cr.role, " +
+                                     "cau.id as uri_id, cau.uri, cr.client_id " +
+                                     "FROM client_role cr inner join " +
+                                     "uri_role ur on cr.id = ur.client_role_id " +
+                                     "left join client_allowed_uri cau on cau.id = ur.client_allowed_uri_id " +
+                                     "WHERE cr.client_id = ? " +
+                                     "order by ur.client_role_id ";
