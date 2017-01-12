@@ -63,7 +63,11 @@ exports.validateAccessToken = function (refreshToken, claims, callback) {
                 if (err) {
                     console.log("AccessToken verify err: " + err);
                 }
-                if (decoded && decoded.tokenType === "access" && decoded.userId === claims.userId &&
+                var userIdMatch = true;
+                if(claims.userId){
+                    userIdMatch = (decoded.userId === claims.userId)?true: false;
+                }
+                if (decoded && decoded.tokenType === "access" && userIdMatch &&
                         decoded.clientId === claims.clientId && decoded.iss === config.TOKEN_ISSUER) {
                     //console.log("decoded access token: " + JSON.stringify(decoded));
                     //console.log("claims: " + JSON.stringify(claims));                    
@@ -87,9 +91,11 @@ exports.validateAccessToken = function (refreshToken, claims, callback) {
                         }                        
                     }else{
                         foundRoleUri = true;
-                    }                    
+                    }   
+                    var scopeFound = (decoded.scopeList.indexOf(claims.scope) > -1)? true: false;
                     console.log("foundRoleUri: " + foundRoleUri );
-                    if(foundRoleUri){
+                    console.log("scopeFound: " + scopeFound );
+                    if(foundRoleUri && scopeFound){
                         valid = true;
                     }  
                 }

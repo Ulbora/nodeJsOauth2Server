@@ -22,7 +22,8 @@ describe('Access token delegate', function () {
                 clientId: "jdsldsldsldls",
                 roleUris: [
                     {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "https://abc.com/rs/addUser", "clientId": 421}
-                ],                
+                ],  
+                scopeList: ["read", "write"],
                 expiresIn: 500
             };
             setTimeout(function () {
@@ -47,7 +48,8 @@ describe('Access token delegate', function () {
                 userId: "admin",
                 clientId: "jdsldsldsldls",
                 role: "admin",
-                uri: "https://abc.com/rs/addUser"
+                uri: "https://abc.com/rs/addUser",
+                scope: "read"
             };
             setTimeout(function () {
                 accessTokenDelegate.validateAccessToken(token, claims, function (valid) {
@@ -70,7 +72,8 @@ describe('Access token delegate', function () {
                 userId: "admin",
                 clientId: "jdsldsldsldls",
                 role: "admin1",
-                uri: "https://abc.com/rs/addUser"
+                uri: "https://abc.com/rs/addUser",                
+                scope: "read"
             };
             setTimeout(function () {
                 accessTokenDelegate.validateAccessToken(token, claims, function (valid) {
@@ -93,7 +96,8 @@ describe('Access token delegate', function () {
                 userId: "admin",
                 clientId: "jdsldsldsldls",
                 role: "admin",
-                uri: "https://abc.com/rs/addUsers"
+                uri: "https://abc.com/rs/addUsers",
+                scope: "read"
             };
             setTimeout(function () {
                 accessTokenDelegate.validateAccessToken(token, claims, function (valid) {
@@ -113,7 +117,8 @@ describe('Access token delegate', function () {
             var payload = {
                 sub: "access",
                 userId: "admin",
-                clientId: "jdsldsldsldls"
+                clientId: "jdsldsldsldls",
+                scopeList: ["read", "write"],
 
             };
             setTimeout(function () {
@@ -139,7 +144,8 @@ describe('Access token delegate', function () {
                 userId: "admin",
                 clientId: "jdsldsldsldls",
                 role: "admin",
-                uri: "https://abc.com/rs/addUsers"
+                uri: "https://abc.com/rs/addUsers",
+                scope: "read"
             };
             setTimeout(function () {
                 accessTokenDelegate.validateAccessToken(token2, claims, function (valid) {

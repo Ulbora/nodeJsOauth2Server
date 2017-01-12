@@ -65,6 +65,7 @@ exports.createAuthorizationCode = function (json, scopes, callback) {
                         userId: userId,
                         clientId: clientId,
                         roleUris: roleUriList,
+                        scopeList: scopes,
                         expiresIn: config.CODE_ACCESS_TOKEN_LIFE
                     };
                     accessTokenDelegate.generateAccessToken(accessPayload, function (accessToken) {
