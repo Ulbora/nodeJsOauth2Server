@@ -427,22 +427,27 @@ exports.deleteAuthorizationCode = function (clientId, userId, callback) {
         success: false,
         message: ""
     };
+    console.log("starting connection in delete code clientId: " + clientId + " userId: " + userId);
     crud.getConnection(function (err, con) {
         if (!err && con) {
             con.beginTransaction(function (err) {
                 if (!err) {
+                    console.log("starting transaction in delete code: ");
                     var refreshTokenId;
-                    authorizationCodeProcessor.getAuthorizationCode(clientId, userId, function (acResult) {
+                    authorizationCodeProcessor.getAuthorizationCodeWithTran(con, clientId, userId, function (acResult) {
+                        console.log("getAuthorizationCode in delete: " + JSON.stringify(acResult));
                         if (acResult && acResult.accessTokenId) {
-                            accessTokenProcessor.getAccessToken(acResult.accessTokenId, function (accTokenResult) {
+                            accessTokenProcessor.getAccessTokenWithTran(con, acResult.accessTokenId, function (accTokenResult) {
                                 if (accTokenResult && accTokenResult.refreshTokenId) {
                                     refreshTokenId = accTokenResult.refreshTokenId;
                                 }
                                 authorizationCodeScopeProcessor.deleteAuthorizationCodeScopeList(con, acResult.authorizationCode, function (scopeDelResult) {
+                                    console.log("deleteAuthorizationCodeScopeList in delete: " + JSON.stringify(scopeDelResult));
                                     if (scopeDelResult.success) {
                                         authorizationCodeProcessor.deleteAuthorizationCode(con, clientId, userId, function (acDelResult) {
                                             if (acDelResult.success) {
                                                 accessTokenProcessor.deleteAccessToken(con, acResult.accessTokenId, function (accTokenDelResult) {
+                                                    console.log("deleteAccessToken in delete: " + JSON.stringify(accTokenDelResult));
                                                     if (accTokenDelResult.success) {
                                                         if (refreshTokenId) {
                                                             refreshTokenProcessor.deleteRefreshToken(con, refreshTokenId, function (rfTokenDelResult) {
@@ -494,10 +499,12 @@ exports.deleteAuthorizationCode = function (clientId, userId, callback) {
                         }
                     });
                 } else {
+                    console.log("error:" +JSON.stringify(err));
                     callback(rtn);
                 }
             });
         } else {
+            console.log("error:" +JSON.stringify(err));
             callback(rtn);
         }
     });

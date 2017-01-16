@@ -2,18 +2,20 @@ var assert = require('assert');
 var db = require("../../database/db");
 var authorizationCodeManager = require("../../managers/authorizationCodeManager");
 var clientManager = require("../../managers/clientManager");
+var clientGrantTypeManager = require("../../managers/clientGrantTypeManager");
 var clientId;
 var clientObj;
 var clientGrantTypeId;
 var authorizationCode;
-describe('Client Grant Type Manager', function () {
-    this.timeout(20000);
+describe('Client authorization code Manager', function () {
+    this.timeout(40000);
     describe('#init()', function () {
         it('should init manager', function (done) {
             db.connect("localhost", "admin", "admin", "ulbora_oauth2_server", 5);
             setTimeout(function () {
                 clientManager.init(db);
                 authorizationCodeManager.init(db);
+                clientGrantTypeManager.init(db);
                 done();
             }, 1000);
         });
@@ -50,7 +52,7 @@ describe('Client Grant Type Manager', function () {
                     }
                     done();
                 });
-            }, 2000);
+            }, 1000);
         });
     });
 
@@ -73,7 +75,7 @@ describe('Client Grant Type Manager', function () {
                     }
                     done();
                 });
-            }, 3000);
+            }, 1000);
         });
     });
 
@@ -95,7 +97,7 @@ describe('Client Grant Type Manager', function () {
                     }
                     done();
                 });
-            }, 4000);
+            }, 1000);
         });
     });
 
@@ -116,16 +118,37 @@ describe('Client Grant Type Manager', function () {
                     }
                     done();
                 });
-            }, 5000);
+            }, 1000);
         });
     });
 
+    
+     describe('#addClientGrantType()', function () {
+        it('should add a client grant type in db', function (done) {
 
-
+            var json = {
+                grantType: 'code',
+                clientId: clientId
+            };
+            setTimeout(function () {
+                clientGrantTypeManager.addClientGrantType(json, function (result) {
+                    console.log("addClientGrantType: " + JSON.stringify(result));
+                    if (result.id > -1) {
+                        clientGrantTypeId = result.id;
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);
+        });
+    });
+    
+    
 
     describe('#authorize()', function () {
         it('should authorize a client user', function (done) {
-
             var json = {
                 clientId: clientId,
                 userId: "admin",                
@@ -133,7 +156,8 @@ describe('Client Grant Type Manager', function () {
             };
             setTimeout(function () {
                 authorizationCodeManager.authorize(json, function (result) {
-                    if (result.authorizationCode > -1) {
+                    console.log("authorization code: " + JSON.stringify(result));
+                    if (result.authorizationCode && result.authorizationCode > -1) {
                         authorizationCode = result.authorizationCode;
                         assert(true);
                     } else {
@@ -141,10 +165,82 @@ describe('Client Grant Type Manager', function () {
                     }
                     done();
                 });
-            }, 4000);
+            }, 1000);
+        });
+    });
+    /*
+    describe('#authorize()', function () {
+        it('should authorize a second scope for a client user', function (done) {
+            var json = {
+                clientId: clientId,
+                userId: "admin",                
+                scope: "addUser"
+            };
+            setTimeout(function () {
+                authorizationCodeManager.authorize(json, function (result) {
+                    console.log("authorization code 2: " + JSON.stringify(result));
+                    if (result.authorizationCode && result.authorizationCode > -1) {
+                        authorizationCode = result.authorizationCode;
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);
+        });
+    });
+    */
+    /*
+    describe('#getAuthorizationCodeScopeList()', function () {
+        it('should read AuthorizationCodeScope in db', function (done) {
+            setTimeout(function () {
+                db.getAuthorizationCodeScopeList(authorizationCode, function (result) {
+                    console.log("getAuthorizationCodeScopeList:" +JSON.stringify(result));
+                    if (result && result.length > 1 && result[1].scope === "read") {
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);
+        });
+    });
+*/
+    describe('#deleteAuthorizationCode()', function () {
+        it('should delete authorization code', function (done) {
+            setTimeout(function () {
+                db.deleteAuthorizationCode(clientId, "admin", function (result) {
+                    console.log("deleteAuthorizationCode:" +JSON.stringify(result));
+                    if (result.success) {
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);
         });
     });
 
+    
+    describe('#deleteClientGrantType()', function () {
+        it('should delete client grant type', function (done) {
+            setTimeout(function () {
+                clientGrantTypeManager.deleteClientGrantType(clientGrantTypeId, function (result) {
+                    if (result.success) {
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);
+        });
+    });
+    
+    
     describe('#deleteClientRoleUri()', function () {
         it('should delete a client Role Uri', function (done) {
             var json = {
@@ -160,7 +256,7 @@ describe('Client Grant Type Manager', function () {
                     }
                     done();
                 });
-            }, 8000);
+            }, 1000);
         });
     });
 
@@ -175,7 +271,7 @@ describe('Client Grant Type Manager', function () {
                     }
                     done();
                 });
-            }, 9000);
+            }, 1000);
         });
     });
 
@@ -190,7 +286,7 @@ describe('Client Grant Type Manager', function () {
                     }
                     done();
                 });
-            }, 10000);
+            }, 1000);
         });
     });
 
@@ -206,7 +302,7 @@ describe('Client Grant Type Manager', function () {
                     }
                     done();
                 });
-            }, 6000);
+            }, 1000);
         });
     });
 });

@@ -54,8 +54,32 @@ exports.updateAuthorizationCode = function (con, json, callback) {
 
 exports.getAuthorizationCode = function (clientId, userId, callback) {
     var queryId = [clientId, userId];
+    console.log("getAuthorizationCode clientId: " + clientId + " userId: " + userId);
     crud.get(authorizationCodeQueries.AUTHORIZATION_CODE_GET_BY_ID_QUERY, queryId, function (result) {
-        //console.log("get refresh token:" +JSON.stringify(result));
+        console.log("get authorization code in processor:" +JSON.stringify(result));
+        //console.log("get refresh token value:" + result.data[0].token);
+        //console.log("get refresh token length:" + result.data[0].token.length);
+        if (result.success && result.data.length > 0 ) {
+            var rtn = {
+                authorizationCode: result.data[0].authorization_code,
+                clientId: result.data[0].client_id,
+                userId: result.data[0].user_id,
+                expires: result.data[0].expires,
+                accessTokenId: result.data[0].access_token_id
+            };
+            callback(rtn);
+        } else {
+            callback(null);
+        }
+    });
+};
+
+
+exports.getAuthorizationCodeWithTran = function (con, clientId, userId, callback) {
+    var queryId = [clientId, userId];
+    console.log("getAuthorizationCode clientId: " + clientId + " userId: " + userId);
+    crud.getWithTran(con, authorizationCodeQueries.AUTHORIZATION_CODE_GET_BY_ID_QUERY, queryId, function (result) {
+        console.log("get authorization code in processor:" +JSON.stringify(result));
         //console.log("get refresh token value:" + result.data[0].token);
         //console.log("get refresh token length:" + result.data[0].token.length);
         if (result.success && result.data.length > 0 ) {

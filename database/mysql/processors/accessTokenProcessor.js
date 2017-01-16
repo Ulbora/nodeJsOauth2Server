@@ -73,6 +73,26 @@ exports.getAccessToken = function (id, callback) {
     });
 };
 
+exports.getAccessTokenWithTran = function (con, id, callback) {
+    var queryId = [id];
+    crud.getWithTran(con, tokenQueries.ACCESS_TOKEN_GET_BY_ID_QUERY, queryId, function (result) {
+        //console.log("get refresh token:" +JSON.stringify(result));
+        //console.log("get refresh token value:" + result.data[0].token);
+        //console.log("get refresh token length:" + result.data[0].token.length);
+        if (result.success && result.data.length > 0 && result.data[0].token.length > 0) {
+            var rtn = {
+                id: result.data[0].id,
+                token: result.data[0].token.toString(),
+                expires: result.data[0].expires,
+                refreshTokenId: result.data[0].refresh_token_id
+            };
+            callback(rtn);
+        } else {
+            callback(null);
+        }
+    });
+};
+
 exports.deleteAccessToken = function (con, id, callback) {
     var queryId = [id];
     crud.delete(con, tokenQueries.ACCESS_TOKEN_DELETE_QUERY, queryId, callback);

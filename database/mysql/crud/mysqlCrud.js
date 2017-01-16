@@ -117,6 +117,26 @@ exports.get = function (query, args, callback) {
     });
 };
 
+exports.getWithTran = function (con, query, args, callback) {
+    var rtn = {
+        success: false,
+        message: "",
+        data: null
+    };
+    con.query(query, args, function (err, result) {
+        if (!err && result) {
+            console.log("found data: " + JSON.stringify(result));
+            rtn.success = true;
+            rtn.data = result;
+            callback(rtn);
+        } else {
+            console.error("Database get error: " + JSON.stringify(err));
+            rtn.message = "Database get failed";
+            callback(rtn);
+        }
+    });
+};
+
 exports.getList = function (query, callback) {
     var rtn = {
         success: false,
@@ -172,6 +192,8 @@ exports.delete = function (con, query, args, callback) {
     } else {
         c = pool;
     }
+    console.log("deleted rows: " + query);
+    console.log("deleted rows args: " + JSON.stringify(args));
     c.query(query, args, function (err, result) {
         if (!err && result) {
             console.log("deleted rows: " + JSON.stringify(result));

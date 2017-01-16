@@ -44,8 +44,8 @@ exports.addClientGrantType = function (con, json, callback) {
 exports.getClientGrantTypeList = function (clientId, callback) {
      var queryId = [clientId];
     crud.get(clientQueries.CLIENT_GRANT_TYPE_LIST_QUERY, queryId, function (result) {
-        if (result.success && result.data.length > 0) {
-            var rtnList = [];
+        var rtnList = [];
+        if (result.success && result.data.length > 0) {            
             for (var cnt = 0; cnt < result.data.length; cnt++) {
                 var rtn = {
                     id: result.data[cnt].id,
