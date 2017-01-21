@@ -74,7 +74,7 @@ exports.getAuthorizationCode = function (clientId, userId, callback) {
     });
 };
 
-
+/*
 exports.getAuthorizationCodeWithTran = function (con, clientId, userId, callback) {
     var queryId = [clientId, userId];
     console.log("getAuthorizationCode clientId: " + clientId + " userId: " + userId);
@@ -96,7 +96,7 @@ exports.getAuthorizationCodeWithTran = function (con, clientId, userId, callback
         }
     });
 };
-
+*/
 exports.deleteAuthorizationCode = function (con, clientId, userId, callback) {
     var queryId = [clientId, userId];
     crud.delete(con, authorizationCodeQueries.AUTHORIZATION_CODE_DELETE_QUERY, queryId, callback);

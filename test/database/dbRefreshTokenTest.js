@@ -47,7 +47,7 @@ describe('DB refresh token', function () {
                     }
                     done();
                 });
-            }, 2000);           
+            }, 1000);           
         });
     });
    
@@ -63,7 +63,7 @@ describe('DB refresh token', function () {
                     }
                     done();
                 });
-            }, 3000);           
+            }, 1000);           
         });
     });
     
@@ -79,7 +79,7 @@ describe('DB refresh token', function () {
                     }
                     done();
                 });
-            }, 4000);           
+            }, 1000);           
         });
     });    
 });

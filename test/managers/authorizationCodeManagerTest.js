@@ -168,7 +168,7 @@ describe('Client authorization code Manager', function () {
             }, 1000);
         });
     });
-    /*
+    
     describe('#authorize()', function () {
         it('should authorize a second scope for a client user', function (done) {
             var json = {
@@ -190,8 +190,8 @@ describe('Client authorization code Manager', function () {
             }, 1000);
         });
     });
-    */
-    /*
+    
+    
     describe('#getAuthorizationCodeScopeList()', function () {
         it('should read AuthorizationCodeScope in db', function (done) {
             setTimeout(function () {
@@ -207,7 +207,7 @@ describe('Client authorization code Manager', function () {
             }, 1000);
         });
     });
-*/
+
     describe('#deleteAuthorizationCode()', function () {
         it('should delete authorization code', function (done) {
             setTimeout(function () {

@@ -116,7 +116,7 @@ exports.get = function (query, args, callback) {
         }
     });
 };
-
+/*
 exports.getWithTran = function (con, query, args, callback) {
     var rtn = {
         success: false,
@@ -136,7 +136,7 @@ exports.getWithTran = function (con, query, args, callback) {
         }
     });
 };
-
+*/
 exports.getList = function (query, callback) {
     var rtn = {
         success: false,

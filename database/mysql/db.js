@@ -91,16 +91,17 @@ exports.addClient = function (clientJson, redirectUrls, callback) {
                                                 con.commit(function (err) {
                                                     if (err) {
                                                         con.rollback();
-                                                        callback(rtn);
                                                     } else {
                                                         rtn.success = true;
                                                         rtn.clientId = clientResult.clientId;
-                                                        callback(rtn);
                                                     }
+                                                    con.release();
+                                                    callback(rtn);
                                                 });
                                             }
                                         } else {
                                             con.rollback();
+                                            con.release();
                                             callback(rtn);
                                         }
                                     });
@@ -109,24 +110,29 @@ exports.addClient = function (clientJson, redirectUrls, callback) {
                                 con.commit(function (err) {
                                     if (err) {
                                         con.rollback();
-                                        callback(rtn);
                                     } else {
                                         rtn.success = true;
                                         rtn.clientId = clientResult.clientId;
-                                        callback(rtn);
                                     }
+                                    con.release();
+                                    callback(rtn);
                                 });
                             }
                         } else {
                             con.rollback();
+                            con.release();
                             callback(rtn);
                         }
                     });
                 } else {
+                    con.release();
                     callback(rtn);
                 }
             });
         } else {
+            if (con) {
+                con.release();
+            }
             callback(rtn);
         }
     });
@@ -161,27 +167,33 @@ exports.deleteClient = function (clientId, callback) {
                                     con.commit(function (err) {
                                         if (err) {
                                             con.rollback();
-                                            callback(rtn);
                                         } else {
                                             rtn.success = true;
-                                            callback(rtn);
                                         }
+                                        con.release();
+                                        callback(rtn);
                                     });
                                 } else {
                                     con.rollback();
+                                    con.release();
                                     callback(rtn);
                                 }
                             });
                         } else {
                             con.rollback();
+                            con.release();
                             callback(rtn);
                         }
                     });
                 } else {
+                    con.release();
                     callback(rtn);
                 }
             });
         } else {
+            if (con) {
+                con.release();
+            }
             callback(rtn);
         }
     });
@@ -334,6 +346,7 @@ exports.addAuthorizationCode = function (authCodeJson, accessTokenJson, refreshT
                                 });
                             } else {
                                 con.rollback();
+                                con.release();
                                 callback(rtn);
                             }
                         });
@@ -342,12 +355,15 @@ exports.addAuthorizationCode = function (authCodeJson, accessTokenJson, refreshT
                             callback(acRtn);
                         });
                     }
-
                 } else {
+                    con.release();
                     callback(rtn);
                 }
             });
         } else {
+            if (con) {
+                con.release();
+            }
             callback(rtn);
         }
     });
@@ -374,18 +390,21 @@ var doAuthCodeAdd = function (con, rtn, authCodeJson, accTokenJson, scopeList, c
                                     scopeCnt++;
                                 } else {
                                     con.rollback();
+                                    con.release();
                                     callback(rtn);
                                 }
+                                //console.log("scopeCnt === scopeList.length: " + (scopeCnt === scopeList.length));
                                 if (scopeCnt === scopeList.length) {
                                     con.commit(function (err) {
+                                        //console.log("commetting auth code add");
                                         if (err) {
                                             con.rollback();
-                                            callback(rtn);
                                         } else {
                                             rtn.authorizationCode = acResult.authorizationCode;
                                             rtn.success = true;
-                                            callback(rtn);
                                         }
+                                        con.release();
+                                        callback(rtn);
                                     });
                                 }
                             });
@@ -394,21 +413,23 @@ var doAuthCodeAdd = function (con, rtn, authCodeJson, accTokenJson, scopeList, c
                         con.commit(function (err) {
                             if (err) {
                                 con.rollback();
-                                callback(rtn);
                             } else {
                                 rtn.authorizationCode = acResult.authorizationCode;
                                 rtn.success = true;
-                                callback(rtn);
                             }
+                            con.release();
+                            callback(rtn);
                         });
                     }
                 } else {
                     con.rollback();
+                    con.release();
                     callback(rtn);
                 }
             });
         } else {
             con.rollback();
+            con.release();
             callback(rtn);
         }
     });
@@ -434,10 +455,10 @@ exports.deleteAuthorizationCode = function (clientId, userId, callback) {
                 if (!err) {
                     console.log("starting transaction in delete code: ");
                     var refreshTokenId;
-                    authorizationCodeProcessor.getAuthorizationCodeWithTran(con, clientId, userId, function (acResult) {
+                    authorizationCodeProcessor.getAuthorizationCode(clientId, userId, function (acResult) {
                         console.log("getAuthorizationCode in delete: " + JSON.stringify(acResult));
                         if (acResult && acResult.accessTokenId) {
-                            accessTokenProcessor.getAccessTokenWithTran(con, acResult.accessTokenId, function (accTokenResult) {
+                            accessTokenProcessor.getAccessToken(acResult.accessTokenId, function (accTokenResult) {
                                 if (accTokenResult && accTokenResult.refreshTokenId) {
                                     refreshTokenId = accTokenResult.refreshTokenId;
                                 }
@@ -455,14 +476,15 @@ exports.deleteAuthorizationCode = function (clientId, userId, callback) {
                                                                     con.commit(function (err) {
                                                                         if (err) {
                                                                             con.rollback();
-                                                                            callback(rtn);
                                                                         } else {
                                                                             rtn.success = true;
-                                                                            callback(rtn);
                                                                         }
+                                                                        con.release();
+                                                                        callback(rtn);
                                                                     });
                                                                 } else {
                                                                     con.rollback();
+                                                                    con.release();
                                                                     callback(rtn);
                                                                 }
                                                             });
@@ -470,41 +492,49 @@ exports.deleteAuthorizationCode = function (clientId, userId, callback) {
                                                             con.commit(function (err) {
                                                                 if (err) {
                                                                     con.rollback();
-                                                                    callback(rtn);
                                                                 } else {
                                                                     rtn.success = true;
-                                                                    callback(rtn);
                                                                 }
+                                                                con.release();
+                                                                callback(rtn);
                                                             });
                                                         }
                                                     } else {
                                                         con.rollback();
+                                                        con.release();
                                                         callback(rtn);
                                                     }
                                                 });
                                             } else {
                                                 con.rollback();
+                                                con.release();
                                                 callback(rtn);
                                             }
                                         });
                                     } else {
                                         con.rollback();
+                                        con.release();
                                         callback(rtn);
                                     }
                                 });
                             });
                         } else {
                             con.rollback();
+                            con.release();
                             callback(rtn);
                         }
                     });
                 } else {
-                    console.log("error:" +JSON.stringify(err));
+                    console.log("error:" + JSON.stringify(err));
+                    con.release();
                     callback(rtn);
                 }
             });
         } else {
-            console.log("error:" +JSON.stringify(err));
+            console.log("error:" + JSON.stringify(err));
+            if (con) {
+                con.release();
+            }
             callback(rtn);
         }
     });
@@ -570,33 +600,40 @@ exports.addImplicitGrant = function (implicitJson, accessTokenJson, scope, callb
                                             con.commit(function (err) {
                                                 if (err) {
                                                     con.rollback();
-                                                    callback(rtn);
                                                 } else {
                                                     rtn.id = impResult.id;
                                                     rtn.success = true;
-                                                    callback(rtn);
                                                 }
+                                                con.release();
+                                                callback(rtn);
                                             });
                                         } else {
                                             con.rollback();
+                                            con.release();
                                             callback(rtn);
                                         }
                                     });
                                 } else {
                                     con.rollback();
+                                    con.release();
                                     callback(rtn);
                                 }
                             });
                         } else {
                             con.rollback();
+                            con.release();
                             callback(rtn);
                         }
                     });
                 } else {
+                    con.release();
                     callback(rtn);
                 }
             });
         } else {
+            if (con) {
+                con.release();
+            }
             callback(rtn);
         }
     });
@@ -627,37 +664,45 @@ exports.deleteImplicitGrant = function (clientId, userId, callback) {
                                                     con.commit(function (err) {
                                                         if (err) {
                                                             con.rollback();
-                                                            callback(rtn);
                                                         } else {
                                                             rtn.success = true;
-                                                            callback(rtn);
                                                         }
+                                                        con.release();
+                                                        callback(rtn);
                                                     });
                                                 } else {
                                                     con.rollback();
+                                                    con.release();
                                                     callback(rtn);
                                                 }
                                             });
                                         } else {
                                             con.rollback();
+                                            con.release();
                                             callback(rtn);
                                         }
                                     });
                                 } else {
                                     con.rollback();
+                                    con.release();
                                     callback(rtn);
                                 }
                             });
                         } else {
                             con.rollback();
+                            con.release();
                             callback(rtn);
                         }
                     });
                 } else {
+                    con.release();
                     callback(rtn);
                 }
             });
         } else {
+            if (con) {
+                con.release();
+            }
             callback(rtn);
         }
     });
@@ -703,6 +748,7 @@ exports.addPasswordGrant = function (pwgJson, accessTokenJson, refreshTokenJson,
                                 });
                             } else {
                                 con.rollback();
+                                con.release();
                                 callback(rtn);
                             }
                         });
@@ -731,20 +777,22 @@ var doPwGrantAdd = function (con, rtn, pwgJson, accTokenJson, callback) {
                     con.commit(function (err) {
                         if (err) {
                             con.rollback();
-                            callback(rtn);
                         } else {
                             rtn.id = pwResult.id;
                             rtn.success = true;
-                            callback(rtn);
                         }
+                        con.release();
+                        callback(rtn);
                     });
                 } else {
                     con.rollback();
+                    con.release();
                     callback(rtn);
                 }
             });
         } else {
             con.rollback();
+            con.release();
             callback(rtn);
         }
     });
@@ -780,14 +828,15 @@ exports.deletePasswordGrant = function (clientId, userId, callback) {
                                                             con.commit(function (err) {
                                                                 if (err) {
                                                                     con.rollback();
-                                                                    callback(rtn);
                                                                 } else {
                                                                     rtn.success = true;
-                                                                    callback(rtn);
                                                                 }
+                                                                con.release();
+                                                                callback(rtn);
                                                             });
                                                         } else {
                                                             con.rollback();
+                                                            con.release();
                                                             callback(rtn);
                                                         }
                                                     });
@@ -795,34 +844,41 @@ exports.deletePasswordGrant = function (clientId, userId, callback) {
                                                     con.commit(function (err) {
                                                         if (err) {
                                                             con.rollback();
-                                                            callback(rtn);
                                                         } else {
                                                             rtn.success = true;
-                                                            callback(rtn);
                                                         }
+                                                        con.release();
+                                                        callback(rtn);
                                                     });
                                                 }
                                             } else {
                                                 con.rollback();
+                                                con.release();
                                                 callback(rtn);
                                             }
                                         });
                                     } else {
                                         con.rollback();
+                                        con.release();
                                         callback(rtn);
                                     }
                                 });
                             });
                         } else {
                             con.rollback();
+                            con.release();
                             callback(rtn);
                         }
                     });
                 } else {
+                    con.release();
                     callback(rtn);
                 }
             });
         } else {
+            if (con) {
+                con.release();
+            }
             callback(rtn);
         }
     });
@@ -849,28 +905,34 @@ exports.addCredentialsGrant = function (credJson, accessTokenJson, callback) {
                                     con.commit(function (err) {
                                         if (err) {
                                             con.rollback();
-                                            callback(rtn);
                                         } else {
                                             rtn.id = impResult.id;
                                             rtn.success = true;
-                                            callback(rtn);
                                         }
+                                        con.release();
+                                        callback(rtn);
                                     });
                                 } else {
                                     con.rollback();
+                                    con.release();
                                     callback(rtn);
                                 }
                             });
                         } else {
                             con.rollback();
+                            con.release();
                             callback(rtn);
                         }
                     });
                 } else {
+                    con.release();
                     callback(rtn);
                 }
             });
         } else {
+            if (con) {
+                con.release();
+            }
             callback(rtn);
         }
     });
@@ -899,32 +961,39 @@ exports.deleteCredentialsGrant = function (clientId, callback) {
                                             con.commit(function (err) {
                                                 if (err) {
                                                     con.rollback();
-                                                    callback(rtn);
                                                 } else {
                                                     rtn.success = true;
-                                                    callback(rtn);
                                                 }
+                                                con.release();
+                                                callback(rtn);
                                             });
                                         } else {
                                             con.rollback();
+                                            con.release();
                                             callback(rtn);
                                         }
                                     });
                                 } else {
                                     con.rollback();
+                                    con.release();
                                     callback(rtn);
                                 }
                             });
                         } else {
                             con.rollback();
+                            con.release();
                             callback(rtn);
                         }
                     });
                 } else {
+                    con.release();
                     callback(rtn);
                 }
             });
         } else {
+            if (con) {
+                con.release();
+            }
             callback(rtn);
         }
     });

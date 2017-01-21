@@ -58,6 +58,7 @@ exports.authorize = function (json, callback) {
                                     break;
                                 }
                             }
+                            //console.log("scope already exist: " + scopeFound);
                             if (scopeFound) {
                                 // delete auth code
                                 for (var cnt = 0; cnt < scopeList.length; cnt++) {
@@ -87,14 +88,14 @@ exports.authorize = function (json, callback) {
                                 // deleste all auth code
                                 db.deleteAuthorizationCode(clientId, userId, function (codeDelResult) {
                                     console.log("delete of old auth code :" + JSON.stringify(codeDelResult))
-                                    if (codeDelResult.success) {
+                                    if (codeDelResult.success) {                                        
                                         authorizationCodeDelegate.createAuthorizationCode(json, scopeListToAdd, function (acodeResult) {
                                             if (acodeResult.success) {
                                                 returnVal.authorizationCode = acodeResult.authorizationCode;
                                                 returnVal.success = true;
                                             }
                                             callback(returnVal);
-                                        });
+                                        }); 
                                     } else {
                                         returnVal.error = "access_denied";
                                         callback(returnVal);

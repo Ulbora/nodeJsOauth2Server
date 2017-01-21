@@ -56,6 +56,7 @@ module.exports = function (grunt) {
     });
 
     grunt.loadNpmTasks('grunt-mocha-test');
+    grunt.registerTask('mocha-test-all', 'mochaTest:test');
     grunt.registerTask('mocha-mysqlTest', 'mochaTest:testMysql');
     grunt.registerTask('mocha-mysqlProcessorTest', 'mochaTest:testMysqlProcessors');
     grunt.registerTask('mocha-mysqlDbOnlyTest', 'mochaTest:testMysqlDbOnly');

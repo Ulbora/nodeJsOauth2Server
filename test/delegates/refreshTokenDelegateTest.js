@@ -31,7 +31,7 @@ describe('Refresh token delegate', function () {
                     }
                     done();
                 });
-            }, 2000);
+            }, 1000);
         });
     });
     
@@ -51,7 +51,7 @@ describe('Refresh token delegate', function () {
                     }
                     done();
                 });
-            }, 3000);
+            }, 1000);
         });
     });
 

@@ -42,7 +42,7 @@ describe('DB token key', function () {
                     }
                     done();
                 });
-            }, 2000);           
+            }, 1000);           
         });
     });
 });

@@ -63,7 +63,7 @@ describe('ClientAllowedUriProcessor', function () {
                     }
                     done();
                 });
-            }, 2000);           
+            }, 1000);           
         });
     });
     
@@ -78,7 +78,7 @@ describe('ClientAllowedUriProcessor', function () {
                     }
                     done();
                 });
-            }, 3000);           
+            }, 1000);           
         });
     });
     
@@ -93,7 +93,7 @@ describe('ClientAllowedUriProcessor', function () {
                     }
                     done();
                 });
-            }, 3000);           
+            }, 1000);           
         });
     });
     
@@ -109,7 +109,7 @@ describe('ClientAllowedUriProcessor', function () {
                     }
                     done();
                 });
-            }, 4000);           
+            }, 1000);           
         });
     });
     
@@ -125,7 +125,7 @@ describe('ClientAllowedUriProcessor', function () {
                     }
                     done();
                 });
-            }, 5000);           
+            }, 1000);           
         });
     });
     

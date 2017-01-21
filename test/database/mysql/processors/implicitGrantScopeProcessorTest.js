@@ -72,7 +72,7 @@ describe('authorizationCodeScopeProcessor', function () {
                     }
                     done();
                 });
-            }, 2000);
+            }, 1000);
         });
     });
     
@@ -96,7 +96,7 @@ describe('authorizationCodeScopeProcessor', function () {
                     }
                     done();
                 });
-            }, 3000);
+            }, 1000);
         });
     });
     
@@ -117,7 +117,7 @@ describe('authorizationCodeScopeProcessor', function () {
                     }
                     done();
                 });
-            }, 4000);
+            }, 1000);
         });
     });
     
@@ -137,7 +137,7 @@ describe('authorizationCodeScopeProcessor', function () {
                     }
                     done();
                 });
-            }, 5000);
+            }, 1000);
         });
     });
     
@@ -153,7 +153,7 @@ describe('authorizationCodeScopeProcessor', function () {
                     }
                     done();
                 });
-            }, 6000);           
+            }, 1000);           
         });
     });
 
@@ -168,7 +168,7 @@ describe('authorizationCodeScopeProcessor', function () {
                     }
                     done();
                 });
-            }, 7000);
+            }, 1000);
         });
     });
     
@@ -183,7 +183,7 @@ describe('authorizationCodeScopeProcessor', function () {
                     }
                     done();
                 });
-            }, 8000);
+            }, 1000);
         });
     });
     
@@ -198,7 +198,7 @@ describe('authorizationCodeScopeProcessor', function () {
                     }
                     done();
                 });
-            }, 9000);
+            }, 1000);
         });
     });
 
@@ -214,7 +214,7 @@ describe('authorizationCodeScopeProcessor', function () {
                     }
                     done();
                 });
-            }, 10000);
+            }, 1000);
         });
     });
 
@@ -229,7 +229,7 @@ describe('authorizationCodeScopeProcessor', function () {
                     }
                     done();
                 });
-            }, 11000);
+            }, 1000);
         });
     });
 

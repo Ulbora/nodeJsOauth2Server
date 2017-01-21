@@ -54,7 +54,7 @@ describe('RefreshTokenProcessor', function () {
                     }
                     done();
                 });
-            }, 2000);           
+            }, 1000);           
         });
     });
    
@@ -70,7 +70,7 @@ describe('RefreshTokenProcessor', function () {
                     }
                     done();
                 });
-            }, 3000);           
+            }, 1000);           
         });
     });
     
@@ -86,7 +86,7 @@ describe('RefreshTokenProcessor', function () {
                     }
                     done();
                 });
-            }, 4000);           
+            }, 1000);           
         });
     });    
 });

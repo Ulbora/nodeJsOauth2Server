@@ -49,7 +49,7 @@ describe('Client Allowed URI Manager', function () {
                     }
                     done();
                 });
-            }, 2000);
+            }, 1000);
         });
     });
 
@@ -72,7 +72,7 @@ describe('Client Allowed URI Manager', function () {
                     }
                     done();
                 });
-            }, 3000);
+            }, 1000);
         });
     });
 
@@ -87,7 +87,7 @@ describe('Client Allowed URI Manager', function () {
                     }
                     done();
                 });
-            }, 4000);
+            }, 1000);
         });
     });
     
@@ -103,7 +103,7 @@ describe('Client Allowed URI Manager', function () {
                     }
                     done();
                 });
-            }, 5000);           
+            }, 1000);           
         });
     });
     
@@ -120,7 +120,7 @@ describe('Client Allowed URI Manager', function () {
                     }
                     done();
                 });
-            }, 6000);           
+            }, 1000);           
         });
     });        
 
@@ -138,7 +138,7 @@ describe('Client Allowed URI Manager', function () {
                     }
                     done();
                 });
-            }, 7000);
+            }, 1000);
         });
     });
 });

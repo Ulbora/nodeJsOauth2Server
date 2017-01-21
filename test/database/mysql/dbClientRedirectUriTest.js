@@ -60,7 +60,7 @@ describe('mysql DB client roles', function () {
                     }
                     done();
                 });
-            }, 2000);           
+            }, 1000);           
         });
     });
     
@@ -82,7 +82,7 @@ describe('mysql DB client roles', function () {
                     }
                     done();
                 });
-            }, 3000);           
+            }, 1000);           
         });
     });
     
@@ -97,7 +97,7 @@ describe('mysql DB client roles', function () {
                     }
                     done();
                 });
-            }, 4000);           
+            }, 1000);           
         });
     });
     
@@ -112,7 +112,7 @@ describe('mysql DB client roles', function () {
                     }
                     done();
                 });
-            }, 5000);           
+            }, 1000);           
         });
     });
     
@@ -127,7 +127,7 @@ describe('mysql DB client roles', function () {
                     }
                     done();
                 });
-            }, 6000);           
+            }, 1000);           
         });
     });
     
@@ -143,7 +143,7 @@ describe('mysql DB client roles', function () {
                     }
                     done();
                 });
-            }, 7000);           
+            }, 1000);           
         });
     });       
 });

@@ -48,7 +48,7 @@ describe('TokenKeyProcessor', function () {
                     }
                     done();
                 });
-            }, 2000);           
+            }, 1000);           
         });
     });
 });

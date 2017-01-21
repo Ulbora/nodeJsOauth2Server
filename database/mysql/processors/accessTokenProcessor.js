@@ -72,7 +72,7 @@ exports.getAccessToken = function (id, callback) {
         }
     });
 };
-
+/*
 exports.getAccessTokenWithTran = function (con, id, callback) {
     var queryId = [id];
     crud.getWithTran(con, tokenQueries.ACCESS_TOKEN_GET_BY_ID_QUERY, queryId, function (result) {
@@ -92,7 +92,7 @@ exports.getAccessTokenWithTran = function (con, id, callback) {
         }
     });
 };
-
+*/
 exports.deleteAccessToken = function (con, id, callback) {
     var queryId = [id];
     crud.delete(con, tokenQueries.ACCESS_TOKEN_DELETE_QUERY, queryId, callback);

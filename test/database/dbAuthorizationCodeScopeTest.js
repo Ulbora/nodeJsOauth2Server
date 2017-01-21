@@ -37,7 +37,7 @@ describe('DB authorization code scope', function () {
                     }
                     done();
                 });
-            }, 2000);
+            }, 1000);
         });
     });
 
@@ -69,7 +69,7 @@ describe('DB authorization code scope', function () {
                     }
                     done();
                 });
-            }, 3000);
+            }, 1000);
         });
     });
 
@@ -89,7 +89,7 @@ describe('DB authorization code scope', function () {
                     }
                     done();
                 });
-            }, 4000);
+            }, 1000);
         });
     });
 
@@ -109,7 +109,7 @@ describe('DB authorization code scope', function () {
                     }
                     done();
                 });
-            }, 5000);
+            }, 1000);
         });
     });
 
@@ -125,7 +125,7 @@ describe('DB authorization code scope', function () {
                     }
                     done();
                 });
-            }, 6000);
+            }, 1000);
         });
     });
 
@@ -140,7 +140,7 @@ describe('DB authorization code scope', function () {
                     }
                     done();
                 });
-            }, 7000);
+            }, 1000);
         });
     });
 
@@ -155,7 +155,7 @@ describe('DB authorization code scope', function () {
                     }
                     done();
                 });
-            }, 8000);
+            }, 1000);
         });
     });
 
@@ -172,7 +172,7 @@ describe('DB authorization code scope', function () {
                     }
                     done();
                 });
-            }, 9000);
+            }, 1000);
         });
     });
 
@@ -188,7 +188,7 @@ describe('DB authorization code scope', function () {
                     }
                     done();
                 });
-            }, 10000);
+            }, 1000);
         });
     });
 });
