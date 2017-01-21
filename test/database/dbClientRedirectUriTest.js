@@ -81,8 +81,24 @@ describe('DB client redirect uri', function () {
         });
     });
     
+    describe('#getClientRedirectUri()', function () {
+        it('should get client redirect uri in db', function (done) {           
+            setTimeout(function () {       
+                var toFindUri = "http://www.google.com";
+                db.getClientRedirectUri(clientId, toFindUri, function (result) {
+                    if (result && result.id > 0) {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);           
+        });
+    });
+    
     describe('#getClientRedirectUriList()', function () {
-        it('should read client redirect uri list in processor', function (done) {           
+        it('should read client redirect uri list in db', function (done) {           
             setTimeout(function () {                
                 db.getClientRedirectUriList(clientId, function (result) {
                     if (result && result.length > 0 && result[0].uri === 'http://www.google.com') {                        

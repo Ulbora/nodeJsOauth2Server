@@ -75,6 +75,10 @@ exports.getClientRedirectUriList = function (clientId, callback) {
     db.getClientRedirectUriList(clientId, callback);
 };
 
+exports.getClientRedirectUri = function (clientId, uri, callback) {
+    db.getClientRedirectUri(clientId, uri, callback);
+};
+
 exports.deleteClientRedirectUri = function (id, callback) {
     db.deleteClientRedirectUri(id, callback);
 };

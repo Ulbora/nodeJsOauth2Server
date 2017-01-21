@@ -32,6 +32,7 @@ exports.CLIENT_REDIRECT_URI_INSERT_QUERY = "INSERT INTO client_redirect_uri Set 
 exports.CLIENT_REDIRECT_URI_DELETE_QUERY = "DELETE FROM client_redirect_uri WHERE id = ?";
 exports.CLIENT_REDIRECT_URI_DELETE_ALL_QUERY = "DELETE FROM client_redirect_uri WHERE client_id = ?";
 exports.CLIENT_REDIRECT_URI_LIST_QUERY = "SELECT * FROM client_redirect_uri WHERE client_id = ?";
+exports.CLIENT_REDIRECT_URI_QUERY = "SELECT * FROM client_redirect_uri WHERE client_id = ? and uri = ? ";
 
 
 //client allowed URI

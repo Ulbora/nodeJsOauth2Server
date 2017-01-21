@@ -145,14 +145,56 @@ describe('Client authorization code Manager', function () {
         });
     });
     
+    describe('#addClientRedirectUri()', function () {
+        it('should add a client redirect uri', function (done) { 
+            
+           var json = {                
+                uri: 'http://www.google.com',
+                clientId: clientId
+            };
+            setTimeout(function () {
+                db.addClientRedirectUri(json, function (result) {
+                    if (result.id > -1) {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);           
+        });
+    });
     
 
     describe('#authorize()', function () {
-        it('should authorize a client user', function (done) {
+        it('should fail to authorize a client user because redirect uri is not allowed', function (done) {
             var json = {
                 clientId: clientId,
                 userId: "admin",                
-                scope: "read"
+                scope: "read",
+                redirectUri: "http://www.google.org"
+            };
+            setTimeout(function () {
+                authorizationCodeManager.authorize(json, function (result) {
+                    console.log("authorization code: " + JSON.stringify(result));
+                    if (result.authorizationCode === null) {                       
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);
+        });
+    });
+    
+    describe('#authorize()', function () {
+        it('should authorize a client user ', function (done) {
+            var json = {
+                clientId: clientId,
+                userId: "admin",                
+                scope: "read",
+                redirectUri: "http://www.google.com"
             };
             setTimeout(function () {
                 authorizationCodeManager.authorize(json, function (result) {
@@ -174,7 +216,8 @@ describe('Client authorization code Manager', function () {
             var json = {
                 clientId: clientId,
                 userId: "admin",                
-                scope: "addUser"
+                scope: "addUser",
+                redirectUri: "http://www.google.com"
             };
             setTimeout(function () {
                 authorizationCodeManager.authorize(json, function (result) {
@@ -224,6 +267,20 @@ describe('Client authorization code Manager', function () {
         });
     });
 
+    describe('#deleteClientRedirectUri()', function () {
+        it('should delete client redirect uri', function (done) {           
+            setTimeout(function () {                
+                db.deleteAllClientRedirectUri(clientId, function (result) {
+                    if (result.success) {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);           
+        });
+    });
     
     describe('#deleteClientGrantType()', function () {
         it('should delete client grant type', function (done) {

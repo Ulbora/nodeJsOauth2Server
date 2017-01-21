@@ -21,7 +21,7 @@
 
 var clientQueries = require("../queries/clientQueries");
 var crud;
-exports.init = function(c){
+exports.init = function (c) {
     crud = c;
 };
 
@@ -42,10 +42,10 @@ exports.addClientRedirectUri = function (con, json, callback) {
 };
 
 exports.getClientRedirectUriList = function (clientId, callback) {
-     var queryId = [clientId];
+    var queryId = [clientId];
     crud.get(clientQueries.CLIENT_REDIRECT_URI_LIST_QUERY, queryId, function (result) {
+        var rtnList = [];
         if (result.success && result.data.length > 0) {
-            var rtnList = [];
             for (var cnt = 0; cnt < result.data.length; cnt++) {
                 var rtn = {
                     id: result.data[cnt].id,
@@ -61,6 +61,23 @@ exports.getClientRedirectUriList = function (clientId, callback) {
     });
 };
 
+exports.getClientRedirectUri = function (clientId, uri, callback) {
+    var queryId = [clientId, uri];
+    crud.get(clientQueries.CLIENT_REDIRECT_URI_QUERY, queryId, function (result) {
+        var rtn = {
+            id: null,
+            uri: null,
+            clientId: null
+        };
+        if (result.success && result.data.length > 0) {            
+            rtn.id = result.data[0].id;
+            rtn.uri = result.data[0].uri;
+            rtn.clientId = result.data[0].client_id; 
+        } 
+        callback(rtn);
+    });
+};
+
 exports.deleteClientRedirectUri = function (con, id, callback) {
     var queryId = [id];
     crud.delete(con, clientQueries.CLIENT_REDIRECT_URI_DELETE_QUERY, queryId, callback);
@@ -72,12 +89,12 @@ exports.deleteAllClientRedirectUri = function (con, clientId, callback) {
         success: false,
         message: ""
     };
-    crud.delete(con, clientQueries.CLIENT_REDIRECT_URI_DELETE_ALL_QUERY, queryId, function(delResult){
+    crud.delete(con, clientQueries.CLIENT_REDIRECT_URI_DELETE_ALL_QUERY, queryId, function (delResult) {
         console.log("delete results in deleteAllClientRedirectUri: " + JSON.stringify(delResult));
-        if(delResult.success){
+        if (delResult.success) {
             rtn.success = true;
             callback(rtn);
-        }else{
+        } else {
             callback(rtn);
         }
     });

@@ -43,76 +43,83 @@ exports.authorize = function (json, callback) {
     var userId = json.userId;
     var scope = json.scope;
     delete json.scope;
-    if (isOk && clientId && userId) {
-        manager.grantTypeTurnedOn(clientId, grantTypeConstants.CODE_GRANT_TYPE, function (turnedOn) {
-            if (turnedOn) {
-                db.getAuthorizationCode(clientId, userId, function (codeResult) {
-                    if (codeResult && codeResult.authorizationCode) {
-                        db.getAuthorizationCodeScopeList(codeResult.authorizationCode, function (scopeList) {
-                            var scopeListToAdd = [];
-                            var scopeFound = false;
-                            for (var cnt = 0; cnt < scopeList.length; cnt++) {
-                                if (scope === scopeList[cnt].scope) {
-                                    //returnVal.authorizationCode = codeResult.authorizationCode;
-                                    scopeFound = true;
-                                    break;
-                                }
-                            }
-                            //console.log("scope already exist: " + scopeFound);
-                            if (scopeFound) {
-                                // delete auth code
-                                for (var cnt = 0; cnt < scopeList.length; cnt++) {
-                                    scopeListToAdd.push(scopeList[cnt].scope);
-                                }
-                                db.deleteAuthorizationCode(clientId, userId, function (codeDelResult) {
-                                    if (codeDelResult.success) {
-                                        // create new auth code
-                                        authorizationCodeDelegate.createAuthorizationCode(json, scopeListToAdd, function (acodeResult) {
-                                            if (acodeResult.success) {
-                                                returnVal.authorizationCode = acodeResult.authorizationCode;
-                                                returnVal.success = true;
+    if (isOk && clientId && userId && json.redirectUri) {
+        db.getClientRedirectUri(clientId, json.redirectUri, function (redirectUriResults) {
+            if (redirectUriResults && redirectUriResults.id > 0) {
+                manager.grantTypeTurnedOn(clientId, grantTypeConstants.CODE_GRANT_TYPE, function (turnedOn) {
+                    if (turnedOn) {
+                        db.getAuthorizationCode(clientId, userId, function (codeResult) {
+                            if (codeResult && codeResult.authorizationCode) {
+                                db.getAuthorizationCodeScopeList(codeResult.authorizationCode, function (scopeList) {
+                                    var scopeListToAdd = [];
+                                    var scopeFound = false;
+                                    for (var cnt = 0; cnt < scopeList.length; cnt++) {
+                                        if (scope === scopeList[cnt].scope) {
+                                            //returnVal.authorizationCode = codeResult.authorizationCode;
+                                            scopeFound = true;
+                                            break;
+                                        }
+                                    }
+                                    //console.log("scope already exist: " + scopeFound);
+                                    if (scopeFound) {
+                                        // delete auth code
+                                        for (var cnt = 0; cnt < scopeList.length; cnt++) {
+                                            scopeListToAdd.push(scopeList[cnt].scope);
+                                        }
+                                        db.deleteAuthorizationCode(clientId, userId, function (codeDelResult) {
+                                            if (codeDelResult.success) {
+                                                // create new auth code
+                                                authorizationCodeDelegate.createAuthorizationCode(json, scopeListToAdd, function (acodeResult) {
+                                                    if (acodeResult.success) {
+                                                        returnVal.authorizationCode = acodeResult.authorizationCode;
+                                                        returnVal.success = true;
+                                                    }
+                                                    callback(returnVal);
+                                                });
+                                            } else {
+                                                returnVal.error = "access_denied";
+                                                callback(returnVal);
                                             }
-                                            callback(returnVal);
                                         });
                                     } else {
-                                        returnVal.error = "access_denied";
-                                        callback(returnVal);
+                                        scopeListToAdd.push(scope);
+                                        for (var cnt = 0; cnt < scopeList.length; cnt++) {
+                                            scopeListToAdd.push(scopeList[cnt].scope);
+                                        }
+                                        console.log("scopes before delete: " + JSON.stringify(scopeListToAdd));
+                                        // deleste all auth code
+                                        db.deleteAuthorizationCode(clientId, userId, function (codeDelResult) {
+                                            console.log("delete of old auth code :" + JSON.stringify(codeDelResult))
+                                            if (codeDelResult.success) {
+                                                authorizationCodeDelegate.createAuthorizationCode(json, scopeListToAdd, function (acodeResult) {
+                                                    if (acodeResult.success) {
+                                                        returnVal.authorizationCode = acodeResult.authorizationCode;
+                                                        returnVal.success = true;
+                                                    }
+                                                    callback(returnVal);
+                                                });
+                                            } else {
+                                                returnVal.error = "access_denied";
+                                                callback(returnVal);
+                                            }
+                                        });
                                     }
                                 });
                             } else {
-                                scopeListToAdd.push(scope);
-                                for (var cnt = 0; cnt < scopeList.length; cnt++) {
-                                    scopeListToAdd.push(scopeList[cnt].scope);
-                                }
-                                console.log("scopes before delete: " + JSON.stringify(scopeListToAdd));
-                                // deleste all auth code
-                                db.deleteAuthorizationCode(clientId, userId, function (codeDelResult) {
-                                    console.log("delete of old auth code :" + JSON.stringify(codeDelResult))
-                                    if (codeDelResult.success) {                                        
-                                        authorizationCodeDelegate.createAuthorizationCode(json, scopeListToAdd, function (acodeResult) {
-                                            if (acodeResult.success) {
-                                                returnVal.authorizationCode = acodeResult.authorizationCode;
-                                                returnVal.success = true;
-                                            }
-                                            callback(returnVal);
-                                        }); 
-                                    } else {
-                                        returnVal.error = "access_denied";
-                                        callback(returnVal);
+                                //create auth code
+                                var scopeListToAdd = [scope];
+                                authorizationCodeDelegate.createAuthorizationCode(json, scopeListToAdd, function (acodeResult) {
+                                    if (acodeResult.success) {
+                                        returnVal.authorizationCode = acodeResult.authorizationCode;
+                                        returnVal.success = true;
                                     }
+                                    callback(returnVal);
                                 });
                             }
                         });
                     } else {
-                        //create auth code
-                        var scopeListToAdd = [scope];
-                        authorizationCodeDelegate.createAuthorizationCode(json, scopeListToAdd, function (acodeResult) {
-                            if (acodeResult.success) {
-                                returnVal.authorizationCode = acodeResult.authorizationCode;
-                                returnVal.success = true;
-                            }
-                            callback(returnVal);
-                        });
+                        returnVal.error = "access_denied";
+                        callback(returnVal);
                     }
                 });
             } else {

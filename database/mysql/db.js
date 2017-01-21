@@ -228,6 +228,10 @@ exports.getClientRedirectUriList = function (clientId, callback) {
     clientRedirectUriProcessor.getClientRedirectUriList(clientId, callback);
 };
 
+exports.getClientRedirectUri = function (clientId, uri, callback) {
+    clientRedirectUriProcessor.getClientRedirectUri(clientId, uri, callback);
+};
+
 exports.deleteClientRedirectUri = function (id, callback) {
     clientRedirectUriProcessor.deleteClientRedirectUri(null, id, callback);
 };

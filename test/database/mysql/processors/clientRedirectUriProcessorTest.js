@@ -89,6 +89,23 @@ describe('ClientRedirectUriProcessor', function () {
         });
     });
     
+    describe('#getClientRedirectUri()', function () {
+        it('should get client redirect uri in processor', function (done) {           
+            setTimeout(function () {       
+                var toFindUri = "http://www.google.com";
+                clientRedirectUriProcessor.getClientRedirectUri(clientId, toFindUri, function (result) {
+                    if (result && result.id > 0) {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);           
+        });
+    });
+    
+    
     describe('#getClientRedirectUriList()', function () {
         it('should read client redirect uri list in processor', function (done) {           
             setTimeout(function () {                
