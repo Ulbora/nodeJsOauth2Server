@@ -66,6 +66,7 @@ exports.authorize = function (json, callback) {
                                         for (var cnt = 0; cnt < scopeList.length; cnt++) {
                                             scopeListToAdd.push(scopeList[cnt].scope);
                                         }
+                                        console.log("scopes before delete: " + JSON.stringify(scopeListToAdd));
                                         db.deleteAuthorizationCode(clientId, userId, function (codeDelResult) {
                                             if (codeDelResult.success) {
                                                 // create new auth code

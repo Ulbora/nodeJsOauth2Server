@@ -212,6 +212,29 @@ describe('Client authorization code Manager', function () {
     });
     
     describe('#authorize()', function () {
+        it('should authorize a client user with the same scope ', function (done) {
+            var json = {
+                clientId: clientId,
+                userId: "admin",                
+                scope: "read",
+                redirectUri: "http://www.google.com"
+            };
+            setTimeout(function () {
+                authorizationCodeManager.authorize(json, function (result) {
+                    console.log("authorization code: " + JSON.stringify(result));
+                    if (result.authorizationCode && result.authorizationCode > -1) {
+                        authorizationCode = result.authorizationCode;
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);
+        });
+    });
+    
+    describe('#authorize()', function () {
         it('should authorize a second scope for a client user', function (done) {
             var json = {
                 clientId: clientId,

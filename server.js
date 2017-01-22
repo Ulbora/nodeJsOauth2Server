@@ -24,13 +24,25 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var conf = require('./configuration');
 var cors = require('./cors/cors');
+var webInitializer = require('./routeInitializers/webRouteInitializer');
+var hbs = require('hbs');
+var lessMiddleware = require('less-middleware');
 //var restServiceInitializer = require('./initializers/restInitializer');
 //var db = require("./db/db");
 var app = express();
+webInitializer.init(app);
+app.use(lessMiddleware('/less', {
+    dest: '/css',
+    pathRoot: path.join(__dirname, 'public')
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 //restServiceInitializer.initialize(app);
 //db.initializeMongoDb();
+app.set('view engine', 'hbs');
+app.set('views', __dirname + '/views');
+app.use(express.static(__dirname + '/public'));
+
 
 if (conf.CORS_ENABLED) {
     app.use(cors.CORS);
