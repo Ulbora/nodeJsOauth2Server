@@ -43,6 +43,9 @@ exports.testConnection = function (callback) {
 
 exports.getConnection = function (callback) {
     pool.getConnection(function (err, connection) {
+        if(err){
+            console.error("Database Insert error: " + JSON.stringify(err));
+        }
         callback(err, connection);
     });
 };

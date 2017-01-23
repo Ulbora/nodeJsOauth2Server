@@ -36,6 +36,7 @@ var implicitGrantScopeProcessor = require("./processors/implicitGrantScopeProces
 var passwordGrantProcessor = require("./processors/passwordGrantProcessor");
 var credentialsGrantProcessor = require("./processors/credentialsGrantProcessor");
 var tokenKeyProcessor = require("./processors/tokenKeyProcessor");
+var sessionKeyProcessor = require("./processors/sessionKeyProcessor");
 
 exports.connect = function (host, user, pw, db, cpnum) {
     crud.connect(host, user, pw, db, cpnum);
@@ -55,6 +56,7 @@ exports.connect = function (host, user, pw, db, cpnum) {
     passwordGrantProcessor.init(crud);
     credentialsGrantProcessor.init(crud);
     tokenKeyProcessor.init(crud);
+    sessionKeyProcessor.init(crud);
 };
 // for testing only
 exports.testConnection = function (callback) {
@@ -1015,3 +1017,23 @@ exports.getRefreshTokenKey = function (callback) {
     tokenKeyProcessor.getRefreshTokenKey(callback);
 };
 //end token keys
+
+exports.getSessionKey = function (callback) {    
+    sessionKeyProcessor.getSessionKey(callback);
+};
+
+exports.getSessionStore = function(session, callback){
+    var MySQLStore = require('express-mysql-session')(session);
+    crud.getConnection(function (err, con) {  
+        var sessionStore;
+        if (!err && con) {             
+            sessionStore = new MySQLStore({}, con);            
+            callback(sessionStore);
+        } else {
+            if (con) {
+                con.release();
+            }
+            callback(sessionStore);
+        }
+    });
+};

@@ -26,26 +26,42 @@ var conf = require('./configuration');
 var cors = require('./cors/cors');
 var webInitializer = require('./routeInitializers/webRouteInitializer');
 var hbs = require('hbs');
+var session = require('express-session');
 var lessMiddleware = require('less-middleware');
+var sessionDelegate = require("./delegates/sessionDelegate");
+var db = require("./database/db");
+db.connect(conf.DATABASE_HOST, conf.DATABASE_USER_NAME, conf.DATABASE_USER_PASSWORD, conf.DATABASE_NAME, conf.DATABASE_POOL_SIZE);
+sessionDelegate.init(db);
+
+
 //var restServiceInitializer = require('./initializers/restInitializer');
-//var db = require("./db/db");
+
 var app = express();
-webInitializer.init(app);
-app.use(lessMiddleware('/less', {
-    dest: '/css',
-    pathRoot: path.join(__dirname, 'public')
-}));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
-//restServiceInitializer.initialize(app);
-//db.initializeMongoDb();
-app.set('view engine', 'hbs');
-app.set('views', __dirname + '/views');
-app.use(express.static(__dirname + '/public'));
-
-
-if (conf.CORS_ENABLED) {
-    app.use(cors.CORS);
-}
-
-app.listen(process.env.PORT || conf.PORT);
+sessionDelegate.createSessionStore(session, function (sessionResult) {
+    if (sessionResult.success) {
+        
+        var sessionOptions = {
+            key: 'ulbora_oauth2_server',
+            cookie: {maxAge: 60000 },
+            secret: sessionResult.key,
+            store: sessionResult.store,
+            resave: true,
+            saveUninitialized: true
+        };
+        app.use(session(sessionOptions));
+        webInitializer.init(app);
+        app.use(lessMiddleware('/less', {
+            dest: '/css',
+            pathRoot: path.join(__dirname, 'public')
+        }));
+        app.use(bodyParser.json());
+        app.use(bodyParser.urlencoded({extended: false}));
+        app.set('view engine', 'hbs');
+        app.set('views', __dirname + '/views');
+        app.use(express.static(__dirname + '/public'));
+        if (conf.CORS_ENABLED) {
+            app.use(cors.CORS);
+        }
+        app.listen(process.env.PORT || conf.PORT);
+    }
+});
