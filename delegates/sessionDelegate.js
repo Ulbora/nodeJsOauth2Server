@@ -26,25 +26,23 @@ exports.init = function (database) {
 };
 
 exports.createSessionStore = function (session, callback) {
-    setTimeout(function () {
-        db.getSessionKey(function (result) {
-            var rtn = {
-                key: null,
-                store: null,
-                success: false
-            };
-            if (result && result.key) {
-                console.log("session key: " + result.key);
-                rtn.key = result.key;
-                db.getSessionStore(session, function (sessionStore) {
-                    console.log("session store: " + sessionStore);
-                    rtn.store = sessionStore;
-                    rtn.success = true;
-                    callback(rtn);
-                });
-            } else {
-                callback();
-            }
-        });
-    }, 2000);
+    db.getSessionKey(function (result) {
+        var rtn = {
+            key: null,
+            store: null,
+            success: false
+        };
+        if (result && result.key) {
+            //console.log("session key: " + result.key);
+            rtn.key = result.key;
+            db.getSessionStore(session, function (sessionStore) {
+                console.log("session store: " + sessionStore);
+                rtn.store = sessionStore;
+                rtn.success = true;
+                callback(rtn);
+            });
+        } else {
+            callback();
+        }
+    });
 };

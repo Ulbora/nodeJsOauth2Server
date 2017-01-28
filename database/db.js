@@ -21,6 +21,15 @@
 
 var db = require("./mysql/db");
 
+exports.connectDb = function (conf) {
+    var host = process.env.DATABASE_HOST || conf.DATABASE_HOST;
+    var user = process.env.DATABASE_USER_NAME || conf.DATABASE_USER_NAME;
+    var pw = process.env.DATABASE_USER_PASSWORD || conf.DATABASE_USER_PASSWORD;
+    var database = process.env.DATABASE_NAME || conf.DATABASE_NAME;
+    var conPoolSize = process.env.DATABASE_POOL_SIZE || conf.DATABASE_POOL_SIZE;
+    db.connect(host, user, pw, database, conPoolSize);
+};
+
 exports.connect = function (host, user, pw, database, cpnum) {
     db.connect(host, user, pw, database, cpnum);
 };

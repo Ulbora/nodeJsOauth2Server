@@ -30,16 +30,14 @@ var session = require('express-session');
 var lessMiddleware = require('less-middleware');
 var sessionDelegate = require("./delegates/sessionDelegate");
 var db = require("./database/db");
-db.connect(conf.DATABASE_HOST, conf.DATABASE_USER_NAME, conf.DATABASE_USER_PASSWORD, conf.DATABASE_NAME, conf.DATABASE_POOL_SIZE);
+db.connectDb(conf);
 sessionDelegate.init(db);
-
 
 //var restServiceInitializer = require('./initializers/restInitializer');
 
 var app = express();
 sessionDelegate.createSessionStore(session, function (sessionResult) {
-    if (sessionResult.success) {
-        
+    if (sessionResult.success) {        
         var sessionOptions = {
             key: 'ulbora_oauth2_server',
             cookie: {maxAge: 60000 },
@@ -63,5 +61,8 @@ sessionDelegate.createSessionStore(session, function (sessionResult) {
             app.use(cors.CORS);
         }
         app.listen(process.env.PORT || conf.PORT);
+    }else{
+        console.error("Connection to database could not be established by session delegate.");
+        console.error("Server not started.");
     }
 });
