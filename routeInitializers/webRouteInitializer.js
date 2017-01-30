@@ -31,4 +31,8 @@ exports.init = function (app, db) {
     app.get('/applicationAuthorize', function (req, res) {
         authorizeController.applicationAuthorization(req, res);
     });
+    
+    app.get('/oauthError', function (req, res) {
+        authorizeController.oauthError(req, res);
+    });
 };

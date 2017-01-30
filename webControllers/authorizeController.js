@@ -54,7 +54,7 @@ exports.authorize = function (req, res) {
                             var cb = redirectUri + "?code=" + result.authorizationCode;
                             res.redirect(cb);
                         } else {
-                            res.render('oauthError', {error: result.error});
+                            res.redirect('/oauthError?error=' + result.error);
                         }
                     });
                 } else {
@@ -127,3 +127,8 @@ exports.applicationAuthorization = function (req, res) {
     }
 };
 
+
+exports.oauthError = function (req, res) {
+    var error = req.query.error;
+    res.render('oauthError', {error: error});
+};
