@@ -51,7 +51,7 @@ exports.authorize = function (req, res) {
                     authorizationCodeManager.authorize(json, function (result) {
                         console.log("authorization code: " + JSON.stringify(result));
                         if (result.success && result.authorizationCode && result.authorizationCode > -1) {
-                            var cb = redirectUri + "?code=" + result.authorizationCode;
+                            var cb = redirectUri + "?code=" + result.authorizationCode+ "&state=" + oauthCodeObj.state;
                             res.redirect(cb);
                         } else {
                             res.redirect('/oauthError?error=' + result.error);
@@ -116,7 +116,7 @@ exports.applicationAuthorization = function (req, res) {
         authorizationCodeManager.authorize(json, function (result) {
             console.log("authorization code: " + JSON.stringify(result));
             if (result.success && result.authorizationCode && result.authorizationCode > -1) {
-                var cb = oauthCodeObj.redirectUri + "?code=" + result.authorizationCode;
+                var cb = oauthCodeObj.redirectUri + "?code=" + result.authorizationCode + "&state=" + oauthCodeObj.state;
                 res.redirect(cb);
             } else {
                 res.render('oauthError', {error: result.error});
