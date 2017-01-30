@@ -43,14 +43,16 @@ module.exports = function (grunt) {
                 },
                 src: ['test/database/mysql/**/db*Test.js']
             },
-            testMysqlIndividualTestOnly: {
+            testIndividualTestOnly: {
                 options: {
                     reporter: 'spec',
                     //captureFile: 'results.txt', // Optionally capture the reporter output to a file 
                     quiet: false, // Optionally suppress output to standard out (defaults to false) 
                     clearRequireCache: false // Optionally clear the require cache before running tests (defaults to false) 
                 },
-                src: ['test/delegates/sessionDelegateTest.js']
+                src: ['test/webControllers/authorizeControllerTest.js']
+                //src: ['test/database/dbAuthorizationCodeTest.js']
+                //src: ['test/managers/authorizationCodeManagerTest.js']
             }
         }
     });
@@ -60,6 +62,6 @@ module.exports = function (grunt) {
     grunt.registerTask('mocha-mysqlTest', 'mochaTest:testMysql');
     grunt.registerTask('mocha-mysqlProcessorTest', 'mochaTest:testMysqlProcessors');
     grunt.registerTask('mocha-mysqlDbOnlyTest', 'mochaTest:testMysqlDbOnly');
-    grunt.registerTask('mocha-mysqlDbIndividualOnlyTest', 'mochaTest:testMysqlIndividualTestOnly');
+    grunt.registerTask('mocha-IndividualOnlyTest', 'mochaTest:testIndividualTestOnly');
 
 };

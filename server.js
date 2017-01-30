@@ -40,14 +40,14 @@ sessionDelegate.createSessionStore(session, function (sessionResult) {
     if (sessionResult.success) {        
         var sessionOptions = {
             key: 'ulbora_oauth2_server',
-            cookie: {maxAge: 60000 },
+            cookie: {maxAge: 3600000 },
             secret: sessionResult.key,
             store: sessionResult.store,
             resave: true,
             saveUninitialized: true
         };
         app.use(session(sessionOptions));
-        webInitializer.init(app);
+        webInitializer.init(app, db);
         app.use(lessMiddleware('/less', {
             dest: '/css',
             pathRoot: path.join(__dirname, 'public')

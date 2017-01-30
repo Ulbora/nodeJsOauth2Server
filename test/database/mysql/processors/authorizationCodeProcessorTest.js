@@ -3,6 +3,7 @@ var crud = require("../../../../database/mysql/crud/mysqlCrud");
 var accessTokenProcessor = require("../../../../database/mysql/processors/accessTokenProcessor");
 var clientProcessor = require("../../../../database/mysql/processors/clientProcessor");
 var authorizationCodeProcessor = require("../../../../database/mysql/processors/authorizationCodeProcessor");
+var authorizationCodeScopeProcessor = require("../../../../database/mysql/processors/authorizationCodeScopeProcessor");
 var clientId;
 var tokenId;
 var acId;
@@ -17,6 +18,7 @@ describe('authorizationCodeProcessor', function () {
                     accessTokenProcessor.init(crud); 
                     clientProcessor.init(crud); 
                     authorizationCodeProcessor.init(crud);
+                    authorizationCodeScopeProcessor.init(crud);
                     assert(true);
                 } else {
                     assert(false);
@@ -133,6 +135,57 @@ describe('authorizationCodeProcessor', function () {
         });
     });
    
+    describe('#addAuthorizationCodeScope()', function () {
+        it('should add an authorization code scope in processor', function (done) {            
+            var json = {
+                scope: "scopeTest",
+                authorizationCode: acId
+            };
+            setTimeout(function () {
+                authorizationCodeScopeProcessor.addAuthorizationCodeScope(null, json, function (result) {
+                    if (result.id > -1) {
+                        acScope = result.id;
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);
+        });
+    });
+    
+    describe('#getAuthorizationCodeByScope()', function () {
+        it('should read AuthorizationCodeScope in processor', function (done) {           
+            setTimeout(function () {                
+                authorizationCodeProcessor.getAuthorizationCodeByScope(clientId, "admin", "scopeTest", function (result) {
+                    if (result && result.authorized) {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);           
+        });
+    });
+   
+   
+    describe('#deleteAuthorizationCodeScope()', function () {
+        it('should delete authorization code scope', function (done) {
+            setTimeout(function () {
+                authorizationCodeScopeProcessor.deleteAuthorizationCodeScope(null, acScope, function (result) {
+                    if (result.success) {
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);
+        });
+    });
+    
    describe('#deleteAuthorizationCode()', function () {
         it('should delete authorization code', function (done) {           
             setTimeout(function () {                

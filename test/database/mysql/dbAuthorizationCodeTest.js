@@ -3,6 +3,7 @@ var db = require("../../../database/mysql/db");
 var tokenId;
 var clientId;
 var acId;
+var acScope;
 
 describe('mysql DB authorization code', function () {
     this.timeout(20000);
@@ -112,6 +113,58 @@ describe('mysql DB authorization code', function () {
             }, 1000);           
         });
     });
+    
+    describe('#addAuthorizationCodeScope()', function () {
+        it('should add an authorization code scope in db', function (done) {
+            var json = {
+                scope: "scopeTest",
+                authorizationCode: acId
+            };
+            setTimeout(function () {
+                db.addAuthorizationCodeScope(json, function (result) {
+                    if (result.id > -1) {
+                        acScope = result.id;
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);
+        });
+    });
+
+    
+    describe('#getAuthorizationCodeByScope()', function () {
+        it('should read AuthorizationCodeScope in processor', function (done) {           
+            setTimeout(function () {                
+                db.getAuthorizationCodeByScope(clientId, "admin", "scopeTest", function (result) {
+                    if (result && result.authorized) {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);           
+        });
+    });
+    
+    describe('#deleteAuthorizationCodeScope()', function () {
+        it('should delete authorization code scopes in db', function (done) {
+            setTimeout(function () {
+                db.deleteAuthorizationCodeScope(acScope, function (result) {
+                    if (result.success) {
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);
+        });
+    });
+    
     
     describe('#deleteAuthorizationCode()', function () {
         it('should delete authorization code', function (done) {           

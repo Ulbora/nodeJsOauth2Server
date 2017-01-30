@@ -135,7 +135,74 @@ exports.authorize = function (json, callback) {
 
 };
 
-exports.authorizeApplication = function (json, callback) {
+exports.checkApplicationAuthorization = function (json, callback) {
+    var returnVal = {
+        authorized: false
+    };
+    var isOk = manager.securityCheck(json);
+    var clientId = json.clientId;
+    var userId = json.userId;
+    var scope = json.scope;
+    if (isOk && clientId && userId && scope) {
+        db.getAuthorizationCodeByScope(clientId, userId, scope, function (result) {
+            if (result && result.authorized) {
+                returnVal.authorized = true;
+            }
+            callback(returnVal);
+        });
+    } else {
+        callback(returnVal);
+    }
+};
+
+exports.validateClientAndCallback = function (json, callback) {
+    var returnVal = {
+        valid: false
+    };
+    var isOk = manager.securityCheck(json);
+    var clientId = json.clientId;
+    var callbackUri = json.callbackUri;
+    if (isOk && clientId && callbackUri) {
+        console.log("validateClientAndCallback: " + JSON.stringify(json));
+        db.getClientRedirectUri(clientId, callbackUri, function (uriResults) {
+            //console.log("validateClientAndCallback getClientRedirectUri: " + JSON.stringify(uriResults));
+            //console.log("uriResults.id > -1: " + (uriResults.id > -1));
+            //console.log("uriResults.clientId === clientId: " + (uriResults.clientId === clientId));
+            //console.log("uriResults.uri === callbackUri: " + (uriResults.uri === callbackUri));
+            if (uriResults.id > -1 && uriResults.clientId === clientId && uriResults.uri === callbackUri) {
+                db.getClient(clientId, function (cResult) {
+                    console.log("getClient in validateClientAndCallback: " + JSON.stringify(cResult));
+                    if (cResult && cResult.clientId > -1 && cResult.enabled) {
+                        returnVal.valid = true;
+                        returnVal.clientName = cResult.name;
+                        returnVal.webSite = cResult.webSite;
+                    }
+                    callback(returnVal);
+                });
+            } else {
+                callback(returnVal);
+            }
+        });
+    } else {
+        callback(returnVal);
+    }
 
 };
 
+exports.deleteAuthorizationCode = function (json, callback) {
+    var returnVal = {
+        success: false
+    };
+    var isOk = manager.securityCheck(json);
+    var clientId = json.clientId;
+    var userId = json.userId;
+    if (isOk && clientId && userId) {
+        db.deleteAuthorizationCode(clientId, userId, function (result) {
+            returnVal.success = result.success;
+            callback(returnVal);
+        });
+    } else {
+        callback(returnVal);
+    }
+
+};

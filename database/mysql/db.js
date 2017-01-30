@@ -445,6 +445,10 @@ exports.getAuthorizationCode = function (clientId, userId, callback) {
     authorizationCodeProcessor.getAuthorizationCode(clientId, userId, callback);
 };
 
+exports.getAuthorizationCodeByScope = function (clientId, userId, scope, callback) {
+    authorizationCodeProcessor.getAuthorizationCodeByScope(clientId, userId, scope, callback);
+};
+
 exports.updateAuthorizationCode = function (json, callback) {
     authorizationCodeProcessor.updateAuthorizationCode(null, json, callback);
 };

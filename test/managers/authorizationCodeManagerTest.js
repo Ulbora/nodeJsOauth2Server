@@ -273,11 +273,55 @@ describe('Client authorization code Manager', function () {
             }, 1000);
         });
     });
+    
+    
+    describe('#checkApplicationAuthorization()', function () {
+        it('should checkApplicationAuthorization', function (done) {           
+            setTimeout(function () {        
+                var json = {
+                    clientId: clientId,
+                    userId: "admin",
+                    scope: "addUser"
+                }
+                authorizationCodeManager.checkApplicationAuthorization(json, function (result) {
+                    if (result && result.authorized) {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);           
+        });
+    });
+    
+    describe('#validateClientCallback()', function () {
+        it('should validateClientCallback', function (done) {           
+            setTimeout(function () {        
+                var json = {
+                    clientId: clientId,
+                    callbackUri: "http://www.google.com"
+                }
+                authorizationCodeManager.validateClientAndCallback(json, function (result) {
+                    if (result && result.valid) {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);           
+        });
+    });
 
     describe('#deleteAuthorizationCode()', function () {
         it('should delete authorization code', function (done) {
             setTimeout(function () {
-                db.deleteAuthorizationCode(clientId, "admin", function (result) {
+                var json = {
+                    clientId: clientId,
+                    userId: "admin"
+                };
+                authorizationCodeManager.deleteAuthorizationCode(json, function (result) {
                     console.log("deleteAuthorizationCode:" +JSON.stringify(result));
                     if (result.success) {
                         assert(true);
