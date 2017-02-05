@@ -93,11 +93,9 @@ describe('DB authorization code', function () {
     });
 
     describe('#updateAuthorizationCode()', function () {
-        it('should update an authorization code in db', function (done) {
-            var today = new Date();
-            today.setTime(today.getTime() + (8 * 60 * 60 * 1000));
+        it('should update an authorization code in db', function (done) {            
             var json = {
-                expires: today,
+                randonAuthCode: "65165165651dsfdsf651dsf6d5s1dsf651ds61ds6ken",
                 alreadyUsed: false,
                 authorizationCode: acId
             };

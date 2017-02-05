@@ -74,7 +74,7 @@ exports.createAuthorizationCode = function (json, scopes, callback) {
                             var dateNow = new Date();
                             var acExpires = new Date(dateNow.getTime() + 300000);
                             var acTokenExpires = new Date(dateNow.getTime() + (config.CODE_ACCESS_TOKEN_LIFE * 60000));
-                            
+
                             var accessTknJson = {
                                 token: accessToken,
                                 expires: acTokenExpires
@@ -91,10 +91,21 @@ exports.createAuthorizationCode = function (json, scopes, callback) {
                             db.addAuthorizationCode(authCodeJson, accessTknJson, rftJson, scopes, function (addAccessTknResult) {
                                 if (addAccessTknResult.success) {
                                     var codeString = generateAuthCodeString(addAccessTknResult.authorizationCode, addAccessTknResult.codeString);
-                                    rtn.authorizationCode = addAccessTknResult.authorizationCode;
-                                    rtn.codeString = codeString;
-                                    rtn.success = true;
-                                    callback(rtn);
+                                    var updateJson = {
+                                        randonAuthCode: codeString,
+                                        alreadyUsed: false,
+                                        authorizationCode: addAccessTknResult.authorizationCode
+                                    }
+                                    db.updateAuthorizationCode(updateJson, function (authCodeUpdateResult) {
+                                        if (authCodeUpdateResult.success) {
+                                            rtn.authorizationCode = addAccessTknResult.authorizationCode;
+                                            rtn.codeString = codeString;
+                                            rtn.success = true;
+                                            callback(rtn);
+                                        } else {
+                                            callback(rtn);
+                                        }
+                                    });
                                 } else {
                                     callback(rtn);
                                 }
@@ -126,9 +137,9 @@ var generateRandonAuthCode = function () {
 };
 
 
-var generateAuthCodeString = function(authCode, randonString){
+var generateAuthCodeString = function (authCode, randonString) {
     var rtn = null;
-    if(authCode && randonString){
+    if (authCode && randonString) {
         var fpart = randonString.substring(0, 7);
         var spart = randonString.substring(8);
         rtn = fpart + authCode + spart;

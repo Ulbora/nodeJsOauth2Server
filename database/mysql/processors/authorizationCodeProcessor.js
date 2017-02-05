@@ -49,7 +49,7 @@ exports.addAuthorizationCode = function (con, json, callback) {
 
 exports.updateAuthorizationCode = function (con, json, callback) {
     var args = [
-        json.expires,
+        json.randonAuthCode,
         json.alreadyUsed,
         json.authorizationCode
     ];

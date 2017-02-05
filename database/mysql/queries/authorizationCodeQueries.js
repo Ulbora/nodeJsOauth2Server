@@ -26,7 +26,7 @@ exports.AUTHORIZATION_CODE_GET_BY_SCOPE_QUERY = "SELECT a.authorization_code, a.
                                                 "FROM authorization_code a inner join auth_code_scope s " +
                                                 "on a.authorization_code = s.authorization_code " +
                                                 "WHERE a.client_id = ? and a.user_id = ? and s.scope = ?";                              
-exports.AUTHORIZATION_CODE_UPDATE_QUERY = "UPDATE authorization_code SET expires = ?, already_used = ? " +
+exports.AUTHORIZATION_CODE_UPDATE_QUERY = "UPDATE authorization_code SET randon_auth_code = ?, already_used = ? " +
                                           "WHERE authorization_code = ? ";
 exports.AUTHORIZATION_CODE_DELETE_QUERY = "DELETE FROM authorization_code WHERE client_id = ? and user_id = ?";
 
