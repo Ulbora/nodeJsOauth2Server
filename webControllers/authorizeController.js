@@ -5,13 +5,13 @@ exports.init = function (db) {
 exports.authorize = function (req, res) {
     var loggedIn = req.session.loggedIn;
     var user = req.session.user;
-    console.log("user: " + user + " logged in: " + loggedIn)
+    console.log("user: " + user + " logged in: " + loggedIn);
     var responseType = req.query.response_type;
     var clientIdStr = req.query.client_id;
     var clientId;
     if(clientIdStr){
         try{
-            clientId = parseInt(clientIdStr)
+            clientId = parseInt(clientIdStr);
         }catch(err){
             clientId = clientIdStr;
         }
@@ -51,7 +51,8 @@ exports.authorize = function (req, res) {
                     authorizationCodeManager.authorize(json, function (result) {
                         console.log("authorization code: " + JSON.stringify(result));
                         if (result.success && result.authorizationCode && result.authorizationCode > -1) {
-                            var cb = redirectUri + "?code=" + result.authorizationCode+ "&state=" + oauthCodeObj.state;
+                            var cb = redirectUri + "?code=" + result.codeString+ "&state=" + oauthCodeObj.state;
+                            console.log("authorization code cb: " + cb);
                             res.redirect(cb);
                         } else {
                             res.redirect('/oauthError?error=' + result.error);
@@ -65,9 +66,11 @@ exports.authorize = function (req, res) {
         } else if (responseType === "token") {
 
         } else if (responseType) {
-            res.render('oauthError', {error: "invalid_grant"});
+            //res.render('oauthError', {error: "invalid_grant"});
+            res.redirect('/oauthError?error=invalid_grant');
         } else {
-            res.render('oauthError', {error: "invalid_grant"});
+            //res.render('oauthError', {error: "invalid_grant"});
+            res.redirect('/oauthError?error=invalid_grant');
         }
     }
 };
@@ -116,7 +119,7 @@ exports.applicationAuthorization = function (req, res) {
         authorizationCodeManager.authorize(json, function (result) {
             console.log("authorization code: " + JSON.stringify(result));
             if (result.success && result.authorizationCode && result.authorizationCode > -1) {
-                var cb = oauthCodeObj.redirectUri + "?code=" + result.authorizationCode + "&state=" + oauthCodeObj.state;
+                var cb = oauthCodeObj.redirectUri + "?code=" + result.codeString + "&state=" + oauthCodeObj.state;
                 res.redirect(cb);
             } else {
                 res.render('oauthError', {error: result.error});

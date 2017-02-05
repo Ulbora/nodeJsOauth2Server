@@ -20,7 +20,7 @@ exports.loginUser = function (req, res) {
     //req.session.oauthCodeObj = undefined;
     console.log("oauthCodeObj: " + JSON.stringify(oauthCodeObj));
     if(req.session.loggedIn && oauthCodeObj && oauthCodeObj.responseType === "code"){
-        res.redirect("/oauth/authorize?response_type=" + oauthCodeObj.responseType + "&client_id=" + oauthCodeObj.clientId +"&redirect_uri=" + oauthCodeObj.redirectUri+ "&scope=" + oauthCodeObj.scope);
+        res.redirect("/oauth/authorize?response_type=" + oauthCodeObj.responseType + "&client_id=" + oauthCodeObj.clientId +"&redirect_uri=" + oauthCodeObj.redirectUri + "&scope=" + oauthCodeObj.scope + "&state=" + oauthCodeObj.state);
     }else{
         res.redirect('/login');
     }

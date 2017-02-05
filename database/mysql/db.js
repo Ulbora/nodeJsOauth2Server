@@ -334,6 +334,7 @@ exports.deleteAccessToken = function (id, callback) {
 exports.addAuthorizationCode = function (authCodeJson, accessTokenJson, refreshTokenJson, scopeList, callback) {
     var rtn = {
         authorizationCode: null,
+        codeString: null,
         success: false,
         message: null
     };
@@ -378,9 +379,10 @@ exports.addAuthorizationCode = function (authCodeJson, accessTokenJson, refreshT
 var doAuthCodeAdd = function (con, rtn, authCodeJson, accTokenJson, scopeList, callback) {
     accessTokenProcessor.addAccessToken(con, accTokenJson, function (accessResult) {
         console.log("access token: " + JSON.stringify(accessResult));
+        console.log("authCodeJson: " + JSON.stringify(authCodeJson));
         if (accessResult.id > -1) {
             var acJson = authCodeJson;
-            acJson.expires = accTokenJson.expires;
+            //acJson.expires = accTokenJson.expires;
             acJson.accessTokenId = accessResult.id;
             authorizationCodeProcessor.addAuthorizationCode(con, acJson, function (acResult) {
                 if (acResult.authorizationCode > -1) {
@@ -407,6 +409,7 @@ var doAuthCodeAdd = function (con, rtn, authCodeJson, accTokenJson, scopeList, c
                                             con.rollback();
                                         } else {
                                             rtn.authorizationCode = acResult.authorizationCode;
+                                            rtn.codeString = acResult.codeString;
                                             rtn.success = true;
                                         }
                                         con.release();
@@ -421,6 +424,7 @@ var doAuthCodeAdd = function (con, rtn, authCodeJson, accTokenJson, scopeList, c
                                 con.rollback();
                             } else {
                                 rtn.authorizationCode = acResult.authorizationCode;
+                                rtn.codeString = acResult.codeString;
                                 rtn.success = true;
                             }
                             con.release();

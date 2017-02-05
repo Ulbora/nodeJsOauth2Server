@@ -31,12 +31,15 @@ exports.addAuthorizationCode = function (con, json, callback) {
         client_id: json.clientId,
         user_id: json.userId,
         expires: json.expires,
-        access_token_id: json.accessTokenId
+        access_token_id: json.accessTokenId,
+        randon_auth_code: json.randonAuthCode,
+        already_used: json.alreadyUsed
     };
     console.log("json in add authorizationCode :" + JSON.stringify(json));
     crud.insert(con, authorizationCodeQueries.AUTHORIZATION_CODE_INSERT_QUERY, args, function (result) {
         var rtn = {
             authorizationCode: result.id,
+            codeString: json.randonAuthCode,
             success: result.success,
             message: result.message
         };
@@ -47,6 +50,7 @@ exports.addAuthorizationCode = function (con, json, callback) {
 exports.updateAuthorizationCode = function (con, json, callback) {
     var args = [
         json.expires,
+        json.alreadyUsed,
         json.authorizationCode
     ];
     crud.update(con, authorizationCodeQueries.AUTHORIZATION_CODE_UPDATE_QUERY, args, callback);
@@ -65,7 +69,9 @@ exports.getAuthorizationCode = function (clientId, userId, callback) {
                 clientId: result.data[0].client_id,
                 userId: result.data[0].user_id,
                 expires: result.data[0].expires,
-                accessTokenId: result.data[0].access_token_id
+                accessTokenId: result.data[0].access_token_id,
+                codeString: result.data[0].randon_auth_code,
+                alreadyUsed: result.data[0].already_used
             };
             callback(rtn);
         } else {

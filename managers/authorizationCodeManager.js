@@ -35,6 +35,7 @@ exports.init = function (database) {
 exports.authorize = function (json, callback) {
     var returnVal = {
         authorizationCode: null,
+        codeString: null,
         error: null,
         redirectUri: json.redirectUri
     };
@@ -73,6 +74,7 @@ exports.authorize = function (json, callback) {
                                                 authorizationCodeDelegate.createAuthorizationCode(json, scopeListToAdd, function (acodeResult) {
                                                     if (acodeResult.success) {
                                                         returnVal.authorizationCode = acodeResult.authorizationCode;
+                                                        returnVal.codeString = acodeResult.codeString;
                                                         returnVal.success = true;
                                                     }
                                                     callback(returnVal);
@@ -95,6 +97,7 @@ exports.authorize = function (json, callback) {
                                                 authorizationCodeDelegate.createAuthorizationCode(json, scopeListToAdd, function (acodeResult) {
                                                     if (acodeResult.success) {
                                                         returnVal.authorizationCode = acodeResult.authorizationCode;
+                                                        returnVal.codeString = acodeResult.codeString;
                                                         returnVal.success = true;
                                                     }
                                                     callback(returnVal);
@@ -112,6 +115,7 @@ exports.authorize = function (json, callback) {
                                 authorizationCodeDelegate.createAuthorizationCode(json, scopeListToAdd, function (acodeResult) {
                                     if (acodeResult.success) {
                                         returnVal.authorizationCode = acodeResult.authorizationCode;
+                                        returnVal.codeString = acodeResult.codeString;
                                         returnVal.success = true;
                                     }
                                     callback(returnVal);

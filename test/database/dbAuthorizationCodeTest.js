@@ -48,8 +48,10 @@ describe('DB authorization code', function () {
             var authCodeJson = {
                 clientId: clientId,
                 userId: "admin",
-                expires: null,
-                accessTokenId: null
+                expires: new Date(),
+                accessTokenId: null,
+                randonAuthCode: "61656565dsdfd6sd6dsdf1dddsd15d",
+                alreadyUsed: false
             };
             var accessTokenJson = {
                 token: 'djfjoiqjldktrtryrtyrytrsflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf',
@@ -62,6 +64,7 @@ describe('DB authorization code', function () {
                 var scopeList = ["admin", "read"];
                 //var scopeList = [];
                 db.addAuthorizationCode(authCodeJson, accessTokenJson, refreshTokenJson, scopeList, function (result) {
+                    console.log("authorization code in db: " + JSON.stringify(result));
                     if (result.authorizationCode > -1) {
                         acId = result.authorizationCode;
                         assert(true);
@@ -95,6 +98,7 @@ describe('DB authorization code', function () {
             today.setTime(today.getTime() + (8 * 60 * 60 * 1000));
             var json = {
                 expires: today,
+                alreadyUsed: false,
                 authorizationCode: acId
             };
             setTimeout(function () {

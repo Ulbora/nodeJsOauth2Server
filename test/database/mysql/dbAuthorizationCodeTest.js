@@ -53,8 +53,10 @@ describe('mysql DB authorization code', function () {
            var authCodeJson = {
                 clientId: clientId,
                 userId: "admin",
-                expires: null,
-                accessTokenId: null
+                expires: new Date(),
+                accessTokenId: null,
+                randonAuthCode: "61656565dsdfd6sd6dsdf1dddsd15d",
+                alreadyUsed: false
             };
             var accessTokenJson = {
                 token: 'djfjoiqjldktrtryrtyrytrsflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf',
@@ -99,6 +101,7 @@ describe('mysql DB authorization code', function () {
            today.setTime(today.getTime() + (8*60*60*1000)); 
            var json = {                
                 expires: today,
+                alreadyUsed: false,
                 authorizationCode: acId
             };
             setTimeout(function () {

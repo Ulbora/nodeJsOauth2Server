@@ -85,7 +85,9 @@ describe('authorizationCodeScopeProcessor', function () {
                 clientId: clientId,
                 userId: "admin",
                 expires: today,
-                accessTokenId: tokenId
+                accessTokenId: tokenId,
+                randonAuthCode: "61656565dsdfd6sd6dsdf1dddsd15d",
+                alreadyUsed: false
             };
             setTimeout(function () {
                 authorizationCodeProcessor.addAuthorizationCode(null, json, function (result) {

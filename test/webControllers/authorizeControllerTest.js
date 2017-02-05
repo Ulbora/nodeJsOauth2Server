@@ -222,6 +222,7 @@ describe('authorizeController', function () {
                 req.query.client_id = clientId;
                 req.query.redirect_uri = "http://www.google.com";
                 req.query.scope = "read";
+                req.query.state = "xyzz";
                 req.session = {};
                 req.session.loggedIn = true;
                 req.session.user = "admin";
@@ -274,6 +275,7 @@ describe('authorizeController', function () {
                 req.query.client_id = clientId;
                 req.query.redirect_uri = "http://www.google.com";
                 req.query.scope = "read";
+                req.query.state = "xyzz";
                 req.session = {};
                 req.session.loggedIn = true;
                 req.session.user = "admin";
@@ -453,15 +455,16 @@ describe('authorizeController', function () {
                 req.query.client_id = clientId;
                 req.query.redirect_uri = "http://www.google.com";
                 req.query.scope = "read";
-                req.query.state = "xyz"
+                req.query.state = "xyz";
                 req.session = {};
                 req.session.loggedIn = true;
                 req.session.user = "admin";
                 var res = {};
                 res.redirect = function (path) {
                     console.log("redirect path: " + path);
-                    var i = path.indexOf("http://www.google.com?code=");                    
-                    if (i > -1) {
+                    var i = path.indexOf("http://www.google.com?code=");   
+                    var o = path.indexOf("state=xyz");  
+                    if (i > -1 && o > -1) {
                         assert(true); 
                     } else {
                         assert(false);

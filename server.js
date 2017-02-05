@@ -54,7 +54,9 @@ sessionDelegate.createSessionStore(session, function (sessionResult) {
         }));
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({extended: false}));
-        app.set('view engine', 'hbs');
+        //app.set('view engine', 'hbs');
+        app.set('view engine', 'html');
+        app.engine('html', require('hbs').__express);
         app.set('views', __dirname + '/views');
         app.use(express.static(__dirname + '/public'));
         if (conf.CORS_ENABLED) {

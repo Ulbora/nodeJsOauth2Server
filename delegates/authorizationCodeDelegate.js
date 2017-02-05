@@ -35,6 +35,7 @@ exports.init = function (database) {
 exports.createAuthorizationCode = function (json, scopes, callback) {
     var rtn = {
         authorizationCode: null,
+        codeString: null,
         success: false,
         message: null
     };
@@ -70,20 +71,28 @@ exports.createAuthorizationCode = function (json, scopes, callback) {
                     };
                     accessTokenDelegate.generateAccessToken(accessPayload, function (accessToken) {
                         if (accessToken) {
-                            var acTokenExpires = new Date();
+                            var dateNow = new Date();
+                            var acExpires = new Date(dateNow.getTime() + 300000);
+                            var acTokenExpires = new Date(dateNow.getTime() + (config.CODE_ACCESS_TOKEN_LIFE * 60000));
+                            
                             var accessTknJson = {
                                 token: accessToken,
                                 expires: acTokenExpires
                             };
+                            var randonCode = generateRandonAuthCode();
                             var authCodeJson = {
                                 clientId: clientId,
                                 userId: userId,
-                                expires: acTokenExpires
+                                expires: acExpires,
+                                randonAuthCode: randonCode,
+                                alreadyUsed: false
 
                             };
                             db.addAuthorizationCode(authCodeJson, accessTknJson, rftJson, scopes, function (addAccessTknResult) {
                                 if (addAccessTknResult.success) {
+                                    var codeString = generateAuthCodeString(addAccessTknResult.authorizationCode, addAccessTknResult.codeString);
                                     rtn.authorizationCode = addAccessTknResult.authorizationCode;
+                                    rtn.codeString = codeString;
                                     rtn.success = true;
                                     callback(rtn);
                                 } else {
@@ -106,5 +115,24 @@ exports.createAuthorizationCode = function (json, scopes, callback) {
 
 
 
+var generateRandonAuthCode = function () {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
+    for (var i = 0; i < 20; i++)
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+};
+
+
+var generateAuthCodeString = function(authCode, randonString){
+    var rtn = null;
+    if(authCode && randonString){
+        var fpart = randonString.substring(0, 7);
+        var spart = randonString.substring(8);
+        rtn = fpart + authCode + spart;
+    }
+    return rtn;
+};
     
