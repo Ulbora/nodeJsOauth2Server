@@ -37,6 +37,7 @@ var passwordGrantProcessor = require("./processors/passwordGrantProcessor");
 var credentialsGrantProcessor = require("./processors/credentialsGrantProcessor");
 var tokenKeyProcessor = require("./processors/tokenKeyProcessor");
 var sessionKeyProcessor = require("./processors/sessionKeyProcessor");
+var authCodeRevokeProcessor = require("./processors/authCodeRevokeProcessor");
 
 exports.connect = function (host, user, pw, db, cpnum) {
     crud.connect(host, user, pw, db, cpnum);
@@ -57,6 +58,7 @@ exports.connect = function (host, user, pw, db, cpnum) {
     credentialsGrantProcessor.init(crud);
     tokenKeyProcessor.init(crud);
     sessionKeyProcessor.init(crud);
+    authCodeRevokeProcessor.init(crud);
 };
 // for testing only
 exports.testConnection = function (callback) {
@@ -476,17 +478,35 @@ exports.deleteAuthorizationCode = function (clientId, userId, callback) {
                                 if (accTokenResult && accTokenResult.refreshTokenId) {
                                     refreshTokenId = accTokenResult.refreshTokenId;
                                 }
-                                authorizationCodeScopeProcessor.deleteAuthorizationCodeScopeList(con, acResult.authorizationCode, function (scopeDelResult) {
-                                    console.log("deleteAuthorizationCodeScopeList in delete: " + JSON.stringify(scopeDelResult));
-                                    if (scopeDelResult.success) {
-                                        authorizationCodeProcessor.deleteAuthorizationCode(con, clientId, userId, function (acDelResult) {
-                                            if (acDelResult.success) {
-                                                accessTokenProcessor.deleteAccessToken(con, acResult.accessTokenId, function (accTokenDelResult) {
-                                                    console.log("deleteAccessToken in delete: " + JSON.stringify(accTokenDelResult));
-                                                    if (accTokenDelResult.success) {
-                                                        if (refreshTokenId) {
-                                                            refreshTokenProcessor.deleteRefreshToken(con, refreshTokenId, function (rfTokenDelResult) {
-                                                                if (rfTokenDelResult.success) {
+                                authCodeRevokeProcessor.deleteAuthCodeRevoke(null, acResult.authorizationCode, function (revokeResult) {
+                                    if (revokeResult.success) {
+                                        authorizationCodeScopeProcessor.deleteAuthorizationCodeScopeList(con, acResult.authorizationCode, function (scopeDelResult) {
+                                            console.log("deleteAuthorizationCodeScopeList in delete: " + JSON.stringify(scopeDelResult));
+                                            if (scopeDelResult.success) {
+                                                authorizationCodeProcessor.deleteAuthorizationCode(con, clientId, userId, function (acDelResult) {
+                                                    if (acDelResult.success) {
+                                                        accessTokenProcessor.deleteAccessToken(con, acResult.accessTokenId, function (accTokenDelResult) {
+                                                            console.log("deleteAccessToken in delete: " + JSON.stringify(accTokenDelResult));
+                                                            if (accTokenDelResult.success) {
+                                                                if (refreshTokenId) {
+                                                                    refreshTokenProcessor.deleteRefreshToken(con, refreshTokenId, function (rfTokenDelResult) {
+                                                                        if (rfTokenDelResult.success) {
+                                                                            con.commit(function (err) {
+                                                                                if (err) {
+                                                                                    con.rollback();
+                                                                                } else {
+                                                                                    rtn.success = true;
+                                                                                }
+                                                                                con.release();
+                                                                                callback(rtn);
+                                                                            });
+                                                                        } else {
+                                                                            con.rollback();
+                                                                            con.release();
+                                                                            callback(rtn);
+                                                                        }
+                                                                    });
+                                                                } else {
                                                                     con.commit(function (err) {
                                                                         if (err) {
                                                                             con.rollback();
@@ -496,23 +516,13 @@ exports.deleteAuthorizationCode = function (clientId, userId, callback) {
                                                                         con.release();
                                                                         callback(rtn);
                                                                     });
-                                                                } else {
-                                                                    con.rollback();
-                                                                    con.release();
-                                                                    callback(rtn);
                                                                 }
-                                                            });
-                                                        } else {
-                                                            con.commit(function (err) {
-                                                                if (err) {
-                                                                    con.rollback();
-                                                                } else {
-                                                                    rtn.success = true;
-                                                                }
+                                                            } else {
+                                                                con.rollback();
                                                                 con.release();
                                                                 callback(rtn);
-                                                            });
-                                                        }
+                                                            }
+                                                        });
                                                     } else {
                                                         con.rollback();
                                                         con.release();
@@ -1026,16 +1036,16 @@ exports.getRefreshTokenKey = function (callback) {
 };
 //end token keys
 
-exports.getSessionKey = function (callback) {    
+exports.getSessionKey = function (callback) {
     sessionKeyProcessor.getSessionKey(callback);
 };
 
-exports.getSessionStore = function(session, callback){
+exports.getSessionStore = function (session, callback) {
     var MySQLStore = require('express-mysql-session')(session);
-    crud.getConnection(function (err, con) {  
+    crud.getConnection(function (err, con) {
         var sessionStore;
-        if (!err && con) {             
-            sessionStore = new MySQLStore({}, con);            
+        if (!err && con) {
+            sessionStore = new MySQLStore({}, con);
             callback(sessionStore);
         } else {
             if (con) {
@@ -1045,3 +1055,17 @@ exports.getSessionStore = function(session, callback){
         }
     });
 };
+
+// allowed addAuthCodeRevoke
+exports.addAuthCodeRevoke = function (json, callback) {
+    authCodeRevokeProcessor.addAuthCodeRevoke(null, json, callback);
+};
+
+exports.getAuthCodeRevoke = function (authCode, callback) {
+    authCodeRevokeProcessor.getAuthCodeRevoke(authCode, callback);
+};
+
+exports.deleteAuthCodeRevoke = function (authCode, callback) {
+    authCodeRevokeProcessor.deleteAuthCodeRevoke(null, authCode, callback);
+};
+//end addAuthCodeRevoke

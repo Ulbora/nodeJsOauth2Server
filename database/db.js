@@ -314,3 +314,18 @@ exports.getSessionKey = function (callback) {
 exports.getSessionStore = function(session, callback){
     db.getSessionStore(session, callback);
 };
+
+
+// allowed addAuthCodeRevoke
+exports.addAuthCodeRevoke = function (json, callback) {
+    db.addAuthCodeRevoke(json, callback);
+};
+
+exports.getAuthCodeRevoke = function (authCode, callback) {
+    db.getAuthCodeRevoke(authCode, callback);
+};
+
+exports.deleteAuthCodeRevoke = function (authCode, callback) {
+    db.deleteAuthCodeRevoke(authCode, callback);
+};
+//end addAuthCodeRevoke

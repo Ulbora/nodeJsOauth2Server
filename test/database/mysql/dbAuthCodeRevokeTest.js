@@ -80,78 +80,7 @@ describe('mysql DB authorization code', function () {
         });
     });
     
-    describe('#getAuthorizationCode()', function () {
-        it('should read AuthorizationCode in processor', function (done) {           
-            setTimeout(function () {                
-                db.getAuthorizationCode( clientId, "admin", function (result) {
-                    if (result && result.userId === 'admin') {                        
-                        assert(true);
-                    } else {
-                        assert(false);
-                    }
-                    done();
-                });
-            }, 1000);           
-        });
-    });
     
-    describe('#updateAuthorizationCode()', function () {
-        it('should update an authorization code in db', function (done) { 
-           var today = new Date();
-           today.setTime(today.getTime() + (8*60*60*1000)); 
-           var json = {                
-                expires: today,
-                alreadyUsed: false,
-                authorizationCode: acId
-            };
-            setTimeout(function () {
-                db.updateAuthorizationCode(json, function (result) {
-                    if (result.success) {                          
-                        assert(true);
-                    } else {
-                        assert(false);
-                    }
-                    done();
-                });
-            }, 1000);           
-        });
-    });
-    
-    describe('#addAuthorizationCodeScope()', function () {
-        it('should add an authorization code scope in db', function (done) {
-            var json = {
-                scope: "scopeTest",
-                authorizationCode: acId
-            };
-            setTimeout(function () {
-                db.addAuthorizationCodeScope(json, function (result) {
-                    if (result.id > -1) {
-                        acScope = result.id;
-                        assert(true);
-                    } else {
-                        assert(false);
-                    }
-                    done();
-                });
-            }, 1000);
-        });
-    });
-
-    
-    describe('#getAuthorizationCodeByScope()', function () {
-        it('should read AuthorizationCodeScope in processor', function (done) {           
-            setTimeout(function () {                
-                db.getAuthorizationCodeByScope(clientId, "admin", "scopeTest", function (result) {
-                    if (result && result.authorized) {                        
-                        assert(true);
-                    } else {
-                        assert(false);
-                    }
-                    done();
-                });
-            }, 1000);           
-        });
-    });
     
     
     describe('#addAuthCodeRevoke()', function () {
@@ -172,10 +101,27 @@ describe('mysql DB authorization code', function () {
         });
     });
     
-    describe('#deleteAuthorizationCodeScope()', function () {
-        it('should delete authorization code scopes in db', function (done) {
+    
+    describe('#getAuthCodeRevoke()', function () {
+        it('should get AuthCodeRevoke in mysql db', function (done) {           
+            setTimeout(function () {                
+                db.getAuthCodeRevoke( acId, function (result) {
+                    if (result && result.authorizationCode === acId) {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);           
+        });
+    });
+    
+    
+    describe('#deleteAuthCodeRevoke()', function () {
+        it('should delete AuthCodeRevoke in mysql db', function (done) {
             setTimeout(function () {
-                db.deleteAuthorizationCodeScope(acScope, function (result) {
+                db.deleteAuthCodeRevoke(acId, function (result) {
                     if (result.success) {
                         assert(true);
                     } else {
