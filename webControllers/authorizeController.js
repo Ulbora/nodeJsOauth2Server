@@ -126,7 +126,7 @@ exports.applicationAuthorization = function (req, res) {
             }
         });
     } else {
-        res.redirect(oauthCodeObj.redirectUri + "?error=access_denied");
+        res.redirect(oauthCodeObj.redirectUri + "?error=access_denied&state=" + oauthCodeObj.state);
     }
 };
 
