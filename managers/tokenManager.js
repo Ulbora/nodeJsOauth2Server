@@ -57,9 +57,10 @@ exports.authCodeToken = function (json, callback) {
                     if (uriResult && uriResult.id > 0) {
                         // get authCode and validate code
                         db.getAuthorizationCodeByCode(code, function (acResult) {
-                            console.log("in authCodeToken ac result: " + JSON.stringify(acResult));
-                            // -- if already used, revoke token
+                            console.log("in authCodeToken ac result: " + JSON.stringify(acResult));                            
                             if(acResult.clientId === clientId){
+                                // -- if already used, revoke token
+                                // check that token is not revolked
                                 //set authCode to used once
                                 callback(rtn);
                             }else{
