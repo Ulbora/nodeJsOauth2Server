@@ -190,6 +190,10 @@ exports.getAuthorizationCode = function (clientId, userId, callback) {
     db.getAuthorizationCode(clientId, userId, callback);
 };
 
+exports.getAuthorizationCodeByCode = function (code, callback) {
+    db.getAuthorizationCodeByCode(code, callback);
+};
+
 exports.getAuthorizationCodeByScope = function (clientId, userId, scope, callback) {
     db.getAuthorizationCodeByScope(clientId, userId, scope, callback);
 };

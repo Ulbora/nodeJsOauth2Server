@@ -136,6 +136,22 @@ describe('authorizationCodeProcessor', function () {
             }, 1000);           
         });
     });
+    
+    describe('#getAuthorizationCodeByCode()', function () {
+        it('should read AuthorizationCode by code in processor', function (done) {           
+            setTimeout(function () {                
+                authorizationCodeProcessor.getAuthorizationCodeByCode("65165165651dsfdsf651dsf6d5s1dsf651ds61ds6ken" , function (result) {
+                    if (result && result.userId === 'admin') {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);           
+        });
+    });
+   
    
     describe('#addAuthorizationCodeScope()', function () {
         it('should add an authorization code scope in processor', function (done) {            

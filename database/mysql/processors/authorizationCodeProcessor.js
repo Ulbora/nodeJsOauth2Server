@@ -64,6 +64,31 @@ exports.getAuthorizationCode = function (clientId, userId, callback) {
         //console.log("get refresh token value:" + result.data[0].token);
         //console.log("get refresh token length:" + result.data[0].token.length);
         if (result.success && result.data.length > 0) {
+            var used = (result.data[0].already_used === 0)? false: true;
+            var rtn = {                
+                authorizationCode: result.data[0].authorization_code,
+                clientId: result.data[0].client_id,
+                userId: result.data[0].user_id,
+                expires: result.data[0].expires,
+                accessTokenId: result.data[0].access_token_id,
+                codeString: result.data[0].randon_auth_code,
+                alreadyUsed: used
+            };
+            callback(rtn);
+        } else {
+            callback(null);
+        }
+    });
+};
+
+exports.getAuthorizationCodeByCode = function (code, callback) {
+    var queryId = [code];
+    console.log("getAuthorizationCode code: " + code );
+    crud.get(authorizationCodeQueries.AUTHORIZATION_CODE_GET_BY_CODE_QUERY, queryId, function (result) {
+        console.log("get authorization code by code in processor:" + JSON.stringify(result));
+        //console.log("get refresh token value:" + result.data[0].token);
+        //console.log("get refresh token length:" + result.data[0].token.length);
+        if (result.success && result.data.length > 0) {
             var rtn = {
                 authorizationCode: result.data[0].authorization_code,
                 clientId: result.data[0].client_id,

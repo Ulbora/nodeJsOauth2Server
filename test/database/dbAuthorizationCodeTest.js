@@ -4,6 +4,7 @@ var tokenId;
 var clientId;
 var acId;
 var acScope;
+var code;
 
 describe('DB authorization code', function () {
     this.timeout(20000);
@@ -102,6 +103,21 @@ describe('DB authorization code', function () {
             setTimeout(function () {
                 db.updateAuthorizationCode(json, function (result) {
                     if (result.success) {
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);
+        });
+    });
+    
+    describe('#getAuthorizationCodeByCode()', function () {
+        it('should read AuthorizationCode by code in processor', function (done) {
+            setTimeout(function () {
+                db.getAuthorizationCodeByCode("65165165651dsfdsf651dsf6d5s1dsf651ds61ds6ken", function (result) {
+                    if (result && result.userId === 'admin') {
                         assert(true);
                     } else {
                         assert(false);

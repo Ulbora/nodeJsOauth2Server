@@ -21,6 +21,7 @@
 
 
 var manager = require("./manager");
+var config = require("../configuration");
 
 var db;
 
@@ -34,27 +35,52 @@ exports.authCodeToken = function (json, callback) {
     };
     var rtn = {
         access_token: null,
-        token_type: null,
-        expires_in: null,
+        token_type: "bearer",
+        expires_in: config.CODE_ACCESS_TOKEN_LIFE,
         refresh_token: null,
         scope: null
     };
     var isOk = manager.securityCheck(json);
     var clientId = json.clientId;
-    var clientSecret = json.clientSecret;
+    var secret = json.secret;
     var code = json.code;
     var redirectUri = json.redirectUri;
-    if (isOk && clientId && clientSecret && code && redirectUri) {
+    if (isOk && clientId && secret && code && redirectUri) {
         //validate client
-        
-        //validate redirect uri
-        
-        // get authCode and validate code
-        // -- if already used, revoke token
-        
-        //set authCode to used once
+        console.log("in authCodeToken req: " + JSON.stringify(json));
+        db.getClient(clientId, function (clientResult) {
+            console.log("in authCodeToken result: " + JSON.stringify(clientResult));
+            if (clientResult && clientResult.clientId && clientResult.clientId === clientId &&
+                    clientResult.secret === secret) {
+                //validate redirect uri
+                db.getClientRedirectUri(clientId, redirectUri, function (uriResult) {
+                    if (uriResult && uriResult.id > 0) {
+                        // get authCode and validate code
+                        db.getAuthorizationCodeByCode(code, function (acResult) {
+                            console.log("in authCodeToken ac result: " + JSON.stringify(acResult));
+                            // -- if already used, revoke token
+                            if(acResult.clientId === clientId){
+                                //set authCode to used once
+                                callback(rtn);
+                            }else{
+                                
+                            }                        
+                        });
+                        
+                    } else {
+                        error.error = "invalid_grant";
+                        callback(error);
+                    }
+                });
+            } else {
+                error.error = "invalid_client";
+                callback(error);
+            }
+        });
+
+
     } else {
         error.error = "invalid_request";
         callback(error);
-    }    
+    }
 };

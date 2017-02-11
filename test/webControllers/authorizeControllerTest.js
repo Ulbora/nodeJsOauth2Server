@@ -212,7 +212,7 @@ describe('authorizeController', function () {
             }, 1000);
         });
     });
-    
+
     describe('#authorize()', function () {
         it('should send invalid_grant error', function (done) {
             setTimeout(function () {
@@ -235,11 +235,20 @@ describe('authorizeController', function () {
                     }
                     done();
                 };
+                res.redirect = function (path) {
+                    console.log("authorizeApp path: " + path);                    
+                    if (path === "/oauthError?error=invalid_grant") {
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                };
                 authorizeController.authorize(req, res);
             }, 1000);
         });
     });
-    
+
     describe('#authorize()', function () {
         it('should send invalid_grant error', function (done) {
             setTimeout(function () {
@@ -261,11 +270,20 @@ describe('authorizeController', function () {
                     }
                     done();
                 };
+                res.redirect = function (path) {
+                    console.log("authorizeApp path: " + path);                    
+                    if (path === "/oauthError?error=invalid_grant") {
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                };
                 authorizeController.authorize(req, res);
             }, 1000);
         });
     });
-    
+
     describe('#authorize()', function () {
         it('should send to authorize application page', function (done) {
             setTimeout(function () {
@@ -293,7 +311,7 @@ describe('authorizeController', function () {
         });
     });
 
-    
+
 
     /*
      describe('#authorize()', function () {
@@ -314,7 +332,7 @@ describe('authorizeController', function () {
      });
      }); 
      */
-    
+
     describe('#authorizeApp()', function () {
         it('should send to authorize application page', function (done) {
             setTimeout(function () {
@@ -325,7 +343,7 @@ describe('authorizeController', function () {
                 req.session.oauthCodeObj.clientId = clientId;
                 req.session.oauthCodeObj.redirectUri = "http://www.google.com";
                 req.session.oauthCodeObj.scope = "read";
-                req.session.oauthCodeObj.state = "xyz";               
+                req.session.oauthCodeObj.state = "xyz";
                 req.session.loggedIn = true;
                 req.session.user = "admin";
                 var res = {};
@@ -339,11 +357,20 @@ describe('authorizeController', function () {
                     }
                     done();
                 };
+                res.redirect = function (path) {
+                    console.log("authorizeApp path: " + path);                    
+                    if (path === "/oauthError?error=invalid_grant") {
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                };
                 authorizeController.authorizeApp(req, res);
             }, 1000);
         });
     });
-    
+
     describe('#authorizeApp()', function () {
         it('should send to invalid uri page', function (done) {
             setTimeout(function () {
@@ -354,7 +381,7 @@ describe('authorizeController', function () {
                 req.session.oauthCodeObj.clientId = clientId;
                 req.session.oauthCodeObj.redirectUri = "http://www.google.org";
                 req.session.oauthCodeObj.scope = "read";
-                req.session.oauthCodeObj.state = "xyz";               
+                req.session.oauthCodeObj.state = "xyz";
                 req.session.loggedIn = true;
                 req.session.user = "admin";
                 var res = {};
@@ -371,7 +398,7 @@ describe('authorizeController', function () {
             }, 1000);
         });
     });
-    
+
     describe('#applicationAuthorization()', function () {
         it('should Authorization application', function (done) {
             setTimeout(function () {
@@ -382,21 +409,21 @@ describe('authorizeController', function () {
                 req.session.oauthCodeObj.clientId = clientId;
                 req.session.oauthCodeObj.redirectUri = "http://www.google.com";
                 req.session.oauthCodeObj.scope = "read";
-                req.session.oauthCodeObj.state = "xyz";               
+                req.session.oauthCodeObj.state = "xyz";
                 req.session.loggedIn = true;
                 req.session.user = "admin";
                 req.query = {};
                 req.query.authorize = "true";
                 var res = {};
                 res.render = function (path, params) {
-                    assert(false);                    
+                    assert(false);
                     done();
                 };
                 res.redirect = function (path) {
                     console.log("redirect path: " + path);
-                    var i = path.indexOf("http://www.google.com?code=");                    
+                    var i = path.indexOf("http://www.google.com?code=");
                     if (i > -1) {
-                        assert(true); 
+                        assert(true);
                     } else {
                         assert(false);
                     }
@@ -406,7 +433,7 @@ describe('authorizeController', function () {
             }, 1000);
         });
     });
-    
+
     describe('#applicationAuthorization()', function () {
         it('should fail to Authorization application with redirect error', function (done) {
             setTimeout(function () {
@@ -417,25 +444,25 @@ describe('authorizeController', function () {
                 req.session.oauthCodeObj.clientId = clientId;
                 req.session.oauthCodeObj.redirectUri = "http://www.google.org";
                 req.session.oauthCodeObj.scope = "read";
-                req.session.oauthCodeObj.state = "xyz";               
+                req.session.oauthCodeObj.state = "xyz";
                 req.session.loggedIn = true;
                 req.session.user = "admin";
                 req.query = {};
                 req.query.authorize = "true";
                 var res = {};
                 res.render = function (path, params) {
-                    if(path === "oauthError"){
+                    if (path === "oauthError") {
                         assert(true);
-                    }else{
-                        assert(false);   
-                    }                                     
+                    } else {
+                        assert(false);
+                    }
                     done();
                 };
                 res.redirect = function (path) {
                     console.log("redirect path: " + path);
-                    var i = path.indexOf("http://www.google.org?code=");                    
+                    var i = path.indexOf("http://www.google.org?code=");
                     if (i > -1) {
-                        assert(false); 
+                        assert(false);
                     } else {
                         assert(true);
                     }
@@ -445,7 +472,7 @@ describe('authorizeController', function () {
             }, 1000);
         });
     });
-    
+
     describe('#authorize()', function () {
         it('should send to authorize application page', function (done) {
             setTimeout(function () {
@@ -462,10 +489,10 @@ describe('authorizeController', function () {
                 var res = {};
                 res.redirect = function (path) {
                     console.log("redirect path: " + path);
-                    var i = path.indexOf("http://www.google.com?code=");   
-                    var o = path.indexOf("state=xyz");  
+                    var i = path.indexOf("http://www.google.com?code=");
+                    var o = path.indexOf("state=xyz");
                     if (i > -1 && o > -1) {
-                        assert(true); 
+                        assert(true);
                     } else {
                         assert(false);
                     }
@@ -475,7 +502,7 @@ describe('authorizeController', function () {
             }, 1000);
         });
     });
-    
+
     describe('#deleteAuthorizationCode()', function () {
         it('should delete authorization code', function (done) {
             setTimeout(function () {
@@ -484,7 +511,7 @@ describe('authorizeController', function () {
                     userId: "admin"
                 };
                 authorizationCodeManager.deleteAuthorizationCode(json, function (result) {
-                    console.log("deleteAuthorizationCode:" +JSON.stringify(result));
+                    console.log("deleteAuthorizationCode:" + JSON.stringify(result));
                     if (result.success) {
                         assert(true);
                     } else {
@@ -495,8 +522,8 @@ describe('authorizeController', function () {
             }, 1000);
         });
     });
-    
-    
+
+
 
     describe('#deleteClientRedirectUri()', function () {
         it('should delete client redirect uri', function (done) {
