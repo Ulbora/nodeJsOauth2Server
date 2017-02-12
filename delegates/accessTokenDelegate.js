@@ -54,12 +54,12 @@ exports.generateAccessToken = function (json, callback) {
     }
 };
 
-exports.validateAccessToken = function (refreshToken, claims, callback) {
+exports.validateAccessToken = function (accessToken, claims, callback) {
     var valid = false;
-    console.log("access token: " + refreshToken);
+    console.log("access token: " + accessToken);
     db.getAccessTokenKey(function (result) {
         if (result && result.key) {
-            jwt.verify(refreshToken, result.key, function (err, decoded) {
+            jwt.verify(accessToken, result.key, function (err, decoded) {
                 if (err) {
                     console.log("AccessToken verify err: " + err);
                 }
@@ -107,3 +107,33 @@ exports.validateAccessToken = function (refreshToken, claims, callback) {
     });
 };
 
+
+exports.decodeAccessToken = function (accessToken, callback) {
+   var rtn = {
+       clientId: null,
+       userId: null,
+       roleUris: null,
+       scopeList: null
+   };
+    console.log("access token: " + accessToken);
+    db.getAccessTokenKey(function (result) {
+        if (result && result.key) {
+            jwt.verify(accessToken, result.key, function (err, decoded) {
+                if (err) {
+                    console.log("AccessToken verify err: " + err);
+                }                         
+                if (decoded && decoded.tokenType === "access" && decoded.iss === config.TOKEN_ISSUER) {
+                    //console.log("decoded access token: " + JSON.stringify(decoded));
+                    //console.log("claims: " + JSON.stringify(claims));                    
+                    rtn.clientId = decoded.clientId;
+                    rtn.userId = decoded.userId;
+                    rtn.roleUris = decoded.roleUris;
+                    rtn.scopeList = decoded.scopeList;  
+                }
+                callback(rtn);
+            });
+        } else {
+            callback(rtn);
+        }
+    });
+};

@@ -111,6 +111,21 @@ describe('Access token delegate', function () {
             }, 1000);
         });
     });
+    
+    describe('#decodeAccessToken()', function () {
+        it('should decodeAccessToken', function (done) {            
+            setTimeout(function () {
+                accessTokenDelegate.decodeAccessToken(token, function (decoded) {
+                    if (decoded && decoded.userId === "admin") {
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);
+        });
+    });
 
     describe('#generateAccessToken()', function () {
         it('should generateAccessToken', function (done) {

@@ -121,6 +121,27 @@ describe('authorizationCodeProcessor', function () {
             }, 1000);           
         });
     });
+    
+    describe('#updateAuthorizationCodeToken()', function () {
+        it('should update an authorization token code in processor', function (done) { 
+           var today = new Date();
+           today.setTime(today.getTime() + (8*60*60*1000)); 
+           var json = {                
+                expires: today,
+                authorizationCode: acId
+            };
+            setTimeout(function () {
+                authorizationCodeProcessor.updateAuthorizationCodeToken(null, json, function (result) {
+                    if (result.success) {                          
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);           
+        });
+    });
    
    describe('#getAuthorizationCode()', function () {
         it('should read AuthorizationCode in processor', function (done) {           

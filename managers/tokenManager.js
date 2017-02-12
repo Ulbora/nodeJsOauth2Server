@@ -20,105 +20,149 @@
  */
 
 
-//var manager = require("./manager");
 var authCodeTokenDelegate = require("../delegates/authCodeTokenDelegate");
-//var config = require("../configuration");
+var refreshTokenDelegate = require("../delegates/refreshTokenDelegate");
+var accessTokenDelegate = require("../delegates/accessTokenDelegate");
+var config = require("../configuration");
+var manager = require("../managers/manager");
 
 var db;
 
 exports.init = function (database) {
     db = database;
     authCodeTokenDelegate.init(db);
+    refreshTokenDelegate.init(db);
 };
 
 exports.authCodeToken = function (json, callback) {
     authCodeTokenDelegate.authCodeToken(json, callback);
-    /*
+};
+
+exports.refreshToken = function (json, callback) {
     var error = {
         error: null
     };
     var rtn = {
         access_token: null,
         token_type: "bearer",
-        expires_in: config.CODE_ACCESS_TOKEN_LIFE
+        expires_in: config.CODE_ACCESS_TOKEN_LIFE,
+        refresh_token: null
     };
     var isOk = manager.securityCheck(json);
     var clientId = json.clientId;
     var secret = json.secret;
-    var code = json.code;
-    var redirectUri = json.redirectUri;
-    if (isOk && clientId && secret && code && redirectUri) {
-        //validate client
-        console.log("in authCodeToken req: " + JSON.stringify(json));
+    var refTokenOld = json.refreshToken;
+    var userId;
+    if (isOk && clientId && secret) {
+        // validate client
         db.getClient(clientId, function (clientResult) {
-            console.log("in authCodeToken result: " + JSON.stringify(clientResult));
             if (clientResult && clientResult.clientId && clientResult.clientId === clientId &&
                     clientResult.secret === secret) {
-                //validate redirect uri
-                db.getClientRedirectUri(clientId, redirectUri, function (uriResult) {
-                    if (uriResult && uriResult.id > 0) {
-                        // get authCode and validate code
-                        db.getAuthorizationCodeByCode(code, function (acResult) {
-                            console.log("in authCodeToken ac result: " + JSON.stringify(acResult));
-                            if (acResult.clientId === clientId) {
-                                // check that token is not revolked
-                                db.getAuthCodeRevoke(acResult.authorizationCode, function (revokeResult) {
-                                    if (revokeResult && revokeResult.authorizationCode === acResult.authorizationCode) {
-                                        error.error = "invalid_client";
-                                        callback(error);
-                                    } else {
-                                        if (acResult.alreadyUsed) {
-                                            // -- if already used, revoke token
-                                            var revokeJson = {
-                                                authorizationCode: acResult.authorizationCode
-                                            };
-                                            db.addAuthCodeRevoke(revokeJson, function (newRevokeResult) {
-                                                error.error = "invalid_grant";
-                                                callback(error);
-                                            });
-                                        } else {
-                                            //set authCode to used once
-                                            var usedJson = {
-                                                randonAuthCode: acResult.codeString,
-                                                alreadyUsed: true,
-                                                authorizationCode: acResult.authorizationCode
-                                            };
-                                            db.updateAuthorizationCode(usedJson, function (updateResult) {
-                                                if (updateResult.success) {
-                                                    //get access token
-                                                    db.getAccessToken(acResult.accessTokenId, function (tokenResult) {
-                                                        console.log("accesstoken result: " + JSON.stringify(tokenResult));
-                                                        if (tokenResult && tokenResult.id > 0) {
-                                                            //get refresh token      
-                                                            rtn.access_token = tokenResult.token;
-                                                            if (tokenResult.refreshTokenId) {
-                                                                db.getRefreshToken(tokenResult.refreshTokenId, function (refreshResult) {
-                                                                    rtn.refresh_token = refreshResult.token;
-                                                                    callback(rtn);
+                //decode refresh token and get client and userId sub: code or password
+                refreshTokenDelegate.decodeRefreshToken(refTokenOld, function (decode) {
+                    if (decode && decode.clientId === clientId) {
+                        userId = decode.userId;
+                        var sub = decode.sub;
+                        var claim = {
+                            userId: userId,
+                            clientId: clientId
+                        };
+                        refreshTokenDelegate.validateRefreshToken(refTokenOld, claim, function (valid) {
+                            //verify refresh token
+                            if (valid) {
+                                //if code
+                                if (sub === "code") {
+                                    // get authcode by client and user
+                                    db.getAuthorizationCode(clientId, userId, function (authCodeResult) {
+                                        var refreshPayload = {
+                                            sub: "code",
+                                            userId: userId,
+                                            clientId: clientId
+                                        };
+                                        if (authCodeResult && authCodeResult.userId === userId) {
+                                            // generate new refresh token 
+                                            refreshTokenDelegate.generateRefreshToken(refreshPayload, function (refreshToken) {
+                                                //get accessToken from db
+                                                db.getAccessToken(authCodeResult.accessTokenId, function (accessTokenResult) {
+                                                    if (accessTokenResult && accessTokenResult.id > 0) {
+
+                                                        // decode access token
+                                                        accessTokenDelegate.decodeAccessToken(accessTokenResult.token, function (decoded) {
+                                                            if (decoded && decoded.userId === userId && decoded.clientId === clientId) {
+                                                                var accessPayload = {
+                                                                    sub: "access",
+                                                                    userId: userId,
+                                                                    clientId: clientId,
+                                                                    roleUris: decoded.roleUris,
+                                                                    scopeList: decoded.scopeList,
+                                                                    expiresIn: config.CODE_ACCESS_TOKEN_LIFE
+                                                                };
+                                                                // generate new  access token
+                                                                accessTokenDelegate.generateAccessToken(accessPayload, function (accessToken) {
+                                                                    if (accessToken) {
+                                                                        var dateNow = new Date();
+                                                                        var acExpires = new Date(dateNow.getTime() + 300000);
+                                                                        var acTokenExpires = new Date(dateNow.getTime() + (config.CODE_ACCESS_TOKEN_LIFE * 60000));
+                                                                        var refreshTokenJson = {
+                                                                            token: refreshToken,
+                                                                            id: accessTokenResult.refreshTokenId
+                                                                        };
+                                                                        var accessTknJson = {
+                                                                            token: accessToken,
+                                                                            expires: acTokenExpires,
+                                                                            refreshTokenId: accessTokenResult.refreshTokenId,
+                                                                            id: authCodeResult.accessTokenId
+                                                                        };
+                                                                        var authCodeJson = {
+                                                                            expires: acExpires,
+                                                                            authorizationCode: authCodeResult.authorizationCode
+                                                                        };
+                                                                        //update auth code, refresh token and access token
+                                                                        db.updateAuthorizationCodeAndTokens(authCodeJson, accessTknJson, refreshTokenJson, function (authCodeUpdateResult) {
+                                                                            if (authCodeUpdateResult.success) {
+                                                                                rtn.access_token = accessToken;
+                                                                                rtn.refresh_token = refreshToken;
+                                                                                callback(rtn);
+                                                                            } else {
+                                                                                error.error = "invalid_client";
+                                                                                callback(error);
+                                                                            }
+                                                                        });
+                                                                    } else {
+                                                                        error.error = "invalid_client";
+                                                                        callback(error);
+                                                                    }
                                                                 });
                                                             } else {
-                                                                callback(rtn);
+                                                                error.error = "invalid_client";
+                                                                callback(error);
                                                             }
-                                                        } else {
-                                                            error.error = "invalid_grant";
-                                                            callback(error);
-                                                        }
-                                                    });
-                                                } else {
-                                                    error.error = "invalid_grant";
-                                                    callback(error);
-                                                }
+                                                        });
+                                                    } else {
+                                                        error.error = "invalid_client";
+                                                        callback(error);
+                                                    }
+                                                });
                                             });
+                                        } else {
+                                            error.error = "invalid_client";
+                                            callback(error);
                                         }
-                                    }
-                                });
+                                    });
+                                } else if (sub === "password") {
+                                    error.error = "invalid_client";
+                                    callback(error);
+                                } else {
+                                    error.error = "invalid_client";
+                                    callback(error);
+                                }
                             } else {
                                 error.error = "invalid_client";
                                 callback(error);
                             }
                         });
                     } else {
-                        error.error = "invalid_grant";
+                        error.error = "invalid_client";
                         callback(error);
                     }
                 });
@@ -131,5 +175,4 @@ exports.authCodeToken = function (json, callback) {
         error.error = "invalid_request";
         callback(error);
     }
-    */
 };

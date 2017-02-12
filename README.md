@@ -40,13 +40,13 @@ http://localhost:3000/oauth/token?client_id=403&client_secret=554444vfg55ggfff22
 ```
    Example
 
-http://localhost:3000/oauth/?grant_type=refresh_token&client_id=CLIENT_ID&client_secret=CLIENT_SECRET&refresh_token=REFRESH_TOKEN
+http://localhost:3000/oauth/token?grant_type=refresh_token&client_id=CLIENT_ID&client_secret=CLIENT_SECRET&refresh_token=REFRESH_TOKEN
    
 ```
 
 ``` 
    Test
 
-http://localhost:3000/oauth/?grant_type=refresh_token&client_id=403&client_secret=554444vfg55ggfff22454sw2fff2dsfd&refresh_token=efssffffnnlf
+http://localhost:3000/oauth/token?grant_type=refresh_token&client_id=403&client_secret=554444vfg55ggfff22454sw2fff2dsfd&refresh_token=efssffffnnlf
 
 ```

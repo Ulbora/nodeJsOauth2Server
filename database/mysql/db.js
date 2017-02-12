@@ -447,6 +447,78 @@ var doAuthCodeAdd = function (con, rtn, authCodeJson, accTokenJson, scopeList, c
     });
 };
 
+exports.updateAuthorizationCodeAndTokens = function (authCodeJson, accessTokenJson, refreshTokenJson, callback) {
+    var rtn = {
+        success: false,
+        message: null
+    };
+    crud.getConnection(function (err, con) {
+        if (!err && con) {
+            con.beginTransaction(function (err) {
+                if (!err) {
+                    if (refreshTokenJson) {
+                        refreshTokenProcessor.updateRefreshToken(con, refreshTokenJson, function (refreshResult) {
+                            console.log("refresh token: " + JSON.stringify(refreshResult));
+                            if (refreshResult.success) {
+                                doAuthCodeUpdate(con, rtn, authCodeJson, accessTokenJson, function (acRtn) {
+                                    callback(acRtn);
+                                });
+                            } else {
+                                con.rollback();
+                                con.release();
+                                callback(rtn);
+                            }
+                        });
+                    } else {
+                        doAuthCodeUpdate(con, rtn, authCodeJson, accessTokenJson, function (acRtn) {
+                            callback(acRtn);
+                        });
+                    }
+                } else {
+                    con.release();
+                    callback(rtn);
+                }
+            });
+        } else {
+            if (con) {
+                con.release();
+            }
+            callback(rtn);
+        }
+    });
+};
+
+var doAuthCodeUpdate = function (con, rtn, authCodeJson, accTokenJson, callback) {
+    accessTokenProcessor.updateAccessToken(con, accTokenJson, function (accessResult) {
+        console.log("access token: " + JSON.stringify(accessResult));
+        console.log("authCodeJson: " + JSON.stringify(authCodeJson));
+        if (accessResult.success) {
+            authorizationCodeProcessor.updateAuthorizationCodeToken(con, authCodeJson, function (acResult) {
+                if (acResult.success) {
+                    con.commit(function (err) {
+                        //console.log("commetting auth code add");
+                        if (err) {
+                            con.rollback();
+                        } else {
+                            rtn.success = true;
+                        }
+                        con.release();
+                        callback(rtn);
+                    });
+                } else {
+                    con.rollback();
+                    con.release();
+                    callback(rtn);
+                }
+            });
+        } else {
+            con.rollback();
+            con.release();
+            callback(rtn);
+        }
+    });
+};
+
 exports.getAuthorizationCode = function (clientId, userId, callback) {
     authorizationCodeProcessor.getAuthorizationCode(clientId, userId, callback);
 };

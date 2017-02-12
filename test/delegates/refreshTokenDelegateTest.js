@@ -16,7 +16,7 @@ describe('Refresh token delegate', function () {
     describe('#generateRefreshToken()', function () {
         it('should generateRefreshToken', function (done) {
             var payload = {
-                sub: "refresh",
+                sub: "code",
                 userId: "admin",
                 clientId: "jdsldsldsldls"               
             };
@@ -38,13 +38,29 @@ describe('Refresh token delegate', function () {
     describe('#validateRefreshToken()', function () {
         it('should validateRefreshToken', function (done) {
             var claims = {
-                sub: "refresh",
+                sub: "code",
                 userId: "admin",
-                clientId: "jdsldsldsldls",                
+                clientId: "jdsldsldsldls"                
             };
             setTimeout(function () {
                 refreshTokenDelegate.validateRefreshToken(token, claims, function (valid) {
                     if (valid) {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);
+        });
+    });
+    
+    describe('#decodeRefreshToken()', function () {
+        it('should decodeRefreshToken', function (done) {
+           
+            setTimeout(function () {
+                refreshTokenDelegate.decodeRefreshToken(token, function (decode) {
+                    if (decode && decode.clientId === "jdsldsldsldls" && decode.userId === "admin" && decode.sub === "code") {                        
                         assert(true);
                     } else {
                         assert(false);

@@ -75,3 +75,30 @@ exports.validateRefreshToken = function (refreshToken, claims, callback) {
     });
 };
 
+exports.decodeRefreshToken = function (refreshToken, callback) {
+    var rtn = {
+        clientId: null,
+        userId: null,
+        sub: null
+    }
+    console.log("refresh token: " + refreshToken);
+    db.getRefreshTokenKey(function (result) {
+        if (result && result.key) {
+            jwt.verify(refreshToken, result.key, function (err, decoded) {
+                if (err) {
+                    console.log("RefreshToken verify err: " + err);
+                }
+                if (decoded && decoded.tokenType === "refresh" && decoded.iss === config.TOKEN_ISSUER) {
+                    console.log("decoded refresh token: " + JSON.stringify(decoded));
+                    rtn.clientId = decoded.clientId;
+                    rtn.userId = decoded.userId;
+                    rtn.sub = decoded.sub;
+                }
+                callback(rtn);
+            });
+        } else {
+            callback(rtn);
+        }
+    });
+};
+

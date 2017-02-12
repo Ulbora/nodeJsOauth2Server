@@ -113,6 +113,42 @@ describe('DB authorization code', function () {
         });
     });
     
+    
+    describe('#updateAuthorizationCodeAndTokens()', function () {
+        it('should update an authorization code and token in db', function (done) {
+            db.getAuthorizationCode(clientId, "admin", function (acResult) {
+                db.getAccessToken(acResult.accessTokenId, function (accessTokenResult) {
+                    var authCodeJson = {
+                        expires: new Date(),
+                        authorizationCode: acId
+                    };
+                    var today = new Date();
+                    today.setTime(today.getTime() + (8 * 60 * 60 * 1000));
+                    var accessTknJson = {
+                        token: "djfjoiqjldktrtryrtyrytrsflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf",
+                        expires: today,
+                        refreshTokenId: accessTokenResult.refreshTokenId,
+                        id: acResult.accessTokenId
+                    };
+                    var refreshTokenJson = {
+                        token: "djfjoiqjldksflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf",
+                        id: accessTokenResult.refreshTokenId
+                    };
+                    setTimeout(function () {
+                        db.updateAuthorizationCodeAndTokens(authCodeJson, accessTknJson, refreshTokenJson, function (result) {
+                            if (result.success) {
+                                assert(true);
+                            } else {
+                                assert(false);
+                            }
+                            done();
+                        });
+                    }, 1000);
+                });
+            });
+        });
+    });
+    
     describe('#getAuthorizationCodeByCode()', function () {
         it('should read AuthorizationCode by code in processor', function (done) {
             setTimeout(function () {

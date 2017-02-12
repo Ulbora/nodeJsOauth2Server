@@ -11,7 +11,7 @@ describe('mysql DB authorization code', function () {
         it('should connect to db and create pool', function (done) {
             db.connect("localhost", "admin", "admin", "ulbora_oauth2_server", 5);
             db.testConnection(function (success) {
-                if (success) {                    
+                if (success) {
                     assert(true);
                 } else {
                     assert(false);
@@ -20,13 +20,13 @@ describe('mysql DB authorization code', function () {
             });
         });
     });
-        
-    
-   describe('#addClient()', function () {
-        it('should add a client', function (done) { 
-            
-           var json = {
-                secret: '12345',                
+
+
+    describe('#addClient()', function () {
+        it('should add a client', function (done) {
+
+            var json = {
+                secret: '12345',
                 name: 'ulbora',
                 webSite: 'www.ulboralabs.com',
                 email: 'ulbora@ulbora.com',
@@ -42,15 +42,15 @@ describe('mysql DB authorization code', function () {
                     }
                     done();
                 });
-            }, 1000);           
+            }, 1000);
         });
     });
-    
+
     describe('#addAuthorizationCode()', function () {
-        it('should add an authorization code in processor', function (done) { 
-           var today = new Date();
-           today.setTime(today.getTime() + (8*60*60*1000)); 
-           var authCodeJson = {
+        it('should add an authorization code in processor', function (done) {
+            var today = new Date();
+            today.setTime(today.getTime() + (8 * 60 * 60 * 1000));
+            var authCodeJson = {
                 clientId: clientId,
                 userId: "admin",
                 expires: new Date(),
@@ -76,60 +76,95 @@ describe('mysql DB authorization code', function () {
                     }
                     done();
                 });
-            }, 1000);           
+            }, 1000);
         });
     });
-    
+
     describe('#getAuthorizationCode()', function () {
-        it('should read AuthorizationCode in processor', function (done) {           
-            setTimeout(function () {                
-                db.getAuthorizationCode( clientId, "admin", function (result) {
-                    if (result && result.userId === 'admin') {                        
+        it('should read AuthorizationCode in processor', function (done) {
+            setTimeout(function () {
+                db.getAuthorizationCode(clientId, "admin", function (result) {
+                    if (result && result.userId === 'admin') {
                         assert(true);
                     } else {
                         assert(false);
                     }
                     done();
                 });
-            }, 1000);           
+            }, 1000);
         });
     });
-    
+
     describe('#updateAuthorizationCode()', function () {
-        it('should update an authorization code in db', function (done) {            
-           var json = {                
+        it('should update an authorization code in db', function (done) {
+            var json = {
                 randonAuthCode: "65165165651dsfdsf651dsf6d5s1dsf651ds61ds6ken",
                 alreadyUsed: false,
                 authorizationCode: acId
             };
             setTimeout(function () {
                 db.updateAuthorizationCode(json, function (result) {
-                    if (result.success) {                          
+                    if (result.success) {
                         assert(true);
                     } else {
                         assert(false);
                     }
                     done();
                 });
-            }, 1000);           
+            }, 1000);
         });
     });
-    
+
+    describe('#updateAuthorizationCodeAndTokens()', function () {
+        it('should update an authorization code and token in db', function (done) {
+            db.getAuthorizationCode(clientId, "admin", function (acResult) {
+                db.getAccessToken(acResult.accessTokenId, function (accessTokenResult) {
+                    var authCodeJson = {
+                        expires: new Date(),
+                        authorizationCode: acId
+                    };
+                    var today = new Date();
+                    today.setTime(today.getTime() + (8 * 60 * 60 * 1000));
+                    var accessTknJson = {
+                        token: "djfjoiqjldktrtryrtyrytrsflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf",
+                        expires: today,
+                        refreshTokenId: accessTokenResult.refreshTokenId,
+                        id: acResult.accessTokenId
+                    };
+                    var refreshTokenJson = {
+                        token: "djfjoiqjldksflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf",
+                        id: accessTokenResult.refreshTokenId
+                    };
+                    setTimeout(function () {
+                        db.updateAuthorizationCodeAndTokens(authCodeJson, accessTknJson, refreshTokenJson, function (result) {
+                            if (result.success) {
+                                assert(true);
+                            } else {
+                                assert(false);
+                            }
+                            done();
+                        });
+                    }, 1000);
+                });
+            });
+        });
+    });
+
     describe('#getAuthorizationCodeByCode()', function () {
-        it('should read AuthorizationCode by code in processor', function (done) {           
-            setTimeout(function () {                
+        it('should read AuthorizationCode by code in processor', function (done) {
+            setTimeout(function () {
                 db.getAuthorizationCodeByCode("65165165651dsfdsf651dsf6d5s1dsf651ds61ds6ken", function (result) {
-                    if (result && result.userId === 'admin') {                        
+                    if (result && result.userId === 'admin') {
                         assert(true);
                     } else {
                         assert(false);
                     }
                     done();
                 });
-            }, 1000);           
+            }, 1000);
         });
     });
-    
+
     describe('#addAuthorizationCodeScope()', function () {
         it('should add an authorization code scope in db', function (done) {
             var json = {
@@ -150,41 +185,41 @@ describe('mysql DB authorization code', function () {
         });
     });
 
-    
+
     describe('#getAuthorizationCodeByScope()', function () {
-        it('should read AuthorizationCodeScope in processor', function (done) {           
-            setTimeout(function () {                
+        it('should read AuthorizationCodeScope in processor', function (done) {
+            setTimeout(function () {
                 db.getAuthorizationCodeByScope(clientId, "admin", "scopeTest", function (result) {
-                    if (result && result.authorized) {                        
+                    if (result && result.authorized) {
                         assert(true);
                     } else {
                         assert(false);
                     }
                     done();
                 });
-            }, 1000);           
+            }, 1000);
         });
     });
-    
-    
+
+
     describe('#addAuthCodeRevoke()', function () {
-        it('should revoke an authorization code mysql db', function (done) {            
-           var json = {
+        it('should revoke an authorization code mysql db', function (done) {
+            var json = {
                 authorizationCode: acId
             };
             setTimeout(function () {
                 db.addAuthCodeRevoke(json, function (result) {
-                    if (result.success && result.id > -1) {                       
+                    if (result.success && result.id > -1) {
                         assert(true);
                     } else {
                         assert(false);
                     }
                     done();
                 });
-            }, 1000);           
+            }, 1000);
         });
     });
-    
+
     describe('#deleteAuthorizationCodeScope()', function () {
         it('should delete authorization code scopes in db', function (done) {
             setTimeout(function () {
@@ -199,36 +234,36 @@ describe('mysql DB authorization code', function () {
             }, 1000);
         });
     });
-    
-    
+
+
     describe('#deleteAuthorizationCode()', function () {
-        it('should delete authorization code', function (done) {           
-            setTimeout(function () {                
+        it('should delete authorization code', function (done) {
+            setTimeout(function () {
                 db.deleteAuthorizationCode(clientId, "admin", function (result) {
-                    if (result.success) {                        
+                    if (result.success) {
                         assert(true);
                     } else {
                         assert(false);
                     }
                     done();
                 });
-            }, 1000);           
+            }, 1000);
         });
-    });   
-    
+    });
+
     describe('#deleteClient()', function () {
-        it('should delete client', function (done) {           
-            setTimeout(function () {                
+        it('should delete client', function (done) {
+            setTimeout(function () {
                 db.deleteClient(clientId, function (result) {
-                    if (result.success) {                        
+                    if (result.success) {
                         assert(true);
                     } else {
                         assert(false);
                     }
                     done();
                 });
-            }, 1000);           
+            }, 1000);
         });
-    });   
+    });
 });
 

@@ -56,6 +56,14 @@ exports.updateAuthorizationCode = function (con, json, callback) {
     crud.update(con, authorizationCodeQueries.AUTHORIZATION_CODE_UPDATE_QUERY, args, callback);
 };
 
+exports.updateAuthorizationCodeToken = function (con, json, callback) {
+    var args = [           
+        json.expires,
+        json.authorizationCode
+    ];
+    crud.update(con, authorizationCodeQueries.AUTHORIZATION_CODE_TOKEN_UPDATE_QUERY, args, callback);
+};
+
 exports.getAuthorizationCode = function (clientId, userId, callback) {
     var queryId = [clientId, userId];
     console.log("getAuthorizationCode clientId: " + clientId + " userId: " + userId);

@@ -43,7 +43,7 @@ exports.createAuthorizationCode = function (json, scopes, callback) {
     var userId = json.userId;
     // create refresh token
     var refreshPayload = {
-        sub: "refresh",
+        sub: "code",
         userId: userId,
         clientId: clientId
     };
