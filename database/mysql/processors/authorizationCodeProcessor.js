@@ -89,6 +89,7 @@ exports.getAuthorizationCodeByCode = function (code, callback) {
         //console.log("get refresh token value:" + result.data[0].token);
         //console.log("get refresh token length:" + result.data[0].token.length);
         if (result.success && result.data.length > 0) {
+            var used = (result.data[0].already_used === 0)? false: true;
             var rtn = {
                 authorizationCode: result.data[0].authorization_code,
                 clientId: result.data[0].client_id,
@@ -96,7 +97,7 @@ exports.getAuthorizationCodeByCode = function (code, callback) {
                 expires: result.data[0].expires,
                 accessTokenId: result.data[0].access_token_id,
                 codeString: result.data[0].randon_auth_code,
-                alreadyUsed: result.data[0].already_used
+                alreadyUsed: used
             };
             callback(rtn);
         } else {

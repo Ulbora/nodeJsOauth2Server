@@ -1,7 +1,7 @@
 var assert = require('assert');
 var db = require("../../database/db");
 var authorizationCodeManager = require("../../managers/authorizationCodeManager");
-var tokenManager = require("../../managers/tokenManager");
+var tokenDelegate = require("../../delegates/authCodeTokenDelegate");
 var clientManager = require("../../managers/clientManager");
 var clientGrantTypeManager = require("../../managers/clientGrantTypeManager");
 var clientId;
@@ -9,7 +9,7 @@ var clientObj;
 var clientGrantTypeId;
 var authorizationCode;
 var code;
-describe('TokenManager', function () {
+describe('authCodeTokenDelegate', function () {
     this.timeout(40000);
     describe('#init()', function () {
         it('should init manager', function (done) {
@@ -18,7 +18,7 @@ describe('TokenManager', function () {
                 clientManager.init(db);
                 authorizationCodeManager.init(db);
                 clientGrantTypeManager.init(db);
-                tokenManager.init(db);
+                tokenDelegate.init(db);
                 done();
             }, 1000);
         });
@@ -331,7 +331,7 @@ describe('TokenManager', function () {
                             code: code,
                             redirectUri: "http://www.google.com"
                         };
-                        tokenManager.authCodeToken(acTokenJson, function (result) { 
+                        tokenDelegate.authCodeToken(acTokenJson, function (result) { 
                             console.log("authCodeToken: " + JSON.stringify(result));
                             if (result && result.error && result.error === "invalid_client") {
                                 assert(true);
@@ -361,7 +361,7 @@ describe('TokenManager', function () {
                             code: code,
                             redirectUri: "http://www.google1.com"
                         };
-                        tokenManager.authCodeToken(acTokenJson, function (result) {
+                        tokenDelegate.authCodeToken(acTokenJson, function (result) {
                             console.log("authCodeToken: " + JSON.stringify(result));
                              if (result && result.error && result.error === "invalid_grant") {
                                 assert(true);
@@ -390,9 +390,10 @@ describe('TokenManager', function () {
                             code: code,
                             redirectUri: "http://www.google.com"
                         };
-                        tokenManager.authCodeToken(acTokenJson, function (result) {
+                        tokenDelegate.authCodeToken(acTokenJson, function (result) {
                             console.log("authCodeToken: " + JSON.stringify(result));
-                             if (result && result.token_type && result.token_type === "bearer") {
+                             if (result && result.token_type && result.token_type === "bearer" &&
+                                     result.access_token && result.refresh_token) {
                                 assert(true);
                             } else {
                                 assert(false);

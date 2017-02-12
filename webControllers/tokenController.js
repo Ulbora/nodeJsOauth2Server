@@ -1,23 +1,31 @@
-var authorizationCodeManager = require("../managers/authorizationCodeManager");
+var tokenManager = require("../managers/tokenManager");
 exports.init = function (db) {
-    authorizationCodeManager.init(db);
+    tokenManager.init(db);
 };
 exports.token = function (req, res) {
     var grantType = req.query.grant_type;
 
     if (grantType === "authorization_code") {
         var clientIdStr = req.query.client_id;
-        var clientSecret = req.query.client_secret;
+        var secret = req.query.client_secret;
         var code = req.query.code;
         var redirectUri = req.query.redirect_uri;
         var clientId = getClientId(clientIdStr);        
        
         var tokenReq = {            
             clientId: clientId,
-            clientSecret: clientSecret,
+            secret: secret,
             code: code,
             redirectUri: redirectUri
         };
+        tokenManager.authCodeToken(tokenReq, function(tokenResult){
+            console.log("res in tokenController:" + JSON.stringify(res));
+            if(tokenResult.error){
+                res.status(401).send(tokenResult);                      
+            }else{
+                res.send(tokenResult);
+            }            
+        });
         
     } else if (grantType === "password") {
 

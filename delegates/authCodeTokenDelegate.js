@@ -20,20 +20,16 @@
  */
 
 
-//var manager = require("./manager");
-var authCodeTokenDelegate = require("../delegates/authCodeTokenDelegate");
-//var config = require("../configuration");
+var manager = require("../managers/manager");
+var config = require("../configuration");
 
 var db;
 
 exports.init = function (database) {
     db = database;
-    authCodeTokenDelegate.init(db);
 };
 
 exports.authCodeToken = function (json, callback) {
-    authCodeTokenDelegate.authCodeToken(json, callback);
-    /*
     var error = {
         error: null
     };
@@ -73,7 +69,7 @@ exports.authCodeToken = function (json, callback) {
                                                 authorizationCode: acResult.authorizationCode
                                             };
                                             db.addAuthCodeRevoke(revokeJson, function (newRevokeResult) {
-                                                error.error = "invalid_grant";
+                                                error.error = "invalid_client";
                                                 callback(error);
                                             });
                                         } else {
@@ -131,5 +127,4 @@ exports.authCodeToken = function (json, callback) {
         error.error = "invalid_request";
         callback(error);
     }
-    */
 };
