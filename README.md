@@ -3,9 +3,13 @@ Ulbora Oauth2 Server
 
 ## Authorization Code Grant Type
 
- - Authorize
+ * Authorize
+
+    * Example
 
 http://localhost:3000/oauth/authorize?response_type=code&client_id=403&redirect_uri=CALLBACK_URL&scope=read&state=xyz
+
+    * Test
 
 http://localhost:3000/oauth/authorize?response_type=code&client_id=403&redirect_uri=http://www.google.com&scope=read&state=xyz
 
