@@ -1,7 +1,9 @@
 var loginController = require("../webControllers/loginController");
 var authorizeController = require("../webControllers/authorizeController");
+var tokenController = require("../webControllers/tokenController");
 exports.init = function (app, db) {
     authorizeController.init(db);
+    tokenController.init(db);
     app.get('/', function (req, res) {
         var sess = req.session;
         console.log("session: " + sess);
@@ -23,13 +25,15 @@ exports.init = function (app, db) {
     });
     app.get('/oauth/authorize', function (req, res) {
         authorizeController.authorize(req, res);
-    });
-    
+    });    
     app.get('/authorizeApp', function (req, res) {
         authorizeController.authorizeApp(req, res);
     });
     app.get('/applicationAuthorize', function (req, res) {
         authorizeController.applicationAuthorization(req, res);
+    });    
+    app.post('/oauth/token', function (req, res) {
+        tokenController.token(req, res);
     });
     
     app.get('/oauthError', function (req, res) {

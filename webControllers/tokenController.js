@@ -18,8 +18,7 @@ exports.token = function (req, res) {
             code: code,
             redirectUri: redirectUri
         };
-        tokenManager.authCodeToken(tokenReq, function(tokenResult){
-            console.log("res in tokenController:" + JSON.stringify(res));
+        tokenManager.authCodeToken(tokenReq, function(tokenResult){            
             if(tokenResult.error){
                 res.status(401).send(tokenResult);                      
             }else{
