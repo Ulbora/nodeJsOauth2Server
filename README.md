@@ -50,3 +50,22 @@ http://localhost:3000/oauth/token?grant_type=refresh_token&client_id=CLIENT_ID&c
 http://localhost:3000/oauth/token?grant_type=refresh_token&client_id=403&client_secret=554444vfg55ggfff22454sw2fff2dsfd&refresh_token=efssffffnnlf
 
 ```
+
+## Implicit Grant Type
+
+* Authorize
+
+```
+   Example
+
+http://localhost:3000/oauth/authorize?response_type=token&client_id=403&redirect_uri=CALLBACK_URL&scope=read&state=xyz
+  
+```
+
+```  
+   Test
+
+http://localhost:3000/oauth/authorize?response_type=token&client_id=403&redirect_uri=http://www.google.com&scope=read&state=xyz
+
+```
+
