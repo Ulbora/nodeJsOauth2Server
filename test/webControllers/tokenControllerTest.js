@@ -242,7 +242,7 @@ describe('tokenController', function () {
                     };
                     self.send = send;
                     return self;
-                };               
+                };
                 tokenController.token(req, res);
             }, 1000);
         });
@@ -260,7 +260,7 @@ describe('tokenController', function () {
                     req.query.client_secret = secret;
                     req.query.code = code;
                     req.query.redirect_uri = "http://www.google.com";
-                    req.session = {};                    
+                    req.session = {};
                     var res = {};
                     res.status = function (sCode) {
                         var self = {};
@@ -292,6 +292,111 @@ describe('tokenController', function () {
                     tokenController.token(req, res);
                 });
 
+            }, 1000);
+        });
+    });
+
+
+    describe('#refreshToken()', function () {
+        it('get a refreshToken', function (done) {
+            setTimeout(function () {
+                db.getClient(clientId, function (clientResult) {
+                    db.getAuthorizationCode(clientId, "admin", function (acResult) {
+                        db.getAccessToken(acResult.accessTokenId, function (accessTokenResult) {
+                            db.getRefreshToken(accessTokenResult.refreshTokenId, function (refreshResult) {
+                                var secret = clientResult.secret;
+                                var req = {};
+                                req.query = {};
+                                req.query.grant_type = "refresh_token";
+                                req.query.client_id = clientId;
+                                req.query.client_secret = secret;
+                                req.query.refresh_token = refreshResult.token;                                
+                                req.session = {};
+                                var res = {};
+                                res.status = function (sCode) {
+                                    var self = {};
+                                    console.log("res.status:" + sCode);
+                                    if (sCode === 401) {
+                                        unauth = true;
+                                    }
+                                    var send = function (token) {
+                                        console.log("res.send:" + JSON.stringify(token));
+                                        if (token && unauth && token.error === "invalid_client") {
+                                            assert(true);
+                                        } else {
+                                            assert(false);
+                                        }
+                                        done();
+                                    };
+                                    self.send = send;
+                                    return self;
+                                };
+                                res.send = function (token) {
+                                    console.log("res.send:" + JSON.stringify(token));
+                                    if (token && token.access_token) {
+                                        assert(true);
+                                    } else {
+                                        assert(false);
+                                    }
+                                    done();
+                                };
+                                tokenController.token(req, res);
+                            });
+                        });
+                    });
+                });
+            }, 1000);
+        });
+    });
+    
+    describe('#refreshToken()', function () {
+        it('fail to get a refreshToken', function (done) {
+            setTimeout(function () {
+                db.getClient(clientId, function (clientResult) {
+                    db.getAuthorizationCode(clientId, "admin", function (acResult) {
+                        db.getAccessToken(acResult.accessTokenId, function (accessTokenResult) {
+                            db.getRefreshToken(accessTokenResult.refreshTokenId, function (refreshResult) {
+                                var secret = clientResult.secret;
+                                var req = {};
+                                req.query = {};
+                                req.query.grant_type = "refresh_token";
+                                req.query.client_id = clientId;
+                                req.query.client_secret = "fffff";
+                                req.query.refresh_token = refreshResult.token;                                
+                                req.session = {};
+                                var res = {};
+                                res.status = function (sCode) {
+                                    var self = {};
+                                    console.log("res.status:" + sCode);
+                                    if (sCode === 401) {
+                                        unauth = true;
+                                    }
+                                    var send = function (token) {
+                                        console.log("res.send:" + JSON.stringify(token));
+                                        if (token && unauth && token.error === "invalid_client") {
+                                            assert(true);
+                                        } else {
+                                            assert(false);
+                                        }
+                                        done();
+                                    };
+                                    self.send = send;
+                                    return self;
+                                };
+                                res.send = function (token) {
+                                    console.log("res.send:" + JSON.stringify(token));
+                                    if (token && token.access_token) {
+                                        assert(true);
+                                    } else {
+                                        assert(false);
+                                    }
+                                    done();
+                                };
+                                tokenController.token(req, res);
+                            });
+                        });
+                    });
+                });
             }, 1000);
         });
     });
