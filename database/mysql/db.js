@@ -447,7 +447,7 @@ var doAuthCodeAdd = function (con, rtn, authCodeJson, accTokenJson, scopeList, c
     });
 };
 
-exports.updateAuthorizationCodeAndTokens = function (authCodeJson, accessTokenJson, refreshTokenJson, callback) {
+exports.updateAuthorizationCodeAndTokens = function (authCodeJson, accessTokenJson, callback) {
     var rtn = {
         success: false,
         message: null
@@ -456,24 +456,9 @@ exports.updateAuthorizationCodeAndTokens = function (authCodeJson, accessTokenJs
         if (!err && con) {
             con.beginTransaction(function (err) {
                 if (!err) {
-                    if (refreshTokenJson) {
-                        refreshTokenProcessor.updateRefreshToken(con, refreshTokenJson, function (refreshResult) {
-                            console.log("refresh token: " + JSON.stringify(refreshResult));
-                            if (refreshResult.success) {
-                                doAuthCodeUpdate(con, rtn, authCodeJson, accessTokenJson, function (acRtn) {
-                                    callback(acRtn);
-                                });
-                            } else {
-                                con.rollback();
-                                con.release();
-                                callback(rtn);
-                            }
-                        });
-                    } else {
-                        doAuthCodeUpdate(con, rtn, authCodeJson, accessTokenJson, function (acRtn) {
-                            callback(acRtn);
-                        });
-                    }
+                    doAuthCodeUpdate(con, rtn, authCodeJson, accessTokenJson, function (acRtn) {
+                        callback(acRtn);
+                    });
                 } else {
                     con.release();
                     callback(rtn);

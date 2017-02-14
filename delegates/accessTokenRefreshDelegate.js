@@ -69,19 +69,11 @@ exports.refreshToken = function(json, callback){
                                 //if code
                                 if (sub === "code") {
                                     // get authcode by client and user
-                                    db.getAuthorizationCode(clientId, userId, function (authCodeResult) {
-                                        var refreshPayload = {
-                                            sub: "code",
-                                            userId: userId,
-                                            clientId: clientId
-                                        };
-                                        if (authCodeResult && authCodeResult.userId === userId) {
-                                            // generate new refresh token 
-                                            refreshTokenDelegate.generateRefreshToken(refreshPayload, function (refreshToken) {
+                                    db.getAuthorizationCode(clientId, userId, function (authCodeResult) {                                        
+                                        if (authCodeResult && authCodeResult.userId === userId) {                                           
                                                 //get accessToken from db
                                                 db.getAccessToken(authCodeResult.accessTokenId, function (accessTokenResult) {
                                                     if (accessTokenResult && accessTokenResult.id > 0) {
-
                                                         // decode access token
                                                         accessTokenDelegate.decodeAccessToken(accessTokenResult.token, function (decoded) {
                                                             if (decoded && decoded.userId === userId && decoded.clientId === clientId) {
@@ -98,11 +90,7 @@ exports.refreshToken = function(json, callback){
                                                                     if (accessToken) {
                                                                         var dateNow = new Date();
                                                                         var acExpires = new Date(dateNow.getTime() + 300000);
-                                                                        var acTokenExpires = new Date(dateNow.getTime() + (config.CODE_ACCESS_TOKEN_LIFE * 60000));
-                                                                        var refreshTokenJson = {
-                                                                            token: refreshToken,
-                                                                            id: accessTokenResult.refreshTokenId
-                                                                        };
+                                                                        var acTokenExpires = new Date(dateNow.getTime() + (config.CODE_ACCESS_TOKEN_LIFE * 60000));                                                                        
                                                                         var accessTknJson = {
                                                                             token: accessToken,
                                                                             expires: acTokenExpires,
@@ -114,10 +102,10 @@ exports.refreshToken = function(json, callback){
                                                                             authorizationCode: authCodeResult.authorizationCode
                                                                         };
                                                                         //update auth code, refresh token and access token
-                                                                        db.updateAuthorizationCodeAndTokens(authCodeJson, accessTknJson, refreshTokenJson, function (authCodeUpdateResult) {
+                                                                        db.updateAuthorizationCodeAndTokens(authCodeJson, accessTknJson, function (authCodeUpdateResult) {
                                                                             if (authCodeUpdateResult.success) {
                                                                                 rtn.access_token = accessToken;
-                                                                                rtn.refresh_token = refreshToken;
+                                                                                rtn.refresh_token = refTokenOld;
                                                                                 callback(rtn);
                                                                             } else {
                                                                                 error.error = "invalid_client";
@@ -138,8 +126,7 @@ exports.refreshToken = function(json, callback){
                                                         error.error = "invalid_client";
                                                         callback(error);
                                                     }
-                                                });
-                                            });
+                                                });                                            
                                         } else {
                                             error.error = "invalid_client";
                                             callback(error);

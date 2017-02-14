@@ -130,13 +130,9 @@ describe('mysql DB authorization code', function () {
                         expires: today,
                         refreshTokenId: accessTokenResult.refreshTokenId,
                         id: acResult.accessTokenId
-                    };
-                    var refreshTokenJson = {
-                        token: "djfjoiqjldksflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf",
-                        id: accessTokenResult.refreshTokenId
-                    };
+                    };                    
                     setTimeout(function () {
-                        db.updateAuthorizationCodeAndTokens(authCodeJson, accessTknJson, refreshTokenJson, function (result) {
+                        db.updateAuthorizationCodeAndTokens(authCodeJson, accessTknJson, function (result) {
                             if (result.success) {
                                 assert(true);
                             } else {

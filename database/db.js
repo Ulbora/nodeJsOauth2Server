@@ -202,8 +202,8 @@ exports.updateAuthorizationCode = function (json, callback) {
     db.updateAuthorizationCode(json, callback);
 };
 
-exports.updateAuthorizationCodeAndTokens = function (authCodeJson, accessTokenJson, refreshTokenJson, callback) {
-    db.updateAuthorizationCodeAndTokens(authCodeJson, accessTokenJson, refreshTokenJson, callback);
+exports.updateAuthorizationCodeAndTokens = function (authCodeJson, accessTokenJson, callback) {
+    db.updateAuthorizationCodeAndTokens(authCodeJson, accessTokenJson, callback);
 };
 
 exports.deleteAuthorizationCode = function (clientId, userId, callback) {
