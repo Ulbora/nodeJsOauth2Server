@@ -65,7 +65,7 @@ module.exports = function (grunt) {
                 //src: ['test/database/mysql/processors/authorizationCodeProcessorTest.js']
                 //src: ['test/managers/authorizationCodeManagerTest.js']
                 //src: ['test/managers/tokenManagerTest.js']
-                src: ['test/delegates/accessTokenRefreshDelegateTest.js']
+                src: ['test/delegates/implicitGrantDelegateTest.js']
             }
         }
     });

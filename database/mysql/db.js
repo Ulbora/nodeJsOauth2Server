@@ -660,7 +660,7 @@ exports.deleteClientGrantType = function (id, callback) {
 
 //implicit grant
 //authorization code
-exports.addImplicitGrant = function (implicitJson, accessTokenJson, scope, callback) {
+exports.addImplicitGrant = function (implicitJson, accessTokenJson, scopeList, callback) {
     var rtn = {
         id: null,
         success: false,
@@ -676,28 +676,43 @@ exports.addImplicitGrant = function (implicitJson, accessTokenJson, scope, callb
                             impJson.accessTokenId = accessResult.id;
                             implicitGrantProcessor.addImplicitGrant(con, impJson, function (impResult) {
                                 if (impResult.id > -1) {
-                                    var scopeJson = {
-                                        scope: scope,
-                                        implicitGrantId: impResult.id
-                                    }
-                                    implicitGrantScopeProcessor.addImplicitGrantScope(con, scopeJson, function (scopeResult) {
-                                        if (scopeResult.success) {
-                                            con.commit(function (err) {
-                                                if (err) {
-                                                    con.rollback();
+                                    //do for loop to all each scope---------------------
+                                    if (scopeList && scopeList.length > 0) {
+                                        var scopeCnt = 0;
+                                        for (var cnt = 0; cnt < scopeList.length; cnt++) {
+                                            var scopeJson = {
+                                                scope: scopeList[cnt],
+                                                implicitGrantId: impResult.id
+                                            };
+                                            implicitGrantScopeProcessor.addImplicitGrantScope(con, scopeJson, function (scopeInsResult) {
+                                                if (scopeInsResult.success) {
+                                                    scopeCnt++;
                                                 } else {
-                                                    rtn.id = impResult.id;
-                                                    rtn.success = true;
+                                                    con.rollback();
+                                                    con.release();
+                                                    callback(rtn);
                                                 }
-                                                con.release();
-                                                callback(rtn);
+                                                //console.log("scopeCnt === scopeList.length: " + (scopeCnt === scopeList.length));
+                                                if (scopeCnt === scopeList.length) {
+                                                    con.commit(function (err) {
+                                                        //console.log("commetting auth code add");
+                                                        if (err) {
+                                                            con.rollback();
+                                                        } else {
+                                                            rtn.id = impResult.id;
+                                                            rtn.success = true;
+                                                        }
+                                                        con.release();
+                                                        callback(rtn);
+                                                    });
+                                                }
                                             });
-                                        } else {
-                                            con.rollback();
-                                            con.release();
-                                            callback(rtn);
                                         }
-                                    });
+                                    } else {
+                                        con.rollback();
+                                        con.release();
+                                        callback(rtn);
+                                    }
                                 } else {
                                     con.rollback();
                                     con.release();

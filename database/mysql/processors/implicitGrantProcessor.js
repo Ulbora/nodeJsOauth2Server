@@ -32,7 +32,7 @@ exports.addImplicitGrant = function (con, json, callback) {
         user_id: json.userId,        
         access_token_id: json.accessTokenId
     };
-    console.log("json in add authorizationCode :" + JSON.stringify(json));
+    console.log("json in add addImplicitGrant :" + JSON.stringify(json));
     crud.insert(con, implicitGrantQueries.IMPLICIT_GRANT_INSERT_QUERY, args, function (result) {
         var rtn = {
             id: result.id,
