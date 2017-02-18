@@ -32,8 +32,8 @@ describe('loginController', function () {
                 var req = {};               
                 req.session = {};
                 req.session.loggedIn = false;
-                req.session.oauthCodeObj = {};
-                req.session.oauthCodeObj.responseType = "code";
+                req.session.oauthGrantObj = {};
+                req.session.oauthGrantObj.responseType = "code";
                 var res = {};
                 res.redirect = function(path){                    
                     if(path){

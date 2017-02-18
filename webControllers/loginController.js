@@ -16,11 +16,11 @@ exports.login = function (req, res) {
 exports.loginUser = function (req, res) {
     req.session.loggedIn = true;
     req.session.user = "ken";
-    var oauthCodeObj = req.session.oauthCodeObj;
+    var oauthGrantObj = req.session.oauthGrantObj;
     //req.session.oauthCodeObj = undefined;
-    console.log("oauthCodeObj: " + JSON.stringify(oauthCodeObj));
-    if(req.session.loggedIn && oauthCodeObj && oauthCodeObj.responseType === "code"){
-        res.redirect("/oauth/authorize?response_type=" + oauthCodeObj.responseType + "&client_id=" + oauthCodeObj.clientId +"&redirect_uri=" + oauthCodeObj.redirectUri + "&scope=" + oauthCodeObj.scope + "&state=" + oauthCodeObj.state);
+    console.log("oauthGrantObj: " + JSON.stringify(oauthGrantObj));
+    if(req.session.loggedIn && oauthGrantObj && oauthGrantObj.responseType === "code"){
+        res.redirect("/oauth/authorize?response_type=" + oauthGrantObj.responseType + "&client_id=" + oauthGrantObj.clientId +"&redirect_uri=" + oauthGrantObj.redirectUri + "&scope=" + oauthGrantObj.scope + "&state=" + oauthGrantObj.state);
     }else{
         res.redirect('/login');
     }

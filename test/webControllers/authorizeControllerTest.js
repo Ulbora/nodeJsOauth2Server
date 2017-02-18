@@ -299,7 +299,7 @@ describe('authorizeController', function () {
                 req.session.user = "admin";
                 var res = {};
                 res.redirect = function (path) {
-                    if (path === "/authorizeApp" && req.session.oauthCodeObj) {
+                    if (path === "/authorizeApp" && req.session.oauthGrantObj) {
                         assert(true);
                     } else {
                         assert(false);
@@ -338,12 +338,12 @@ describe('authorizeController', function () {
             setTimeout(function () {
                 var req = {};
                 req.session = {};
-                req.session.oauthCodeObj = {};
-                req.session.oauthCodeObj.responseType = "code";
-                req.session.oauthCodeObj.clientId = clientId;
-                req.session.oauthCodeObj.redirectUri = "http://www.google.com";
-                req.session.oauthCodeObj.scope = "read";
-                req.session.oauthCodeObj.state = "xyz";
+                req.session.oauthGrantObj = {};
+                req.session.oauthGrantObj.responseType = "code";
+                req.session.oauthGrantObj.clientId = clientId;
+                req.session.oauthGrantObj.redirectUri = "http://www.google.com";
+                req.session.oauthGrantObj.scope = "read";
+                req.session.oauthGrantObj.state = "xyz";
                 req.session.loggedIn = true;
                 req.session.user = "admin";
                 var res = {};
@@ -376,12 +376,12 @@ describe('authorizeController', function () {
             setTimeout(function () {
                 var req = {};
                 req.session = {};
-                req.session.oauthCodeObj = {};
-                req.session.oauthCodeObj.responseType = "code";
-                req.session.oauthCodeObj.clientId = clientId;
-                req.session.oauthCodeObj.redirectUri = "http://www.google.org";
-                req.session.oauthCodeObj.scope = "read";
-                req.session.oauthCodeObj.state = "xyz";
+                req.session.oauthGrantObj = {};
+                req.session.oauthGrantObj.responseType = "code";
+                req.session.oauthGrantObj.clientId = clientId;
+                req.session.oauthGrantObj.redirectUri = "http://www.google.org";
+                req.session.oauthGrantObj.scope = "read";
+                req.session.oauthGrantObj.state = "xyz";
                 req.session.loggedIn = true;
                 req.session.user = "admin";
                 var res = {};
@@ -404,12 +404,12 @@ describe('authorizeController', function () {
             setTimeout(function () {
                 var req = {};
                 req.session = {};
-                req.session.oauthCodeObj = {};
-                req.session.oauthCodeObj.responseType = "code";
-                req.session.oauthCodeObj.clientId = clientId;
-                req.session.oauthCodeObj.redirectUri = "http://www.google.com";
-                req.session.oauthCodeObj.scope = "read";
-                req.session.oauthCodeObj.state = "xyz";
+                req.session.oauthGrantObj = {};
+                req.session.oauthGrantObj.responseType = "code";
+                req.session.oauthGrantObj.clientId = clientId;
+                req.session.oauthGrantObj.redirectUri = "http://www.google.com";
+                req.session.oauthGrantObj.scope = "read";
+                req.session.oauthGrantObj.state = "xyz";
                 req.session.loggedIn = true;
                 req.session.user = "admin";
                 req.query = {};
@@ -439,12 +439,12 @@ describe('authorizeController', function () {
             setTimeout(function () {
                 var req = {};
                 req.session = {};
-                req.session.oauthCodeObj = {};
-                req.session.oauthCodeObj.responseType = "code";
-                req.session.oauthCodeObj.clientId = clientId;
-                req.session.oauthCodeObj.redirectUri = "http://www.google.org";
-                req.session.oauthCodeObj.scope = "read";
-                req.session.oauthCodeObj.state = "xyz";
+                req.session.oauthGrantObj = {};
+                req.session.oauthGrantObj.responseType = "code";
+                req.session.oauthGrantObj.clientId = clientId;
+                req.session.oauthGrantObj.redirectUri = "http://www.google.org";
+                req.session.oauthGrantObj.scope = "read";
+                req.session.oauthGrantObj.state = "xyz";
                 req.session.loggedIn = true;
                 req.session.user = "admin";
                 req.query = {};

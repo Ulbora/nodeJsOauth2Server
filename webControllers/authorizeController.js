@@ -20,8 +20,8 @@ exports.authorize = function (req, res) {
     }
     var redirectUri = req.query.redirect_uri;
     var scope = req.query.scope;
-    var state = req.query.state;
-    var oauthCodeObj = {
+    var state = req.query.state;   
+    var oauthGrantObj = {
         responseType: responseType,
         clientId: clientId,
         redirectUri: redirectUri,
@@ -29,7 +29,7 @@ exports.authorize = function (req, res) {
         state: state
     };
     if (!loggedIn || !user) {
-        req.session.oauthCodeObj = oauthCodeObj;
+        req.session.oauthGrantObj = oauthGrantObj;
         res.redirect('/login');
     } else {
         if (responseType === "code") {
@@ -41,7 +41,7 @@ exports.authorize = function (req, res) {
             };
             authorizationCodeManager.checkApplicationAuthorization(authJson, function (result) {
                 if (result && result.authorized) {
-                    console.log("oauthCodeObj in authController: " + JSON.stringify(oauthCodeObj));
+                    console.log("oauthGrantObj in authController: " + JSON.stringify(oauthGrantObj));
                     var json = {
                         clientId: clientId,
                         userId: user,
@@ -51,7 +51,7 @@ exports.authorize = function (req, res) {
                     authorizationCodeManager.authorize(json, function (result) {
                         console.log("authorization code: " + JSON.stringify(result));
                         if (result.success && result.authorizationCode && result.authorizationCode > -1) {
-                            var cb = redirectUri + "?code=" + result.codeString+ "&state=" + oauthCodeObj.state;
+                            var cb = redirectUri + "?code=" + result.codeString+ "&state=" + oauthGrantObj.state;
                             console.log("authorization code cb: " + cb);
                             res.redirect(cb);
                         } else {
@@ -59,7 +59,7 @@ exports.authorize = function (req, res) {
                         }
                     });
                 } else {
-                    req.session.oauthCodeObj = oauthCodeObj;
+                    req.session.oauthGrantObj = oauthGrantObj;
                     res.redirect('/authorizeApp');
                 }
             });
@@ -79,19 +79,19 @@ exports.authorizeApp = function (req, res) {
     var params = {
         title: "authorize application"
     };
-    var oauthCodeObj = req.session.oauthCodeObj;
-    if (!oauthCodeObj) {
+    var oauthGrantObj = req.session.oauthGrantObj;
+    if (!oauthGrantObj) {
         res.render('oauthError', {error: "Invalid Request"});
     } else {
         var cbJson = {
-            clientId: oauthCodeObj.clientId,
-            callbackUri: oauthCodeObj.redirectUri
+            clientId: oauthGrantObj.clientId,
+            callbackUri: oauthGrantObj.redirectUri
         };
         authorizationCodeManager.validateClientAndCallback(cbJson, function (results) {
             if (results.valid) {
                 params.clientName = results.clientName;
                 params.webSite = results.webSite;
-                params.scope = oauthCodeObj.scope;
+                params.scope = oauthGrantObj.scope;
                 res.render("authorizeApp", params);
             } else {
                 res.render('oauthError', {error: "Invalid redirect URI"});
@@ -105,28 +105,28 @@ exports.authorizeApp = function (req, res) {
 exports.applicationAuthorization = function (req, res) {
     var authorize = req.query.authorize;
     console.log("authorize: " + authorize);
-    var oauthCodeObj = req.session.oauthCodeObj;
-    req.session.oauthCodeObj = undefined;
+    var oauthGrantObj = req.session.oauthGrantObj;
+    req.session.oauthGrantObj = undefined;
     var user = req.session.user;
     if (authorize === "true") {
         var json = {
-            clientId: oauthCodeObj.clientId,
+            clientId: oauthGrantObj.clientId,
             userId: user,
-            scope: oauthCodeObj.scope,
-            redirectUri: oauthCodeObj.redirectUri
+            scope: oauthGrantObj.scope,
+            redirectUri: oauthGrantObj.redirectUri
         };
         console.log("authorization code json: " + JSON.stringify(json));
         authorizationCodeManager.authorize(json, function (result) {
             console.log("authorization code: " + JSON.stringify(result));
             if (result.success && result.authorizationCode && result.authorizationCode > -1) {
-                var cb = oauthCodeObj.redirectUri + "?code=" + result.codeString + "&state=" + oauthCodeObj.state;
+                var cb = oauthGrantObj.redirectUri + "?code=" + result.codeString + "&state=" + oauthGrantObj.state;
                 res.redirect(cb);
             } else {
                 res.render('oauthError', {error: result.error});
             }
         });
     } else {
-        res.redirect(oauthCodeObj.redirectUri + "?error=access_denied&state=" + oauthCodeObj.state);
+        res.redirect(oauthGrantObj.redirectUri + "?error=access_denied&state=" + oauthGrantObj.state);
     }
 };
 
