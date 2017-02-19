@@ -252,6 +252,10 @@ exports.getImplicitGrant = function (clientId, userId, callback) {
     db.getImplicitGrant(clientId, userId, callback);
 };
 
+exports.getImplicitGrantByScope = function (clientId, userId, scope, callback) {
+    db.getImplicitGrantByScope(clientId, userId, scope, callback);
+};
+
 
 exports.deleteImplicitGrant = function (clientId, userId, callback) {
     db.deleteImplicitGrant(clientId, userId, callback);

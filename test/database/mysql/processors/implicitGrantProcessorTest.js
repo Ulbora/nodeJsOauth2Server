@@ -3,6 +3,7 @@ var crud = require("../../../../database/mysql/crud/mysqlCrud");
 var accessTokenProcessor = require("../../../../database/mysql/processors/accessTokenProcessor");
 var clientProcessor = require("../../../../database/mysql/processors/clientProcessor");
 var implicitGrantProcessor = require("../../../../database/mysql/processors/implicitGrantProcessor");
+var implicitGrantScopeProcessor = require("../../../../database/mysql/processors/implicitGrantScopeProcessor");
 var clientId;
 var tokenId;
 var impId;
@@ -17,6 +18,7 @@ describe('implicitGrantProcessor', function () {
                     accessTokenProcessor.init(crud); 
                     clientProcessor.init(crud); 
                     implicitGrantProcessor.init(crud);
+                    implicitGrantScopeProcessor.init(crud);
                     assert(true);
                 } else {
                     assert(false);
@@ -85,7 +87,7 @@ describe('implicitGrantProcessor', function () {
             setTimeout(function () {
                 implicitGrantProcessor.addImplicitGrant(null, json, function (result) {
                     if (result.id > -1) {
-                        acId = result.id;
+                        impId = result.id;
                         assert(true);
                     } else {
                         assert(false);
@@ -109,6 +111,56 @@ describe('implicitGrantProcessor', function () {
                     done();
                 });
             }, 1000);           
+        });
+    });
+    
+     describe('#addImplicitGrantScope()', function () {
+        it('should add an ImplicitGrant scope in processor', function (done) {            
+            var json = {
+                scope: "scopeTest",
+                implicitGrantId: impId
+            };
+            setTimeout(function () {
+                implicitGrantScopeProcessor.addImplicitGrantScope(null, json, function (result) {
+                    if (result.id > -1) {
+                        //imScope = result.id;
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);
+        });
+    });
+    
+    describe('#getImplicitGrantByScope()', function () {
+        it('should read getImplicitGrantByScope in processor', function (done) {           
+            setTimeout(function () {                
+                implicitGrantProcessor.getImplicitGrantByScope(clientId, "admin", "scopeTest", function (result) {
+                    if (result && result.authorized) {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);           
+        });
+    });
+    
+    describe('#deleteImplicitGrantScopeList()', function () {
+        it('should delete ImplicitGrant scope list', function (done) {
+            setTimeout(function () {
+                implicitGrantScopeProcessor.deleteImplicitGrantScopeList(null, impId, function (result) {
+                    if (result.success) {
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);
         });
     });
    

@@ -20,6 +20,7 @@
  */
 
 var clientQueries = require("../queries/clientQueries");
+var constants = require("../../../constants/constants");
 var crud;
 exports.init = function (c) {
     crud = c;
@@ -52,7 +53,9 @@ exports.getClientRedirectUriList = function (clientId, callback) {
                     uri: result.data[cnt].uri,
                     clientId: result.data[cnt].client_id
                 };
-                rtnList.push(rtn);
+                if (!isLocalhost(result.data[cnt].uri)) {
+                    rtnList.push(rtn);
+                }
             }
             callback(rtnList);
         } else {
@@ -63,19 +66,24 @@ exports.getClientRedirectUriList = function (clientId, callback) {
 
 exports.getClientRedirectUri = function (clientId, uri, callback) {
     var queryId = [clientId, uri];
-    crud.get(clientQueries.CLIENT_REDIRECT_URI_QUERY, queryId, function (result) {
-        var rtn = {
-            id: null,
-            uri: null,
-            clientId: null
-        };
-        if (result.success && result.data.length > 0) {            
-            rtn.id = result.data[0].id;
-            rtn.uri = result.data[0].uri;
-            rtn.clientId = result.data[0].client_id; 
-        } 
+    var rtn = {
+        id: -1,
+        uri: null,
+        clientId: null
+    };
+    if (!isLocalhost(uri)) {
+        crud.get(clientQueries.CLIENT_REDIRECT_URI_QUERY, queryId, function (result) {
+            if (result.success && result.data.length > 0) {
+                rtn.id = result.data[0].id;
+                rtn.uri = result.data[0].uri;
+                rtn.clientId = result.data[0].client_id;
+            }
+            callback(rtn);
+        });
+    } else {
         callback(rtn);
-    });
+    }
+
 };
 
 exports.deleteClientRedirectUri = function (con, id, callback) {
@@ -100,4 +108,15 @@ exports.deleteAllClientRedirectUri = function (con, clientId, callback) {
     });
 };
 
+var isLocalhost = function (uri) {
+    var rtn = false;
+    var devMode = (process.env.DEVELOPMENT_MODE === "false") ? false : constants.DEFAULT_TO_DEVELOPMENT_MODE;
+    if (uri) {
+        var ind = uri.indexOf("localhost");
+        if (!devMode && ind > -1) {
+            rtn = true;
+        }
+    }
+    return rtn;
+};
 

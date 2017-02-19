@@ -68,10 +68,11 @@ exports.createImplicitGrant = function (json, scopes, callback) {
                         clientId: clientId,
                         userId: userId
 
-                    };
+                    };                    
                     db.addImplicitGrant(implicitJson, accessTknJson, scopes, function (implicitResult) {
                         if (implicitResult.success) {
                             rtn.id = implicitResult.id;
+                            rtn.token = accessToken;
                             rtn.success = true;
                             callback(rtn);
                         } else {

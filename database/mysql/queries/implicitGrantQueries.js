@@ -22,6 +22,12 @@
 exports.IMPLICIT_GRANT_INSERT_QUERY = "INSERT INTO implicit_grant Set ?";
 exports.IMPLICIT_GRANT_GET_BY_ID_QUERY = "SELECT id, client_id, user_id, access_token_id "+
                                          "FROM implicit_grant WHERE client_id = ? and user_id = ? ";
+
+exports.IMPLICIT_GRANT_GET_BY_SCOPE_QUERY = "SELECT i.id, i.client_id, s.scope, i.access_token_id " +
+                                            "FROM implicit_grant i inner join implicit_scope s " +
+                                            "on i.id = s.implicit_grant_id " +
+                                            "WHERE i.client_id = ? and i.user_id = ? and s.scope = ?";        
+                                 
 exports.IMPLICIT_GRANT_DELETE_QUERY = "DELETE FROM implicit_grant WHERE client_id = ? and user_id = ? ";
 
 

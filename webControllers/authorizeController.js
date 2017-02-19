@@ -1,6 +1,9 @@
 var authorizationCodeManager = require("../managers/authorizationCodeManager");
+var implicitGrantManager = require("../managers/implicitGrantManager");
+
 exports.init = function (db) {
     authorizationCodeManager.init(db);
+    implicitGrantManager.init(db);
 };
 exports.authorize = function (req, res) {
     var loggedIn = req.session.loggedIn;
@@ -32,6 +35,7 @@ exports.authorize = function (req, res) {
         req.session.oauthGrantObj = oauthGrantObj;
         res.redirect('/login');
     } else {
+        console.log("oauthGrantObj in authController before response type: " + JSON.stringify(oauthGrantObj));
         if (responseType === "code") {
             //must authorize before adding
             var authJson = {
@@ -64,7 +68,36 @@ exports.authorize = function (req, res) {
                 }
             });
         } else if (responseType === "token") {
-
+            //must authorize before adding
+            var authJson = {
+                clientId: clientId,
+                userId: user,
+                scope: scope
+            };
+            implicitGrantManager.checkApplicationAuthorization(authJson, function (result) {
+                if (result && result.authorized) {
+                    console.log("oauthGrantObj in authController: " + JSON.stringify(oauthGrantObj));
+                    var json = {
+                        clientId: clientId,
+                        userId: user,
+                        scope: scope,
+                        redirectUri: redirectUri
+                    };
+                    implicitGrantManager.authorize(json, function (result) {
+                        console.log("implicit: " + JSON.stringify(result));
+                        if (result.success && result.token) {
+                            var cb = redirectUri + "#token=" + result.token+ "&token_type=bearer&state=" + oauthGrantObj.state;
+                            console.log("implicit cb: " + cb);
+                            res.redirect(cb);
+                        } else {
+                            res.redirect('/oauthError?error=' + result.error);
+                        }
+                    });
+                } else {
+                    req.session.oauthGrantObj = oauthGrantObj;
+                    res.redirect('/authorizeApp');
+                }
+            });
         } else if (responseType) {
             //res.render('oauthError', {error: "invalid_grant"});
             res.redirect('/oauthError?error=invalid_grant');
@@ -82,7 +115,8 @@ exports.authorizeApp = function (req, res) {
     var oauthGrantObj = req.session.oauthGrantObj;
     if (!oauthGrantObj) {
         res.render('oauthError', {error: "Invalid Request"});
-    } else {
+    }
+    else if(oauthGrantObj.responseType === "code"){
         var cbJson = {
             clientId: oauthGrantObj.clientId,
             callbackUri: oauthGrantObj.redirectUri
@@ -97,6 +131,23 @@ exports.authorizeApp = function (req, res) {
                 res.render('oauthError', {error: "Invalid redirect URI"});
             }
         });
+    }else if(oauthGrantObj.responseType === "token"){
+        var cbJson = {
+            clientId: oauthGrantObj.clientId,
+            callbackUri: oauthGrantObj.redirectUri
+        };
+        implicitGrantManager.validateClientAndCallback(cbJson, function (results) {
+            if (results.valid) {
+                params.clientName = results.clientName;
+                params.webSite = results.webSite;
+                params.scope = oauthGrantObj.scope;
+                res.render("authorizeApp", params);
+            } else {
+                res.render('oauthError', {error: "Invalid redirect URI"});
+            }
+        });
+    }else{
+         res.render('oauthError', {error: "Invalid redirect URI"});
     }
 
 
@@ -108,7 +159,7 @@ exports.applicationAuthorization = function (req, res) {
     var oauthGrantObj = req.session.oauthGrantObj;
     req.session.oauthGrantObj = undefined;
     var user = req.session.user;
-    if (authorize === "true") {
+    if (authorize === "true" && oauthGrantObj.responseType === "code") {
         var json = {
             clientId: oauthGrantObj.clientId,
             userId: user,
@@ -120,6 +171,24 @@ exports.applicationAuthorization = function (req, res) {
             console.log("authorization code: " + JSON.stringify(result));
             if (result.success && result.authorizationCode && result.authorizationCode > -1) {
                 var cb = oauthGrantObj.redirectUri + "?code=" + result.codeString + "&state=" + oauthGrantObj.state;
+                res.redirect(cb);
+            } else {
+                res.render('oauthError', {error: result.error});
+            }
+        });
+    }else if(authorize === "true" && oauthGrantObj.responseType === "token"){
+         var json = {
+            clientId: oauthGrantObj.clientId,
+            userId: user,
+            scope: oauthGrantObj.scope,
+            redirectUri: oauthGrantObj.redirectUri
+        };
+        console.log("authorization code json: " + JSON.stringify(json));
+        implicitGrantManager.authorize(json, function (result) {
+            console.log("implicit grant: " + JSON.stringify(result));
+            if (result.success && result.token) {
+                //var cb = oauthGrantObj.redirectUri + "?code=" + result.codeString + "&state=" + oauthGrantObj.state;
+                var cb = oauthGrantObj.redirectUri + "#token=" + result.token+ "&token_type=bearer&state=" + oauthGrantObj.state;
                 res.redirect(cb);
             } else {
                 res.render('oauthError', {error: result.error});

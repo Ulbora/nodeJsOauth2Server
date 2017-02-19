@@ -1,0 +1,1 @@
+exports.DEFAULT_TO_DEVELOPMENT_MODE = true;

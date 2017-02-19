@@ -64,6 +64,25 @@ exports.getImplicitGrant = function (clientId, userId, callback) {
     });
 };
 
+exports.getImplicitGrantByScope = function (clientId, userId, scope, callback) {
+    var queryId = [clientId, userId, scope];
+    console.log("getImplicitGrantByScope clientId: " + clientId + " userId: " + userId + " scope: " + scope);
+    crud.get(implicitGrantQueries.IMPLICIT_GRANT_GET_BY_SCOPE_QUERY, queryId, function (result) {
+        console.log("getImplicitGrantByScope in processor:" + JSON.stringify(result));
+        var rtn = {
+            authorized: false
+        };
+        //console.log("get refresh token value:" + result.data[0].token);
+        //console.log("get refresh token length:" + result.data[0].token.length);
+        if (result.success && result.data.length > 0 && result.data.length > 0 && result.data[0].id) {
+            rtn.authorized = true;
+            callback(rtn);
+        } else {
+            callback(null);
+        }
+    });
+};
+
 exports.deleteImplicitGrant = function (con, clientId, userId, callback) {
     var queryId = [clientId, userId];
     crud.delete(con, implicitGrantQueries.IMPLICIT_GRANT_DELETE_QUERY, queryId, callback);

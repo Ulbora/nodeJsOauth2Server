@@ -12,6 +12,8 @@ var clientObj;
 var clientAllowedUriId;
 var clientRoleId;
 var ac;
+var codeClientGrantTypeId;
+var implicitClientGrantTypeId;
 
 describe('authorizeController', function () {
     this.timeout(20000);
@@ -156,7 +158,29 @@ describe('authorizeController', function () {
                 clientGrantTypeManager.addClientGrantType(json, function (result) {
                     console.log("addClientGrantType: " + JSON.stringify(result));
                     if (result.id > -1) {
-                        clientGrantTypeId = result.id;
+                        codeClientGrantTypeId = result.id;
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);
+        });
+    });
+    
+    describe('#addClientGrantType()', function () {
+        it('should add a client grant type in db', function (done) {
+
+            var json = {
+                grantType: 'implicit',
+                clientId: clientId
+            };
+            setTimeout(function () {
+                clientGrantTypeManager.addClientGrantType(json, function (result) {
+                    console.log("addClientGrantType: " + JSON.stringify(result));
+                    if (result.id > -1) {
+                        implicitClientGrantTypeId = result.id;
                         assert(true);
                     } else {
                         assert(false);
@@ -194,6 +218,31 @@ describe('authorizeController', function () {
                 var req = {};
                 req.query = {};
                 req.query.response_type = "code";
+                req.query.client_id = clientId;
+                req.query.redirect_uri = "http://www.google.com";
+                req.query.scope = "read";
+                req.session = {};
+                req.session.loggedIn = false;
+                var res = {};
+                res.redirect = function (path) {
+                    if (path === "/login") {
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                };
+                authorizeController.authorize(req, res);
+            }, 1000);
+        });
+    });
+    
+     describe('#authorize()', function () {
+        it('should redirect to login page', function (done) {
+            setTimeout(function () {
+                var req = {};
+                req.query = {};
+                req.query.response_type = "token";
                 req.query.client_id = clientId;
                 req.query.redirect_uri = "http://www.google.com";
                 req.query.scope = "read";
@@ -311,6 +360,33 @@ describe('authorizeController', function () {
         });
     });
 
+    describe('#authorize()', function () {
+        it('should send to authorize application page', function (done) {
+            setTimeout(function () {
+                var req = {};
+                req.query = {};
+                req.query.response_type = "token";
+                req.query.client_id = clientId;
+                req.query.redirect_uri = "http://www.google.com";
+                req.query.scope = "read";
+                req.query.state = "xyzz";
+                req.session = {};
+                req.session.loggedIn = true;
+                req.session.user = "admin";
+                var res = {};
+                res.redirect = function (path) {
+                    if (path === "/authorizeApp" && req.session.oauthGrantObj) {
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                };
+                authorizeController.authorize(req, res);
+            }, 1000);
+        });
+    });
+
 
 
     /*
@@ -370,6 +446,44 @@ describe('authorizeController', function () {
             }, 1000);
         });
     });
+    
+    describe('#authorizeApp()', function () {
+        it('should send to authorize application page', function (done) {
+            setTimeout(function () {
+                var req = {};
+                req.session = {};
+                req.session.oauthGrantObj = {};
+                req.session.oauthGrantObj.responseType = "token";
+                req.session.oauthGrantObj.clientId = clientId;
+                req.session.oauthGrantObj.redirectUri = "http://www.google.com";
+                req.session.oauthGrantObj.scope = "read";
+                req.session.oauthGrantObj.state = "xyz";
+                req.session.loggedIn = true;
+                req.session.user = "admin";
+                var res = {};
+                res.render = function (path, params) {
+                    console.log("authorizeApp path: " + path);
+                    console.log("authorizeApp params: " + JSON.stringify(params));
+                    if (path === "authorizeApp" && params.title === "authorize application" && params.clientName === "ulbora") {
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                };
+                res.redirect = function (path) {
+                    console.log("authorizeApp path: " + path);                    
+                    if (path === "/oauthError?error=invalid_grant") {
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                };
+                authorizeController.authorizeApp(req, res);
+            }, 1000);
+        });
+    });
 
     describe('#authorizeApp()', function () {
         it('should send to invalid uri page', function (done) {
@@ -378,6 +492,34 @@ describe('authorizeController', function () {
                 req.session = {};
                 req.session.oauthGrantObj = {};
                 req.session.oauthGrantObj.responseType = "code";
+                req.session.oauthGrantObj.clientId = clientId;
+                req.session.oauthGrantObj.redirectUri = "http://www.google.org";
+                req.session.oauthGrantObj.scope = "read";
+                req.session.oauthGrantObj.state = "xyz";
+                req.session.loggedIn = true;
+                req.session.user = "admin";
+                var res = {};
+                res.render = function (path, params) {
+                    console.log("authorizeApp bad redirect uri path: " + path);
+                    if (path === "oauthError" && params.error === "Invalid redirect URI") {
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                };
+                authorizeController.authorizeApp(req, res);
+            }, 1000);
+        });
+    });
+    
+     describe('#authorizeApp()', function () {
+        it('should send to invalid uri page', function (done) {
+            setTimeout(function () {
+                var req = {};
+                req.session = {};
+                req.session.oauthGrantObj = {};
+                req.session.oauthGrantObj.responseType = "token";
                 req.session.oauthGrantObj.clientId = clientId;
                 req.session.oauthGrantObj.redirectUri = "http://www.google.org";
                 req.session.oauthGrantObj.scope = "read";
@@ -433,6 +575,41 @@ describe('authorizeController', function () {
             }, 1000);
         });
     });
+    
+    describe('#applicationAuthorization()', function () {
+        it('should Authorization application', function (done) {
+            setTimeout(function () {
+                var req = {};
+                req.session = {};
+                req.session.oauthGrantObj = {};
+                req.session.oauthGrantObj.responseType = "token";
+                req.session.oauthGrantObj.clientId = clientId;
+                req.session.oauthGrantObj.redirectUri = "http://www.google.com";
+                req.session.oauthGrantObj.scope = "read";
+                req.session.oauthGrantObj.state = "xyz";
+                req.session.loggedIn = true;
+                req.session.user = "admin";
+                req.query = {};
+                req.query.authorize = "true";
+                var res = {};
+                res.render = function (path, params) {
+                    assert(false);
+                    done();
+                };
+                res.redirect = function (path) {
+                    console.log("redirect path: " + path);
+                    var i = path.indexOf("http://www.google.com#token=");
+                    if (i > -1) {
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                };
+                authorizeController.applicationAuthorization(req, res);
+            }, 1000);
+        });
+    });
 
     describe('#applicationAuthorization()', function () {
         it('should fail to Authorization application with redirect error', function (done) {
@@ -473,6 +650,45 @@ describe('authorizeController', function () {
         });
     });
 
+    describe('#applicationAuthorization()', function () {
+        it('should fail to Authorization application with redirect error', function (done) {
+            setTimeout(function () {
+                var req = {};
+                req.session = {};
+                req.session.oauthGrantObj = {};
+                req.session.oauthGrantObj.responseType = "token";
+                req.session.oauthGrantObj.clientId = clientId;
+                req.session.oauthGrantObj.redirectUri = "http://www.google.org";
+                req.session.oauthGrantObj.scope = "read";
+                req.session.oauthGrantObj.state = "xyz";
+                req.session.loggedIn = true;
+                req.session.user = "admin";
+                req.query = {};
+                req.query.authorize = "true";
+                var res = {};
+                res.render = function (path, params) {
+                    if (path === "oauthError") {
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                };
+                res.redirect = function (path) {
+                    console.log("redirect path: " + path);
+                    var i = path.indexOf("http://www.google.org#token=");
+                    if (i > -1) {
+                        assert(false);
+                    } else {
+                        assert(true);
+                    }
+                    done();
+                };
+                authorizeController.applicationAuthorization(req, res);
+            }, 1000);
+        });
+    });
+    
     describe('#authorize()', function () {
         it('should send to authorize application page', function (done) {
             setTimeout(function () {
@@ -490,6 +706,36 @@ describe('authorizeController', function () {
                 res.redirect = function (path) {
                     console.log("redirect path: " + path);
                     var i = path.indexOf("http://www.google.com?code=");
+                    var o = path.indexOf("state=xyz");
+                    if (i > -1 && o > -1) {
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                };
+                authorizeController.authorize(req, res);
+            }, 1000);
+        });
+    });
+    
+    describe('#authorize()', function () {
+        it('should send to authorize application page', function (done) {
+            setTimeout(function () {
+                var req = {};
+                req.query = {};
+                req.query.response_type = "token";
+                req.query.client_id = clientId;
+                req.query.redirect_uri = "http://www.google.com";
+                req.query.scope = "read";
+                req.query.state = "xyz";
+                req.session = {};
+                req.session.loggedIn = true;
+                req.session.user = "admin";
+                var res = {};
+                res.redirect = function (path) {
+                    console.log("redirect path: " + path);
+                    var i = path.indexOf("http://www.google.com#token=");
                     var o = path.indexOf("state=xyz");
                     if (i > -1 && o > -1) {
                         assert(true);
@@ -523,6 +769,21 @@ describe('authorizeController', function () {
         });
     });
 
+    describe('#deleteImplicitGrant()', function () {
+        it('should delete ImplicitGrant in db', function (done) {
+            setTimeout(function () {
+                db.deleteImplicitGrant(clientId, "admin", function (result) {
+                    if (result.success) {
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);
+        });
+    });
+
 
 
     describe('#deleteClientRedirectUri()', function () {
@@ -543,7 +804,22 @@ describe('authorizeController', function () {
     describe('#deleteClientGrantType()', function () {
         it('should delete client grant type', function (done) {
             setTimeout(function () {
-                clientGrantTypeManager.deleteClientGrantType(clientGrantTypeId, function (result) {
+                clientGrantTypeManager.deleteClientGrantType(codeClientGrantTypeId, function (result) {
+                    if (result.success) {
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);
+        });
+    });
+    
+    describe('#deleteClientGrantType()', function () {
+        it('should delete client grant type', function (done) {
+            setTimeout(function () {
+                clientGrantTypeManager.deleteClientGrantType(implicitClientGrantTypeId, function (result) {
                     if (result.success) {
                         assert(true);
                     } else {

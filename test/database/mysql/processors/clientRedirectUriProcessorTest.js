@@ -4,6 +4,7 @@ var clintProcessor = require("../../../../database/mysql/processors/clientProces
 var clientRedirectUriProcessor = require("../../../../database/mysql/processors/clientRedirectUriProcessor");
 var clientId;
 var clientRedirectUriId;
+var clientRedirectUriId2;
 describe('ClientRedirectUriProcessor', function () {
     this.timeout(9000);
     describe('#connect()', function () {
@@ -67,6 +68,27 @@ describe('ClientRedirectUriProcessor', function () {
         });
     });
     
+    describe('#addClientRedirectUri()', function () {
+        it('should add a client redirect uri', function (done) { 
+            
+           var json = {                
+                uri: 'http://localhost/test',
+                clientId: clientId
+            };
+            setTimeout(function () {
+                clientRedirectUriProcessor.addClientRedirectUri(null, json, function (result) {
+                    if (result.id > -1) {
+                        clientRedirectUriId2 = result.id;
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);           
+        });
+    });
+    
     
     describe('#addClientRedirectUri()', function () {
         it('should add another client redirect uri', function (done) { 
@@ -105,6 +127,40 @@ describe('ClientRedirectUriProcessor', function () {
         });
     });
     
+    describe('#getClientRedirectUri()', function () {
+        it('should fail to get client redirect localhost uri in processor', function (done) {           
+            setTimeout(function () {       
+                var toFindUri = "http://localhost/test";
+                clientRedirectUriProcessor.getClientRedirectUri(clientId, toFindUri, function (result) {
+                    if (result && result.id > 0) {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);           
+        });
+    });
+    
+    describe('#getClientRedirectUri()', function () {
+        it('should fail to get client redirect localhost uri in processor', function (done) {           
+            setTimeout(function () {    
+                process.env.DEVELOPMENT_MODE = "false";
+                var toFindUri = "http://localhost/test";
+                clientRedirectUriProcessor.getClientRedirectUri(clientId, toFindUri, function (result) {
+                    if (result && result.id > 0) {                        
+                        assert(false);
+                    } else {
+                        assert(true);
+                    }
+                    done();
+                });
+                process.env.DEVELOPMENT_MODE = undefined;
+            }, 1000);           
+        });
+    });
+    
     
     describe('#getClientRedirectUriList()', function () {
         it('should read client redirect uri list in processor', function (done) {           
@@ -121,10 +177,57 @@ describe('ClientRedirectUriProcessor', function () {
         });
     });
     
+    describe('#getClientRedirectUriList()', function () {
+        it('should read client redirect uri list in processor', function (done) {           
+            setTimeout(function () {                
+                clientRedirectUriProcessor.getClientRedirectUriList(clientId, function (result) {
+                    if (result && result.length > 0 && result[1].uri === 'http://localhost/test') {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);           
+        });
+    });
+    
+    describe('#getClientRedirectUriList()', function () {
+        it('should read client redirect uri list in processor', function (done) {           
+            setTimeout(function () {     
+                process.env.DEVELOPMENT_MODE = "false";
+                clientRedirectUriProcessor.getClientRedirectUriList(clientId, function (result) {
+                    if (result && result.length > 0 && result[1].uri === 'http://localhost/test') {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+                process.env.DEVELOPMENT_MODE = undefined;
+            }, 1000);           
+        });
+    });
+    
     describe('#deleteClientRedirectUri()', function () {
         it('should delete client redirect uri', function (done) {           
             setTimeout(function () {                
                 clientRedirectUriProcessor.deleteClientRedirectUri(null, clientRedirectUriId, function (result) {
+                    if (result.success) {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);           
+        });
+    });
+    
+    describe('#deleteClientRedirectUri()', function () {
+        it('should delete client redirect uri', function (done) {           
+            setTimeout(function () {                
+                clientRedirectUriProcessor.deleteClientRedirectUri(null, clientRedirectUriId2, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {

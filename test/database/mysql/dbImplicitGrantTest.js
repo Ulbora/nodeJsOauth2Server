@@ -60,7 +60,7 @@ describe('mysql DB authorization code', function () {
             };
             
             setTimeout(function () {
-                db.addImplicitGrant(impJson, accessTokenJson, "read", function (result) {
+                db.addImplicitGrant(impJson, accessTokenJson, ["read"], function (result) {
                     if (result.id > -1) {
                         acId = result.id;
                         assert(true);
@@ -88,7 +88,20 @@ describe('mysql DB authorization code', function () {
         });
     });
     
-   
+   describe('#getImplicitGrantByScope()', function () {
+        it('should read getImplicitGrantByScope in db', function (done) {
+            setTimeout(function () {
+                db.getImplicitGrantByScope(clientId, "admin", "read", function (result) {
+                    if (result && result.authorized) {
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);
+        });
+    });
     
     describe('#deleteImplicitGrant()', function () {
         it('should delete ImplicitGrant in db', function (done) {           

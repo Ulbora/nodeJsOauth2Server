@@ -19,7 +19,7 @@ exports.loginUser = function (req, res) {
     var oauthGrantObj = req.session.oauthGrantObj;
     //req.session.oauthCodeObj = undefined;
     console.log("oauthGrantObj: " + JSON.stringify(oauthGrantObj));
-    if(req.session.loggedIn && oauthGrantObj && oauthGrantObj.responseType === "code"){
+    if(req.session.loggedIn && oauthGrantObj && (oauthGrantObj.responseType === "code" || oauthGrantObj.responseType === "token")){
         res.redirect("/oauth/authorize?response_type=" + oauthGrantObj.responseType + "&client_id=" + oauthGrantObj.clientId +"&redirect_uri=" + oauthGrantObj.redirectUri + "&scope=" + oauthGrantObj.scope + "&state=" + oauthGrantObj.state);
     }else{
         res.redirect('/login');
