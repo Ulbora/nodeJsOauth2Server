@@ -22,17 +22,23 @@
 
 var authCodeTokenDelegate = require("../delegates/authCodeTokenDelegate");
 var accessTokenRefreshDelegate = require("../delegates/accessTokenRefreshDelegate");
+var credentialsGrantDelegate = require("../delegates/credentialsGrantDelegate");
 
 var db;
 
 exports.init = function (database) {
     db = database;
     authCodeTokenDelegate.init(db);
-    accessTokenRefreshDelegate.init(db);    
+    accessTokenRefreshDelegate.init(db);
+    credentialsGrantDelegate.init(db);
 };
 
 exports.authCodeToken = function (json, callback) {
     authCodeTokenDelegate.authCodeToken(json, callback);
+};
+
+exports.credentialsGrantToken = function (json, callback) {
+    credentialsGrantDelegate.createClientGrant(json, callback);
 };
 
 exports.refreshToken = function (json, callback) {

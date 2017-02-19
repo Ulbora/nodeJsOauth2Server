@@ -1,21 +1,22 @@
 var assert = require('assert');
 var db = require("../../database/db");
-var implicitGrantManager = require("../../managers/implicitGrantManager");
+var credentialsGrantDelegate = require("../../delegates/credentialsGrantDelegate");
 var clientManager = require("../../managers/clientManager");
 var clientGrantTypeManager = require("../../managers/clientGrantTypeManager");
 var clientId;
 var clientObj;
 var clientGrantTypeId;
-var id;
-describe('Client Implicit Grant Manager', function () {
+var authorizationCode;
+var code;
+describe('clientGrantDelegate', function () {
     this.timeout(40000);
     describe('#init()', function () {
         it('should init manager', function (done) {
             db.connect("localhost", "admin", "admin", "ulbora_oauth2_server", 5);
             setTimeout(function () {
                 clientManager.init(db);
-                implicitGrantManager.init(db);
                 clientGrantTypeManager.init(db);
+                credentialsGrantDelegate.init(db);
                 done();
             }, 1000);
         });
@@ -127,7 +128,7 @@ describe('Client Implicit Grant Manager', function () {
         it('should add a client grant type in db', function (done) {
 
             var json = {
-                grantType: 'implicit',
+                grantType: 'client_credentials',
                 clientId: clientId
             };
             setTimeout(function () {
@@ -166,92 +167,31 @@ describe('Client Implicit Grant Manager', function () {
     });
 
 
-    describe('#authorize()', function () {
-        it('should fail to authorize a client user because redirect uri is not allowed', function (done) {
-            var json = {
-                clientId: clientId,
-                userId: "admin",
-                scope: "read",
-                redirectUri: "http://www.google.org"
-            };
-            setTimeout(function () {
-                implicitGrantManager.authorize(json, function (result) {
-                    console.log("implicit grant: " + JSON.stringify(result));
-                    if (result.id === null && result.error === "access_denied") {
-                        assert(true);
-                    } else {
-                        assert(false);
-                    }
-                    done();
-                });
-            }, 1000);
-        });
-    });
 
-    describe('#authorize()', function () {
-        it('should authorize a client user ', function (done) {
-            var json = {
-                clientId: clientId,
-                userId: "admin",
-                scope: "read",
-                redirectUri: "http://www.google.com"
-            };
-            setTimeout(function () {
-                implicitGrantManager.authorize(json, function (result) {
-                    console.log("implicit grant: " + JSON.stringify(result));
-                    if (result.id && result.id > -1 && result.token) {
-                        id = result.id;
-                        assert(true);
-                    } else {
-                        assert(false);
-                    }
-                    done();
-                });
-            }, 1000);
-        });
-    });
 
-    describe('#authorize()', function () {
-        it('should authorize a client user with the same scope ', function (done) {
-            var json = {
-                clientId: clientId,
-                userId: "admin",
-                scope: "read",
-                redirectUri: "http://www.google.com"
-            };
+    describe('#createClientGrant()', function () {
+        it('should get invalid_client in createClientGrant with wrong secret', function (done) {
             setTimeout(function () {
-                implicitGrantManager.authorize(json, function (result) {
-                    console.log("implicit grant: " + JSON.stringify(result));
-                    if (result.id && result.id > -1 && result.token) {
-                        id = result.id;
-                        assert(true);
+                db.getClient(clientId, function (clientResult) {
+                    console.log("createClientGrant client: " + JSON.stringify(clientResult));
+                    if (clientResult && clientResult.secret) {
+                        //var clientSecret = clientResult.secret;
+                        var clientGrantJson = {
+                            clientId: clientId,
+                            secret: "lsldjlkdj"
+                        };
+                        credentialsGrantDelegate.createClientGrant(clientGrantJson, function (result) {
+                            console.log("createClientGrant token: " + JSON.stringify(result));
+                            if (result && result.error && result.error === "invalid_client") {
+                                assert(true);
+                            } else {
+                                assert(false);
+                            }
+                            done();
+                        });
                     } else {
                         assert(false);
                     }
-                    done();
-                });
-            }, 1000);
-        });
-    });
-
-    describe('#authorize()', function () {
-        it('should authorize a second scope for a client user', function (done) {
-            var json = {
-                clientId: clientId,
-                userId: "admin",
-                scope: "addUser",
-                redirectUri: "http://www.google.com"
-            };
-            setTimeout(function () {
-                implicitGrantManager.authorize(json, function (result) {
-                    console.log("implicit grant 2: " + JSON.stringify(result));
-                    if (result.id && result.id > -1 && result.token) {
-                        id = result.id;
-                        assert(true);
-                    } else {
-                        assert(false);
-                    }
-                    done();
                 });
             }, 1000);
         });
@@ -259,48 +199,37 @@ describe('Client Implicit Grant Manager', function () {
 
 
 
-    describe('#checkApplicationAuthorization()', function () {
-        it('should checkApplicationAuthorization', function (done) {
+    describe('#createClientGrant()', function () {
+        it('should get token in createClientGrant', function (done) {
             setTimeout(function () {
-                var json = {
-                    clientId: clientId,
-                    userId: "admin",
-                    scope: "addUser"
-                }
-                implicitGrantManager.checkApplicationAuthorization(json, function (result) {
-                    if (result && result.authorized) {
-                        assert(true);
+                db.getClient(clientId, function (clientResult) {
+                    if (clientResult && clientResult.secret) {
+                        var secret = clientResult.secret;
+                        var clientGrantJson = {
+                            clientId: clientId,
+                            secret: secret
+                        };
+                        credentialsGrantDelegate.createClientGrant(clientGrantJson, function (result) {
+                            console.log("createClientGrant token: " + JSON.stringify(result));
+                            if (result && result.token_type && result.token_type === "bearer" &&
+                                    result.access_token) {
+                                assert(true);
+                            } else {
+                                assert(false);
+                            }
+                            done();
+                        });
                     } else {
                         assert(false);
                     }
-                    done();
                 });
             }, 1000);
         });
     });
 
-    describe('#validateClientCallback()', function () {
-        it('should validateClientCallback', function (done) {
-            setTimeout(function () {
-                var json = {
-                    clientId: clientId,
-                    callbackUri: "http://www.google.com"
-                }
-                implicitGrantManager.validateClientAndCallback(json, function (result) {
-                    if (result && result.valid) {
-                        assert(true);
-                    } else {
-                        assert(false);
-                    }
-                    done();
-                });
-            }, 1000);
-        });
-    });
-    
-    
-    
-     describe('#getClient()', function () {
+
+
+    describe('#getClient()', function () {
         it('should read client', function (done) {
             setTimeout(function () {
                 clientManager.getClient(clientId, function (result) {
@@ -316,7 +245,7 @@ describe('Client Implicit Grant Manager', function () {
             }, 1000);
         });
     });
-    
+
     describe('#updateClient()', function () {
         it('should add a client', function (done) {
             setTimeout(function () {
@@ -332,35 +261,41 @@ describe('Client Implicit Grant Manager', function () {
             }, 1000);
         });
     });
-    
-    
-    describe('#authorize()', function () {
-        it('should fail to authorize a third scope for a client that is disabled', function (done) {
-            var json = {
-                clientId: clientId,
-                userId: "admin",
-                scope: "addUser",
-                redirectUri: "http://www.google.com"
-            };
+
+
+
+    describe('#createClientGrant()', function () {
+        it('should get invalid_client in createClientGrant with disabled client', function (done) {
             setTimeout(function () {
-                implicitGrantManager.authorize(json, function (result) {
-                    console.log("implicit grant 3: " + JSON.stringify(result));
-                    if (result.id && result.id > -1 && result.token) {
-                        id = result.id;
-                        assert(false);
+                db.getClient(clientId, function (clientResult) {
+                    console.log("createClientGrant client: " + JSON.stringify(clientResult));
+                    if (clientResult && clientResult.secret) {
+                        var secret = clientResult.secret;
+                        var clientGrantJson = {
+                            clientId: clientId,
+                            secret: secret
+                        };
+                        credentialsGrantDelegate.createClientGrant(clientGrantJson, function (result) {
+                            console.log("createClientGrant token: " + JSON.stringify(result));
+                            if (result && result.error && result.error === "invalid_client") {
+                                assert(true);
+                            } else {
+                                assert(false);
+                            }
+                            done();
+                        });
                     } else {
-                        assert(true);
+                        assert(false);
                     }
-                    done();
                 });
             }, 1000);
         });
     });
 
-    describe('#deleteImplicitGrant()', function () {
-        it('should delete ImplicitGrant in db', function (done) {
+    describe('#deleteCredentialsGrant()', function () {
+        it('should delete CredentialsGrant in db', function (done) {
             setTimeout(function () {
-                db.deleteImplicitGrant(clientId, "admin", function (result) {
+                db.deleteCredentialsGrant(clientId, function (result) {
                     if (result.success) {
                         assert(true);
                     } else {
@@ -371,6 +306,7 @@ describe('Client Implicit Grant Manager', function () {
             }, 1000);
         });
     });
+
 
     describe('#deleteClientRedirectUri()', function () {
         it('should delete client redirect uri', function (done) {

@@ -257,6 +257,7 @@ describe('Client authorization code Manager', function () {
         });
     });
     
+   
     
     describe('#getAuthorizationCodeScopeList()', function () {
         it('should read AuthorizationCodeScope in db', function (done) {
@@ -311,6 +312,64 @@ describe('Client authorization code Manager', function () {
                     done();
                 });
             }, 1000);           
+        });
+    });
+    
+    
+     describe('#getClient()', function () {
+        it('should read client', function (done) {
+            setTimeout(function () {
+                clientManager.getClient(clientId, function (result) {
+                    if (result && result.name === 'ulbora' && result.enabled === true) {
+                        clientObj = result;
+                        console.log("client: " + JSON.stringify(clientObj));
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);
+        });
+    });
+    
+    describe('#updateClient()', function () {
+        it('should add a client', function (done) {
+            setTimeout(function () {
+                clientObj.enabled = false;
+                clientManager.updateClient(clientObj, function (result) {
+                    if (result.success) {
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);
+        });
+    });
+    
+    
+    describe('#authorize()', function () {
+        it('should fail to authorize a thire scope for a client that is disabled', function (done) {
+            var json = {
+                clientId: clientId,
+                userId: "admin",                
+                scope: "addUser",
+                redirectUri: "http://www.google.com"
+            };
+            setTimeout(function () {
+                authorizationCodeManager.authorize(json, function (result) {
+                    console.log("authorization code 3: " + JSON.stringify(result));
+                    if (result.authorizationCode && result.authorizationCode > -1) {
+                        authorizationCode = result.authorizationCode;
+                        assert(false);
+                    } else {
+                        assert(true);
+                    }
+                    done();
+                });
+            }, 1000);
         });
     });
 

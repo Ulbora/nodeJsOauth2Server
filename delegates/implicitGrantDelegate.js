@@ -22,6 +22,7 @@
 var refreshTokenDelegate = require("./refreshTokenDelegate");
 var accessTokenDelegate = require("./accessTokenDelegate");
 var config = require("../configuration");
+var manager = require("../managers/manager");
 
 var db;
 
@@ -40,51 +41,56 @@ exports.createImplicitGrant = function (json, scopes, callback) {
     };
     var clientId = json.clientId;
     var userId = json.userId;
-    db.getClientRoleAllowedUriListByClientId(clientId, function (clientRoleUriList) {
-        console.log("clientRoleUriList: " + JSON.stringify(clientRoleUriList));
-        if (clientRoleUriList) {
-            var roleUriList = [];
-            for (var cnt = 0; cnt < clientRoleUriList.length; cnt++) {
-                roleUriList.push(clientRoleUriList[cnt]);
-            }
-            var accessPayload = {
-                sub: "access",
-                userId: userId,
-                clientId: clientId,
-                roleUris: roleUriList,
-                scopeList: scopes,
-                expiresIn: config.IMPLICIT_ACCESS_TOKEN_LIFE
-            };
-            accessTokenDelegate.generateAccessToken(accessPayload, function (accessToken) {
-                if (accessToken) {
-                    var dateNow = new Date();
-                    var acTokenExpires = new Date(dateNow.getTime() + (config.IMPLICIT_ACCESS_TOKEN_LIFE * 60000));
-                    var accessTknJson = {
-                        token: accessToken,
-                        expires: acTokenExpires
-                    };
-                    // var randonCode = generateRandonAuthCode();
-                    var implicitJson = {
-                        clientId: clientId,
-                        userId: userId
-
-                    };                    
-                    db.addImplicitGrant(implicitJson, accessTknJson, scopes, function (implicitResult) {
-                        if (implicitResult.success) {
-                            rtn.id = implicitResult.id;
-                            rtn.token = accessToken;
-                            rtn.success = true;
-                            callback(rtn);
-                        } else {
-                            callback(rtn);
-                        }
-                    });
-                } else {
-                    callback(rtn);
+    var isOk = manager.securityCheck(json);
+    if (isOk && clientId && userId) {
+        db.getClientRoleAllowedUriListByClientId(clientId, function (clientRoleUriList) {
+            console.log("clientRoleUriList: " + JSON.stringify(clientRoleUriList));
+            if (clientRoleUriList) {
+                var roleUriList = [];
+                for (var cnt = 0; cnt < clientRoleUriList.length; cnt++) {
+                    roleUriList.push(clientRoleUriList[cnt]);
                 }
-            });
-        } else {
-            callback(rtn);
-        }
-    });
+                var accessPayload = {
+                    sub: "access",
+                    userId: userId,
+                    clientId: clientId,
+                    roleUris: roleUriList,
+                    scopeList: scopes,
+                    expiresIn: config.IMPLICIT_ACCESS_TOKEN_LIFE
+                };
+                accessTokenDelegate.generateAccessToken(accessPayload, function (accessToken) {
+                    if (accessToken) {
+                        var dateNow = new Date();
+                        var acTokenExpires = new Date(dateNow.getTime() + (config.IMPLICIT_ACCESS_TOKEN_LIFE * 60000));
+                        var accessTknJson = {
+                            token: accessToken,
+                            expires: acTokenExpires
+                        };
+                        // var randonCode = generateRandonAuthCode();
+                        var implicitJson = {
+                            clientId: clientId,
+                            userId: userId
+
+                        };
+                        db.addImplicitGrant(implicitJson, accessTknJson, scopes, function (implicitResult) {
+                            if (implicitResult.success) {
+                                rtn.id = implicitResult.id;
+                                rtn.token = accessToken;
+                                rtn.success = true;
+                                callback(rtn);
+                            } else {
+                                callback(rtn);
+                            }
+                        });
+                    } else {
+                        callback(rtn);
+                    }
+                });
+            } else {
+                callback(rtn);
+            }
+        });
+    } else {
+        callback(rtn);
+    }
 };

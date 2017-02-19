@@ -45,82 +45,89 @@ exports.authorize = function (json, callback) {
     var scope = json.scope;
     delete json.scope;
     if (isOk && clientId && userId && json.redirectUri) {
-        db.getClientRedirectUri(clientId, json.redirectUri, function (redirectUriResults) {
-            if (redirectUriResults && redirectUriResults.id > 0) {
-                manager.grantTypeTurnedOn(clientId, grantTypeConstants.IMPLICIT_GRANT_TYPE, function (turnedOn) {
-                    if (turnedOn) {
-                        db.getImplicitGrant(clientId, userId, function (codeResult) {
-                            if (codeResult && codeResult.id) {
-                                db.getImplicitGrantScopeList(codeResult.id, function (scopeList) {
-                                    var scopeListToAdd = [];
-                                    var scopeFound = false;
-                                    for (var cnt = 0; cnt < scopeList.length; cnt++) {
-                                        if (scope === scopeList[cnt].scope) {
-                                            scopeFound = true;
-                                            break;
-                                        }
-                                    }
-                                    //console.log("scope already exist: " + scopeFound);
-                                    if (scopeFound) {
+        db.getClient(clientId, function (clientResult) {
+            if (clientResult && clientResult.enabled) {
+                db.getClientRedirectUri(clientId, json.redirectUri, function (redirectUriResults) {
+                    if (redirectUriResults && redirectUriResults.id > 0) {
+                        manager.grantTypeTurnedOn(clientId, grantTypeConstants.IMPLICIT_GRANT_TYPE, function (turnedOn) {
+                            if (turnedOn) {
+                                db.getImplicitGrant(clientId, userId, function (codeResult) {
+                                    if (codeResult && codeResult.id) {
+                                        db.getImplicitGrantScopeList(codeResult.id, function (scopeList) {
+                                            var scopeListToAdd = [];
+                                            var scopeFound = false;
+                                            for (var cnt = 0; cnt < scopeList.length; cnt++) {
+                                                if (scope === scopeList[cnt].scope) {
+                                                    scopeFound = true;
+                                                    break;
+                                                }
+                                            }
+                                            //console.log("scope already exist: " + scopeFound);
+                                            if (scopeFound) {
 
-                                        for (var cnt = 0; cnt < scopeList.length; cnt++) {
-                                            scopeListToAdd.push(scopeList[cnt].scope);
-                                        }
+                                                for (var cnt = 0; cnt < scopeList.length; cnt++) {
+                                                    scopeListToAdd.push(scopeList[cnt].scope);
+                                                }
 
-                                        console.log("scopes before delete: " + JSON.stringify(scopeListToAdd));
-                                        //delete implicit grant
-                                        db.deleteImplicitGrant(clientId, userId, function (impDelResult) {
-                                            if (impDelResult.success) {
-                                                // create new implicit grant
-                                                implicitGrantDelegate.createImplicitGrant(json, scopeListToAdd, function (impResult) {
-                                                    if (impResult.success) {
-                                                        returnVal.id = impResult.id;
-                                                        returnVal.token = impResult.token;
-                                                        returnVal.success = true;
+                                                console.log("scopes before delete: " + JSON.stringify(scopeListToAdd));
+                                                //delete implicit grant
+                                                db.deleteImplicitGrant(clientId, userId, function (impDelResult) {
+                                                    if (impDelResult.success) {
+                                                        // create new implicit grant
+                                                        implicitGrantDelegate.createImplicitGrant(json, scopeListToAdd, function (impResult) {
+                                                            if (impResult.success) {
+                                                                returnVal.id = impResult.id;
+                                                                returnVal.token = impResult.token;
+                                                                returnVal.success = true;
+                                                            }
+                                                            callback(returnVal);
+                                                        });
+                                                    } else {
+                                                        returnVal.error = "access_denied";
+                                                        callback(returnVal);
                                                     }
-                                                    callback(returnVal);
                                                 });
                                             } else {
-                                                returnVal.error = "access_denied";
-                                                callback(returnVal);
+                                                scopeListToAdd.push(scope);
+                                                for (var cnt = 0; cnt < scopeList.length; cnt++) {
+                                                    scopeListToAdd.push(scopeList[cnt].scope);
+                                                }
+                                                console.log("scopes before delete: " + JSON.stringify(scopeListToAdd));
+                                                //delete implicit grant
+                                                db.deleteImplicitGrant(clientId, userId, function (impDelResult) {
+                                                    if (impDelResult.success) {
+                                                        // create new implicit grant
+                                                        implicitGrantDelegate.createImplicitGrant(json, scopeListToAdd, function (impResult) {
+                                                            if (impResult.success) {
+                                                                returnVal.id = impResult.id;
+                                                                returnVal.token = impResult.token;
+                                                                returnVal.success = true;
+                                                            }
+                                                            callback(returnVal);
+                                                        });
+                                                    } else {
+                                                        returnVal.error = "access_denied";
+                                                        callback(returnVal);
+                                                    }
+                                                });
                                             }
                                         });
                                     } else {
-                                        scopeListToAdd.push(scope);
-                                        for (var cnt = 0; cnt < scopeList.length; cnt++) {
-                                            scopeListToAdd.push(scopeList[cnt].scope);
-                                        }
-                                        console.log("scopes before delete: " + JSON.stringify(scopeListToAdd));
-                                        //delete implicit grant
-                                        db.deleteImplicitGrant(clientId, userId, function (impDelResult) {
-                                            if (impDelResult.success) {
-                                                // create new implicit grant
-                                                implicitGrantDelegate.createImplicitGrant(json, scopeListToAdd, function (impResult) {
-                                                    if (impResult.success) {
-                                                        returnVal.id = impResult.id;
-                                                        returnVal.token = impResult.token;
-                                                        returnVal.success = true;
-                                                    }
-                                                    callback(returnVal);
-                                                });
-                                            } else {
-                                                returnVal.error = "access_denied";
-                                                callback(returnVal);
+                                        //create auth code
+                                        var scopeListToAdd = [scope];
+                                        implicitGrantDelegate.createImplicitGrant(json, scopeListToAdd, function (impResult) {
+                                            if (impResult.success) {
+                                                returnVal.id = impResult.id;
+                                                returnVal.token = impResult.token;
+                                                returnVal.success = true;
                                             }
+                                            callback(returnVal);
                                         });
                                     }
                                 });
                             } else {
-                                //create auth code
-                                var scopeListToAdd = [scope];
-                                implicitGrantDelegate.createImplicitGrant(json, scopeListToAdd, function (impResult) {
-                                    if (impResult.success) {
-                                        returnVal.id = impResult.id;
-                                        returnVal.token = impResult.token;
-                                        returnVal.success = true;
-                                    }
-                                    callback(returnVal);
-                                });
+                                returnVal.error = "access_denied";
+                                callback(returnVal);
                             }
                         });
                     } else {
@@ -194,21 +201,21 @@ exports.validateClientAndCallback = function (json, callback) {
 
 };
 /*
-exports.deleteAuthorizationCode = function (json, callback) {
-    var returnVal = {
-        success: false
-    };
-    var isOk = manager.securityCheck(json);
-    var clientId = json.clientId;
-    var userId = json.userId;
-    if (isOk && clientId && userId) {
-        db.deleteAuthorizationCode(clientId, userId, function (result) {
-            returnVal.success = result.success;
-            callback(returnVal);
-        });
-    } else {
-        callback(returnVal);
-    }
-
-};
-*/
+ exports.deleteAuthorizationCode = function (json, callback) {
+ var returnVal = {
+ success: false
+ };
+ var isOk = manager.securityCheck(json);
+ var clientId = json.clientId;
+ var userId = json.userId;
+ if (isOk && clientId && userId) {
+ db.deleteAuthorizationCode(clientId, userId, function (result) {
+ returnVal.success = result.success;
+ callback(returnVal);
+ });
+ } else {
+ callback(returnVal);
+ }
+ 
+ };
+ */

@@ -49,7 +49,7 @@ exports.authCodeToken = function (json, callback) {
         db.getClient(clientId, function (clientResult) {
             console.log("in authCodeToken result: " + JSON.stringify(clientResult));
             if (clientResult && clientResult.clientId && clientResult.clientId === clientId &&
-                    clientResult.secret === secret) {
+                    clientResult.secret === secret && clientResult.enabled) {
                 //validate redirect uri
                 db.getClientRedirectUri(clientId, redirectUri, function (uriResult) {
                     if (uriResult && uriResult.id > 0) {

@@ -6,7 +6,8 @@ var clientManager = require("../../managers/clientManager");
 var clientGrantTypeManager = require("../../managers/clientGrantTypeManager");
 var clientId;
 var clientObj;
-var clientGrantTypeId;
+var clientGrantTypeId1;
+var clientGrantTypeId2;
 var authorizationCode;
 describe('Token Manager', function () {
     this.timeout(40000);
@@ -136,7 +137,30 @@ describe('Token Manager', function () {
                 clientGrantTypeManager.addClientGrantType(json, function (result) {
                     console.log("addClientGrantType: " + JSON.stringify(result));
                     if (result.id > -1) {
-                        clientGrantTypeId = result.id;
+                        clientGrantTypeId1 = result.id;
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);
+        });
+    });
+    
+    
+    describe('#addClientGrantType()', function () {
+        it('should add a client grant type in db', function (done) {
+
+            var json = {
+                grantType: 'client_credentials',
+                clientId: clientId
+            };
+            setTimeout(function () {
+                clientGrantTypeManager.addClientGrantType(json, function (result) {
+                    console.log("addClientGrantType: " + JSON.stringify(result));
+                    if (result.id > -1) {
+                        clientGrantTypeId2 = result.id;
                         assert(true);
                     } else {
                         assert(false);
@@ -327,8 +351,8 @@ describe('Token Manager', function () {
             });
         });
     });
-    
-    
+
+
     describe('#updateAuthorizationCodeAndTokens()', function () {
         it('should fail to update an authorization code and token in manager', function (done) {
             db.getAuthorizationCode(clientId, "admin", function (acResult) {
@@ -378,6 +402,108 @@ describe('Token Manager', function () {
         });
     });
 
+    describe('#credentialsGrantToken()', function () {
+        it('should fail to get credentialsGrant token in manager because of wrong password', function (done) {
+            db.getClient(clientId, function (clientResult) {                
+                setTimeout(function () {
+                    var json = {
+                        clientId: clientId,
+                        secret: "sldslkdslk"
+                    };
+                    tokenManager.credentialsGrantToken(json, function (credentialsGrantTokenResult) {
+                        console.log("credentialsGrantTokenResult:" + JSON.stringify(credentialsGrantTokenResult));
+                        if (credentialsGrantTokenResult.error === "invalid_client") {
+                            assert(true);
+                        } else {
+                            assert(false);
+                        }
+                        done();
+                    });
+                }, 1000);
+            });
+        });
+    });
+
+
+    describe('#credentialsGrantToken()', function () {
+        it('should credentialsGrant token in manager', function (done) {            
+            db.getClient(clientId, function (clientResult) {               
+                setTimeout(function () {
+                    var json = {
+                        clientId: clientId,
+                        secret: clientResult.secret
+                    };
+                    tokenManager.credentialsGrantToken(json, function (credentialsGrantTokenResult) {
+                        console.log("credentialsGrantTokenResult:" + JSON.stringify(credentialsGrantTokenResult));
+                        if (credentialsGrantTokenResult && credentialsGrantTokenResult.token_type && credentialsGrantTokenResult.token_type === "bearer" &&
+                                     credentialsGrantTokenResult.access_token) {
+                            assert(true);
+                        } else {
+                            assert(false);
+                        }
+                        done();
+                    });
+                }, 1000);
+            });           
+        });
+    });
+
+    
+    describe('#getClient()', function () {
+        it('should read client', function (done) {
+            setTimeout(function () {
+                clientManager.getClient(clientId, function (result) {
+                    if (result && result.name === 'ulbora' && result.enabled === true) {
+                        clientObj = result;
+                        console.log("client: " + JSON.stringify(clientObj));
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);
+        });
+    });
+
+    describe('#updateClient()', function () {
+        it('should add a client', function (done) {
+            setTimeout(function () {
+                clientObj.enabled = false;
+                clientManager.updateClient(clientObj, function (result) {
+                    if (result.success) {
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);
+        });
+    });
+
+    describe('#credentialsGrantToken()', function () {
+        it('should fail to get credentialsGrant token in manager because client is disabled', function (done) {
+            db.getClient(clientId, function (clientResult) {                
+                setTimeout(function () {
+                    var json = {
+                        clientId: clientId,
+                        secret: clientResult.secret
+                    };
+                    tokenManager.credentialsGrantToken(json, function (credentialsGrantTokenResult) {
+                        console.log("credentialsGrantTokenResult:" + JSON.stringify(credentialsGrantTokenResult));
+                        if (credentialsGrantTokenResult.error === "invalid_client") {
+                            assert(true);
+                        } else {
+                            assert(false);
+                        }
+                        done();
+                    });
+                }, 1000);
+            });
+        });
+    });
+
     describe('#deleteAuthorizationCode()', function () {
         it('should delete authorization code', function (done) {
             setTimeout(function () {
@@ -397,6 +523,21 @@ describe('Token Manager', function () {
             }, 1000);
         });
     });
+    
+    describe('#deleteCredentialsGrant()', function () {
+        it('should delete CredentialsGrant in db', function (done) {           
+            setTimeout(function () {                
+                db.deleteCredentialsGrant(clientId, function (result) {
+                    if (result.success) {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);           
+        });
+    });   
 
     describe('#deleteClientRedirectUri()', function () {
         it('should delete client redirect uri', function (done) {
@@ -416,7 +557,7 @@ describe('Token Manager', function () {
     describe('#deleteClientGrantType()', function () {
         it('should delete client grant type', function (done) {
             setTimeout(function () {
-                clientGrantTypeManager.deleteClientGrantType(clientGrantTypeId, function (result) {
+                clientGrantTypeManager.deleteClientGrantType(clientGrantTypeId1, function (result) {
                     if (result.success) {
                         assert(true);
                     } else {
@@ -428,6 +569,20 @@ describe('Token Manager', function () {
         });
     });
 
+    describe('#deleteClientGrantType()', function () {
+        it('should delete client grant type', function (done) {
+            setTimeout(function () {
+                clientGrantTypeManager.deleteClientGrantType(clientGrantTypeId2, function (result) {
+                    if (result.success) {
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);
+        });
+    });
 
     describe('#deleteClientRoleUri()', function () {
         it('should delete a client Role Uri', function (done) {

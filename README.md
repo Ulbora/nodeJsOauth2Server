@@ -69,3 +69,21 @@ http://localhost:3000/oauth/authorize?response_type=token&client_id=403&redirect
 
 ```
 
+
+
+ * Client Credentials Grant Type
+
+```
+   Example
+
+http://localhost:3000/oauth/token?client_id=403&client_secret=554444vfg55ggfff22454sw2fff2dsfd&grant_type=client_credentials
+ 
+```
+
+```  
+   Test
+
+http://localhost:3000/oauth/token?client_id=403&client_secret=554444vfg55ggfff22454sw2fff2dsfd&grant_type=client_credentials
+
+```
+

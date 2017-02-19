@@ -11,6 +11,8 @@ var clientId;
 var clientObj;
 var clientAllowedUriId;
 var clientRoleId;
+var clientGrantTypeId1;
+var clientGrantTypeId2;
 var ac;
 var code;
 
@@ -157,7 +159,29 @@ describe('tokenController', function () {
                 clientGrantTypeManager.addClientGrantType(json, function (result) {
                     console.log("addClientGrantType: " + JSON.stringify(result));
                     if (result.id > -1) {
-                        clientGrantTypeId = result.id;
+                        clientGrantTypeId1 = result.id;
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);
+        });
+    });
+    
+    describe('#addClientGrantType()', function () {
+        it('should add a client grant type in db', function (done) {
+
+            var json = {
+                grantType: 'client_credentials',
+                clientId: clientId
+            };
+            setTimeout(function () {
+                clientGrantTypeManager.addClientGrantType(json, function (result) {
+                    console.log("addClientGrantType: " + JSON.stringify(result));
+                    if (result.id > -1) {
+                        clientGrantTypeId2 = result.id;
                         assert(true);
                     } else {
                         assert(false);
@@ -310,7 +334,7 @@ describe('tokenController', function () {
                                 req.query.grant_type = "refresh_token";
                                 req.query.client_id = clientId;
                                 req.query.client_secret = secret;
-                                req.query.refresh_token = refreshResult.token;                                
+                                req.query.refresh_token = refreshResult.token;
                                 req.session = {};
                                 var res = {};
                                 res.status = function (sCode) {
@@ -348,7 +372,7 @@ describe('tokenController', function () {
             }, 1000);
         });
     });
-    
+
     describe('#refreshToken()', function () {
         it('fail to get a refreshToken', function (done) {
             setTimeout(function () {
@@ -362,7 +386,7 @@ describe('tokenController', function () {
                                 req.query.grant_type = "refresh_token";
                                 req.query.client_id = clientId;
                                 req.query.client_secret = "fffff";
-                                req.query.refresh_token = refreshResult.token;                                
+                                req.query.refresh_token = refreshResult.token;
                                 req.session = {};
                                 var res = {};
                                 res.status = function (sCode) {
@@ -400,6 +424,69 @@ describe('tokenController', function () {
             }, 1000);
         });
     });
+
+
+    describe('#clientGrantToken()', function () {
+        it('get a clientGrantToken', function (done) {
+            setTimeout(function () {
+                db.getClient(clientId, function (clientResult) {                    
+                    var secret = clientResult.secret;
+                    var req = {};
+                    req.query = {};
+                    req.query.grant_type = "client_credentials";
+                    req.query.client_id = clientId;
+                    req.query.client_secret = secret;                   
+                    req.session = {};
+                    var res = {};
+                    res.status = function (sCode) {
+                        var self = {};
+                        console.log("res.status:" + sCode);
+                        if (sCode === 401) {
+                            unauth = true;
+                        }
+                        var send = function (token) {
+                            console.log("res.send:" + JSON.stringify(token));
+                            if (token && unauth && token.error === "invalid_client") {
+                                assert(true);
+                            } else {
+                                assert(false);
+                            }
+                            done();
+                        };
+                        self.send = send;
+                        return self;
+                    };
+                    res.send = function (token) {
+                        console.log("res.send:" + JSON.stringify(token));
+                        if (token && token.access_token) {
+                            assert(true);
+                        } else {
+                            assert(false);
+                        }
+                        done();
+                    };
+                    tokenController.token(req, res);                    
+                });
+            }, 1000);
+        });
+    });
+    
+    
+    
+    describe('#deleteCredentialsGrant()', function () {
+        it('should delete CredentialsGrant in db', function (done) {           
+            setTimeout(function () {                
+                db.deleteCredentialsGrant(clientId, function (result) {
+                    if (result.success) {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);           
+        });
+    });   
 
     describe('#deleteAuthorizationCode()', function () {
         it('should delete authorization code', function (done) {
@@ -441,7 +528,22 @@ describe('tokenController', function () {
     describe('#deleteClientGrantType()', function () {
         it('should delete client grant type', function (done) {
             setTimeout(function () {
-                clientGrantTypeManager.deleteClientGrantType(clientGrantTypeId, function (result) {
+                clientGrantTypeManager.deleteClientGrantType(clientGrantTypeId1, function (result) {
+                    if (result.success) {
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);
+        });
+    });
+    
+     describe('#deleteClientGrantType()', function () {
+        it('should delete client grant type', function (done) {
+            setTimeout(function () {
+                clientGrantTypeManager.deleteClientGrantType(clientGrantTypeId2, function (result) {
                     if (result.success) {
                         assert(true);
                     } else {

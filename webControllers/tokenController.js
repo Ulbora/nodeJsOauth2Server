@@ -27,9 +27,24 @@ exports.token = function (req, res) {
         });
 
     } else if (grantType === "password") {
-
+        
+        res.redirect('/oauthError?error=invalid_grant');
+        
     } else if (grantType === "client_credentials") {
-
+        var clientIdStr = req.query.client_id;
+        var clientId = getClientId(clientIdStr);
+        var secret = req.query.client_secret;
+        var tokenClientReq = {
+            clientId: clientId,
+            secret: secret
+        };
+        tokenManager.credentialsGrantToken(tokenClientReq, function (tokenResult) {
+            if (tokenResult.error) {
+                res.status(401).send(tokenResult);
+            } else {
+                res.send(tokenResult);
+            }
+        });
     } else if (grantType === "refresh_token") {
         var clientIdStr = req.query.client_id;
         var secret = req.query.client_secret;
