@@ -70,8 +70,9 @@ http://localhost:3000/oauth/authorize?response_type=token&client_id=403&redirect
 ```
 
 
+## Client Credentials Grant Type
 
- * Client Credentials Grant Type
+ * Access Token 
 
 ```
    Example
