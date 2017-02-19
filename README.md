@@ -88,3 +88,5 @@ http://localhost:3000/oauth/token?client_id=403&client_secret=554444vfg55ggfff22
 
 ```
 
+## Password Grant Type
+Currently not supported.
