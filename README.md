@@ -1,7 +1,8 @@
 Ulbora Oauth2 Server 
 ==============
 
-Ulbora Oauth2 Server is an Oauth2 implementation build on Node.js. 
+Ulbora Oauth2 Server is an Oauth2 server implementation build on Node.js. Currently authorization code, 
+implicit, and client credentials grant types are supported.
 
 ## Authorization Code Grant Type
 
