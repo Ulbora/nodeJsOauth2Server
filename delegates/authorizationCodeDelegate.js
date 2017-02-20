@@ -63,6 +63,7 @@ exports.createAuthorizationCode = function (json, scopes, callback) {
                     }
                     var accessPayload = {
                         sub: "access",
+                        grant: "code",
                         userId: userId,
                         clientId: clientId,
                         roleUris: roleUriList,

@@ -52,6 +52,7 @@ exports.createImplicitGrant = function (json, scopes, callback) {
                 }
                 var accessPayload = {
                     sub: "access",
+                    grant: "implicit",
                     userId: userId,
                     clientId: clientId,
                     roleUris: roleUriList,

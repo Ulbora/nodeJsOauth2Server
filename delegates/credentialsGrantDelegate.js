@@ -63,7 +63,7 @@ exports.createClientGrant = function (json, callback) {
                                 }
                                 var accessPayload = {
                                     sub: "access",
-                                    grant: "client",
+                                    grant: "client_credentials",
                                     clientId: clientId,
                                     roleUris: roleUriList,
                                     expiresIn: config.IMPLICIT_ACCESS_TOKEN_LIFE

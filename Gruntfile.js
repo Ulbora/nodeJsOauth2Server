@@ -59,13 +59,14 @@ module.exports = function (grunt) {
                     quiet: false, // Optionally suppress output to standard out (defaults to false) 
                     clearRequireCache: false // Optionally clear the require cache before running tests (defaults to false) 
                 },
-                src: ['test/webControllers/tokenControllerTest.js']
+                //src: ['test/webControllers/tokenControllerTest.js']
                 //src: ['test/database/dbImplicitGrantTest.js']
                 //src: ['test/database/mysql/dbImplicitGrantTest.js']
                 //src: ['test/database/mysql/processors/clientRedirectUriProcessorTest.js']
                 //src: ['test/managers/implicitGrantManagerTest.js']
-                //src: ['test/managers/tokenManagerTest.js']
+                //src: ['test/managers/tokenValidationManagerTest.js']
                 //src: ['test/delegates/credentialsGrantDelegateTest.js']
+                src: ['test/services/tokenValidationServiceTest.js']
             }
         }
     });

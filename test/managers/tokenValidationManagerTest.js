@@ -1,15 +1,17 @@
 var assert = require('assert');
 var db = require("../../database/db");
 var accessTokenDelegate = require("../../delegates/accessTokenDelegate");
+var tokenValidationManager = require("../../managers/tokenValidationManager");
 var token;
 var token2;
-describe('Access token delegate', function () {
+describe('TokenValidationManager', function () {
     this.timeout(20000);
     describe('#init()', function () {
         it('should init manager', function (done) {
             db.connect("localhost", "admin", "admin", "ulbora_oauth2_server", 5);
             setTimeout(function () {
                 accessTokenDelegate.init(db);
+                tokenValidationManager.init(db);
                 done();
             }, 1000);
         });
@@ -23,7 +25,7 @@ describe('Access token delegate', function () {
                 clientId: "jdsldsldsldls",
                 roleUris: [
                     {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "https://abc.com/rs/addUser", "clientId": 421}
-                ],  
+                ],
                 scopeList: ["read", "write"],
                 expiresIn: 500
             };
@@ -44,9 +46,8 @@ describe('Access token delegate', function () {
 
     describe('#validateAccessToken()', function () {
         it('should validateAccessToken', function (done) {
-            var claims = {
-                sub: "access",
-                grant: "code",
+            var json = {
+                accessToken: token,               
                 userId: "admin",
                 clientId: "jdsldsldsldls",
                 role: "admin",
@@ -54,8 +55,8 @@ describe('Access token delegate', function () {
                 scope: "read"
             };
             setTimeout(function () {
-                accessTokenDelegate.validateAccessToken(token, claims, function (valid) {
-                    if (valid) {
+                tokenValidationManager.validateAccessToken(json, function (result) {
+                    if (result.valid) {
                         assert(true);
                     } else {
                         assert(false);
@@ -69,18 +70,17 @@ describe('Access token delegate', function () {
 
     describe('#validateAccessToken()', function () {
         it('should fail to validateAccessToken because of role', function (done) {
-            var claims = {
-                sub: "access",
-                grant: "code",
+            var json1 = {
+                accessToken: token,
                 userId: "admin",
                 clientId: "jdsldsldsldls",
                 role: "admin1",
-                uri: "https://abc.com/rs/addUser",                
+                uri: "https://abc.com/rs/addUser",
                 scope: "read"
             };
             setTimeout(function () {
-                accessTokenDelegate.validateAccessToken(token, claims, function (valid) {
-                    if (valid) {
+                tokenValidationManager.validateAccessToken(json1, function (result) {                    
+                    if (result.valid) {
                         assert(false);
                     } else {
                         assert(true);
@@ -94,9 +94,8 @@ describe('Access token delegate', function () {
 
     describe('#validateAccessToken()', function () {
         it('should pass because uri not mapped validateAccessToken because of uri', function (done) {
-            var claims = {
-                sub: "access",
-                grant: "code",
+            var json = {
+                accessToken: token,
                 userId: "admin",
                 clientId: "jdsldsldsldls",
                 role: "admin",
@@ -104,7 +103,7 @@ describe('Access token delegate', function () {
                 scope: "read"
             };
             setTimeout(function () {
-                accessTokenDelegate.validateAccessToken(token, claims, function (valid) {
+                tokenValidationManager.validateAccessToken(json, function (valid) {
                     if (valid) {
                         assert(true);
                     } else {
@@ -115,9 +114,9 @@ describe('Access token delegate', function () {
             }, 1000);
         });
     });
-    
+
     describe('#decodeAccessToken()', function () {
-        it('should decodeAccessToken', function (done) {            
+        it('should decodeAccessToken', function (done) {
             setTimeout(function () {
                 accessTokenDelegate.decodeAccessToken(token, function (decoded) {
                     if (decoded && decoded.userId === "admin") {
@@ -138,7 +137,7 @@ describe('Access token delegate', function () {
                 grant: "code",
                 userId: "admin",
                 clientId: "jdsldsldsldls",
-                scopeList: ["read", "write"],
+                scopeList: ["read", "write"]
 
             };
             setTimeout(function () {
@@ -159,9 +158,8 @@ describe('Access token delegate', function () {
 
     describe('#validateAccessToken()', function () {
         it('should validateAccessToken because no role uris mapped', function (done) {
-            var claims = {
-                sub: "access",
-                grant: "code",
+            var json = {
+                accessToken: token,
                 userId: "admin",
                 clientId: "jdsldsldsldls",
                 role: "admin",
@@ -169,8 +167,8 @@ describe('Access token delegate', function () {
                 scope: "read"
             };
             setTimeout(function () {
-                accessTokenDelegate.validateAccessToken(token2, claims, function (valid) {
-                    if (valid) {
+                tokenValidationManager.validateAccessToken(json, function (result) {
+                    if (result.valid) {
                         assert(true);
                     } else {
                         assert(false);

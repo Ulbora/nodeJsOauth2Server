@@ -19,11 +19,30 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+var tokenValidationManager = require("../managers/tokenValidationManager");
 
-var tokenValidationService = require("../services/tokenValidationService");
+var db;
 
-exports.init = function(app, db){
-    tokenValidationService.init(db);
-    app.post('/rs/token/validate', tokenValidationService.validateAccessToken);
-    
+exports.init = function (database) {
+    db = database;
+    tokenValidationManager.init(db);
 };
+
+exports.validateAccessToken = function (req, res) {
+    if (req.is('application/json')) {
+        var reqBody = req.body;
+        var bodyJson = JSON.stringify(reqBody);
+        console.log("body: " + bodyJson);
+        //service.authenticate(req, res, function (creds) {
+        //console.log("in auth callback");
+        tokenValidationManager.validateAccessToken(reqBody, function (result) {
+            res.send(result);
+        });
+        //});
+    } else {
+        res.status(415);
+        res.send({success: false});
+    }
+};
+
+

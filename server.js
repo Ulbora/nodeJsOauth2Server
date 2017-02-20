@@ -25,6 +25,7 @@ var bodyParser = require('body-parser');
 var conf = require('./configuration');
 var cors = require('./cors/cors');
 var webInitializer = require('./routeInitializers/webRouteInitializer');
+var restInitializer = require('./routeInitializers/restInitializer');
 var hbs = require('hbs');
 var session = require('express-session');
 var lessMiddleware = require('less-middleware');
@@ -48,12 +49,14 @@ sessionDelegate.createSessionStore(session, function (sessionResult) {
         };
         app.use(session(sessionOptions));
         webInitializer.init(app, db);
+        
         app.use(lessMiddleware('/less', {
             dest: '/css',
             pathRoot: path.join(__dirname, 'public')
         }));
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({extended: false}));
+        restInitializer.init(app, db);
         //app.set('view engine', 'hbs');
         app.set('view engine', 'html');
         app.engine('html', require('hbs').__express);
