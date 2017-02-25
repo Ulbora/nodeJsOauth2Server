@@ -39,7 +39,7 @@ exports.createClientGrant = function (json, callback) {
     var rtn = {
         access_token: null,
         token_type: "bearer",
-        expires_in: config.CLIENT_ACCESS_TOKEN_LIFE
+        expires_in: config.CLIENT_CREDENTIALS_ACCESS_TOKEN_LIFE
     };
     var error = {
         error: null
@@ -66,12 +66,12 @@ exports.createClientGrant = function (json, callback) {
                                     grant: "client_credentials",
                                     clientId: clientId,
                                     roleUris: roleUriList,
-                                    expiresIn: config.IMPLICIT_ACCESS_TOKEN_LIFE
+                                    expiresIn: config.CLIENT_CREDENTIALS_ACCESS_TOKEN_LIFE
                                 };
                                 accessTokenDelegate.generateAccessToken(accessPayload, function (accessToken) {
                                     if (accessToken) {
                                         var dateNow = new Date();
-                                        var acTokenExpires = new Date(dateNow.getTime() + (config.IMPLICIT_ACCESS_TOKEN_LIFE * 60000));
+                                        var acTokenExpires = new Date(dateNow.getTime() + (config.CLIENT_CREDENTIALS_ACCESS_TOKEN_LIFE * 60000));
                                         var accessTknJson = {
                                             token: accessToken,
                                             expires: acTokenExpires

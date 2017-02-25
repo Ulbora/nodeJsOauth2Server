@@ -10,6 +10,7 @@ implicit, and client credentials grant types are supported.
 
 ```
    Example
+   GET:
 
 http://localhost:3000/oauth/authorize?response_type=code&client_id=403&redirect_uri=CALLBACK_URL&scope=read&state=xyz
   
@@ -17,6 +18,7 @@ http://localhost:3000/oauth/authorize?response_type=code&client_id=403&redirect_
 
 ```  
    Test
+   GET:
 
 http://localhost:3000/oauth/authorize?response_type=code&client_id=403&redirect_uri=http://www.google.com&scope=read&state=xyz
 
@@ -26,6 +28,7 @@ http://localhost:3000/oauth/authorize?response_type=code&client_id=403&redirect_
 
 ```
    Example
+   POST:
 
 http://localhost:3000/oauth/token?client_id=403&client_secret=554444vfg55ggfff22454sw2fff2dsfd&grant_type=authorization_code&code=i76y13e340akRn6Ipkdbii&redirect_uri=http://www.google.com
  
@@ -33,6 +36,7 @@ http://localhost:3000/oauth/token?client_id=403&client_secret=554444vfg55ggfff22
 
 ```  
    Test
+   POST:
 
 http://localhost:3000/oauth/token?client_id=403&client_secret=554444vfg55ggfff22454sw2fff2dsfd&grant_type=authorization_code&code=i76y13e340akRn6Ipkdbii&redirect_uri=http://www.google.com
 
@@ -42,6 +46,7 @@ http://localhost:3000/oauth/token?client_id=403&client_secret=554444vfg55ggfff22
 
 ```
    Example
+   POST:
 
 http://localhost:3000/oauth/token?grant_type=refresh_token&client_id=CLIENT_ID&client_secret=CLIENT_SECRET&refresh_token=REFRESH_TOKEN
    
@@ -49,6 +54,7 @@ http://localhost:3000/oauth/token?grant_type=refresh_token&client_id=CLIENT_ID&c
 
 ``` 
    Test
+   POST:
 
 http://localhost:3000/oauth/token?grant_type=refresh_token&client_id=403&client_secret=554444vfg55ggfff22454sw2fff2dsfd&refresh_token=efssffffnnlf
 
@@ -60,6 +66,7 @@ http://localhost:3000/oauth/token?grant_type=refresh_token&client_id=403&client_
 
 ```
    Example
+   GET:
 
 http://localhost:3000/oauth/authorize?response_type=token&client_id=403&redirect_uri=CALLBACK_URL&scope=read&state=xyz
   
@@ -67,6 +74,7 @@ http://localhost:3000/oauth/authorize?response_type=token&client_id=403&redirect
 
 ```  
    Test
+   GET:
 
 http://localhost:3000/oauth/authorize?response_type=token&client_id=403&redirect_uri=http://www.google.com&scope=read&state=xyz
 
@@ -75,10 +83,11 @@ http://localhost:3000/oauth/authorize?response_type=token&client_id=403&redirect
 
 ## Client Credentials Grant Type
 
- * Access Token 
+ * Access Token    
 
 ```
    Example
+   POST:
 
 http://localhost:3000/oauth/token?client_id=403&client_secret=554444vfg55ggfff22454sw2fff2dsfd&grant_type=client_credentials
  
@@ -86,6 +95,7 @@ http://localhost:3000/oauth/token?client_id=403&client_secret=554444vfg55ggfff22
 
 ```  
    Test
+   POST:
 
 http://localhost:3000/oauth/token?client_id=403&client_secret=554444vfg55ggfff22454sw2fff2dsfd&grant_type=client_credentials
 
@@ -101,6 +111,7 @@ Currently not supported.
 
 ```
    Example
+   POST:
 
 http://localhost:3000/rs/token/validate
  
