@@ -1085,6 +1085,7 @@ exports.deleteCredentialsGrant = function (clientId, callback) {
                         } else {
                             con.rollback();
                             con.release();
+                            rtn.success = true;
                             callback(rtn);
                         }
                     });

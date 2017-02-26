@@ -20,19 +20,18 @@
  */
 
 
-var tokenValidationService = require("../services/tokenValidationService");
-var clientService = require("../services/clientService");
 
-exports.init = function(app, db){
-    tokenValidationService.init(db);
-    clientService.init(db);
-    app.post('/rs/token/validate', tokenValidationService.validateAccessToken);
-    
-    //client services
-    app.post('/rs/addClient', clientService.add);      
-    app.put('/rs/updateClient', clientService.update);
-    app.get('/rs/getClient/:id', clientService.get);
-    app.delete('/rs/deleteClient/:id', clientService.delete);
-    app.get('/rs/getClientList', clientService.list);  
-    
+exports.getClientId = function (clientIdStr) {
+    var clientId;
+    if (clientIdStr) {
+        try {
+            clientId = parseInt(clientIdStr);
+        } catch (err) {
+            clientId = clientIdStr;
+        }
+    } else {
+        clientId = clientIdStr;
+    }
+    return clientId;
 };
+

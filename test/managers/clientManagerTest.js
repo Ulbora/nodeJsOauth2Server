@@ -3,7 +3,7 @@ var db = require("../../database/db");
 var clientManager = require("../../managers/clientManager");
 var clientId;
 var clientObj;
-var redirectUriId
+var redirectUriId;
 describe('Client Manager', function () {
     this.timeout(20000);
     describe('#init()', function () {

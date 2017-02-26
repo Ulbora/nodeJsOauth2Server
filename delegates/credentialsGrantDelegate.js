@@ -54,37 +54,44 @@ exports.createClientGrant = function (json, callback) {
                     clientResult.secret === secret && clientResult.enabled) {
                 manager.grantTypeTurnedOn(clientId, grantTypeConstants.CLIENT_CRENDENTIAL_GRANT_TYPE, function (turnedOn) {
                     if (turnedOn) {
-                        db.getClientRoleAllowedUriListByClientId(clientId, function (clientRoleUriList) {
-                            console.log("clientRoleUriList: " + JSON.stringify(clientRoleUriList));
-                            if (clientRoleUriList) {
-                                var roleUriList = [];
-                                for (var cnt = 0; cnt < clientRoleUriList.length; cnt++) {
-                                    roleUriList.push(clientRoleUriList[cnt]);
-                                }
-                                var accessPayload = {
-                                    sub: "access",
-                                    grant: "client_credentials",
-                                    clientId: clientId,
-                                    roleUris: roleUriList,
-                                    expiresIn: config.CLIENT_CREDENTIALS_ACCESS_TOKEN_LIFE
-                                };
-                                accessTokenDelegate.generateAccessToken(accessPayload, function (accessToken) {
-                                    if (accessToken) {
-                                        var dateNow = new Date();
-                                        var acTokenExpires = new Date(dateNow.getTime() + (config.CLIENT_CREDENTIALS_ACCESS_TOKEN_LIFE * 60000));
-                                        var accessTknJson = {
-                                            token: accessToken,
-                                            expires: acTokenExpires
-                                        };
-                                        // var randonCode = generateRandonAuthCode();
-                                        var clientGrantJson = {
+                        db.deleteCredentialsGrant(clientId, function (deleteResult) {
+                            console.log("deleteCredentialsGrant: " + JSON.stringify(deleteResult));
+                            if (deleteResult.success) {
+                                db.getClientRoleAllowedUriListByClientId(clientId, function (clientRoleUriList) {
+                                    console.log("clientRoleUriList: " + JSON.stringify(clientRoleUriList));
+                                    if (clientRoleUriList) {
+                                        var roleUriList = [];
+                                        for (var cnt = 0; cnt < clientRoleUriList.length; cnt++) {
+                                            roleUriList.push(clientRoleUriList[cnt]);
+                                        }
+                                        var accessPayload = {
+                                            sub: "access",
+                                            grant: "client_credentials",
                                             clientId: clientId,
-                                            accessTokenId: null
+                                            roleUris: roleUriList,
+                                            expiresIn: config.CLIENT_CREDENTIALS_ACCESS_TOKEN_LIFE
                                         };
-                                        db.addCredentialsGrant(clientGrantJson, accessTknJson, function (clientGrantResult) {
-                                            if (clientGrantResult.success) {                                                
-                                                rtn.access_token = accessToken;                                                
-                                                callback(rtn);
+                                        accessTokenDelegate.generateAccessToken(accessPayload, function (accessToken) {
+                                            if (accessToken) {
+                                                var dateNow = new Date();
+                                                var acTokenExpires = new Date(dateNow.getTime() + (config.CLIENT_CREDENTIALS_ACCESS_TOKEN_LIFE * 60000));
+                                                var accessTknJson = {
+                                                    token: accessToken,
+                                                    expires: acTokenExpires
+                                                };
+                                                // var randonCode = generateRandonAuthCode();
+                                                var clientGrantJson = {
+                                                    clientId: clientId,
+                                                    accessTokenId: null
+                                                };
+                                                db.addCredentialsGrant(clientGrantJson, accessTknJson, function (clientGrantResult) {
+                                                    if (clientGrantResult.success) {
+                                                        rtn.access_token = accessToken;
+                                                        callback(rtn);
+                                                    } else {
+                                                        callback(rtn);
+                                                    }
+                                                });
                                             } else {
                                                 callback(rtn);
                                             }
@@ -94,7 +101,8 @@ exports.createClientGrant = function (json, callback) {
                                     }
                                 });
                             } else {
-                                callback(rtn);
+                                error.error = "access_denied";
+                                callback(error);
                             }
                         });
                     } else {

@@ -38,7 +38,7 @@ exports.generateAccessToken = function (json, callback) {
                 //options
                 var options = {};
                 options.expiresIn = json.expiresIn, //config.REFRESH_TOKEN_LIFE;
-                options.issuer = config.TOKEN_ISSUER;
+                        options.issuer = config.TOKEN_ISSUER;
                 jwt.sign(json, result.key, options, function (err, token) {
                     if (err) {
                         console.log("access token error :" + err);
@@ -64,52 +64,54 @@ exports.validateAccessToken = function (accessToken, claims, callback) {
                 console.log("decoded access token: " + JSON.stringify(decoded));
                 if (err) {
                     console.log("AccessToken verify err: " + err);
-                }
-                var userIdMatch = true;
-                if(claims.userId){
-                    userIdMatch = (decoded.userId === claims.userId)?true: false;
-                }
-                console.log("userIdMatch: " + userIdMatch);
-                if (decoded && decoded.tokenType === "access" && userIdMatch &&
-                        decoded.clientId === claims.clientId && decoded.iss === config.TOKEN_ISSUER) {
-                    console.log("decoded access token: " + JSON.stringify(decoded));
-                    console.log("claims: " + JSON.stringify(claims));                    
-                    var foundRoleUri = false;                    
-                    var roleUris = decoded.roleUris;
-                    var checkUris = [];
-                    if(roleUris && roleUris.length > 0){                        
-                        for(var cnt = 0; cnt < roleUris.length; cnt++){
-                            checkUris.push(roleUris[cnt].uri);
-                            if(roleUris[cnt].role === claims.role && roleUris[cnt].uri === claims.uri){
-                                foundRoleUri = true;
-                                break;
-                            }
-                        } 
-                        if(!foundRoleUri){
-                            //console.log("role uris not found fo far: ");
-                            //uri not mapped so token is valid
-                            //only uris that are mapped can be used to invalidate a token
-                           // console.log("index of: " + claims.role + " " + (checkUris.indexOf(claims.uri)));
-                            foundRoleUri = (checkUris.indexOf(claims.uri) === -1)? true: false;
-                            //console.log("index of: " + claims.role + " " +foundRoleUri +" " + (checkUris.indexOf(claims.uri)));
-                        }                        
-                    }else{
-                        foundRoleUri = true;
-                    }   
-                    var scopeFound = false;
-                    if(decoded.scopeList){
-                       scopeFound = (decoded.scopeList.indexOf(claims.scope) > -1)? true: false;
+                } else if(decoded){
+                    var userIdMatch = true;
+                    if (claims.userId) {
+                        userIdMatch = (decoded.userId === claims.userId) ? true : false;
                     }
-                            
-                    //console.log("foundRoleUri: " + foundRoleUri );
-                    //console.log("scopeFound: " + scopeFound );
-                    if((decoded.grant === "code" || decoded.grant === "implicit") && foundRoleUri && scopeFound){
-                        valid = true;
-                        //console.log("in code or implicit grant if: value: " + valid);
-                    }else if(decoded.grant === "client_credentials" && foundRoleUri ){
-                         valid = true;
-                         //console.log("in client_credentials grant if: value: " + valid);
-                    } 
+                    console.log("userIdMatch: " + userIdMatch);
+                    if (decoded.tokenType === "access" && userIdMatch &&
+                            decoded.clientId === claims.clientId && decoded.iss === config.TOKEN_ISSUER) {
+                        console.log("decoded access token: " + JSON.stringify(decoded));
+                        console.log("claims: " + JSON.stringify(claims));
+                        var foundRoleUri = false;
+                        var roleUris = decoded.roleUris;
+                        var checkUris = [];
+                        if (roleUris && roleUris.length > 0) {
+                            for (var cnt = 0; cnt < roleUris.length; cnt++) {
+                                checkUris.push(roleUris[cnt].uri);
+                                if (roleUris[cnt].role === claims.role && roleUris[cnt].uri === claims.uri) {
+                                    foundRoleUri = true;
+                                    break;
+                                }
+                            }
+                            if (!foundRoleUri) {
+                                console.log("role uris not found fo far: ");
+                                console.log("checkUris: " + JSON.stringify(checkUris));
+                                //uri not mapped so token is valid
+                                //only uris that are mapped can be used to invalidate a token
+                                console.log("index of: " + claims.role + " " + (checkUris.indexOf(claims.uri)));
+                                foundRoleUri = (checkUris.indexOf(claims.uri) === -1) ? true : false;
+                                //console.log("index of: " + claims.role + " " +foundRoleUri +" " + (checkUris.indexOf(claims.uri)));
+                            }
+                        } else {
+                            foundRoleUri = true;
+                        }
+                        var scopeFound = false;
+                        if (decoded.scopeList) {
+                            scopeFound = (decoded.scopeList.indexOf(claims.scope) > -1) ? true : false;
+                        }
+
+                        console.log("foundRoleUri: " + foundRoleUri );
+                        //console.log("scopeFound: " + scopeFound );
+                        if ((decoded.grant === "code" || decoded.grant === "implicit") && foundRoleUri && scopeFound) {
+                            valid = true;
+                            //console.log("in code or implicit grant if: value: " + valid);
+                        } else if (decoded.grant === "client_credentials" && foundRoleUri) {
+                            valid = true;
+                            //console.log("in client_credentials grant if: value: " + valid);
+                        }
+                    }
                 }
                 callback(valid);
             });
@@ -121,26 +123,26 @@ exports.validateAccessToken = function (accessToken, claims, callback) {
 
 
 exports.decodeAccessToken = function (accessToken, callback) {
-   var rtn = {
-       clientId: null,
-       userId: null,
-       roleUris: null,
-       scopeList: null
-   };
+    var rtn = {
+        clientId: null,
+        userId: null,
+        roleUris: null,
+        scopeList: null
+    };
     console.log("access token: " + accessToken);
     db.getAccessTokenKey(function (result) {
         if (result && result.key) {
             jwt.verify(accessToken, result.key, function (err, decoded) {
                 if (err) {
                     console.log("AccessToken verify err: " + err);
-                }                         
+                }
                 if (decoded && decoded.tokenType === "access" && decoded.iss === config.TOKEN_ISSUER) {
                     //console.log("decoded access token: " + JSON.stringify(decoded));
                     //console.log("claims: " + JSON.stringify(claims));                    
                     rtn.clientId = decoded.clientId;
                     rtn.userId = decoded.userId;
                     rtn.roleUris = decoded.roleUris;
-                    rtn.scopeList = decoded.scopeList;  
+                    rtn.scopeList = decoded.scopeList;
                 }
                 callback(rtn);
             });
