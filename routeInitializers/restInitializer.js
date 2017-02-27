@@ -22,17 +22,28 @@
 
 var tokenValidationService = require("../services/tokenValidationService");
 var clientService = require("../services/clientService");
+var clientGrantTypeService = require("../services/clientGrantTypeService");
 
 exports.init = function(app, db){
+    //init
     tokenValidationService.init(db);
     clientService.init(db);
+    clientGrantTypeService.init(db);
+    
+    // token validation
     app.post('/rs/token/validate', tokenValidationService.validateAccessToken);
     
     //client services
-    app.post('/rs/addClient', clientService.add);      
-    app.put('/rs/updateClient', clientService.update);
-    app.get('/rs/getClient/:id', clientService.get);
-    app.delete('/rs/deleteClient/:id', clientService.delete);
-    app.get('/rs/getClientList', clientService.list);  
+    app.post('/rs/client/add', clientService.add);      
+    app.put('/rs/client/update', clientService.update);
+    app.get('/rs/client/get/:id', clientService.get);
+    app.delete('/rs/client/delete/:id', clientService.delete);
+    app.get('/rs/client/list', clientService.list);  
+    
+    
+     //client grant type services
+    app.post('/rs/clientGrantType/add', clientGrantTypeService.add);
+    app.delete('/rs/clientGrantType/delete/:id', clientGrantTypeService.delete);
+    app.get('/rs/clientGrantType/list/:clientId', clientGrantTypeService.list);  
     
 };

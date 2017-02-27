@@ -19,28 +19,28 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-var clientManager = require("../managers/clientManager");
+var clientGrantTypeManager = require("../managers/clientGrantTypeManager");
 var oauth2 = require("../oauth2/oauth2");
 
 var db;
 
 exports.init = function (database) {
     db = database;
-    clientManager.init(db);
+    clientGrantTypeManager.init(db);
 };
 
 exports.add = function (req, res) {
     if (req.is('application/json')) {
         var me = {
             role: "admin",
-            uri: "/rs/client/add",
+            uri: "/rs/clientGrantType/add",
             scope: "write"
         };
         oauth2.authorize(req, res, me, function () {
             var reqBody = req.body;
             var bodyJson = JSON.stringify(reqBody);
             console.log("body: " + bodyJson);
-            clientManager.addClient(reqBody, function (result) {
+            clientGrantTypeManager.addClientGrantType(reqBody, function (result) {
                 res.send(result);
             });
         });
@@ -50,57 +50,24 @@ exports.add = function (req, res) {
     }
 };
 
-exports.update = function (req, res) {
-    if (req.is('application/json')) {
-        var me = {
-            role: "admin",
-            uri: "/rs/client/update",
-            scope: "update"
-        };
-        oauth2.authorize(req, res, me, function () {
-            var reqBody = req.body;
-            var bodyJson = JSON.stringify(reqBody);
-            console.log("body: " + bodyJson);
-            clientManager.updateClient(reqBody, function (result) {
-                res.send(result);
-            });
-        });
-    } else {
-        res.status(415);
-        res.send({success: false});
-    }
-};
-
-exports.get = function (req, res) {
-    console.log("in auth callback");
-    var me = {
-        role: "admin",
-        uri: "/rs/client/get",
-        scope: "read"
-    };
-    oauth2.authorize(req, res, me, function () {
-        var id = req.params.id;
-        if (id !== null && id !== undefined) {
-            clientManager.getClient(id, function (result) {
-                res.send(result);
-            });
-        } else {
-            res.send({});
-        }
-    });
-};
 
 exports.list = function (req, res) {
     var me = {
         role: "admin",
-        uri: "/rs/client/list",
+        uri: "/rs/clientGrantType/list",
         scope: "read"
     };
     oauth2.authorize(req, res, me, function () {
         console.log("in auth callback");
-        clientManager.getClientList(function (result) {
-            res.send(result);
-        });
+        var clientId = req.params.clientId;
+        if (clientId !== null && clientId !== undefined) {
+            clientGrantTypeManager.getClientGrantTypeList(clientId, function (result) {
+                res.send(result);
+            });
+        }else{
+            res.send([]);
+        }
+
     });
 };
 
@@ -108,13 +75,13 @@ exports.delete = function (req, res) {
     console.log("in auth callback");
     var me = {
         role: "admin",
-        uri: "/rs/client/delete",
+        uri: "/rs/clientGrantType/delete",
         scope: "write"
     };
     oauth2.authorize(req, res, me, function () {
         var id = req.params.id;
         if (id !== null && id !== undefined) {
-            clientManager.deleteClient(id, function (result) {
+            clientGrantTypeManager.deleteClientGrantType(id, function (result) {
                 res.send(result);
             });
         } else {

@@ -66,8 +66,8 @@ module.exports = function (grunt) {
                 //src: ['test/managers/implicitGrantManagerTest.js']
                 //src: ['test/managers/tokenValidationManagerTest.js']
                 //src: ['test/delegates/credentialsGrantDelegateTest.js']
-                //src: ['test/services/clientServiceTest.js']
-                src: ['test/oauth2/oauth2Test.js']
+                src: ['test/services/clientGrantTypeServiceTest.js']
+                //src: ['test/oauth2/oauth2Test.js']
             }
         }
     });
