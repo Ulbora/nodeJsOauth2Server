@@ -210,6 +210,14 @@ exports.addClientAllowedUri = function (json, callback) {
     clientAllowedUriProcessor.addClientAllowedUri(null, json, callback);
 };
 
+exports.updateClientAllowedUri = function (json, callback) {
+    clientAllowedUriProcessor.updateClientAllowedUri(null, json, callback);
+};
+
+exports.getClientAllowedUriById = function (id, callback) {
+    clientAllowedUriProcessor.getClientAllowedUriById(id, callback);
+};
+
 exports.getClientAllowedUriList = function (clientId, callback) {
     clientAllowedUriProcessor.getClientAllowedUriList(clientId, callback);
 };

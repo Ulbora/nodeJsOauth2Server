@@ -75,12 +75,47 @@ describe('Client Allowed URI Manager', function () {
             }, 1000);
         });
     });
+    
+    describe('#getClientAllowedUriById()', function () {
+        it('should a uri in manager', function (done) {           
+            setTimeout(function () {                
+                clientAllowedUriManager.getClientAllowedUriById(clientAllowedUriId, function (result) {
+                    if (result && result.id && result.uri === "http://www.google.com") {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);           
+        });
+    });
+    
+    describe('#updateClientAllowedUri()', function () {
+        it('should update a client allowed URI in manager', function (done) { 
+            
+           var json = {                
+                uri: 'http://www.google1.com',
+                id: clientAllowedUriId
+            };
+            setTimeout(function () {
+                clientAllowedUriManager.updateClientAllowedUri(json, function (result) {
+                    if (result.success) {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);           
+        });
+    });
 
     describe('#getClientAllowedUriList()', function () {
         it('should read client allowed uri list', function (done) {
             setTimeout(function () {
                 clientAllowedUriManager.getClientAllowedUriList(clientId, function (result) {
-                    if (result && result.length > 0 && result[0].uri === "http://www.google.com") {
+                    if (result && result.length > 0 && result[0].uri === "http://www.google1.com") {
                         assert(true);
                     } else {
                         assert(false);
@@ -95,8 +130,8 @@ describe('Client Allowed URI Manager', function () {
     describe('#getClientAllowedUri', function () {
         it('should read client uri in processor', function (done) {           
             setTimeout(function () {                
-                clientAllowedUriManager.getClientAllowedUri(clientId, 'http://www.google.com', function (result) {
-                    if (result && result.uri === "http://www.google.com") {                        
+                clientAllowedUriManager.getClientAllowedUri(clientId, 'http://www.google1.com', function (result) {
+                    if (result && result.uri === "http://www.google1.com") {                        
                         assert(true);
                     } else {
                         assert(false);

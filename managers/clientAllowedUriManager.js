@@ -39,12 +39,46 @@ exports.addClientAllowedUri = function (json, callback) {
     }
 };
 
+exports.updateClientAllowedUri = function (json, callback) {
+    var returnVal = {
+        success: false,
+        message: ""
+    };
+    var isOk = manager.securityCheck(json);
+    if (isOk) {
+        if (!json.secret) {
+            json.secret = manager.generateClientSecret();
+        }
+        db.updateClientAllowedUri(json, function (result) {
+            if (result && result.success) {
+                returnVal.success = result.success;
+                callback(returnVal);
+            } else {
+                callback(returnVal);
+            }
+        });
+    } else {
+        callback(returnVal);
+    }
+};
+
+
+exports.getClientAllowedUriById = function (id, callback) {
+    var idIsOk = manager.securityCheck(id);    
+    if (idIsOk) {
+        db.getClientAllowedUriById(id, callback);
+    } else {
+        callback({});
+    }
+};
+
+
 exports.getClientAllowedUriList = function (clientId, callback) {
     var isOk = manager.securityCheck(clientId);
     if (isOk) {
         db.getClientAllowedUriList(clientId, callback);
     } else {
-        callback({});
+        callback([]);
     }
 };
 

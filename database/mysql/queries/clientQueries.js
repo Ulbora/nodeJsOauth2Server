@@ -37,9 +37,12 @@ exports.CLIENT_REDIRECT_URI_QUERY = "SELECT * FROM client_redirect_uri WHERE cli
 
 //client allowed URI
 exports.CLIENT_ALLOWED_URI_INSERT_QUERY = "INSERT INTO client_allowed_uri Set ?";
+exports.CLIENT_ALLOWED_URI_UPDATE_QUERY = "UPDATE client_allowed_uri SET uri = ? " +
+                                          "WHERE id = ? ";
 exports.CLIENT_ALLOWED_URI_DELETE_QUERY = "DELETE FROM client_allowed_uri WHERE id = ?";
 exports.CLIENT_ALLOWED_URI_LIST_QUERY = "SELECT * from client_allowed_uri WHERE client_id = ?";
 exports.CLIENT_ALLOWED_URI_QUERY = "SELECT * from client_allowed_uri WHERE client_id = ? and uri = ? ";
+exports.CLIENT_ALLOWED_URI_BY_ID_QUERY = "SELECT * from client_allowed_uri WHERE id = ? ";
 
 
 //client roles

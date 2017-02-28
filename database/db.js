@@ -62,6 +62,15 @@ exports.addClientAllowedUri = function (json, callback) {
     db.addClientAllowedUri(json, callback);
 };
 
+exports.updateClientAllowedUri = function (json, callback) {
+    db.updateClientAllowedUri(json, callback);
+};
+
+exports.getClientAllowedUriById = function (id, callback) {
+    db.getClientAllowedUriById(id, callback);
+};
+
+
 exports.getClientAllowedUriList = function (clientId, callback) {
     db.getClientAllowedUriList(clientId, callback);
 };

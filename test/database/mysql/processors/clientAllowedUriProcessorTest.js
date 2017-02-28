@@ -82,11 +82,46 @@ describe('ClientAllowedUriProcessor', function () {
         });
     });
     
+    describe('#getClientAllowedUriById()', function () {
+        it('should a uri in processor', function (done) {           
+            setTimeout(function () {                
+                clintUriProcessor.getClientAllowedUriById(clientAllowedUriId, function (result) {
+                    if (result && result.id && result.uri === "http://ulboralabs.com") {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);           
+        });
+    });
+    
+    describe('#updateClientAllowedUri()', function () {
+        it('should update a client allowed URI', function (done) { 
+            
+           var json = {                
+                uri: 'http://ulboralabs1.com',
+                id: clientAllowedUriId
+            };
+            setTimeout(function () {
+                clintUriProcessor.updateClientAllowedUri(null, json, function (result) {
+                    if (result.success) {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);           
+        });
+    });
+    
     describe('#getClientAllowedUri', function () {
         it('should read client uri in processor', function (done) {           
             setTimeout(function () {                
-                clintUriProcessor.getClientAllowedUri(clientId, 'http://ulboralabs.com', function (result) {
-                    if (result && result.uri === "http://ulboralabs.com") {                        
+                clintUriProcessor.getClientAllowedUri(clientId, 'http://ulboralabs1.com', function (result) {
+                    if (result && result.uri === "http://ulboralabs1.com") {                        
                         assert(true);
                     } else {
                         assert(false);

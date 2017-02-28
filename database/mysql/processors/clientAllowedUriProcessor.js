@@ -41,6 +41,30 @@ exports.addClientAllowedUri = function (con, json, callback) {
     });
 };
 
+exports.updateClientAllowedUri = function (con, json, callback) {
+    var args = [
+        json.uri,        
+        json.id
+    ];
+    crud.update(con, clientQueries.CLIENT_ALLOWED_URI_UPDATE_QUERY, args, callback);
+};
+
+exports.getClientAllowedUriById = function (id, callback) {
+    var queryId = [id];
+    crud.get(clientQueries.CLIENT_ALLOWED_URI_BY_ID_QUERY, queryId, function (result) {
+        if (result.success && result.data.length > 0) {
+            var rtn = {
+                id: result.data[0].id,
+                uri: result.data[0].uri,
+                clientId: result.data[0].client_id
+            };
+            callback(rtn);
+        } else {
+            callback(null);
+        }
+    });
+};
+
 exports.getClientAllowedUriList = function (clientId, callback) {
     var queryId = [clientId];
     crud.get(clientQueries.CLIENT_ALLOWED_URI_LIST_QUERY, queryId, function (result) {
