@@ -23,12 +23,14 @@
 var tokenValidationService = require("../services/tokenValidationService");
 var clientService = require("../services/clientService");
 var clientGrantTypeService = require("../services/clientGrantTypeService");
+var clientAllowedUriService = require("../services/clientAllowedUriService");
 
 exports.init = function(app, db){
     //init
     tokenValidationService.init(db);
     clientService.init(db);
     clientGrantTypeService.init(db);
+    clientAllowedUriService.init(db);
     
     // token validation
     app.post('/rs/token/validate', tokenValidationService.validateAccessToken);
@@ -45,5 +47,13 @@ exports.init = function(app, db){
     app.post('/rs/clientGrantType/add', clientGrantTypeService.add);
     app.delete('/rs/clientGrantType/delete/:id', clientGrantTypeService.delete);
     app.get('/rs/clientGrantType/list/:clientId', clientGrantTypeService.list);  
+    
+    
+    //client allowed uri    
+    app.post('/rs/clientAllowedUri/add', clientAllowedUriService.add);      
+    app.put('/rs/clientAllowedUri/update', clientAllowedUriService.update);
+    app.get('/rs/clientAllowedUri/get/:id', clientAllowedUriService.get);
+    app.delete('/rs/clientAllowedUri/delete/:id', clientAllowedUriService.delete);
+    app.get('/rs/clientAllowedUri/list/:clientId', clientAllowedUriService.list);  
     
 };
