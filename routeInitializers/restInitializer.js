@@ -24,6 +24,7 @@ var tokenValidationService = require("../services/tokenValidationService");
 var clientService = require("../services/clientService");
 var clientGrantTypeService = require("../services/clientGrantTypeService");
 var clientAllowedUriService = require("../services/clientAllowedUriService");
+var clientRedirectUriService = require("../services/clientRedirectUriService");
 
 exports.init = function(app, db){
     //init
@@ -31,6 +32,7 @@ exports.init = function(app, db){
     clientService.init(db);
     clientGrantTypeService.init(db);
     clientAllowedUriService.init(db);
+    clientRedirectUriService.init(db);
     
     // token validation
     app.post('/rs/token/validate', tokenValidationService.validateAccessToken);
@@ -55,5 +57,10 @@ exports.init = function(app, db){
     app.get('/rs/clientAllowedUri/get/:id', clientAllowedUriService.get);
     app.delete('/rs/clientAllowedUri/delete/:id', clientAllowedUriService.delete);
     app.get('/rs/clientAllowedUri/list/:clientId', clientAllowedUriService.list);  
+    
+    //client redirect uri    
+    app.post('/rs/clientRedirectUri/add', clientRedirectUriService.add); 
+    app.delete('/rs/clientRedirectUri/delete/:id', clientRedirectUriService.delete);
+    app.get('/rs/clientRedirectUri/list/:clientId', clientRedirectUriService.list);  
     
 };

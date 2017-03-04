@@ -40,6 +40,16 @@ exports.addClientRedirectUri = function (json, callback) {
     }
 };
 
+
+exports.getClientRedirectUriList = function (clientId, callback) {
+    var isOk = manager.securityCheck(clientId);
+    if (isOk) {
+        db.getClientRedirectUriList(clientId, callback);
+    } else {
+        callback([]);
+    }
+};
+
 exports.deleteClientRedirectUri = function (id, callback) {
     var returnVal = {
         success: false

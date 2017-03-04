@@ -93,6 +93,22 @@ describe('Client Redirect URI Manager', function () {
             }, 1000);
         });
     });
+    
+    
+    describe('#getClientRedirectUriList()', function () {
+        it('should read client redirect uri list in db', function (done) {           
+            setTimeout(function () {                
+                clientRedirectUriManager.getClientRedirectUriList(clientId, function (result) {
+                    if (result && result.length === 3 && result[0].uri === 'http://www.google.com') {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);           
+        });
+    });
 
     describe('#deleteClientRedirectUri()', function () {
         it('should delete client redirect uri', function (done) {           

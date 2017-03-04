@@ -19,28 +19,28 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-var clientAllowedUriManager = require("../managers/clientAllowedUriManager");
+var clientRedirectUriManager = require("../managers/clientRedirectUriManager");
 var oauth2 = require("../oauth2/oauth2");
 
 var db;
 
 exports.init = function (database) {
     db = database;
-    clientAllowedUriManager.init(db);
+    clientRedirectUriManager.init(db);
 };
 
 exports.add = function (req, res) {
     if (req.is('application/json')) {
         var me = {
             role: "admin",
-            uri: "/rs/clientAllowedUri/add",
+            uri: "/rs/clientRedirectUri/add",
             scope: "write"
         };
         oauth2.authorize(req, res, me, function () {
             var reqBody = req.body;
             var bodyJson = JSON.stringify(reqBody);
             console.log("body: " + bodyJson);
-            clientAllowedUriManager.addClientAllowedUri(reqBody, function (result) {
+            clientRedirectUriManager.addClientRedirectUri(reqBody, function (result) {
                 res.send(result);
             });
         });
@@ -50,57 +50,19 @@ exports.add = function (req, res) {
     }
 };
 
-exports.update = function (req, res) {
-    if (req.is('application/json')) {
-        var me = {
-            role: "admin",
-            uri: "/rs/clientAllowedUri/update",
-            scope: "update"
-        };
-        oauth2.authorize(req, res, me, function () {
-            var reqBody = req.body;
-            var bodyJson = JSON.stringify(reqBody);
-            console.log("body: " + bodyJson);
-            clientAllowedUriManager.updateClientAllowedUri(reqBody, function (result) {
-                res.send(result);
-            });
-        });
-    } else {
-        res.status(415);
-        res.send({success: false});
-    }
-};
 
-exports.get = function (req, res) {
-    console.log("in auth callback");
-    var me = {
-        role: "admin",
-        uri: "/rs/clientAllowedUri/get",
-        scope: "read"
-    };
-    oauth2.authorize(req, res, me, function () {
-        var id = req.params.id;
-        if (id !== null && id !== undefined) {
-            clientAllowedUriManager.getClientAllowedUriById(id, function (result) {
-                res.send(result);
-            });
-        } else {
-            res.send({});
-        }
-    });
-};
 
 exports.list = function (req, res) {
     var me = {
         role: "admin",
-        uri: "/rs/clientAllowedUri/list",
+        uri: "/rs/clientRedirectUri/list",
         scope: "read"
     };
     oauth2.authorize(req, res, me, function () {
         console.log("in auth callback");
         var clientId = req.params.clientId;
         if (clientId) {
-            clientAllowedUriManager.getClientAllowedUriList(clientId, function (result) {
+            clientRedirectUriManager.getClientRedirectUriList(clientId, function (result) {
                 res.send(result);
             });
         }else{
@@ -114,13 +76,13 @@ exports.delete = function (req, res) {
     console.log("in auth callback");
     var me = {
         role: "admin",
-        uri: "/rs/clientAllowedUri/delete",
+        uri: "/rs/clientRedirectUri/delete",
         scope: "write"
     };
     oauth2.authorize(req, res, me, function () {
         var id = req.params.id;
         if (id !== null && id !== undefined) {
-            clientAllowedUriManager.deleteClientAllowedUri(id, function (result) {
+            clientRedirectUriManager.deleteClientRedirectUri(id, function (result) {
                 res.send(result);
             });
         } else {
