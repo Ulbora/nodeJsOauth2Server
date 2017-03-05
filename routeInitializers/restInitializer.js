@@ -25,6 +25,8 @@ var clientService = require("../services/clientService");
 var clientGrantTypeService = require("../services/clientGrantTypeService");
 var clientAllowedUriService = require("../services/clientAllowedUriService");
 var clientRedirectUriService = require("../services/clientRedirectUriService");
+var clientRoleService = require("../services/clientRoleService");
+var clientRoleUriService = require("../services/clientRoleUriService");
 
 exports.init = function(app, db){
     //init
@@ -33,6 +35,8 @@ exports.init = function(app, db){
     clientGrantTypeService.init(db);
     clientAllowedUriService.init(db);
     clientRedirectUriService.init(db);
+    clientRoleService.init(db);
+    clientRoleUriService.init(db);
     
     // token validation
     app.post('/rs/token/validate', tokenValidationService.validateAccessToken);
@@ -62,5 +66,16 @@ exports.init = function(app, db){
     app.post('/rs/clientRedirectUri/add', clientRedirectUriService.add); 
     app.delete('/rs/clientRedirectUri/delete/:id', clientRedirectUriService.delete);
     app.get('/rs/clientRedirectUri/list/:clientId', clientRedirectUriService.list);  
+    
+    
+    //client role    
+    app.post('/rs/clientRole/add', clientRoleService.add); 
+    app.delete('/rs/clientRole/delete/:id', clientRoleService.delete);
+    app.get('/rs/clientRole/list/:clientId', clientRoleService.list);  
+    
+    //client role uri    
+    app.post('/rs/clientRoleUri/add', clientRoleUriService.add); 
+    app.post('/rs/clientRoleUri/delete', clientRoleUriService.delete);
+    app.get('/rs/clientRoleUri/list/:clientRoleId', clientRoleUriService.list);  
     
 };
