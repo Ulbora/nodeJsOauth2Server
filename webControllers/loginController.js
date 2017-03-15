@@ -1,13 +1,6 @@
 var userProxy = require("../proxies/userProxy");
 
 exports.login = function (req, res) {
-    var loggedIn = req.session.loggedIn;
-    //var u = "";
-    // var p = "";
-    //if (req.cookies.rememberme) {
-    //u = req.cookies.username;
-    // p = req.cookies.password;
-    // }
     var title = "Ulbora Labs login";
     var params = {
         title: title
