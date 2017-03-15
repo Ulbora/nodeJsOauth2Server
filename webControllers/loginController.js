@@ -15,18 +15,13 @@ exports.login = function (req, res) {
     res.render("login", params);
 };
 
-exports.loginUser = function (req, res) {
-    // make call to user service
-    //var json = {
-    // username: "tester2",
-    // password: "tester2"
-    //};
+exports.loginUser = function (req, res) {   
     var reqBody = req.body;
-    var bodyJson = JSON.stringify(reqBody);
-    console.log("body: " + bodyJson);
-    console.log("path " + req.path); 
+    //var bodyJson = JSON.stringify(reqBody);
+    //console.log("body: " + bodyJson);
+    //console.log("path " + req.path); 
     //console.log("req: " + JSON.stringify(req));
-    console.log('Username: ' + req.body.username);
+    //console.log('Username: ' + req.body.username);
     userProxy.login(reqBody, function (result) {
         if (result.valid) {
             req.session.loggedIn = true;

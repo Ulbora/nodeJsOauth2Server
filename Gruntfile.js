@@ -59,10 +59,10 @@ module.exports = function (grunt) {
                     quiet: false, // Optionally suppress output to standard out (defaults to false) 
                     clearRequireCache: false // Optionally clear the require cache before running tests (defaults to false) 
                 },
-                //src: ['test/webControllers/loginControllerTest.js']
+                src: ['test/webControllers/loginControllerTest.js']
                 //src: ['test/database/dbClientAllowedUriTest.js']
                 //src: ['test/database/mysql/dbClientAllowedUriTest.js']
-                src: ['test/database/mysql/processors/clientRedirectUriProcessorTest.js']
+                //src: ['test/database/mysql/processors/clientRedirectUriProcessorTest.js']
                 //src: ['test/managers/implicitGrantManagerTest.js']
                 //src: ['test/managers/clientRedirectUriManagerTest.js']
                 //src: ['test/delegates/credentialsGrantDelegateTest.js']
