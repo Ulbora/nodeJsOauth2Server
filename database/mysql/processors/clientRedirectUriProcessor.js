@@ -53,7 +53,7 @@ exports.getClientRedirectUriList = function (clientId, callback) {
                     uri: result.data[cnt].uri,
                     clientId: result.data[cnt].client_id
                 };
-                if (!isLocalhost(result.data[cnt].uri)) {
+                if (!isRedirectUriLocalhost(result.data[cnt].uri)) {
                     rtnList.push(rtn);
                 }
             }
@@ -71,7 +71,8 @@ exports.getClientRedirectUri = function (clientId, uri, callback) {
         uri: null,
         clientId: null
     };
-    if (!isLocalhost(uri)) {
+    //do not allow redirect uri of localhost
+    if (!isRedirectUriLocalhost(uri)) {
         crud.get(clientQueries.CLIENT_REDIRECT_URI_QUERY, queryId, function (result) {
             if (result.success && result.data.length > 0) {
                 rtn.id = result.data[0].id;
@@ -108,15 +109,20 @@ exports.deleteAllClientRedirectUri = function (con, clientId, callback) {
     });
 };
 
-var isLocalhost = function (uri) {
+var isRedirectUriLocalhost = function (uri) {
+    //do not allow redirect uri of localhost
     var rtn = false;
+    //allow localhost when in development mode only
     var devMode = (process.env.DEVELOPMENT_MODE === "false") ? false : constants.DEFAULT_TO_DEVELOPMENT_MODE;
     if (uri) {
+        console.log("devMode: " + devMode);
         var ind = uri.indexOf("localhost");
+        //if not in development mode and the redirect uri is localhost
         if (!devMode && ind > -1) {
             rtn = true;
         }
     }
+    console.log("isLocalHost: " + rtn);
     return rtn;
 };
 

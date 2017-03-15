@@ -38,25 +38,26 @@ sessionDelegate.init(db);
 
 var app = express();
 sessionDelegate.createSessionStore(session, function (sessionResult) {
-    if (sessionResult.success) {        
+    if (sessionResult.success) {
         var sessionOptions = {
             key: 'ulbora_oauth2_server',
-            cookie: {maxAge: 3600000 },
+            cookie: {maxAge: 3600000},
             secret: sessionResult.key,
             store: sessionResult.store,
             resave: true,
             saveUninitialized: true
         };
         app.use(session(sessionOptions));
-        webInitializer.init(app, db);
-        
         app.use(lessMiddleware('/less', {
             dest: '/css',
             pathRoot: path.join(__dirname, 'public')
         }));
         app.use(bodyParser.json());
-        app.use(bodyParser.urlencoded({extended: false}));
+        app.use(bodyParser.urlencoded({extended: true}));
+       
         restInitializer.init(app, db);
+        webInitializer.init(app, db);
+        
         //app.set('view engine', 'hbs');
         app.set('view engine', 'html');
         app.engine('html', require('hbs').__express);
@@ -64,9 +65,9 @@ sessionDelegate.createSessionStore(session, function (sessionResult) {
         app.use(express.static(__dirname + '/public'));
         if (conf.CORS_ENABLED) {
             app.use(cors.CORS);
-        }
+        }        
         app.listen(process.env.PORT || conf.PORT);
-    }else{
+    } else {
         console.error("Connection to database could not be established by session delegate.");
         console.error("Server not started.");
     }

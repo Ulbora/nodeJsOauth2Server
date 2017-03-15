@@ -111,6 +111,8 @@ exports.validateAccessToken = function (accessToken, claims, callback) {
                             valid = true;
                             //console.log("in client_credentials grant if: value: " + valid);
                         }
+                    }else{
+                        console.log("token not valid " );
                     }
                 }
                 callback(valid);

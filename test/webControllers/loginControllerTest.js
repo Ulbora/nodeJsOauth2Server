@@ -29,7 +29,11 @@ describe('loginController', function () {
     describe('#loginUser()', function () {
         it('should login a user', function (done) {
             setTimeout(function () {
-                var req = {};               
+                var req = {};    
+                req.body = {
+                    username: "tester2",
+                    password: "tester"
+                };
                 req.session = {};
                 req.session.loggedIn = false;
                 req.session.oauthGrantObj = {};
