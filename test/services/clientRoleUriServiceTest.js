@@ -36,8 +36,18 @@ describe('clientRoleUriService', function () {
                 grant: "code",
                 userId: "admin",
                 clientId: 5562,
-                roleUris: [
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "https://abc.com/rs/addClient", "clientId": 421}
+                roleUris: [                    
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "https://abc.com/rs/client/add", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "https://abc.com/rs/client/delete", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "https://abc.com/rs/clientRole/add", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "https://abc.com/rs/clientRole/delete", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "https://abc.com/rs/clientAllowedUri/add", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "https://abc.com/rs/clientAllowedUri/delete", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "https://abc.com/rs/clientRoleUri/add", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "https://abc.com/rs/clientRoleUri/update", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "https://abc.com/rs/clientRoleUri/get", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "https://abc.com/rs/clientRoleUri/list", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "https://abc.com/rs/clientRoleUri/delete", "clientId": 421}
                 ],
                 scopeList: ["read", "write", "update"],
                 expiresIn: 500

@@ -66,7 +66,7 @@ describe('Access token delegate', function () {
         });
     });
 
-
+/*
     describe('#validateAccessToken()', function () {
         it('should fail to validateAccessToken because of role', function (done) {
             var claims = {
@@ -90,8 +90,8 @@ describe('Access token delegate', function () {
             }, 1000);
         });
     });
-
-
+*/
+/*
     describe('#validateAccessToken()', function () {
         it('should pass because uri not mapped validateAccessToken because of uri', function (done) {
             var claims = {
@@ -115,7 +115,7 @@ describe('Access token delegate', function () {
             }, 1000);
         });
     });
-    
+    */
     describe('#decodeAccessToken()', function () {
         it('should decodeAccessToken', function (done) {            
             setTimeout(function () {
@@ -156,7 +156,7 @@ describe('Access token delegate', function () {
         });
     });
 
-
+/*
     describe('#validateAccessToken()', function () {
         it('should validateAccessToken because no role uris mapped', function (done) {
             var claims = {
@@ -180,7 +180,7 @@ describe('Access token delegate', function () {
             }, 1000);
         });
     });
-
+*/
 });
 
 

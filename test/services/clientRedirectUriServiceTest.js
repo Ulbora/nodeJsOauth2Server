@@ -31,7 +31,13 @@ describe('clientRedirectUriService', function () {
                 userId: "admin",
                 clientId: 5562,
                 roleUris: [
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "https://abc.com/rs/addClient", "clientId": 421}
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "https://abc.com/rs/clientRedirectUri/add", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "https://abc.com/rs/client/add", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "https://abc.com/rs/client/delete", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "https://abc.com/rs/clientRedirectUri/update", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "https://abc.com/rs/clientRedirectUri/get", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "https://abc.com/rs/clientRedirectUri/list", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "https://abc.com/rs/clientRedirectUri/delete", "clientId": 421}
                 ],
                 scopeList: ["read", "write", "update"],
                 expiresIn: 500

@@ -85,6 +85,7 @@ exports.validateAccessToken = function (accessToken, claims, callback) {
                                     break;
                                 }
                             }
+                            /*
                             if (!foundRoleUri) {
                                 console.log("role uris not found fo far: ");
                                 console.log("checkUris: " + JSON.stringify(checkUris));
@@ -94,9 +95,10 @@ exports.validateAccessToken = function (accessToken, claims, callback) {
                                 foundRoleUri = (checkUris.indexOf(claims.uri) === -1) ? true : false;
                                 //console.log("index of: " + claims.role + " " +foundRoleUri +" " + (checkUris.indexOf(claims.uri)));
                             }
-                        } else {
-                            foundRoleUri = true;
-                        }
+                            */
+                        } //else {
+                            //foundRoleUri = true;
+                       // }
                         var scopeFound = false;
                         if (decoded.scopeList) {
                             scopeFound = (decoded.scopeList.indexOf(claims.scope) > -1) ? true : false;
