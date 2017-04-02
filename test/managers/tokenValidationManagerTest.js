@@ -67,7 +67,7 @@ describe('TokenValidationManager', function () {
         });
     });
 
-
+/*
     describe('#validateAccessToken()', function () {
         it('should fail to validateAccessToken because of role', function (done) {
             var json1 = {
@@ -90,8 +90,8 @@ describe('TokenValidationManager', function () {
             }, 1000);
         });
     });
-
-
+*/
+/*
     describe('#validateAccessToken()', function () {
         it('should pass because uri not mapped validateAccessToken because of uri', function (done) {
             var json = {
@@ -114,7 +114,7 @@ describe('TokenValidationManager', function () {
             }, 1000);
         });
     });
-
+*/
     describe('#decodeAccessToken()', function () {
         it('should decodeAccessToken', function (done) {
             setTimeout(function () {
@@ -157,7 +157,7 @@ describe('TokenValidationManager', function () {
 
 
     describe('#validateAccessToken()', function () {
-        it('should validateAccessToken because no role uris mapped', function (done) {
+        it('should fail validateAccessToken because no role uris mapped', function (done) {
             var json = {
                 accessToken: token,
                 userId: "admin",
@@ -169,9 +169,9 @@ describe('TokenValidationManager', function () {
             setTimeout(function () {
                 tokenValidationManager.validateAccessToken(json, function (result) {
                     if (result.valid) {
-                        assert(true);
-                    } else {
                         assert(false);
+                    } else {
+                        assert(true);
                     }
                     done();
                 });
