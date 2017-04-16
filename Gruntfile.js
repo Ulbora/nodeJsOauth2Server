@@ -63,10 +63,10 @@ module.exports = function (grunt) {
                 //src: ['test/database/dbClientAllowedUriTest.js']
                 //src: ['test/database/mysql/dbClientAllowedUriTest.js']
                 //src: ['test/database/mysql/processors/clientRedirectUriProcessorTest.js']
-                src: ['test/managers/tokenValidationManagerTest.js']
+                //src: ['test/managers/tokenValidationManagerTest.js']
                 //src: ['test/managers/clientRedirectUriManagerTest.js']
                //src: ['test/delegates/accessTokenDelegateTest.js']
-                //src: ['test/services/clientServiceTest.js']
+                src: ['test/services/tokenValidationServiceTest.js']
                 //src: ['test/oauth2/oauth2Test.js']
                 //src: ['test/proxy/userProxyTest.js']
             }

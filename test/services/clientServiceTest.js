@@ -28,11 +28,11 @@ describe('clientService', function () {
                 userId: "admin",
                 clientId: 5562,
                 roleUris: [                    
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "https://abc.com/rs/client/add", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "https://abc.com/rs/client/delete", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "https://abc.com/rs/client/update", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "https://abc.com/rs/client/get", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "https://abc.com/rs/client/list", "clientId": 421}
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/client/add", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/client/delete", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/client/update", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/client/get", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/client/list", "clientId": 421}
                     
                 ],
                 scopeList: ["read", "write", "update"],

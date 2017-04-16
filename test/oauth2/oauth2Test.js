@@ -27,7 +27,7 @@ describe('oauth2', function () {
                 userId: "admin",
                 clientId: 544,
                 roleUris: [
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "https://abc.com/rs/addUser", "clientId": 421}
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/addUser", "clientId": 421}
                 ],
                 scopeList: ["read", "write"],
                 expiresIn: 500

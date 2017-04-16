@@ -40,7 +40,8 @@ exports.authorize = function (req, res, me, callback) {
         if (tokenArray !== undefined && tokenArray !== null && tokenArray.length === 2) {
             var token = tokenArray[1];            
             var role = me.role;
-            var uri = prot + "://" + host + me.uri;
+            //var uri = prot + "://" + host + me.uri;
+            var uri = me.uri;
             console.log("uri: " + uri);
             var scope = me.scope;
             var authJson = {
