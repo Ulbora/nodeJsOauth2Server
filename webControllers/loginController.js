@@ -10,6 +10,8 @@ exports.login = function (req, res) {
 
 exports.loginUser = function (req, res) {   
     var reqBody = req.body;
+    var oauthGrantObj = req.session.oauthGrantObj;
+    reqBody.clientId = oauthGrantObj.clientId;
     //var bodyJson = JSON.stringify(reqBody);
     //console.log("body: " + bodyJson);
     //console.log("path " + req.path); 
@@ -19,7 +21,7 @@ exports.loginUser = function (req, res) {
         if (result.valid) {
             req.session.loggedIn = true;
             req.session.user = reqBody.username;
-            var oauthGrantObj = req.session.oauthGrantObj;
+            //var oauthGrantObj = req.session.oauthGrantObj;
             //req.session.oauthCodeObj = undefined;
             console.log("oauthGrantObj: " + JSON.stringify(oauthGrantObj));
             if (req.session.loggedIn && oauthGrantObj && (oauthGrantObj.responseType === "code" || oauthGrantObj.responseType === "token")) {
