@@ -56,7 +56,7 @@ exports.authCodeToken = function (json, callback) {
                         // get authCode and validate code
                         db.getAuthorizationCodeByCode(code, function (acResult) {
                             console.log("in authCodeToken ac result: " + JSON.stringify(acResult));
-                            if (acResult.clientId === clientId) {
+                            if (acResult && acResult.clientId === clientId) {
                                 // check that token is not revolked
                                 db.getAuthCodeRevoke(acResult.authorizationCode, function (revokeResult) {
                                     if (revokeResult && revokeResult.authorizationCode === acResult.authorizationCode) {

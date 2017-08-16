@@ -82,6 +82,7 @@ exports.authorize = function (json, callback) {
                                                             callback(returnVal);
                                                         });
                                                     } else {
+                                                        console.log("deleteAuthorizationCode failed")
                                                         returnVal.error = "access_denied";
                                                         callback(returnVal);
                                                     }
@@ -125,11 +126,13 @@ exports.authorize = function (json, callback) {
                                     }
                                 });
                             } else {
+                                console.log("couldn't find grant type")
                                 returnVal.error = "access_denied";
                                 callback(returnVal);
                             }
                         });
                     } else {
+                        console.log("couldn't find redirect url")
                         returnVal.error = "access_denied";
                         callback(returnVal);
                     }
