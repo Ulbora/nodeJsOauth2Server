@@ -22,6 +22,7 @@
 
 
 var db;
+var crypto = require('crypto');
 
 exports.init = function (database) {
     db = database;
@@ -65,8 +66,8 @@ exports.grantTypeTurnedOn = function (clientId, grantType, callback) {
     if (grantType) {
         db.getClientGrantTypeList(clientId, function (grantTypeList) {
             if (grantTypeList) {
-                for(var cnt = 0; cnt < grantTypeList.length; cnt++){
-                    if(grantTypeList[cnt].grantType === grantType){
+                for (var cnt = 0; cnt < grantTypeList.length; cnt++) {
+                    if (grantTypeList[cnt].grantType === grantType) {
                         rtn = true;
                         break;
                     }
@@ -79,4 +80,34 @@ exports.grantTypeTurnedOn = function (clientId, grantType, callback) {
     } else {
         callback(rtn);
     }
+};
+
+
+var shifter = 5;
+exports.hashUser = function (username) {
+    //var rtn = crypto.pbkdf2Sync(username, username, 250, 128);   
+    //return rtn.toString('hex');
+    var rtn = "";    
+    if (username && username.length > 0) {
+        for (var cnt = 0; cnt < username.length; cnt++) {
+            charcode = (username[cnt].charCodeAt()) + shifter;
+            rtn += String.fromCharCode(charcode);
+        }
+    } else {
+        rtn = "";
+    }
+    return rtn;
+};
+
+exports.unHashUser = function (username) {
+    var rtn = "";
+    if (username && username.length > 0) {
+        for (var cnt = 0; cnt < username.length; cnt++) {
+            charcode = (username[cnt].charCodeAt()) - shifter;
+            rtn += String.fromCharCode(charcode);
+        }
+    } else {
+        rtn = "";
+    }
+    return rtn;
 };

@@ -22,6 +22,7 @@
 var refreshTokenDelegate = require("./refreshTokenDelegate");
 var accessTokenDelegate = require("./accessTokenDelegate");
 var config = require("../configuration");
+var manager = require("../managers/manager");
 
 var db;
 
@@ -41,10 +42,11 @@ exports.createAuthorizationCode = function (json, scopes, callback) {
     };
     var clientId = json.clientId;
     var userId = json.userId;
+    var userIdHashed = manager.hashUser(userId);
     // create refresh token
     var refreshPayload = {
         sub: "code",
-        userId: userId,
+        userId: userIdHashed,
         clientId: clientId
     };
     console.log("refresh token refreshPayload: " + JSON.stringify(refreshPayload));
@@ -64,7 +66,7 @@ exports.createAuthorizationCode = function (json, scopes, callback) {
                     var accessPayload = {
                         sub: "access",
                         grant: "code",
-                        userId: userId,
+                        userId: userIdHashed,
                         clientId: clientId,
                         roleUris: roleUriList,
                         scopeList: scopes,

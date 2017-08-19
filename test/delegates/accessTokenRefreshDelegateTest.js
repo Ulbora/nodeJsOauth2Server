@@ -301,9 +301,13 @@ describe('Access Token Refresh Delegate', function () {
     describe('#updateAuthorizationCodeAndTokens()', function () {
         it('should update an authorization code and token in manager', function (done) {
             db.getAuthorizationCode(clientId, "admin", function (acResult) {
+                console.log("auth code: " + JSON.stringify(acResult));
                 db.getAccessToken(acResult.accessTokenId, function (accessTokenResult) {
+                    console.log("access token: " + JSON.stringify(accessTokenResult))
                     db.getClient(clientId, function (clientResult) {
+                        console.log("client: " + JSON.stringify(clientResult))
                         db.getRefreshToken(accessTokenResult.refreshTokenId, function (refreshResult) {
+                            console.log("refreshResult: " + JSON.stringify(refreshResult))
                             setTimeout(function () {
                                 var json = {
                                     clientId: clientId,

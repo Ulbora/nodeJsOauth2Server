@@ -57,7 +57,8 @@ exports.refreshToken = function(json, callback){
                 //decode refresh token and get client and userId sub: code or password
                 refreshTokenDelegate.decodeRefreshToken(refTokenOld, function (decode) {
                     if (decode && decode.clientId === clientId) {
-                        userId = decode.userId;
+                        userId = decode.userId; 
+                        var unHashUser = manager.unHashUser(userId);
                         var sub = decode.sub;
                         var claim = {
                             userId: userId,
@@ -69,8 +70,8 @@ exports.refreshToken = function(json, callback){
                                 //if code
                                 if (sub === "code") {
                                     // get authcode by client and user
-                                    db.getAuthorizationCode(clientId, userId, function (authCodeResult) {                                        
-                                        if (authCodeResult && authCodeResult.userId === userId) {                                           
+                                    db.getAuthorizationCode(clientId, unHashUser, function (authCodeResult) {                                        
+                                        if (authCodeResult && authCodeResult.userId === unHashUser) {                                           
                                                 //get accessToken from db
                                                 db.getAccessToken(authCodeResult.accessTokenId, function (accessTokenResult) {
                                                     if (accessTokenResult && accessTokenResult.id > 0) {

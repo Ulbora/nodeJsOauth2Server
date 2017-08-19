@@ -41,6 +41,7 @@ exports.createImplicitGrant = function (json, scopes, callback) {
     };
     var clientId = json.clientId;
     var userId = json.userId;
+    var userIdHashed = manager.hashUser(userId);
     var isOk = manager.securityCheck(json);
     if (isOk && clientId && userId) {
         db.getClientRoleAllowedUriListByClientId(clientId, function (clientRoleUriList) {
@@ -53,7 +54,7 @@ exports.createImplicitGrant = function (json, scopes, callback) {
                 var accessPayload = {
                     sub: "access",
                     grant: "implicit",
-                    userId: userId,
+                    userId: userIdHashed,
                     clientId: clientId,
                     roleUris: roleUriList,
                     scopeList: scopes,

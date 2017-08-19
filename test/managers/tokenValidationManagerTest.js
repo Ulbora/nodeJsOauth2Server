@@ -2,6 +2,7 @@ var assert = require('assert');
 var db = require("../../database/db");
 var accessTokenDelegate = require("../../delegates/accessTokenDelegate");
 var tokenValidationManager = require("../../managers/tokenValidationManager");
+var manager = require("../../managers/manager");
 var token;
 var token2;
 describe('TokenValidationManager', function () {
@@ -18,10 +19,11 @@ describe('TokenValidationManager', function () {
     });
     describe('#generateAccessToken()', function () {
         it('should generateAccessToken', function (done) {
+            var u = manager.hashUser("admin");
             var payload = {
                 sub: "access",
                 grant: "code",
-                userId: "admin",
+                userId: u,
                 clientId: "jdsldsldsldls",
                 roleUris: [
                     {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "https://abc.com/rs/addUser", "clientId": 421}
@@ -119,7 +121,8 @@ describe('TokenValidationManager', function () {
         it('should decodeAccessToken', function (done) {
             setTimeout(function () {
                 accessTokenDelegate.decodeAccessToken(token, function (decoded) {
-                    if (decoded && decoded.userId === "admin") {
+                    console.log("decoded access token: " + decoded);
+                    if (decoded && decoded.userId) {
                         assert(true);
                     } else {
                         assert(false);
@@ -132,10 +135,11 @@ describe('TokenValidationManager', function () {
 
     describe('#generateAccessToken()', function () {
         it('should generateAccessToken', function (done) {
+            var u = manager.hashUser("admin");
             var payload = {
                 sub: "access",
                 grant: "code",
-                userId: "admin",
+                userId: u,
                 clientId: "jdsldsldsldls",
                 scopeList: ["read", "write"]
 
@@ -144,7 +148,7 @@ describe('TokenValidationManager', function () {
                 accessTokenDelegate.generateAccessToken(payload, function (accessToken) {
                     if (accessToken) {
                         token2 = accessToken;
-                        console.log("access token: " + accessToken);
+                        console.log("access token2: " + accessToken);
                         assert(true);
                     } else {
                         assert(false);

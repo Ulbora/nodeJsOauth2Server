@@ -40,7 +40,12 @@ exports.validateAccessToken = function (json, callback) {
     if (json) {
         var isOk = manager.securityCheck(json);
         var accessToken = json.accessToken;
-        var userId = json.userId;
+        var userId;
+        if(json.hashed !== true && json.userId){
+            userId = manager.hashUser(json.userId);
+        }else{
+            userId = json.userId;
+        }        
         var clientId = json.clientId;
         var role = json.role;
         var uri = json.uri;

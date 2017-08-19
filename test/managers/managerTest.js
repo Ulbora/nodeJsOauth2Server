@@ -198,6 +198,37 @@ describe('Manager', function () {
             }, 1000);
         });
     });
+    
+    var hu;  
+    describe('#hashUser()', function () {
+        it('should hash a user in manager', function (done) {           
+            setTimeout(function () {
+                hu = manager.hashUser("ken");
+                 console.log("hash: " + hu);
+                if(hu !== null && hu !== undefined){                   
+                    assert(true);
+                }else{
+                    assert(false);
+                }
+                done();
+            }, 1000);
+        });
+    });
+    
+    describe('#hashUser()', function () {
+        it('should unhash a user in manager', function (done) {           
+            setTimeout(function () {
+                user = manager.unHashUser(hu);
+                console.log("unhash: " + user);
+                if(user !== null && user !== undefined && user === "ken"){                    
+                    assert(true);
+                }else{
+                    assert(false);
+                }
+                done();
+            }, 1000);
+        });
+    });
 
 });
 

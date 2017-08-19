@@ -30,6 +30,8 @@ exports.init = function (database) {
 exports.authorize = function (req, res, me, callback) {
     var tokenHeader = req.header("Authorization");
     var userId = req.header("userId");
+    var hashedStr = req.header("hashed");
+    var hashed = (hashedStr === "true") ? true: false;
     var clientIdStr = req.header("clientId");
     var clientId = service.getClientId(clientIdStr);
     var prot = req.protocol;
@@ -47,6 +49,7 @@ exports.authorize = function (req, res, me, callback) {
             var authJson = {
                 accessToken: token,
                 userId: userId,
+                hashed: hashed,
                 clientId: clientId,
                 role: role,
                 uri: uri,

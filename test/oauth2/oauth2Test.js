@@ -3,6 +3,7 @@ var db = require("../../database/db");
 //var service = require("../../../services/service");
 var oauth2 = require("../../oauth2/oauth2");
 var accessTokenDelegate = require("../../delegates/accessTokenDelegate");
+var manager = require("../../managers/manager");
 var btoa = require('btoa');
 var token;
 
@@ -21,10 +22,11 @@ describe('oauth2', function () {
 
     describe('#generateAccessToken()', function () {
         it('should generateAccessToken', function (done) {
+            var u = manager.hashUser("admin");
             var payload = {
                 sub: "access",
                 grant: "code",
-                userId: "admin",
+                userId: u,
                 clientId: 544,
                 roleUris: [
                     {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/addUser", "clientId": 421}
