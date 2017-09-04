@@ -103,7 +103,7 @@ exports.validateAccessToken = function (accessToken, claims, callback) {
                         if (decoded.scopeList) {
                             scopeFound = (decoded.scopeList.indexOf(claims.scope) > -1) ? true : false;
                         }
-
+                        console.log("scopeFound: " + scopeFound );
                         console.log("foundRoleUri: " + foundRoleUri );
                         //console.log("scopeFound: " + scopeFound );
                         if ((decoded.grant === "code" || decoded.grant === "implicit") && foundRoleUri && scopeFound) {
