@@ -80,6 +80,7 @@ exports.refreshToken = function(json, callback){
                                                             if (decoded && decoded.userId === userId && decoded.clientId === clientId) {
                                                                 var accessPayload = {
                                                                     sub: "access",
+                                                                    grant: "code",
                                                                     userId: userId,
                                                                     clientId: clientId,
                                                                     roleUris: decoded.roleUris,
