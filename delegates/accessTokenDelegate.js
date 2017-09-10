@@ -64,7 +64,7 @@ exports.validateAccessToken = function (accessToken, claims, callback) {
                 console.log("decoded access token: " + JSON.stringify(decoded));
                 if (err) {
                     console.log("AccessToken verify err: " + err);
-                } else if(decoded){
+                } else if (decoded) {
                     var userIdMatch = true;
                     if (claims.userId) {
                         userIdMatch = (decoded.userId === claims.userId) ? true : false;
@@ -86,25 +86,25 @@ exports.validateAccessToken = function (accessToken, claims, callback) {
                                 }
                             }
                             /*
-                            if (!foundRoleUri) {
-                                console.log("role uris not found fo far: ");
-                                console.log("checkUris: " + JSON.stringify(checkUris));
-                                //uri not mapped so token is valid
-                                //only uris that are mapped can be used to invalidate a token
-                                console.log("index of: " + claims.role + " " + (checkUris.indexOf(claims.uri)));
-                                foundRoleUri = (checkUris.indexOf(claims.uri) === -1) ? true : false;
-                                //console.log("index of: " + claims.role + " " +foundRoleUri +" " + (checkUris.indexOf(claims.uri)));
-                            }
-                            */
+                             if (!foundRoleUri) {
+                             console.log("role uris not found fo far: ");
+                             console.log("checkUris: " + JSON.stringify(checkUris));
+                             //uri not mapped so token is valid
+                             //only uris that are mapped can be used to invalidate a token
+                             console.log("index of: " + claims.role + " " + (checkUris.indexOf(claims.uri)));
+                             foundRoleUri = (checkUris.indexOf(claims.uri) === -1) ? true : false;
+                             //console.log("index of: " + claims.role + " " +foundRoleUri +" " + (checkUris.indexOf(claims.uri)));
+                             }
+                             */
                         } //else {
-                            //foundRoleUri = true;
-                       // }
+                        //foundRoleUri = true;
+                        // }
                         var scopeFound = false;
                         if (decoded.scopeList) {
                             scopeFound = (decoded.scopeList.indexOf(claims.scope) > -1) ? true : false;
                         }
-                        console.log("scopeFound: " + scopeFound );
-                        console.log("foundRoleUri: " + foundRoleUri );
+                        console.log("scopeFound: " + scopeFound);
+                        console.log("foundRoleUri: " + foundRoleUri);
                         //console.log("scopeFound: " + scopeFound );
                         if ((decoded.grant === "code" || decoded.grant === "implicit") && foundRoleUri && scopeFound) {
                             valid = true;
@@ -113,8 +113,8 @@ exports.validateAccessToken = function (accessToken, claims, callback) {
                             valid = true;
                             //console.log("in client_credentials grant if: value: " + valid);
                         }
-                    }else{
-                        console.log("token not valid " );
+                    } else {
+                        console.log("token not valid ");
                     }
                 }
                 callback(valid);
@@ -134,24 +134,47 @@ exports.decodeAccessToken = function (accessToken, callback) {
         scopeList: null
     };
     console.log("access token: " + accessToken);
-    db.getAccessTokenKey(function (result) {
-        if (result && result.key) {
-            jwt.verify(accessToken, result.key, function (err, decoded) {
-                if (err) {
-                    console.log("AccessToken verify err: " + err);
-                }
-                if (decoded && decoded.tokenType === "access" && decoded.iss === config.TOKEN_ISSUER) {
-                    //console.log("decoded access token: " + JSON.stringify(decoded));
-                    //console.log("claims: " + JSON.stringify(claims));                    
-                    rtn.clientId = decoded.clientId;
-                    rtn.userId = decoded.userId;
-                    rtn.roleUris = decoded.roleUris;
-                    rtn.scopeList = decoded.scopeList;
-                }
-                callback(rtn);
-            });
-        } else {
-            callback(rtn);
-        }
-    });
+
+    var decoded = jwt.decode(accessToken);
+    if (decoded && decoded.tokenType === "access" && decoded.iss === config.TOKEN_ISSUER) {
+        //console.log("decoded access token: " + JSON.stringify(decoded));
+        //console.log("claims: " + JSON.stringify(claims));                    
+        rtn.clientId = decoded.clientId;
+        rtn.userId = decoded.userId;
+        rtn.roleUris = decoded.roleUris;
+        rtn.scopeList = decoded.scopeList;
+    }
+    callback(rtn);
+
 };
+
+//
+//exports.decodeAccessToken = function (accessToken, callback) {
+//    var rtn = {
+//        clientId: null,
+//        userId: null,
+//        roleUris: null,
+//        scopeList: null
+//    };
+//    console.log("access token: " + accessToken);
+//    db.getAccessTokenKey(function (result) {
+//        if (result && result.key) {
+//            jwt.verify(accessToken, result.key, function (err, decoded) {
+//                if (err) {
+//                    console.log("AccessToken verify err: " + err);
+//                }
+//                if (decoded && decoded.tokenType === "access" && decoded.iss === config.TOKEN_ISSUER) {
+//                    //console.log("decoded access token: " + JSON.stringify(decoded));
+//                    //console.log("claims: " + JSON.stringify(claims));                    
+//                    rtn.clientId = decoded.clientId;
+//                    rtn.userId = decoded.userId;
+//                    rtn.roleUris = decoded.roleUris;
+//                    rtn.scopeList = decoded.scopeList;
+//                }
+//                callback(rtn);
+//            });
+//        } else {
+//            callback(rtn);
+//        }
+//    });
+//};
