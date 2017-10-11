@@ -98,6 +98,22 @@ describe('ClientProcessor', function () {
         });
     });
     
+    
+    describe('#getClientSearchList()', function () {
+        it('should read client list in search in processor', function (done) {           
+            setTimeout(function () {                
+                clintProcessor.getClientSearchList("bor", function (result) {
+                    if (result && result.length > 0) {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);           
+        });
+    });
+    
     describe('#deleteClient()', function () {
         it('should delete client', function (done) {           
             setTimeout(function () {                

@@ -96,6 +96,29 @@ exports.getClientList = function (callback) {
     });
 };
 
+
+exports.getClientSearchList = function (name, callback) {
+    var queryId = ['%' + name + '%'];
+    crud.get(clientQueries.CLIENT_SEARCH_LIST_QUERY, queryId, function (result) {
+        if (result.success && result.data.length > 0) {
+            var rtnList = [];
+            for (var cnt = 0; cnt < result.data.length; cnt++) {
+                var rtn = {
+                    clientId: result.data[cnt].client_id,                    
+                    name: result.data[cnt].name,
+                    webSite: result.data[cnt].web_site,
+                    email: result.data[cnt].email,
+                    enabled: (result.data[cnt].enabled === 1) ? true : false
+                };
+                rtnList.push(rtn);
+            }
+            callback(rtnList);
+        } else {
+            callback(rtnList);
+        }
+    });
+};
+
 exports.deleteClient = function (con, clientId, callback) {
     var queryId = [clientId];
     crud.delete(con, clientQueries.CLIENT_DELETE_QUERY, queryId, callback);

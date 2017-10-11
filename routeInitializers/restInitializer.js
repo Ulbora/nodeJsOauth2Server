@@ -46,7 +46,8 @@ exports.init = function(app, db){
     app.put('/rs/client/update', clientService.update);
     app.get('/rs/client/get/:id', clientService.get);
     app.delete('/rs/client/delete/:id', clientService.delete);
-    app.get('/rs/client/list', clientService.list);  
+    app.get('/rs/client/list', clientService.list); 
+    app.post('/rs/client/search', clientService.search);     
     
     
      //client grant type services

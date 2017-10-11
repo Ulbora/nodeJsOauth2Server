@@ -120,6 +120,26 @@ describe('Client Manager', function () {
         });
     });
     
+    
+
+    describe('#getClientSearchList()', function () {
+        it('should read client list search', function (done) {
+            setTimeout(function () {
+                var body = {}
+                body.name = "bor";
+                clientManager.getClientSearchList(body, function (result) {
+                    if (result && result.length > 0) {
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);
+        });
+    });
+    
+    
      
     describe('#deleteClient()', function () {
         it('should delete client', function (done) {

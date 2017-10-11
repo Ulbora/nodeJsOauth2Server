@@ -155,6 +155,11 @@ exports.getClientList = function (callback) {
     clientProcessor.getClientList(callback);
 };
 
+
+exports.getClientSearchList = function (name, callback) {
+    clientProcessor.getClientSearchList(name, callback);
+};
+
 exports.deleteClient = function (clientId, callback) {
     var rtn = {
         success: false,

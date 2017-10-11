@@ -104,6 +104,28 @@ exports.list = function (req, res) {
     });
 };
 
+
+exports.search = function (req, res) {
+    if (req.is('application/json')) {
+        var me = {
+            role: "admin",
+            uri: "/rs/client/search",
+            scope: "read"
+        };
+        oauth2.authorize(req, res, me, function () {
+            var reqBody = req.body;
+            var bodyJson = JSON.stringify(reqBody);
+            console.log("body: " + bodyJson);
+            clientManager.getClientSearchList(reqBody, function (result) {
+                res.send(result);
+            });
+        });
+    } else {
+        res.status(415);
+        res.send({success: false});
+    }
+};
+
 exports.delete = function (req, res) {
     console.log("in auth callback");
     var me = {

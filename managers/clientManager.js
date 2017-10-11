@@ -104,6 +104,17 @@ exports.getClientList = function (callback) {
     db.getClientList(callback);
 };
 
+
+
+exports.getClientSearchList = function (json, callback) {
+    if(json && json.name){
+        db.getClientSearchList(json.name, callback);
+    }else{
+        callback([]);
+    }
+    
+};
+
 exports.deleteClient = function (clientId, callback) {
     var returnVal = {
         success: false,

@@ -107,6 +107,22 @@ describe('mysql DB client', function () {
             }, 1000);
         });
     });
+    
+    
+    describe('#getClientSearchList()', function () {
+        it('should read client list in search', function (done) {
+            setTimeout(function () {
+                db.getClientSearchList("bor", function (result) {
+                    if (result && result.length > 0) {
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);
+        });
+    });
 
     describe('#deleteClient()', function () {
         it('should delete client', function (done) {

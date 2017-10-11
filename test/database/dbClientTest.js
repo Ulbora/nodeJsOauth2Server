@@ -52,7 +52,7 @@ describe('DB client', function () {
             var json = {
                 secret: '123456',
                 redirectUri: 'http://ulboralabs.com',
-                name: 'ulbora ulbora',
+                name: 'Bob and Company 123',
                 webSite: 'www.ulboralabs.com',
                 email: 'ulbora@ulbora.com',
                 enabled: false,
@@ -76,7 +76,7 @@ describe('DB client', function () {
         it('should read client', function (done) {
             setTimeout(function () {
                 db.getClient(clientId, function (result) {
-                    if (result && result.name === 'ulbora ulbora' && result.enabled === false) {
+                    if (result && result.name === 'Bob and Company 123' && result.enabled === false) {
                         assert(true);
                     } else {
                         assert(false);
@@ -93,6 +93,23 @@ describe('DB client', function () {
             setTimeout(function () {
                 db.getClientList(function (result) {
                     if (result && result.length > 0) {
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);
+        });
+    });
+    
+    
+    describe('#getClientSearchList()', function () {
+        it('should read client list in search', function (done) {
+            setTimeout(function () {
+                db.getClientSearchList("Company 123" , function (result) {
+                    console.log("name: " + result[0].name)
+                    if (result && result.length > 0 && result[0].name === "Bob and Company 123" ) {
                         assert(true);
                     } else {
                         assert(false);
