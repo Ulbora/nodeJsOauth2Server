@@ -32,7 +32,7 @@ exports.init = function (database) {
 exports.add = function (req, res) {
     if (req.is('application/json')) {
         var me = {
-            role: "admin",
+            role: "superAdmin",
             uri: "/rs/client/add",
             scope: "write"
         };
@@ -53,7 +53,7 @@ exports.add = function (req, res) {
 exports.update = function (req, res) {
     if (req.is('application/json')) {
         var me = {
-            role: "admin",
+            role: "superAdmin",
             uri: "/rs/client/update",
             scope: "update"
         };
@@ -74,7 +74,7 @@ exports.update = function (req, res) {
 exports.get = function (req, res) {
     console.log("in auth callback");
     var me = {
-        role: "admin",
+        role: "superAdmin",
         uri: "/rs/client/get",
         scope: "read"
     };
@@ -92,7 +92,7 @@ exports.get = function (req, res) {
 
 exports.list = function (req, res) {
     var me = {
-        role: "admin",
+        role: "superAdmin",
         uri: "/rs/client/list",
         scope: "read"
     };
@@ -108,7 +108,7 @@ exports.list = function (req, res) {
 exports.search = function (req, res) {
     if (req.is('application/json')) {
         var me = {
-            role: "admin",
+            role: "superAdmin",
             uri: "/rs/client/search",
             scope: "read"
         };
@@ -129,7 +129,7 @@ exports.search = function (req, res) {
 exports.delete = function (req, res) {
     console.log("in auth callback");
     var me = {
-        role: "admin",
+        role: "superAdmin",
         uri: "/rs/client/delete",
         scope: "write"
     };
