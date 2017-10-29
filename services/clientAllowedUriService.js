@@ -55,7 +55,7 @@ exports.update = function (req, res) {
         var me = {
             role: "admin",
             uri: "/rs/clientAllowedUri/update",
-            scope: "update"
+            scope: "write"
         };
         oauth2.authorize(req, res, me, function () {
             var reqBody = req.body;

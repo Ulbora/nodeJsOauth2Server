@@ -56,7 +56,7 @@ exports.generateAccessToken = function (json, callback) {
 
 exports.validateAccessToken = function (accessToken, claims, callback) {
     var valid = false;
-    console.log("access token: " + accessToken);
+    //console.log("access token: " + accessToken);
     console.log("claims: " + JSON.stringify(claims));
     db.getAccessTokenKey(function (result) {
         if (result && result.key) {
@@ -133,7 +133,7 @@ exports.decodeAccessToken = function (accessToken, callback) {
         roleUris: null,
         scopeList: null
     };
-    console.log("access token: " + accessToken);
+    //console.log("access token: " + accessToken);
 
     var decoded = jwt.decode(accessToken);
     if (decoded && decoded.tokenType === "access" && decoded.iss === config.TOKEN_ISSUER) {

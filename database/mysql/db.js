@@ -393,7 +393,7 @@ exports.addAuthorizationCode = function (authCodeJson, accessTokenJson, refreshT
 
 var doAuthCodeAdd = function (con, rtn, authCodeJson, accTokenJson, scopeList, callback) {
     accessTokenProcessor.addAccessToken(con, accTokenJson, function (accessResult) {
-        console.log("access token: " + JSON.stringify(accessResult));
+        //console.log("access token: " + JSON.stringify(accessResult));
         console.log("authCodeJson: " + JSON.stringify(authCodeJson));
         if (accessResult.id > -1) {
             var acJson = authCodeJson;
