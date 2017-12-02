@@ -33,7 +33,7 @@ exports.add = function (req, res) {
     if (req.is('application/json')) {
         var me = {
             role: "admin",
-            uri: "/rs/clientRedirectUri/add",
+            uri: "/ulbora/rs/clientRedirectUri/add",
             scope: "write"
         };
         oauth2.authorize(req, res, me, function () {
@@ -55,7 +55,7 @@ exports.add = function (req, res) {
 exports.list = function (req, res) {
     var me = {
         role: "admin",
-        uri: "/rs/clientRedirectUri/list",
+        uri: "/ulbora/rs/clientRedirectUri/list",
         scope: "read"
     };
     oauth2.authorize(req, res, me, function () {
@@ -76,7 +76,7 @@ exports.delete = function (req, res) {
     console.log("in auth callback");
     var me = {
         role: "admin",
-        uri: "/rs/clientRedirectUri/delete",
+        uri: "/ulbora/rs/clientRedirectUri/delete",
         scope: "write"
     };
     oauth2.authorize(req, res, me, function () {

@@ -33,7 +33,7 @@ exports.add = function (req, res) {
     if (req.is('application/json')) {
         var me = {
             role: "superAdmin",
-            uri: "/rs/client/add",
+            uri: "/ulbora/rs/client/add",
             scope: "write"
         };
         oauth2.authorize(req, res, me, function () {
@@ -54,7 +54,7 @@ exports.update = function (req, res) {
     if (req.is('application/json')) {
         var me = {
             role: "superAdmin",
-            uri: "/rs/client/update",
+            uri: "/ulbora/rs/client/update",
             scope: "write"
         };
         oauth2.authorize(req, res, me, function () {
@@ -75,7 +75,7 @@ exports.get = function (req, res) {
     console.log("in auth callback");
     var me = {
         role: "superAdmin",
-        uri: "/rs/client/get",
+        uri: "/ulbora/rs/client/get",
         scope: "read"
     };
     oauth2.authorize(req, res, me, function () {
@@ -93,7 +93,7 @@ exports.get = function (req, res) {
 exports.list = function (req, res) {
     var me = {
         role: "superAdmin",
-        uri: "/rs/client/list",
+        uri: "/ulbora/rs/client/list",
         scope: "read"
     };
     oauth2.authorize(req, res, me, function () {
@@ -109,7 +109,7 @@ exports.search = function (req, res) {
     if (req.is('application/json')) {
         var me = {
             role: "superAdmin",
-            uri: "/rs/client/search",
+            uri: "/ulbora/rs/client/search",
             scope: "read"
         };
         oauth2.authorize(req, res, me, function () {
@@ -130,7 +130,7 @@ exports.delete = function (req, res) {
     console.log("in auth callback");
     var me = {
         role: "superAdmin",
-        uri: "/rs/client/delete",
+        uri: "/ulbora/rs/client/delete",
         scope: "write"
     };
     oauth2.authorize(req, res, me, function () {
