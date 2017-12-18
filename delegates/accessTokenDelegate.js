@@ -102,6 +102,10 @@ exports.validateAccessToken = function (accessToken, claims, callback) {
                         var scopeFound = false;
                         if (decoded.scopeList) {
                             scopeFound = (decoded.scopeList.indexOf(claims.scope) > -1) ? true : false;
+                            if(scopeFound === false){
+                                scopeFound = (decoded.scopeList.indexOf("write") > -1) ? true : false;
+                            }
+                            
                         }
                         console.log("scopeFound: " + scopeFound);
                         console.log("foundRoleUri: " + foundRoleUri);

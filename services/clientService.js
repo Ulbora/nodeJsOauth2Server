@@ -21,6 +21,7 @@
 
 var clientManager = require("../managers/clientManager");
 var oauth2 = require("../oauth2/oauth2");
+var service = require("./service");
 
 var db;
 
@@ -80,6 +81,28 @@ exports.get = function (req, res) {
     };
     oauth2.authorize(req, res, me, function () {
         var id = req.params.id;
+        if (id !== null && id !== undefined) {
+            clientManager.getClient(id, function (result) {
+                res.send(result);
+            });
+        } else {
+            res.send({});
+        }
+    });
+};
+
+
+exports.adminGet = function (req, res) {
+    console.log("in auth callback");
+    var me = {
+        role: "admin",
+        uri: "/ulbora/rs/client/admin/get",
+        scope: "read"
+    };
+    oauth2.authorize(req, res, me, function () {
+        //var id = req.params.id;
+        var clientIdStr = req.header("clientId");
+        var id = service.getClientId(clientIdStr);
         if (id !== null && id !== undefined) {
             clientManager.getClient(id, function (result) {
                 res.send(result);
