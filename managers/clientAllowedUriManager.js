@@ -27,7 +27,7 @@ exports.init = function (database) {
     db = database;
 };
 
-exports.addClientAllowedUri = function (json, callback) {
+exports.addClientAllowedUriSuper = function (json, callback) {
     var returnVal = {
         success: false
     };
@@ -39,13 +39,51 @@ exports.addClientAllowedUri = function (json, callback) {
     }
 };
 
-exports.updateClientAllowedUri = function (json, callback) {
+
+exports.addClientAllowedUri = function (json, callback) {
+    var returnVal = {
+        success: false
+    };
+    var isOk = manager.securityCheck(json);
+    //var contu = json.uri.
+    if (isOk && json.uri && json.uri.indexOf("ulbora") === -1) {
+        db.addClientAllowedUri(json, callback);
+    } else {
+        callback(returnVal);
+    }
+};
+
+exports.updateClientAllowedUriSuper = function (json, callback) {
     var returnVal = {
         success: false,
         message: ""
     };
     var isOk = manager.securityCheck(json);
     if (isOk) {
+        if (!json.secret) {
+            json.secret = manager.generateClientSecret();
+        }
+        db.updateClientAllowedUri(json, function (result) {
+            if (result && result.success) {
+                returnVal.success = result.success;
+                callback(returnVal);
+            } else {
+                callback(returnVal);
+            }
+        });
+    } else {
+        callback(returnVal);
+    }
+};
+
+
+exports.updateClientAllowedUri = function (json, callback) {
+    var returnVal = {
+        success: false,
+        message: ""
+    };
+    var isOk = manager.securityCheck(json);
+    if (isOk  && json.uri && json.uri.indexOf("ulbora") === -1) {
         if (!json.secret) {
             json.secret = manager.generateClientSecret();
         }

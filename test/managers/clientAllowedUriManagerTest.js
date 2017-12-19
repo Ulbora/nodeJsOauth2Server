@@ -5,6 +5,7 @@ var clientAllowedUriManager = require("../../managers/clientAllowedUriManager");
 var clientId;
 var clientObj;
 var clientAllowedUriId;
+var clientAllowedUriId2;
 describe('Client Allowed URI Manager', function () {
     this.timeout(20000);
     describe('#init()', function () {
@@ -76,6 +77,50 @@ describe('Client Allowed URI Manager', function () {
         });
     });
     
+    
+    describe('#addClientAllowedUri()', function () {
+        it('should fail to add a client allowed uri', function (done) {
+
+            var json = {
+                uri: 'http://www.ulbora.google.com',
+                clientId: clientId
+            };
+            setTimeout(function () {
+                clientAllowedUriManager.addClientAllowedUri(json, function (result) {
+                    console.log("failed respnose: " + JSON.stringify(result));
+                    if (result.id > -1) {                       
+                        assert(false);
+                    } else {
+                        assert(true);
+                    }
+                    done();
+                });
+            }, 1000);
+        });
+    });
+    
+    
+    describe('#addClientAllowedUriSuper()', function () {
+        it('should add a client super allowed uri', function (done) {
+
+            var json = {
+                uri: 'http://www.ulbora.google.com',
+                clientId: clientId
+            };
+            setTimeout(function () {
+                clientAllowedUriManager.addClientAllowedUriSuper(json, function (result) {
+                    if (result.id > -1) {
+                        clientAllowedUriId2 = result.id;
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);
+        });
+    });
+    
     describe('#getClientAllowedUriById()', function () {
         it('should a uri in manager', function (done) {           
             setTimeout(function () {                
@@ -104,6 +149,49 @@ describe('Client Allowed URI Manager', function () {
                         assert(true);
                     } else {
                         assert(false);
+                    }
+                    done();
+                });
+            }, 1000);           
+        });
+    });
+    
+    
+    describe('#updateClientAllowedUriSuper()', function () {
+        it('should update a super client allowed URI in manager', function (done) { 
+            
+           var json = {                
+                uri: 'http://www.ulbora.google1.com',
+                id: clientAllowedUriId2
+            };
+            setTimeout(function () {
+                clientAllowedUriManager.updateClientAllowedUriSuper(json, function (result) {
+                    if (result.success) {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);           
+        });
+    });
+    
+    
+    describe('#updateClientAllowedUri()', function () {
+        it('should fail to update a client allowed URI in manager', function (done) { 
+            
+           var json = {                
+                uri: 'http://www.ulboragoogle1.com',
+                id: clientAllowedUriId
+            };
+            setTimeout(function () {
+                clientAllowedUriManager.updateClientAllowedUri(json, function (result) {
+                    console.log("failed update respnose: " + JSON.stringify(result))
+                    if (result.success) {                        
+                        assert(false);
+                    } else {
+                        assert(true);
                     }
                     done();
                 });
@@ -159,6 +247,21 @@ describe('Client Allowed URI Manager', function () {
         });
     });        
 
+    
+    describe('#deleteClientAllowedUri()', function () {
+        it('should delete client allowed URI', function (done) {           
+            setTimeout(function () {                
+                clientAllowedUriManager.deleteClientAllowedUri(clientAllowedUriId2, function (result) {
+                    if (result.success) {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);           
+        });
+    });        
 
 
 

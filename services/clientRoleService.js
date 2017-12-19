@@ -29,6 +29,28 @@ exports.init = function (database) {
     clientRoleManager.init(db);
 };
 
+exports.addSuper = function (req, res) {
+    if (req.is('application/json')) {
+        var me = {
+            role: "superAdmin",
+            uri: "/ulbora/rs/clientRoleSuper/add",
+            scope: "write"
+        };
+        oauth2.authorize(req, res, me, function () {
+            var reqBody = req.body;
+            var bodyJson = JSON.stringify(reqBody);
+            console.log("body: " + bodyJson);
+            clientRoleManager.addClientRoleSuper(reqBody, function (result) {
+                res.send(result);
+            });
+        });
+    } else {
+        res.status(415);
+        res.send({success: false});
+    }
+};
+
+
 exports.add = function (req, res) {
     if (req.is('application/json')) {
         var me = {

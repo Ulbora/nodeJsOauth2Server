@@ -5,6 +5,7 @@ var clientRoleManager = require("../../managers/clientRoleManager");
 var clientId;
 var clientObj;
 var clientRoleId;
+var clientRoleId2;
 describe('Client Role Manager', function () {
     this.timeout(20000);
     describe('#init()', function () {
@@ -55,16 +56,60 @@ describe('Client Role Manager', function () {
 
 
     describe('#addClientRole()', function () {
+        it('should add a client role super', function (done) { 
+            
+           var json = {                
+                role: 'superAdmin',
+                clientId: clientId
+            };
+            setTimeout(function () {
+                clientRoleManager.addClientRoleSuper(json, function (result) {
+                    if (result.id > -1) {
+                        clientRoleId = result.id;
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);           
+        });
+    });
+    
+    
+    describe('#addClientRole()', function () {
+        it('should fail to add a client role', function (done) { 
+            
+           var json = {                
+                role: 'superAdmin',
+                clientId: clientId
+            };
+            setTimeout(function () {
+                clientRoleManager.addClientRole(json, function (result) {
+                    console.log("failed response: " + JSON.stringify(result))
+                    if (result.id > -1) {                        
+                        assert(false);
+                    } else {
+                        assert(true);
+                    }
+                    done();
+                });
+            }, 1000);           
+        });
+    });
+    
+    
+    describe('#addClientRole()', function () {
         it('should add a client role', function (done) { 
             
            var json = {                
-                role: 'superuser',
+                role: 'user',
                 clientId: clientId
             };
             setTimeout(function () {
                 clientRoleManager.addClientRole(json, function (result) {
                     if (result.id > -1) {
-                        clientRoleId = result.id;
+                        clientRoleId2 = result.id;
                         assert(true);
                     } else {
                         assert(false);
@@ -79,7 +124,7 @@ describe('Client Role Manager', function () {
         it('should read client role list', function (done) {           
             setTimeout(function () {                
                 clientRoleManager.getClientRoleList(clientId, function (result) {
-                    if (result && result.length > 0 && result[0].role === "superuser") {                        
+                    if (result && result.length > 0 && result[0].role === "superAdmin") {                        
                         assert(true);
                     } else {
                         assert(false);
@@ -94,6 +139,22 @@ describe('Client Role Manager', function () {
         it('should delete client role', function (done) {           
             setTimeout(function () {                
                 clientRoleManager.deleteClientRole(clientRoleId, function (result) {
+                    if (result.success) {                        
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                });
+            }, 1000);           
+        });
+    });    
+    
+    
+    describe('#deleteClientRole()', function () {
+        it('should delete client role', function (done) {           
+            setTimeout(function () {                
+                clientRoleManager.deleteClientRole(clientRoleId2, function (result) {
                     if (result.success) {                        
                         assert(true);
                     } else {

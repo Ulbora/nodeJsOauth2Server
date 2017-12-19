@@ -27,12 +27,25 @@ exports.init = function (database) {
     db = database;
 };
 
-exports.addClientRole = function (json, callback) {
+
+exports.addClientRoleSuper = function (json, callback) {
     var returnVal = {
         success: false
     };
     var isOk = manager.securityCheck(json);
     if (isOk) {
+        db.addClientRole(json, callback);
+    } else {
+        callback(returnVal);
+    }
+};
+
+exports.addClientRole = function (json, callback) {
+    var returnVal = {
+        success: false
+    };
+    var isOk = manager.securityCheck(json);
+    if (isOk && json.role !== "superAdmin") {
         db.addClientRole(json, callback);
     } else {
         callback(returnVal);

@@ -59,6 +59,8 @@ exports.init = function(app, db){
     
     
     //client allowed uri    
+    app.post('/rs/clientAllowedUriSuper/add', clientAllowedUriService.addSuper);      
+    app.put('/rs/clientAllowedUriSuper/update', clientAllowedUriService.updateSuper);
     app.post('/rs/clientAllowedUri/add', clientAllowedUriService.add);      
     app.put('/rs/clientAllowedUri/update', clientAllowedUriService.update);
     app.get('/rs/clientAllowedUri/get/:id', clientAllowedUriService.get);
@@ -73,6 +75,7 @@ exports.init = function(app, db){
     
     //client role    
     app.post('/rs/clientRole/add', clientRoleService.add); 
+    app.post('/rs/clientRoleSuper/add', clientRoleService.addSuper); 
     app.delete('/rs/clientRole/delete/:id', clientRoleService.delete);
     app.get('/rs/clientRole/list/:clientId', clientRoleService.list);  
     

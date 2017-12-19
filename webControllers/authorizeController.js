@@ -86,7 +86,7 @@ exports.authorize = function (req, res) {
                     implicitGrantManager.authorize(json, function (result) {
                         console.log("implicit: " + JSON.stringify(result));
                         if (result.success && result.token) {
-                            var cb = redirectUri + "#token=" + result.token+ "&token_type=bearer&state=" + oauthGrantObj.state;
+                            var cb = redirectUri + "?token=" + result.token+ "&token_type=bearer&state=" + oauthGrantObj.state;
                             console.log("implicit cb: " + cb);
                             res.redirect(cb);
                         } else {
@@ -188,7 +188,7 @@ exports.applicationAuthorization = function (req, res) {
             console.log("implicit grant: " + JSON.stringify(result));
             if (result.success && result.token) {
                 //var cb = oauthGrantObj.redirectUri + "?code=" + result.codeString + "&state=" + oauthGrantObj.state;
-                var cb = oauthGrantObj.redirectUri + "#token=" + result.token+ "&token_type=bearer&state=" + oauthGrantObj.state;
+                var cb = oauthGrantObj.redirectUri + "?token=" + result.token+ "&token_type=bearer&state=" + oauthGrantObj.state;
                 res.redirect(cb);
             } else {
                 res.render('oauthError', {error: result.error});
