@@ -56,7 +56,7 @@ exports.generateAccessToken = function (json, callback) {
 
 exports.validateAccessToken = function (accessToken, claims, callback) {
     var valid = false;
-    //console.log("access token: " + accessToken);
+    console.log("access token: " + accessToken);
     console.log("claims: " + JSON.stringify(claims));
     db.getAccessTokenKey(function (result) {
         if (result && result.key) {

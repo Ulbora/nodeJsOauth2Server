@@ -36,7 +36,7 @@ exports.validateAccessToken = function (json, callback) {
     var rtn = {
         valid: false
     };
-    console.log("json: " + json);
+    console.log("json: " + JSON.stringify(json));
     if (json) {
         var isOk = manager.securityCheck(json);
         var accessToken = json.accessToken;

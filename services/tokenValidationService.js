@@ -32,7 +32,7 @@ exports.validateAccessToken = function (req, res) {
     if (req.is('application/json')) {
         var reqBody = req.body;
         var bodyJson = JSON.stringify(reqBody);
-        console.log("body: " + bodyJson);
+        //console.log("body: " + bodyJson);
         //service.authenticate(req, res, function (creds) {
         //console.log("in auth callback");
         tokenValidationManager.validateAccessToken(reqBody, function (result) {
