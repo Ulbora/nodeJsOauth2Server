@@ -55,7 +55,7 @@ exports.generateRefreshToken = function (json, callback) {
 
 exports.validateRefreshToken = function (refreshToken, claims, callback) {
     var valid = false;
-    console.log("refresh token: " + refreshToken);
+    //console.log("refresh token: " + refreshToken);
     db.getRefreshTokenKey(function (result) {
         if (result && result.key) {
             jwt.verify(refreshToken, result.key, function (err, decoded) {
@@ -64,7 +64,7 @@ exports.validateRefreshToken = function (refreshToken, claims, callback) {
                 }
                 if (decoded && decoded.tokenType === "refresh" && decoded.userId === claims.userId &&
                         decoded.clientId === claims.clientId && decoded.iss === config.TOKEN_ISSUER) {
-                    console.log("decoded refresh token: " + JSON.stringify(decoded));
+                    //console.log("decoded refresh token: " + JSON.stringify(decoded));
                     valid = true;
                 }
                 callback(valid);
@@ -81,7 +81,7 @@ exports.decodeRefreshToken = function (refreshToken, callback) {
         userId: null,
         sub: null
     }
-    console.log("refresh token: " + refreshToken);
+    //console.log("refresh token: " + refreshToken);
     db.getRefreshTokenKey(function (result) {
         if (result && result.key) {
             jwt.verify(refreshToken, result.key, function (err, decoded) {
@@ -89,7 +89,7 @@ exports.decodeRefreshToken = function (refreshToken, callback) {
                     console.log("RefreshToken verify err: " + err);
                 }
                 if (decoded && decoded.tokenType === "refresh" && decoded.iss === config.TOKEN_ISSUER) {
-                    console.log("decoded refresh token: " + JSON.stringify(decoded));
+                    //console.log("decoded refresh token: " + JSON.stringify(decoded));
                     rtn.clientId = decoded.clientId;
                     rtn.userId = decoded.userId;
                     rtn.sub = decoded.sub;

@@ -49,15 +49,15 @@ exports.createAuthorizationCode = function (json, scopes, callback) {
         userId: userIdHashed,
         clientId: clientId
     };
-    console.log("refresh token refreshPayload: " + JSON.stringify(refreshPayload));
+    //console.log("refresh token refreshPayload: " + JSON.stringify(refreshPayload));
     refreshTokenDelegate.generateRefreshToken(refreshPayload, function (refreshToken) {
-        console.log("refresh token: " + refreshToken);
+        //console.log("refresh token: " + refreshToken);
         if (refreshToken) {
             var rftJson = {
                 token: refreshToken
             };
             db.getClientRoleAllowedUriListByClientId(clientId, function (clientRoleUriList) {
-                console.log("clientRoleUriList: " + JSON.stringify(clientRoleUriList));
+                //console.log("clientRoleUriList: " + JSON.stringify(clientRoleUriList));
                 if (clientRoleUriList) {
                     var roleUriList = [];
                     for (var cnt = 0; cnt < clientRoleUriList.length; cnt++) {

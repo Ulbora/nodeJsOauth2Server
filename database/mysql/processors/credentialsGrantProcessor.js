@@ -31,7 +31,7 @@ exports.addCredentialsGrant = function (con, json, callback) {
         client_id: json.clientId,              
         access_token_id: json.accessTokenId
     };
-    console.log("json in add credentials grant :" + JSON.stringify(json));
+    //console.log("json in add credentials grant :" + JSON.stringify(json));
     crud.insert(con, credentialsGrantQueries.CREDENTIALS_GRANT_INSERT_QUERY, args, function (result) {
         var rtn = {
             id: result.id,

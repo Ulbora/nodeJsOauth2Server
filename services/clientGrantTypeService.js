@@ -38,8 +38,8 @@ exports.add = function (req, res) {
         };
         oauth2.authorize(req, res, me, function () {
             var reqBody = req.body;
-            var bodyJson = JSON.stringify(reqBody);
-            console.log("body: " + bodyJson);
+            //var bodyJson = JSON.stringify(reqBody);
+            //console.log("body: " + bodyJson);
             clientGrantTypeManager.addClientGrantType(reqBody, function (result) {
                 res.send(result);
             });
@@ -58,7 +58,7 @@ exports.list = function (req, res) {
         scope: "read"
     };
     oauth2.authorize(req, res, me, function () {
-        console.log("in auth callback");
+        //console.log("in auth callback");
         var clientId = req.params.clientId;
         if (clientId !== null && clientId !== undefined) {
             clientGrantTypeManager.getClientGrantTypeList(clientId, function (result) {
@@ -72,7 +72,7 @@ exports.list = function (req, res) {
 };
 
 exports.delete = function (req, res) {
-    console.log("in auth callback");
+    //console.log("in auth callback");
     var me = {
         role: "admin",
         uri: "/ulbora/rs/clientGrantType/delete",

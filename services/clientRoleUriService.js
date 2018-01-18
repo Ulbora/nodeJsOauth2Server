@@ -38,8 +38,8 @@ exports.add = function (req, res) {
         };
         oauth2.authorize(req, res, me, function () {
             var reqBody = req.body;
-            var bodyJson = JSON.stringify(reqBody);
-            console.log("body: " + bodyJson);
+            //var bodyJson = JSON.stringify(reqBody);
+            //console.log("body: " + bodyJson);
             clientRoleUriManager.addClientRoleUri(reqBody, function (result) {
                 res.send(result);
             });
@@ -59,7 +59,7 @@ exports.list = function (req, res) {
         scope: "read"
     };
     oauth2.authorize(req, res, me, function () {
-        console.log("in auth callback");
+        //console.log("in auth callback");
         var clientRoleId = req.params.clientRoleId;
         if (clientRoleId) {
             clientRoleUriManager.getClientRoleAllowedUriList(clientRoleId, function (result) {
@@ -81,8 +81,8 @@ exports.delete = function (req, res) {
             scope: "write"
         };
         var reqBody = req.body;
-        var bodyJson = JSON.stringify(reqBody);
-        console.log("body: " + bodyJson);
+        //var bodyJson = JSON.stringify(reqBody);
+        //console.log("body: " + bodyJson);
         oauth2.authorize(req, res, me, function () {
             clientRoleUriManager.deleteClientRoleUri(reqBody, function (result) {
                 res.send(result);

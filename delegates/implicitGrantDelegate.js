@@ -45,7 +45,7 @@ exports.createImplicitGrant = function (json, scopes, callback) {
     var isOk = manager.securityCheck(json);
     if (isOk && clientId && userId) {
         db.getClientRoleAllowedUriListByClientId(clientId, function (clientRoleUriList) {
-            console.log("clientRoleUriList: " + JSON.stringify(clientRoleUriList));
+            //console.log("clientRoleUriList: " + JSON.stringify(clientRoleUriList));
             if (clientRoleUriList) {
                 var roleUriList = [];
                 for (var cnt = 0; cnt < clientRoleUriList.length; cnt++) {

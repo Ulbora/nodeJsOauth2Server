@@ -32,7 +32,7 @@ exports.addAccessToken = function (con, json, callback) {
         expires: json.expires,
         refresh_token_id: json.refreshTokenId
     };
-    console.log("json in add access token :" + JSON.stringify(json));
+    //console.log("json in add access token :" + JSON.stringify(json));
     crud.insert(con, tokenQueries.ACCESS_TOKEN_INSERT_QUERY, args, function (result) {
         var rtn = {
             id: result.id,

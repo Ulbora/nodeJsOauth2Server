@@ -35,7 +35,7 @@ exports.addAuthorizationCode = function (con, json, callback) {
         randon_auth_code: json.randonAuthCode,
         already_used: json.alreadyUsed
     };
-    console.log("json in add authorizationCode :" + JSON.stringify(json));
+    //console.log("json in add authorizationCode :" + JSON.stringify(json));
     crud.insert(con, authorizationCodeQueries.AUTHORIZATION_CODE_INSERT_QUERY, args, function (result) {
         var rtn = {
             authorizationCode: result.id,
@@ -66,9 +66,9 @@ exports.updateAuthorizationCodeToken = function (con, json, callback) {
 
 exports.getAuthorizationCode = function (clientId, userId, callback) {
     var queryId = [clientId, userId];
-    console.log("getAuthorizationCode clientId: " + clientId + " userId: " + userId);
+    //console.log("getAuthorizationCode clientId: " + clientId + " userId: " + userId);
     crud.get(authorizationCodeQueries.AUTHORIZATION_CODE_GET_BY_ID_QUERY, queryId, function (result) {
-        console.log("get authorization code in processor:" + JSON.stringify(result));
+        //console.log("get authorization code in processor:" + JSON.stringify(result));
         //console.log("get refresh token value:" + result.data[0].token);
         //console.log("get refresh token length:" + result.data[0].token.length);
         if (result.success && result.data.length > 0) {
@@ -91,9 +91,9 @@ exports.getAuthorizationCode = function (clientId, userId, callback) {
 
 exports.getAuthorizationCodeByCode = function (code, callback) {
     var queryId = [code];
-    console.log("getAuthorizationCode code: " + code );
+    //console.log("getAuthorizationCode code: " + code );
     crud.get(authorizationCodeQueries.AUTHORIZATION_CODE_GET_BY_CODE_QUERY, queryId, function (result) {
-        console.log("get authorization code by code in processor:" + JSON.stringify(result));
+        //console.log("get authorization code by code in processor:" + JSON.stringify(result));
         //console.log("get refresh token value:" + result.data[0].token);
         //console.log("get refresh token length:" + result.data[0].token.length);
         if (result.success && result.data.length > 0) {
@@ -116,9 +116,9 @@ exports.getAuthorizationCodeByCode = function (code, callback) {
 
 exports.getAuthorizationCodeByScope = function (clientId, userId, scope, callback) {
     var queryId = [clientId, userId, scope];
-    console.log("getAuthorizationCodeByScope clientId: " + clientId + " userId: " + userId + "scope: " + scope);
+    //console.log("getAuthorizationCodeByScope clientId: " + clientId + " userId: " + userId + "scope: " + scope);
     crud.get(authorizationCodeQueries.AUTHORIZATION_CODE_GET_BY_SCOPE_QUERY, queryId, function (result) {
-        console.log("get authorization code by scope in processor:" + JSON.stringify(result));
+        //console.log("get authorization code by scope in processor:" + JSON.stringify(result));
         var rtn = {
             authorized: false
         };

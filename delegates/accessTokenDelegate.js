@@ -56,12 +56,12 @@ exports.generateAccessToken = function (json, callback) {
 
 exports.validateAccessToken = function (accessToken, claims, callback) {
     var valid = false;
-    console.log("access token: " + accessToken);
-    console.log("claims: " + JSON.stringify(claims));
+    //console.log("access token: " + accessToken);
+    //console.log("claims: " + JSON.stringify(claims));
     db.getAccessTokenKey(function (result) {
         if (result && result.key) {
             jwt.verify(accessToken, result.key, function (err, decoded) {
-                console.log("decoded access token: " + JSON.stringify(decoded));
+                //console.log("decoded access token: " + JSON.stringify(decoded));
                 if (err) {
                     console.log("AccessToken verify err: " + err);
                 } else if (decoded) {
@@ -72,8 +72,8 @@ exports.validateAccessToken = function (accessToken, claims, callback) {
                     console.log("userIdMatch: " + userIdMatch);
                     if (decoded.tokenType === "access" && userIdMatch &&
                             decoded.clientId === claims.clientId && decoded.iss === config.TOKEN_ISSUER) {
-                        console.log("decoded access token: " + JSON.stringify(decoded));
-                        console.log("claims: " + JSON.stringify(claims));
+                        //console.log("decoded access token: " + JSON.stringify(decoded));
+                        //console.log("claims: " + JSON.stringify(claims));
                         var foundRoleUri = false;
                         var roleUris = decoded.roleUris;
                         var checkUris = [];
@@ -112,10 +112,10 @@ exports.validateAccessToken = function (accessToken, claims, callback) {
                         //console.log("scopeFound: " + scopeFound );
                         if ((decoded.grant === "code" || decoded.grant === "implicit") && foundRoleUri && scopeFound) {
                             valid = true;
-                            //console.log("in code or implicit grant if: value: " + valid);
+                            console.log("in code or implicit grant if: value: " + valid);
                         } else if (decoded.grant === "client_credentials" && foundRoleUri) {
                             valid = true;
-                            //console.log("in client_credentials grant if: value: " + valid);
+                            console.log("in client_credentials grant if: value: " + valid);
                         }
                     } else {
                         console.log("token not valid ");

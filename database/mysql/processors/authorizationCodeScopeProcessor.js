@@ -31,7 +31,7 @@ exports.addAuthorizationCodeScope = function (con, json, callback) {
         scope: json.scope,
         authorization_code: json.authorizationCode
     };
-    console.log("json in add authorizationCodeScope :" + JSON.stringify(json));
+    //console.log("json in add authorizationCodeScope :" + JSON.stringify(json));
     crud.insert(con, authorizationCodeQueries.AUTHORIZATION_CODE_SCOPE_INSERT_QUERY, args, function (result) {
         var rtn = {
             id: result.id,

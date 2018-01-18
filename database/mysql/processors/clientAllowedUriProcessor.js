@@ -88,7 +88,7 @@ exports.getClientAllowedUriList = function (clientId, callback) {
 exports.getClientAllowedUri = function (clientId, uri, callback) {
     var queryId = [clientId, uri];
     crud.get(clientQueries.CLIENT_ALLOWED_URI_QUERY, queryId, function (result) {
-        console.log("client uri: " + JSON.stringify(result));
+       // console.log("client uri: " + JSON.stringify(result));
         if (result.success && result.data.length > 0) {            
                 var rtn = {
                     id: result.data[0].id,

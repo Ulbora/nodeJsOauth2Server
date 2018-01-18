@@ -32,7 +32,7 @@ exports.addClientRoleUri = function (con, json, callback) {
         client_allowed_uri_id: json.clientAllowedUriId
     };
     crud.insertNoId(con, clientQueries.CLIENT_ROLE_URI_INSERT_QUERY, args, function (result) {
-        console.log("clientRoleUri insert: " + JSON.stringify(result));
+        //console.log("clientRoleUri insert: " + JSON.stringify(result));
         var rtn = {            
             success: result.success,
             message: result.message

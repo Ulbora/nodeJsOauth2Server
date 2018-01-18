@@ -38,8 +38,8 @@ exports.addSuper = function (req, res) {
         };
         oauth2.authorize(req, res, me, function () {
             var reqBody = req.body;
-            var bodyJson = JSON.stringify(reqBody);
-            console.log("body: " + bodyJson);
+            //var bodyJson = JSON.stringify(reqBody);
+            //console.log("body: " + bodyJson);
             clientRoleManager.addClientRoleSuper(reqBody, function (result) {
                 res.send(result);
             });
@@ -60,8 +60,8 @@ exports.add = function (req, res) {
         };
         oauth2.authorize(req, res, me, function () {
             var reqBody = req.body;
-            var bodyJson = JSON.stringify(reqBody);
-            console.log("body: " + bodyJson);
+            //var bodyJson = JSON.stringify(reqBody);
+            //console.log("body: " + bodyJson);
             clientRoleManager.addClientRole(reqBody, function (result) {
                 res.send(result);
             });
@@ -81,7 +81,7 @@ exports.list = function (req, res) {
         scope: "read"
     };
     oauth2.authorize(req, res, me, function () {
-        console.log("in auth callback");
+        //console.log("in auth callback");
         var clientId = req.params.clientId;
         if (clientId) {
             clientRoleManager.getClientRoleList(clientId, function (result) {

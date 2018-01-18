@@ -31,7 +31,7 @@ exports.addImplicitGrantScope = function (con, json, callback) {
         scope: json.scope,
         implicit_grant_id: json.implicitGrantId
     };
-    console.log("json in add addImplicitGrantScope :" + JSON.stringify(json));
+    //console.log("json in add addImplicitGrantScope :" + JSON.stringify(json));
     crud.insert(con, implicitGrantQueries.IMPLICIT_GRANT_SCOPE_INSERT_QUERY, args, function (result) {
         var rtn = {
             id: result.id,

@@ -175,7 +175,7 @@ exports.validateClientAndCallback = function (json, callback) {
     var clientId = json.clientId;
     var callbackUri = json.callbackUri;
     if (isOk && clientId && callbackUri) {
-        console.log("validateClientAndCallback: " + JSON.stringify(json));
+        //console.log("validateClientAndCallback: " + JSON.stringify(json));
         db.getClientRedirectUri(clientId, callbackUri, function (uriResults) {
             //console.log("validateClientAndCallback getClientRedirectUri: " + JSON.stringify(uriResults));
             //console.log("uriResults.id > -1: " + (uriResults.id > -1));
@@ -183,7 +183,7 @@ exports.validateClientAndCallback = function (json, callback) {
             //console.log("uriResults.uri === callbackUri: " + (uriResults.uri === callbackUri));
             if (uriResults.id > -1 && uriResults.clientId === clientId && uriResults.uri === callbackUri) {
                 db.getClient(clientId, function (cResult) {
-                    console.log("getClient in validateClientAndCallback: " + JSON.stringify(cResult));
+                    //console.log("getClient in validateClientAndCallback: " + JSON.stringify(cResult));
                     if (cResult && cResult.clientId > -1 && cResult.enabled) {
                         returnVal.valid = true;
                         returnVal.clientName = cResult.name;

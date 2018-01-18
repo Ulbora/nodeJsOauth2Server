@@ -48,17 +48,17 @@ exports.createClientGrant = function (json, callback) {
     var secret = json.secret;
     var isOk = manager.securityCheck(json);
     if (isOk && clientId && secret) {
-        console.log("in ClientGrant req: " + JSON.stringify(json));
+       //console.log("in ClientGrant req: " + JSON.stringify(json));
         db.getClient(clientId, function (clientResult) {
             if (clientResult && clientResult.clientId && clientResult.clientId === clientId &&
                     clientResult.secret === secret && clientResult.enabled) {
                 manager.grantTypeTurnedOn(clientId, grantTypeConstants.CLIENT_CRENDENTIAL_GRANT_TYPE, function (turnedOn) {
                     if (turnedOn) {
                         db.deleteCredentialsGrant(clientId, function (deleteResult) {
-                            console.log("deleteCredentialsGrant: " + JSON.stringify(deleteResult));
+                            //console.log("deleteCredentialsGrant: " + JSON.stringify(deleteResult));
                             if (deleteResult.success) {
                                 db.getClientRoleAllowedUriListByClientId(clientId, function (clientRoleUriList) {
-                                    console.log("clientRoleUriList: " + JSON.stringify(clientRoleUriList));
+                                    //console.log("clientRoleUriList: " + JSON.stringify(clientRoleUriList));
                                     if (clientRoleUriList) {
                                         var roleUriList = [];
                                         for (var cnt = 0; cnt < clientRoleUriList.length; cnt++) {

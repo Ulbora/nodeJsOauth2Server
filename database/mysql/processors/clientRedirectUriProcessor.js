@@ -99,7 +99,7 @@ exports.deleteAllClientRedirectUri = function (con, clientId, callback) {
         message: ""
     };
     crud.delete(con, clientQueries.CLIENT_REDIRECT_URI_DELETE_ALL_QUERY, queryId, function (delResult) {
-        console.log("delete results in deleteAllClientRedirectUri: " + JSON.stringify(delResult));
+        //console.log("delete results in deleteAllClientRedirectUri: " + JSON.stringify(delResult));
         if (delResult.success) {
             rtn.success = true;
             callback(rtn);

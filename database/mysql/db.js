@@ -359,7 +359,7 @@ exports.addAuthorizationCode = function (authCodeJson, accessTokenJson, refreshT
                 if (!err) {
                     if (refreshTokenJson) {
                         refreshTokenProcessor.addRefreshToken(con, refreshTokenJson, function (refreshResult) {
-                            console.log("refresh token: " + JSON.stringify(refreshResult));
+                            //console.log("refresh token: " + JSON.stringify(refreshResult));
                             if (refreshResult.id > -1) {
                                 var accTokenJson = accessTokenJson;
                                 accTokenJson.refreshTokenId = refreshResult.id;
@@ -394,7 +394,7 @@ exports.addAuthorizationCode = function (authCodeJson, accessTokenJson, refreshT
 var doAuthCodeAdd = function (con, rtn, authCodeJson, accTokenJson, scopeList, callback) {
     accessTokenProcessor.addAccessToken(con, accTokenJson, function (accessResult) {
         //console.log("access token: " + JSON.stringify(accessResult));
-        console.log("authCodeJson: " + JSON.stringify(authCodeJson));
+       // console.log("authCodeJson: " + JSON.stringify(authCodeJson));
         if (accessResult.id > -1) {
             var acJson = authCodeJson;
             //acJson.expires = accTokenJson.expires;
@@ -488,8 +488,8 @@ exports.updateAuthorizationCodeAndTokens = function (authCodeJson, accessTokenJs
 
 var doAuthCodeUpdate = function (con, rtn, authCodeJson, accTokenJson, callback) {
     accessTokenProcessor.updateAccessToken(con, accTokenJson, function (accessResult) {
-        console.log("access token: " + JSON.stringify(accessResult));
-        console.log("authCodeJson: " + JSON.stringify(authCodeJson));
+        //console.log("access token: " + JSON.stringify(accessResult));
+        //console.log("authCodeJson: " + JSON.stringify(authCodeJson));
         if (accessResult.success) {
             authorizationCodeProcessor.updateAuthorizationCodeToken(con, authCodeJson, function (acResult) {
                 if (acResult.success) {
@@ -538,15 +538,15 @@ exports.deleteAuthorizationCode = function (clientId, userId, callback) {
         success: false,
         message: ""
     };
-    console.log("starting connection in delete code clientId: " + clientId + " userId: " + userId);
+    //console.log("starting connection in delete code clientId: " + clientId + " userId: " + userId);
     crud.getConnection(function (err, con) {
         if (!err && con) {
             con.beginTransaction(function (err) {
                 if (!err) {
-                    console.log("starting transaction in delete code: ");
+                   // console.log("starting transaction in delete code: ");
                     var refreshTokenId;
                     authorizationCodeProcessor.getAuthorizationCode(clientId, userId, function (acResult) {
-                        console.log("getAuthorizationCode in delete: " + JSON.stringify(acResult));
+                        //console.log("getAuthorizationCode in delete: " + JSON.stringify(acResult));
                         if (acResult && acResult.accessTokenId) {
                             accessTokenProcessor.getAccessToken(acResult.accessTokenId, function (accTokenResult) {
                                 if (accTokenResult && accTokenResult.refreshTokenId) {
@@ -555,12 +555,12 @@ exports.deleteAuthorizationCode = function (clientId, userId, callback) {
                                 authCodeRevokeProcessor.deleteAuthCodeRevoke(null, acResult.authorizationCode, function (revokeResult) {
                                     if (revokeResult.success) {
                                         authorizationCodeScopeProcessor.deleteAuthorizationCodeScopeList(con, acResult.authorizationCode, function (scopeDelResult) {
-                                            console.log("deleteAuthorizationCodeScopeList in delete: " + JSON.stringify(scopeDelResult));
+                                            //console.log("deleteAuthorizationCodeScopeList in delete: " + JSON.stringify(scopeDelResult));
                                             if (scopeDelResult.success) {
                                                 authorizationCodeProcessor.deleteAuthorizationCode(con, clientId, userId, function (acDelResult) {
                                                     if (acDelResult.success) {
                                                         accessTokenProcessor.deleteAccessToken(con, acResult.accessTokenId, function (accTokenDelResult) {
-                                                            console.log("deleteAccessToken in delete: " + JSON.stringify(accTokenDelResult));
+                                                            //console.log("deleteAccessToken in delete: " + JSON.stringify(accTokenDelResult));
                                                             if (accTokenDelResult.success) {
                                                                 if (refreshTokenId) {
                                                                     refreshTokenProcessor.deleteRefreshToken(con, refreshTokenId, function (rfTokenDelResult) {

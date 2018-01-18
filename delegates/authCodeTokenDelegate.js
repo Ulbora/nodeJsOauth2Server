@@ -45,9 +45,9 @@ exports.authCodeToken = function (json, callback) {
     var redirectUri = json.redirectUri;
     if (isOk && clientId && secret && code && redirectUri) {
         //validate client
-        console.log("in authCodeToken req: " + JSON.stringify(json));
+        //console.log("in authCodeToken req: " + JSON.stringify(json));
         db.getClient(clientId, function (clientResult) {
-            console.log("in authCodeToken result: " + JSON.stringify(clientResult));
+            //console.log("in authCodeToken result: " + JSON.stringify(clientResult));
             if (clientResult && clientResult.clientId && clientResult.clientId === clientId &&
                     clientResult.secret === secret && clientResult.enabled) {
                 //validate redirect uri
@@ -55,7 +55,7 @@ exports.authCodeToken = function (json, callback) {
                     if (uriResult && uriResult.id > 0) {
                         // get authCode and validate code
                         db.getAuthorizationCodeByCode(code, function (acResult) {
-                            console.log("in authCodeToken ac result: " + JSON.stringify(acResult));
+                            //console.log("in authCodeToken ac result: " + JSON.stringify(acResult));
                             if (acResult && acResult.clientId === clientId) {
                                 // check that token is not revolked
                                 db.getAuthCodeRevoke(acResult.authorizationCode, function (revokeResult) {
@@ -83,7 +83,7 @@ exports.authCodeToken = function (json, callback) {
                                                 if (updateResult.success) {
                                                     //get access token
                                                     db.getAccessToken(acResult.accessTokenId, function (tokenResult) {
-                                                        console.log("accesstoken result: " + JSON.stringify(tokenResult));
+                                                        //console.log("accesstoken result: " + JSON.stringify(tokenResult));
                                                         if (tokenResult && tokenResult.id > 0) {
                                                             //get refresh token      
                                                             rtn.access_token = tokenResult.token;

@@ -38,8 +38,8 @@ exports.addSuper = function (req, res) {
         };
         oauth2.authorize(req, res, me, function () {
             var reqBody = req.body;
-            var bodyJson = JSON.stringify(reqBody);
-            console.log("body: " + bodyJson);
+            //var bodyJson = JSON.stringify(reqBody);
+           // console.log("body: " + bodyJson);
             clientAllowedUriManager.addClientAllowedUriSuper(reqBody, function (result) {
                 res.send(result);
             });
@@ -60,8 +60,8 @@ exports.add = function (req, res) {
         };
         oauth2.authorize(req, res, me, function () {
             var reqBody = req.body;
-            var bodyJson = JSON.stringify(reqBody);
-            console.log("body: " + bodyJson);
+            //var bodyJson = JSON.stringify(reqBody);
+            //console.log("body: " + bodyJson);
             clientAllowedUriManager.addClientAllowedUri(reqBody, function (result) {
                 res.send(result);
             });
@@ -81,8 +81,8 @@ exports.updateSuper = function (req, res) {
         };
         oauth2.authorize(req, res, me, function () {
             var reqBody = req.body;
-            var bodyJson = JSON.stringify(reqBody);
-            console.log("body: " + bodyJson);
+            //var bodyJson = JSON.stringify(reqBody);
+            //console.log("body: " + bodyJson);
             clientAllowedUriManager.updateClientAllowedUriSuper(reqBody, function (result) {
                 res.send(result);
             });
@@ -103,8 +103,8 @@ exports.update = function (req, res) {
         };
         oauth2.authorize(req, res, me, function () {
             var reqBody = req.body;
-            var bodyJson = JSON.stringify(reqBody);
-            console.log("body: " + bodyJson);
+           // var bodyJson = JSON.stringify(reqBody);
+           // console.log("body: " + bodyJson);
             clientAllowedUriManager.updateClientAllowedUri(reqBody, function (result) {
                 res.send(result);
             });
@@ -141,7 +141,7 @@ exports.list = function (req, res) {
         scope: "read"
     };
     oauth2.authorize(req, res, me, function () {
-        console.log("in auth callback");
+        //console.log("in auth callback");
         var clientId = req.params.clientId;
         if (clientId) {
             clientAllowedUriManager.getClientAllowedUriList(clientId, function (result) {
@@ -155,7 +155,7 @@ exports.list = function (req, res) {
 };
 
 exports.delete = function (req, res) {
-    console.log("in auth callback");
+    //console.log("in auth callback");
     var me = {
         role: "admin",
         uri: "/ulbora/rs/clientAllowedUri/delete",

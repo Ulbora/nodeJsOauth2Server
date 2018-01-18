@@ -17,8 +17,8 @@ exports.login = function (loginJson, callback) {
         if (!err && body) {
             var statusCode = res.statusCode;
             if(statusCode === 200){
-                console.log('body: ', body);
-                console.log('body.valid: ', body.valid);
+                //console.log('body: ', body);
+                //console.log('body.valid: ', body.valid);
                 if(body.valid){
                     rtn.valid = true;
                 }                

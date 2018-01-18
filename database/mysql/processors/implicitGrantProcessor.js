@@ -32,7 +32,7 @@ exports.addImplicitGrant = function (con, json, callback) {
         user_id: json.userId,        
         access_token_id: json.accessTokenId
     };
-    console.log("json in add addImplicitGrant :" + JSON.stringify(json));
+    //console.log("json in add addImplicitGrant :" + JSON.stringify(json));
     crud.insert(con, implicitGrantQueries.IMPLICIT_GRANT_INSERT_QUERY, args, function (result) {
         var rtn = {
             id: result.id,
@@ -66,9 +66,9 @@ exports.getImplicitGrant = function (clientId, userId, callback) {
 
 exports.getImplicitGrantByScope = function (clientId, userId, scope, callback) {
     var queryId = [clientId, userId, scope];
-    console.log("getImplicitGrantByScope clientId: " + clientId + " userId: " + userId + " scope: " + scope);
+    //console.log("getImplicitGrantByScope clientId: " + clientId + " userId: " + userId + " scope: " + scope);
     crud.get(implicitGrantQueries.IMPLICIT_GRANT_GET_BY_SCOPE_QUERY, queryId, function (result) {
-        console.log("getImplicitGrantByScope in processor:" + JSON.stringify(result));
+        //console.log("getImplicitGrantByScope in processor:" + JSON.stringify(result));
         var rtn = {
             authorized: false
         };

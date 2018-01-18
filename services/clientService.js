@@ -39,8 +39,8 @@ exports.add = function (req, res) {
         };
         oauth2.authorize(req, res, me, function () {
             var reqBody = req.body;
-            var bodyJson = JSON.stringify(reqBody);
-            console.log("body: " + bodyJson);
+            //var bodyJson = JSON.stringify(reqBody);
+            //console.log("body: " + bodyJson);
             clientManager.addClient(reqBody, function (result) {
                 res.send(result);
             });
@@ -60,8 +60,8 @@ exports.update = function (req, res) {
         };
         oauth2.authorize(req, res, me, function () {
             var reqBody = req.body;
-            var bodyJson = JSON.stringify(reqBody);
-            console.log("body: " + bodyJson);
+            //var bodyJson = JSON.stringify(reqBody);
+            //console.log("body: " + bodyJson);
             clientManager.updateClient(reqBody, function (result) {
                 res.send(result);
             });
@@ -120,7 +120,7 @@ exports.list = function (req, res) {
         scope: "read"
     };
     oauth2.authorize(req, res, me, function () {
-        console.log("in auth callback");
+        //console.log("in auth callback");
         clientManager.getClientList(function (result) {
             res.send(result);
         });
@@ -137,8 +137,8 @@ exports.search = function (req, res) {
         };
         oauth2.authorize(req, res, me, function () {
             var reqBody = req.body;
-            var bodyJson = JSON.stringify(reqBody);
-            console.log("body: " + bodyJson);
+           // var bodyJson = JSON.stringify(reqBody);
+            //console.log("body: " + bodyJson);
             clientManager.getClientSearchList(reqBody, function (result) {
                 res.send(result);
             });

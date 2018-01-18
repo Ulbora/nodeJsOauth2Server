@@ -8,7 +8,7 @@ exports.init = function (db) {
 exports.authorize = function (req, res) {
     var loggedIn = req.session.loggedIn;
     var user = req.session.user;
-    console.log("user: " + user + " logged in: " + loggedIn);
+    //console.log("user: " + user + " logged in: " + loggedIn);
     var responseType = req.query.response_type;
     var clientIdStr = req.query.client_id;
     var clientId;
@@ -35,7 +35,7 @@ exports.authorize = function (req, res) {
         req.session.oauthGrantObj = oauthGrantObj;
         res.redirect('/login');
     } else {
-        console.log("oauthGrantObj in authController before response type: " + JSON.stringify(oauthGrantObj));
+        //console.log("oauthGrantObj in authController before response type: " + JSON.stringify(oauthGrantObj));
         if (responseType === "code") {
             //must authorize before adding
             var authJson = {
@@ -45,7 +45,7 @@ exports.authorize = function (req, res) {
             };
             authorizationCodeManager.checkApplicationAuthorization(authJson, function (result) {
                 if (result && result.authorized) {
-                    console.log("oauthGrantObj in authController: " + JSON.stringify(oauthGrantObj));
+                    //console.log("oauthGrantObj in authController: " + JSON.stringify(oauthGrantObj));
                     var json = {
                         clientId: clientId,
                         userId: user,
@@ -53,10 +53,10 @@ exports.authorize = function (req, res) {
                         redirectUri: redirectUri
                     };
                     authorizationCodeManager.authorize(json, function (result) {
-                        console.log("authorization code: " + JSON.stringify(result));
+                        //console.log("authorization code: " + JSON.stringify(result));
                         if (result.success && result.authorizationCode && result.authorizationCode > -1) {
                             var cb = redirectUri + "?code=" + result.codeString+ "&state=" + oauthGrantObj.state;
-                            console.log("authorization code cb: " + cb);
+                            //console.log("authorization code cb: " + cb);
                             res.redirect(cb);
                         } else {
                             res.redirect('/oauthError?error=' + result.error);
@@ -76,7 +76,7 @@ exports.authorize = function (req, res) {
             };
             implicitGrantManager.checkApplicationAuthorization(authJson, function (result) {
                 if (result && result.authorized) {
-                    console.log("oauthGrantObj in authController: " + JSON.stringify(oauthGrantObj));
+                    //console.log("oauthGrantObj in authController: " + JSON.stringify(oauthGrantObj));
                     var json = {
                         clientId: clientId,
                         userId: user,
@@ -84,10 +84,10 @@ exports.authorize = function (req, res) {
                         redirectUri: redirectUri
                     };
                     implicitGrantManager.authorize(json, function (result) {
-                        console.log("implicit: " + JSON.stringify(result));
+                        //console.log("implicit: " + JSON.stringify(result));
                         if (result.success && result.token) {
                             var cb = redirectUri + "?token=" + result.token+ "&token_type=bearer&state=" + oauthGrantObj.state;
-                            console.log("implicit cb: " + cb);
+                            //console.log("implicit cb: " + cb);
                             res.redirect(cb);
                         } else {
                             res.redirect('/oauthError?error=' + result.error);
@@ -155,7 +155,7 @@ exports.authorizeApp = function (req, res) {
 
 exports.applicationAuthorization = function (req, res) {
     var authorize = req.query.authorize;
-    console.log("authorize: " + authorize);
+    //console.log("authorize: " + authorize);
     var oauthGrantObj = req.session.oauthGrantObj;
     req.session.oauthGrantObj = undefined;
     var user = req.session.user;
@@ -166,9 +166,9 @@ exports.applicationAuthorization = function (req, res) {
             scope: oauthGrantObj.scope,
             redirectUri: oauthGrantObj.redirectUri
         };
-        console.log("authorization code json: " + JSON.stringify(json));
+        //console.log("authorization code json: " + JSON.stringify(json));
         authorizationCodeManager.authorize(json, function (result) {
-            console.log("authorization code: " + JSON.stringify(result));
+            //console.log("authorization code: " + JSON.stringify(result));
             if (result.success && result.authorizationCode && result.authorizationCode > -1) {
                 var cb = oauthGrantObj.redirectUri + "?code=" + result.codeString + "&state=" + oauthGrantObj.state;
                 res.redirect(cb);
@@ -183,9 +183,9 @@ exports.applicationAuthorization = function (req, res) {
             scope: oauthGrantObj.scope,
             redirectUri: oauthGrantObj.redirectUri
         };
-        console.log("authorization code json: " + JSON.stringify(json));
+        //console.log("authorization code json: " + JSON.stringify(json));
         implicitGrantManager.authorize(json, function (result) {
-            console.log("implicit grant: " + JSON.stringify(result));
+            //console.log("implicit grant: " + JSON.stringify(result));
             if (result.success && result.token) {
                 //var cb = oauthGrantObj.redirectUri + "?code=" + result.codeString + "&state=" + oauthGrantObj.state;
                 var cb = oauthGrantObj.redirectUri + "?token=" + result.token+ "&token_type=bearer&state=" + oauthGrantObj.state;

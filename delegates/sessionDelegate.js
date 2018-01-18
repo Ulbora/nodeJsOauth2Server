@@ -36,7 +36,7 @@ exports.createSessionStore = function (session, callback) {
             //console.log("session key: " + result.key);
             rtn.key = result.key;
             db.getSessionStore(session, function (sessionStore) {
-                console.log("session store: " + sessionStore);
+                //console.log("session store: " + sessionStore);
                 rtn.store = sessionStore;
                 rtn.success = true;
                 callback(rtn);

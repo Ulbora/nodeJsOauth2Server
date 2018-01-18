@@ -44,7 +44,7 @@ exports.authorize = function (req, res, me, callback) {
             var role = me.role;
             //var uri = prot + "://" + host + me.uri;
             var uri = me.uri;
-            console.log("uri: " + uri);
+            //console.log("uri: " + uri);
             var scope = me.scope;
             var authJson = {
                 accessToken: token,
