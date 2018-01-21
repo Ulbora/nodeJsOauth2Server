@@ -11,24 +11,25 @@ exports.login = function (loginJson, callback) {
         method: 'post',
         body: loginJson,
         json: true,
+        timeout: 8000,
         url: url
     };
     request(options, function (err, res, body) {
         if (!err && body) {
             var statusCode = res.statusCode;
-            if(statusCode === 200){
+            if (statusCode === 200) {
                 //console.log('body: ', body);
                 //console.log('body.valid: ', body.valid);
-                if(body.valid){
+                if (body.valid) {
                     rtn.valid = true;
-                }                
+                }
                 callback(rtn);
-            }else{
+            } else {
                 callback(rtn);
             }
-        }else{
+        } else {
             console.error('error posting json: ', err);
             callback(rtn);
-        } 
+        }
     });
 };
