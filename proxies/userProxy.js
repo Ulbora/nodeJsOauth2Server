@@ -11,7 +11,8 @@ exports.login = function (loginJson, callback) {
         method: 'post',
         body: loginJson,
         json: true,
-        timeout: 8000,
+        forever: true,
+        timeout: 120000,
         url: url
     };
     request(options, function (err, res, body) {
