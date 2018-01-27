@@ -299,7 +299,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ulbora_oauth2_server`.`client_redirect_uri` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
-  `uri` VARCHAR(45) NOT NULL,
+  `uri` VARCHAR(80) NOT NULL,
   `client_id` BIGINT NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC),
