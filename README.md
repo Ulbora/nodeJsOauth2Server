@@ -1,3 +1,5 @@
+[![Maintainability](https://api.codeclimate.com/v1/badges/e7d194ae6ae91a5f9add/maintainability)](https://codeclimate.com/github/Ulbora/nodeJsOauth2Server/maintainability)
+
 Ulbora Oauth2 Server 
 ==============
 
