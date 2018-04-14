@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for Oauth2Server/delegates/accessTokenRefreshDelegate.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">Oauth2Server/delegates/</a> accessTokenRefreshDelegate.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">70.42% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>50/71</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">71.05% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>27/38</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>10/10</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">70.42% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>50/71</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line medium'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/*     
+ Copyright (C) 2016 Ulbora Labs Inc. (www.ulboralabs.com)
+ All rights reserved.
+ 
+ Copyright (C) 2016 Ken Williamson
+ All rights reserved.
+ 
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published
+ by the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ 
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+ 
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+ */
+&nbsp;
+&nbsp;
+//var authCodeTokenDelegate = require("./authCodeTokenDelegate");
+var refreshTokenDelegate = require("../delegates/refreshTokenDelegate");
+var accessTokenDelegate = require("../delegates/accessTokenDelegate");
+var manager = require("../managers/manager");
+var config = require("../configuration");
+&nbsp;
+var db;
+&nbsp;
+exports.init = function (database) {
+    db = database;
+    refreshTokenDelegate.init(db);
+    accessTokenDelegate.init(db);
+};
+&nbsp;
+exports.refreshToken = function(json, callback){
+     var error = {
+        error: null
+    };
+    var rtn = {
+        access_token: null,
+        token_type: "bearer",
+        expires_in: config.CODE_ACCESS_TOKEN_LIFE,
+        refresh_token: null
+    };
+    var isOk = manager.securityCheck(json);
+    var clientId = json.clientId;
+    var secret = json.secret;
+    var refTokenOld = json.refreshToken;
+    var userId;
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (isOk &amp;&amp; clientId &amp;&amp; secret) {
+        // validate client
+        db.getClient(clientId, function (clientResult) {
+            if (clientResult &amp;&amp; clientResult.clientId &amp;&amp; clientResult.clientId === clientId &amp;&amp;
+                    clientResult.secret === secret) {
+                //decode refresh token and get client and userId sub: code or password
+                refreshTokenDelegate.decodeRefreshToken(refTokenOld, function (decode) {
+                    <span class="missing-if-branch" title="else path not taken" >E</span>if (decode &amp;&amp; decode.clientId === clientId) {
+                        userId = decode.userId; 
+                        var unHashUser = manager.unHashUser(userId);
+                        var sub = decode.sub;
+                        var claim = {
+                            userId: userId,
+                            clientId: clientId
+                        };
+                        refreshTokenDelegate.validateRefreshToken(refTokenOld, claim, function (valid) {
+                            //verify refresh token
+                            <span class="missing-if-branch" title="else path not taken" >E</span>if (valid) {
+                                //if code
+                                <span class="missing-if-branch" title="else path not taken" >E</span>if (sub === "code") {
+                                    // get authcode by client and user
+                                    db.getAuthorizationCode(clientId, unHashUser, function (authCodeResult) {                                        
+                                        <span class="missing-if-branch" title="else path not taken" >E</span>if (authCodeResult &amp;&amp; authCodeResult.userId === unHashUser) {                                           
+                                                //get accessToken from db
+                                                db.getAccessToken(authCodeResult.accessTokenId, function (accessTokenResult) {
+                                                    <span class="missing-if-branch" title="else path not taken" >E</span>if (accessTokenResult &amp;&amp; accessTokenResult.id &gt; 0) {
+                                                        // decode access token
+                                                        accessTokenDelegate.decodeAccessToken(accessTokenResult.token, function (decoded) {
+                                                            <span class="missing-if-branch" title="else path not taken" >E</span>if (decoded &amp;&amp; decoded.userId === userId &amp;&amp; decoded.clientId === clientId) {
+                                                                var accessPayload = {
+                                                                    sub: "access",
+                                                                    grant: "code",
+                                                                    userId: userId,
+                                                                    clientId: clientId,
+                                                                    roleUris: decoded.roleUris,
+                                                                    scopeList: decoded.scopeList,
+                                                                    expiresIn: config.CODE_ACCESS_TOKEN_LIFE
+                                                                };
+                                                                // generate new  access token
+                                                                accessTokenDelegate.generateAccessToken(accessPayload, function (accessToken) {
+                                                                    <span class="missing-if-branch" title="else path not taken" >E</span>if (accessToken) {
+                                                                        var dateNow = new Date();
+                                                                        var acExpires = new Date(dateNow.getTime() + 300000);
+                                                                        var acTokenExpires = new Date(dateNow.getTime() + (config.CODE_ACCESS_TOKEN_LIFE * 60000));                                                                        
+                                                                        var accessTknJson = {
+                                                                            token: accessToken,
+                                                                            expires: acTokenExpires,
+                                                                            refreshTokenId: accessTokenResult.refreshTokenId,
+                                                                            id: authCodeResult.accessTokenId
+                                                                        };
+                                                                        var authCodeJson = {
+                                                                            expires: acExpires,
+                                                                            authorizationCode: authCodeResult.authorizationCode
+                                                                        };
+                                                                        //update auth code, refresh token and access token
+                                                                        db.updateAuthorizationCodeAndTokens(authCodeJson, accessTknJson, function (authCodeUpdateResult) {
+                                                                            <span class="missing-if-branch" title="else path not taken" >E</span>if (authCodeUpdateResult.success) {
+                                                                                rtn.access_token = accessToken;
+                                                                                rtn.refresh_token = refTokenOld;
+                                                                                callback(rtn);
+                                                                            } else {
+<span class="cstat-no" title="statement not covered" >                                                                                error.error = "invalid_client";</span>
+<span class="cstat-no" title="statement not covered" >                                                                                callback(error);</span>
+                                                                            }
+                                                                        });
+                                                                    } else {
+<span class="cstat-no" title="statement not covered" >                                                                        error.error = "invalid_client";</span>
+<span class="cstat-no" title="statement not covered" >                                                                        callback(error);</span>
+                                                                    }
+                                                                });
+                                                            } else {
+<span class="cstat-no" title="statement not covered" >                                                                error.error = "invalid_client";</span>
+<span class="cstat-no" title="statement not covered" >                                                                callback(error);</span>
+                                                            }
+                                                        });
+                                                    } else {
+<span class="cstat-no" title="statement not covered" >                                                        error.error = "invalid_client";</span>
+<span class="cstat-no" title="statement not covered" >                                                        callback(error);</span>
+                                                    }
+                                                });                                            
+                                        } else {
+<span class="cstat-no" title="statement not covered" >                                            error.error = "invalid_client";</span>
+<span class="cstat-no" title="statement not covered" >                                            callback(error);</span>
+                                        }
+                                    });
+                                } else <span class="cstat-no" title="statement not covered" >if (sub === "password") {</span>
+<span class="cstat-no" title="statement not covered" >                                    error.error = "invalid_client";</span>
+<span class="cstat-no" title="statement not covered" >                                    callback(error);</span>
+                                } else {
+<span class="cstat-no" title="statement not covered" >                                    error.error = "invalid_client";</span>
+<span class="cstat-no" title="statement not covered" >                                    callback(error);</span>
+                                }
+                            } else {
+<span class="cstat-no" title="statement not covered" >                                error.error = "invalid_client";</span>
+<span class="cstat-no" title="statement not covered" >                                callback(error);</span>
+                            }
+                        });
+                    } else {
+<span class="cstat-no" title="statement not covered" >                        error.error = "invalid_client";</span>
+<span class="cstat-no" title="statement not covered" >                        callback(error);</span>
+                    }
+                });
+            } else {
+                error.error = "invalid_client";
+                callback(error);
+            }
+        });
+    } else {
+<span class="cstat-no" title="statement not covered" >        error.error = "invalid_request";</span>
+<span class="cstat-no" title="statement not covered" >        callback(error);</span>
+    }
+};
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sat Apr 14 2018 19:15:30 GMT-0400 (EDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

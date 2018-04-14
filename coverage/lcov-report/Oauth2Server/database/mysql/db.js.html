@@ -1,0 +1,3554 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for Oauth2Server/database/mysql/db.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../../index.html">all files</a> / <a href="index.html">Oauth2Server/database/mysql/</a> db.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">67.95% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>422/621</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">56.07% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>134/239</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">96.13% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>149/155</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">67.95% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>422/621</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line medium'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481
+482
+483
+484
+485
+486
+487
+488
+489
+490
+491
+492
+493
+494
+495
+496
+497
+498
+499
+500
+501
+502
+503
+504
+505
+506
+507
+508
+509
+510
+511
+512
+513
+514
+515
+516
+517
+518
+519
+520
+521
+522
+523
+524
+525
+526
+527
+528
+529
+530
+531
+532
+533
+534
+535
+536
+537
+538
+539
+540
+541
+542
+543
+544
+545
+546
+547
+548
+549
+550
+551
+552
+553
+554
+555
+556
+557
+558
+559
+560
+561
+562
+563
+564
+565
+566
+567
+568
+569
+570
+571
+572
+573
+574
+575
+576
+577
+578
+579
+580
+581
+582
+583
+584
+585
+586
+587
+588
+589
+590
+591
+592
+593
+594
+595
+596
+597
+598
+599
+600
+601
+602
+603
+604
+605
+606
+607
+608
+609
+610
+611
+612
+613
+614
+615
+616
+617
+618
+619
+620
+621
+622
+623
+624
+625
+626
+627
+628
+629
+630
+631
+632
+633
+634
+635
+636
+637
+638
+639
+640
+641
+642
+643
+644
+645
+646
+647
+648
+649
+650
+651
+652
+653
+654
+655
+656
+657
+658
+659
+660
+661
+662
+663
+664
+665
+666
+667
+668
+669
+670
+671
+672
+673
+674
+675
+676
+677
+678
+679
+680
+681
+682
+683
+684
+685
+686
+687
+688
+689
+690
+691
+692
+693
+694
+695
+696
+697
+698
+699
+700
+701
+702
+703
+704
+705
+706
+707
+708
+709
+710
+711
+712
+713
+714
+715
+716
+717
+718
+719
+720
+721
+722
+723
+724
+725
+726
+727
+728
+729
+730
+731
+732
+733
+734
+735
+736
+737
+738
+739
+740
+741
+742
+743
+744
+745
+746
+747
+748
+749
+750
+751
+752
+753
+754
+755
+756
+757
+758
+759
+760
+761
+762
+763
+764
+765
+766
+767
+768
+769
+770
+771
+772
+773
+774
+775
+776
+777
+778
+779
+780
+781
+782
+783
+784
+785
+786
+787
+788
+789
+790
+791
+792
+793
+794
+795
+796
+797
+798
+799
+800
+801
+802
+803
+804
+805
+806
+807
+808
+809
+810
+811
+812
+813
+814
+815
+816
+817
+818
+819
+820
+821
+822
+823
+824
+825
+826
+827
+828
+829
+830
+831
+832
+833
+834
+835
+836
+837
+838
+839
+840
+841
+842
+843
+844
+845
+846
+847
+848
+849
+850
+851
+852
+853
+854
+855
+856
+857
+858
+859
+860
+861
+862
+863
+864
+865
+866
+867
+868
+869
+870
+871
+872
+873
+874
+875
+876
+877
+878
+879
+880
+881
+882
+883
+884
+885
+886
+887
+888
+889
+890
+891
+892
+893
+894
+895
+896
+897
+898
+899
+900
+901
+902
+903
+904
+905
+906
+907
+908
+909
+910
+911
+912
+913
+914
+915
+916
+917
+918
+919
+920
+921
+922
+923
+924
+925
+926
+927
+928
+929
+930
+931
+932
+933
+934
+935
+936
+937
+938
+939
+940
+941
+942
+943
+944
+945
+946
+947
+948
+949
+950
+951
+952
+953
+954
+955
+956
+957
+958
+959
+960
+961
+962
+963
+964
+965
+966
+967
+968
+969
+970
+971
+972
+973
+974
+975
+976
+977
+978
+979
+980
+981
+982
+983
+984
+985
+986
+987
+988
+989
+990
+991
+992
+993
+994
+995
+996
+997
+998
+999
+1000
+1001
+1002
+1003
+1004
+1005
+1006
+1007
+1008
+1009
+1010
+1011
+1012
+1013
+1014
+1015
+1016
+1017
+1018
+1019
+1020
+1021
+1022
+1023
+1024
+1025
+1026
+1027
+1028
+1029
+1030
+1031
+1032
+1033
+1034
+1035
+1036
+1037
+1038
+1039
+1040
+1041
+1042
+1043
+1044
+1045
+1046
+1047
+1048
+1049
+1050
+1051
+1052
+1053
+1054
+1055
+1056
+1057
+1058
+1059
+1060
+1061
+1062
+1063
+1064
+1065
+1066
+1067
+1068
+1069
+1070
+1071
+1072
+1073
+1074
+1075
+1076
+1077
+1078
+1079
+1080
+1081
+1082
+1083
+1084
+1085
+1086
+1087
+1088
+1089
+1090
+1091
+1092
+1093
+1094
+1095
+1096
+1097
+1098
+1099
+1100
+1101
+1102
+1103
+1104
+1105
+1106
+1107
+1108
+1109
+1110
+1111
+1112
+1113
+1114
+1115
+1116
+1117
+1118
+1119
+1120
+1121
+1122
+1123
+1124
+1125
+1126
+1127
+1128
+1129
+1130
+1131
+1132
+1133
+1134
+1135
+1136
+1137
+1138
+1139
+1140
+1141
+1142
+1143
+1144
+1145
+1146
+1147
+1148
+1149
+1150
+1151
+1152
+1153
+1154
+1155
+1156
+1157
+1158
+1159
+1160
+1161
+1162
+1163
+1164</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">61×</span>
+<span class="cline-any cline-yes">61×</span>
+<span class="cline-any cline-yes">61×</span>
+<span class="cline-any cline-yes">61×</span>
+<span class="cline-any cline-yes">61×</span>
+<span class="cline-any cline-yes">61×</span>
+<span class="cline-any cline-yes">61×</span>
+<span class="cline-any cline-yes">61×</span>
+<span class="cline-any cline-yes">61×</span>
+<span class="cline-any cline-yes">61×</span>
+<span class="cline-any cline-yes">61×</span>
+<span class="cline-any cline-yes">61×</span>
+<span class="cline-any cline-yes">61×</span>
+<span class="cline-any cline-yes">61×</span>
+<span class="cline-any cline-yes">61×</span>
+<span class="cline-any cline-yes">61×</span>
+<span class="cline-any cline-yes">61×</span>
+<span class="cline-any cline-yes">61×</span>
+<span class="cline-any cline-yes">61×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">46×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">46×</span>
+<span class="cline-any cline-yes">46×</span>
+<span class="cline-any cline-yes">46×</span>
+<span class="cline-any cline-yes">46×</span>
+<span class="cline-any cline-yes">46×</span>
+<span class="cline-any cline-yes">46×</span>
+<span class="cline-any cline-yes">46×</span>
+<span class="cline-any cline-yes">46×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">36×</span>
+<span class="cline-any cline-yes">36×</span>
+<span class="cline-any cline-yes">36×</span>
+<span class="cline-any cline-yes">36×</span>
+<span class="cline-any cline-yes">36×</span>
+<span class="cline-any cline-yes">36×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">28×</span>
+<span class="cline-any cline-yes">28×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">28×</span>
+<span class="cline-any cline-yes">28×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">28×</span>
+<span class="cline-any cline-yes">28×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">94×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">46×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">46×</span>
+<span class="cline-any cline-yes">46×</span>
+<span class="cline-any cline-yes">46×</span>
+<span class="cline-any cline-yes">46×</span>
+<span class="cline-any cline-yes">46×</span>
+<span class="cline-any cline-yes">46×</span>
+<span class="cline-any cline-yes">46×</span>
+<span class="cline-any cline-yes">46×</span>
+<span class="cline-any cline-yes">46×</span>
+<span class="cline-any cline-yes">46×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">46×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">46×</span>
+<span class="cline-any cline-yes">46×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">31×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">24×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">42×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/*     
+ Copyright (C) 2016 Ulbora Labs Inc. (www.ulboralabs.com)
+ All rights reserved.
+ 
+ Copyright (C) 2016 Ken Williamson
+ All rights reserved.
+ 
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published
+ by the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ 
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+ 
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+ */
+&nbsp;
+var crud = require("./crud/mysqlCrud");
+var clientProcessor = require("./processors/clientProcessor");
+var clientAllowedUriProcessor = require("./processors/clientAllowedUriProcessor");
+var clientRedirectUriProcessor = require("./processors/clientRedirectUriProcessor");
+var clientRoleProcessor = require("./processors/clientRoleProcessor");
+var clientGrantTypeProcessor = require("./processors/clientGrantTypeProcessor");
+var clientScopeProcessor = require("./processors/clientScopeProcessor");
+var clientRoleUriProcessor = require("./processors/clientRoleUriProcessor");
+var refreshTokenProcessor = require("./processors/refreshTokenProcessor");
+var accessTokenProcessor = require("./processors/accessTokenProcessor");
+var authorizationCodeProcessor = require("./processors/authorizationCodeProcessor");
+var authorizationCodeScopeProcessor = require("./processors/authorizationCodeScopeProcessor");
+var implicitGrantProcessor = require("./processors/implicitGrantProcessor");
+var implicitGrantScopeProcessor = require("./processors/implicitGrantScopeProcessor");
+var passwordGrantProcessor = require("./processors/passwordGrantProcessor");
+var credentialsGrantProcessor = require("./processors/credentialsGrantProcessor");
+var tokenKeyProcessor = require("./processors/tokenKeyProcessor");
+var sessionKeyProcessor = require("./processors/sessionKeyProcessor");
+var authCodeRevokeProcessor = require("./processors/authCodeRevokeProcessor");
+&nbsp;
+exports.connect = function (host, user, pw, db, cpnum) {
+    crud.connect(host, user, pw, db, cpnum);
+    clientProcessor.init(crud);
+    clientRedirectUriProcessor.init(crud);
+    clientAllowedUriProcessor.init(crud);
+    clientRoleProcessor.init(crud);
+    clientGrantTypeProcessor.init(crud);
+    clientScopeProcessor.init(crud);
+    clientRoleUriProcessor.init(crud);
+    refreshTokenProcessor.init(crud);
+    accessTokenProcessor.init(crud);
+    authorizationCodeProcessor.init(crud);
+    authorizationCodeScopeProcessor.init(crud);
+    implicitGrantProcessor.init(crud);
+    implicitGrantScopeProcessor.init(crud);
+    passwordGrantProcessor.init(crud);
+    credentialsGrantProcessor.init(crud);
+    tokenKeyProcessor.init(crud);
+    sessionKeyProcessor.init(crud);
+    authCodeRevokeProcessor.init(crud);
+};
+// for testing only
+exports.testConnection = function (callback) {
+    crud.testConnection(callback);
+};
+&nbsp;
+// for testing only
+exports.getConnection = <span class="fstat-no" title="function not covered" >function (callback) {</span>
+<span class="cstat-no" title="statement not covered" >    crud.getConnection(callback);</span>
+};
+&nbsp;
+//client operations---------------------------------------
+exports.addClient = function (clientJson, redirectUrls, callback) {
+    var rtn = {
+        clientId: null,
+        success: false,
+        message: null
+    };
+    crud.getConnection(function (err, con) {
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (!err &amp;&amp; con) {
+            con.beginTransaction(function (err) {
+                <span class="missing-if-branch" title="else path not taken" >E</span>if (!err) {
+                    var insertedUri = 0;
+                    clientProcessor.addClient(con, clientJson, function (clientResult) {
+                        <span class="missing-if-branch" title="else path not taken" >E</span>if (clientResult &amp;&amp; clientResult.clientId &gt; 0 &amp;&amp; clientResult.success) {
+                            if (redirectUrls &amp;&amp; redirectUrls.length &gt; 0) {
+                                for (var cnt = 0; cnt &lt; redirectUrls.length; cnt++) {
+                                    var redUriJson = redirectUrls[cnt];
+                                    redUriJson.clientId = clientResult.clientId;
+                                    clientRedirectUriProcessor.addClientRedirectUri(con, redUriJson, function (uriResult) {
+                                        <span class="missing-if-branch" title="else path not taken" >E</span>if (uriResult &amp;&amp; uriResult.id &gt; 0) {
+                                            insertedUri++;
+                                            if (insertedUri === redirectUrls.length) {
+                                                con.commit(function (err) {
+                                                    <span class="missing-if-branch" title="if path not taken" >I</span>if (err) {
+<span class="cstat-no" title="statement not covered" >                                                        con.rollback();</span>
+                                                    } else {
+                                                        rtn.success = true;
+                                                        rtn.clientId = clientResult.clientId;
+                                                    }
+                                                    con.release();
+                                                    callback(rtn);
+                                                });
+                                            }
+                                        } else {
+<span class="cstat-no" title="statement not covered" >                                            con.rollback();</span>
+<span class="cstat-no" title="statement not covered" >                                            con.release();</span>
+<span class="cstat-no" title="statement not covered" >                                            callback(rtn);</span>
+                                        }
+                                    });
+                                }
+                            } else {
+                                con.commit(function (err) {
+                                    <span class="missing-if-branch" title="if path not taken" >I</span>if (err) {
+<span class="cstat-no" title="statement not covered" >                                        con.rollback();</span>
+                                    } else {
+                                        rtn.success = true;
+                                        rtn.clientId = clientResult.clientId;
+                                    }
+                                    con.release();
+                                    callback(rtn);
+                                });
+                            }
+                        } else {
+<span class="cstat-no" title="statement not covered" >                            con.rollback();</span>
+<span class="cstat-no" title="statement not covered" >                            con.release();</span>
+<span class="cstat-no" title="statement not covered" >                            callback(rtn);</span>
+                        }
+                    });
+                } else {
+<span class="cstat-no" title="statement not covered" >                    con.release();</span>
+<span class="cstat-no" title="statement not covered" >                    callback(rtn);</span>
+                }
+            });
+        } else {
+<span class="cstat-no" title="statement not covered" >            if (con) {</span>
+<span class="cstat-no" title="statement not covered" >                con.release();</span>
+            }
+<span class="cstat-no" title="statement not covered" >            callback(rtn);</span>
+        }
+    });
+&nbsp;
+};
+&nbsp;
+exports.updateClient = function (json, callback) {
+    clientProcessor.updateClient(null, json, callback);
+};
+&nbsp;
+exports.getClient = function (clientId, callback) {
+    clientProcessor.getClient(clientId, callback);
+};
+&nbsp;
+exports.getClientList = function (callback) {
+    clientProcessor.getClientList(callback);
+};
+&nbsp;
+&nbsp;
+exports.getClientSearchList = function (name, callback) {
+    clientProcessor.getClientSearchList(name, callback);
+};
+&nbsp;
+exports.deleteClient = function (clientId, callback) {
+    var rtn = {
+        success: false,
+        message: ""
+    };
+    crud.getConnection(function (err, con) {
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (!err &amp;&amp; con) {
+            con.beginTransaction(function (err) {
+                <span class="missing-if-branch" title="else path not taken" >E</span>if (!err) {
+                    clientRedirectUriProcessor.deleteAllClientRedirectUri(con, clientId, function (uriDelResult) {
+                        <span class="missing-if-branch" title="else path not taken" >E</span>if (uriDelResult.success) {
+                            clientProcessor.deleteClient(con, clientId, function (clientDelResult) {
+                                <span class="missing-if-branch" title="else path not taken" >E</span>if (clientDelResult.success) {
+                                    con.commit(function (err) {
+                                        <span class="missing-if-branch" title="if path not taken" >I</span>if (err) {
+<span class="cstat-no" title="statement not covered" >                                            con.rollback();</span>
+                                        } else {
+                                            rtn.success = true;
+                                        }
+                                        con.release();
+                                        callback(rtn);
+                                    });
+                                } else {
+<span class="cstat-no" title="statement not covered" >                                    con.rollback();</span>
+<span class="cstat-no" title="statement not covered" >                                    con.release();</span>
+<span class="cstat-no" title="statement not covered" >                                    callback(rtn);</span>
+                                }
+                            });
+                        } else {
+<span class="cstat-no" title="statement not covered" >                            con.rollback();</span>
+<span class="cstat-no" title="statement not covered" >                            con.release();</span>
+<span class="cstat-no" title="statement not covered" >                            callback(rtn);</span>
+                        }
+                    });
+                } else {
+<span class="cstat-no" title="statement not covered" >                    con.release();</span>
+<span class="cstat-no" title="statement not covered" >                    callback(rtn);</span>
+                }
+            });
+        } else {
+<span class="cstat-no" title="statement not covered" >            if (con) {</span>
+<span class="cstat-no" title="statement not covered" >                con.release();</span>
+            }
+<span class="cstat-no" title="statement not covered" >            callback(rtn);</span>
+        }
+    });
+};
+//end client operations ---------------------------------
+&nbsp;
+&nbsp;
+//client allowed URI --------------------------
+exports.addClientAllowedUri = function (json, callback) {
+    clientAllowedUriProcessor.addClientAllowedUri(null, json, callback);
+};
+&nbsp;
+exports.updateClientAllowedUri = function (json, callback) {
+    clientAllowedUriProcessor.updateClientAllowedUri(null, json, callback);
+};
+&nbsp;
+exports.getClientAllowedUriById = function (id, callback) {
+    clientAllowedUriProcessor.getClientAllowedUriById(id, callback);
+};
+&nbsp;
+exports.getClientAllowedUriList = function (clientId, callback) {
+    clientAllowedUriProcessor.getClientAllowedUriList(clientId, callback);
+};
+&nbsp;
+exports.getClientAllowedUri = function (clientId, uri, callback) {
+    clientAllowedUriProcessor.getClientAllowedUri(clientId, uri, callback);
+};
+&nbsp;
+exports.deleteClientAllowedUri = function (id, callback) {
+    clientAllowedUriProcessor.deleteClientAllowedUri(null, id, callback);
+};
+// end client allowed URI ------------------------------
+&nbsp;
+//client redirect uri
+exports.addClientRedirectUri = function (json, callback) {
+    clientRedirectUriProcessor.addClientRedirectUri(null, json, callback);
+};
+&nbsp;
+exports.getClientRedirectUriList = function (clientId, callback) {
+    clientRedirectUriProcessor.getClientRedirectUriList(clientId, callback);
+};
+&nbsp;
+exports.getClientRedirectUri = function (clientId, uri, callback) {
+    clientRedirectUriProcessor.getClientRedirectUri(clientId, uri, callback);
+};
+&nbsp;
+exports.deleteClientRedirectUri = function (id, callback) {
+    clientRedirectUriProcessor.deleteClientRedirectUri(null, id, callback);
+};
+&nbsp;
+exports.deleteAllClientRedirectUri = function (clientId, callback) {
+    clientRedirectUriProcessor.deleteAllClientRedirectUri(null, clientId, callback);
+};
+//end client redirect uri
+&nbsp;
+&nbsp;
+//client role
+exports.addClientRole = function (json, callback) {
+    clientRoleProcessor.addClientRole(null, json, callback);
+};
+&nbsp;
+exports.getClientRoleList = function (clientId, callback) {
+    clientRoleProcessor.getClientRoleList(clientId, callback);
+};
+&nbsp;
+exports.deleteClientRole = function (id, callback) {
+    clientRoleProcessor.deleteClientRole(null, id, callback);
+};
+//end client role
+&nbsp;
+//client scope
+exports.addClientScope = function (json, callback) {
+    clientScopeProcessor.addClientScope(null, json, callback);
+};
+&nbsp;
+exports.getClientScopeList = function (clientId, callback) {
+    clientScopeProcessor.getClientScopeList(clientId, callback);
+};
+&nbsp;
+exports.deleteClientScope = function (id, callback) {
+    clientScopeProcessor.deleteClientScope(null, id, callback);
+};
+//end client scope
+&nbsp;
+//client role uri
+exports.addClientRoleUri = function (json, callback) {
+    clientRoleUriProcessor.addClientRoleUri(null, json, callback);
+};
+&nbsp;
+exports.getClientRoleAllowedUriList = function (clientRoleId, callback) {
+    clientRoleUriProcessor.getClientRoleAllowedUriList(clientRoleId, callback);
+};
+&nbsp;
+exports.getClientRoleAllowedUriListByClientId = function (clientId, callback) {
+    clientRoleUriProcessor.getClientRoleAllowedUriListByClientId(clientId, callback);
+};
+&nbsp;
+exports.deleteClientRoleUri = function (json, callback) {
+    clientRoleUriProcessor.deleteClientRoleUri(null, json, callback);
+};
+//end client role uri
+&nbsp;
+//client grant types
+//-------------------------------------------------------------------
+//end client grant types
+&nbsp;
+//refresh token
+exports.addRefreshToken = function (json, callback) {
+    refreshTokenProcessor.addRefreshToken(null, json, callback);
+};
+&nbsp;
+exports.updateRefreshToken = function (json, callback) {
+    refreshTokenProcessor.updateRefreshToken(null, json, callback);
+};
+&nbsp;
+exports.getRefreshToken = function (id, callback) {
+    refreshTokenProcessor.getRefreshToken(id, callback);
+};
+&nbsp;
+exports.deleteRefreshToken = function (id, callback) {
+    refreshTokenProcessor.deleteRefreshToken(null, id, callback);
+};
+//end refresh token
+&nbsp;
+//access token
+exports.addAccessToken = function (json, callback) {
+    accessTokenProcessor.addAccessToken(null, json, callback);
+};
+&nbsp;
+exports.updateAccessToken = function (json, callback) {
+    accessTokenProcessor.updateAccessToken(null, json, callback);
+};
+&nbsp;
+exports.getAccessToken = function (id, callback) {
+    accessTokenProcessor.getAccessToken(id, callback);
+};
+&nbsp;
+exports.deleteAccessToken = function (id, callback) {
+    accessTokenProcessor.deleteAccessToken(null, id, callback);
+};
+//end access token
+&nbsp;
+//authorization code
+exports.addAuthorizationCode = function (authCodeJson, accessTokenJson, refreshTokenJson, scopeList, callback) {
+    var rtn = {
+        authorizationCode: null,
+        codeString: null,
+        success: false,
+        message: null
+    };
+    crud.getConnection(function (err, con) {
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (!err &amp;&amp; con) {
+            con.beginTransaction(function (err) {
+                <span class="missing-if-branch" title="else path not taken" >E</span>if (!err) {
+                    <span class="missing-if-branch" title="else path not taken" >E</span>if (refreshTokenJson) {
+                        refreshTokenProcessor.addRefreshToken(con, refreshTokenJson, function (refreshResult) {
+                            //console.log("refresh token: " + JSON.stringify(refreshResult));
+                            <span class="missing-if-branch" title="else path not taken" >E</span>if (refreshResult.id &gt; -1) {
+                                var accTokenJson = accessTokenJson;
+                                accTokenJson.refreshTokenId = refreshResult.id;
+                                doAuthCodeAdd(con, rtn, authCodeJson, accTokenJson, scopeList, function (acRtn) {
+                                    callback(acRtn);
+                                });
+                            } else {
+<span class="cstat-no" title="statement not covered" >                                con.rollback();</span>
+<span class="cstat-no" title="statement not covered" >                                con.release();</span>
+<span class="cstat-no" title="statement not covered" >                                callback(rtn);</span>
+                            }
+                        });
+                    } else {
+<span class="cstat-no" title="statement not covered" >                        doAuthCodeAdd(con, rtn, authCodeJson, accessTokenJson, scopeList, <span class="fstat-no" title="function not covered" >function (acRtn) {</span></span>
+<span class="cstat-no" title="statement not covered" >                            callback(acRtn);</span>
+                        });
+                    }
+                } else {
+<span class="cstat-no" title="statement not covered" >                    con.release();</span>
+<span class="cstat-no" title="statement not covered" >                    callback(rtn);</span>
+                }
+            });
+        } else {
+<span class="cstat-no" title="statement not covered" >            if (con) {</span>
+<span class="cstat-no" title="statement not covered" >                con.release();</span>
+            }
+<span class="cstat-no" title="statement not covered" >            callback(rtn);</span>
+        }
+    });
+};
+&nbsp;
+var doAuthCodeAdd = function (con, rtn, authCodeJson, accTokenJson, scopeList, callback) {
+    accessTokenProcessor.addAccessToken(con, accTokenJson, function (accessResult) {
+        //console.log("access token: " + JSON.stringify(accessResult));
+       // console.log("authCodeJson: " + JSON.stringify(authCodeJson));
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (accessResult.id &gt; -1) {
+            var acJson = authCodeJson;
+            //acJson.expires = accTokenJson.expires;
+            acJson.accessTokenId = accessResult.id;
+            authorizationCodeProcessor.addAuthorizationCode(con, acJson, function (acResult) {
+                <span class="missing-if-branch" title="else path not taken" >E</span>if (acResult.authorizationCode &gt; -1) {
+                    <span class="missing-if-branch" title="else path not taken" >E</span>if (scopeList &amp;&amp; scopeList.length &gt; 0) {
+                        var scopeCnt = 0;
+                        for (var cnt = 0; cnt &lt; scopeList.length; cnt++) {
+                            var scopeJson = {
+                                scope: scopeList[cnt],
+                                authorizationCode: acResult.authorizationCode
+                            };
+                            authorizationCodeScopeProcessor.addAuthorizationCodeScope(con, scopeJson, function (scopeInsResult) {
+                                <span class="missing-if-branch" title="else path not taken" >E</span>if (scopeInsResult.success) {
+                                    scopeCnt++;
+                                } else {
+<span class="cstat-no" title="statement not covered" >                                    con.rollback();</span>
+<span class="cstat-no" title="statement not covered" >                                    con.release();</span>
+<span class="cstat-no" title="statement not covered" >                                    callback(rtn);</span>
+                                }
+                                //console.log("scopeCnt === scopeList.length: " + (scopeCnt === scopeList.length));
+                                if (scopeCnt === scopeList.length) {
+                                    con.commit(function (err) {
+                                        //console.log("commetting auth code add");
+                                        <span class="missing-if-branch" title="if path not taken" >I</span>if (err) {
+<span class="cstat-no" title="statement not covered" >                                            con.rollback();</span>
+                                        } else {
+                                            rtn.authorizationCode = acResult.authorizationCode;
+                                            rtn.codeString = acResult.codeString;
+                                            rtn.success = true;
+                                        }
+                                        con.release();
+                                        callback(rtn);
+                                    });
+                                }
+                            });
+                        }
+                    } else {
+<span class="cstat-no" title="statement not covered" >                        con.commit(<span class="fstat-no" title="function not covered" >function (err) {</span></span>
+<span class="cstat-no" title="statement not covered" >                            if (err) {</span>
+<span class="cstat-no" title="statement not covered" >                                con.rollback();</span>
+                            } else {
+<span class="cstat-no" title="statement not covered" >                                rtn.authorizationCode = acResult.authorizationCode;</span>
+<span class="cstat-no" title="statement not covered" >                                rtn.codeString = acResult.codeString;</span>
+<span class="cstat-no" title="statement not covered" >                                rtn.success = true;</span>
+                            }
+<span class="cstat-no" title="statement not covered" >                            con.release();</span>
+<span class="cstat-no" title="statement not covered" >                            callback(rtn);</span>
+                        });
+                    }
+                } else {
+<span class="cstat-no" title="statement not covered" >                    con.rollback();</span>
+<span class="cstat-no" title="statement not covered" >                    con.release();</span>
+<span class="cstat-no" title="statement not covered" >                    callback(rtn);</span>
+                }
+            });
+        } else {
+<span class="cstat-no" title="statement not covered" >            con.rollback();</span>
+<span class="cstat-no" title="statement not covered" >            con.release();</span>
+<span class="cstat-no" title="statement not covered" >            callback(rtn);</span>
+        }
+    });
+};
+&nbsp;
+exports.updateAuthorizationCodeAndTokens = function (authCodeJson, accessTokenJson, callback) {
+    var rtn = {
+        success: false,
+        message: null
+    };
+    crud.getConnection(function (err, con) {
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (!err &amp;&amp; con) {
+            con.beginTransaction(function (err) {
+                <span class="missing-if-branch" title="else path not taken" >E</span>if (!err) {
+                    doAuthCodeUpdate(con, rtn, authCodeJson, accessTokenJson, function (acRtn) {
+                        callback(acRtn);
+                    });
+                } else {
+<span class="cstat-no" title="statement not covered" >                    con.release();</span>
+<span class="cstat-no" title="statement not covered" >                    callback(rtn);</span>
+                }
+            });
+        } else {
+<span class="cstat-no" title="statement not covered" >            if (con) {</span>
+<span class="cstat-no" title="statement not covered" >                con.release();</span>
+            }
+<span class="cstat-no" title="statement not covered" >            callback(rtn);</span>
+        }
+    });
+};
+&nbsp;
+var doAuthCodeUpdate = function (con, rtn, authCodeJson, accTokenJson, callback) {
+    accessTokenProcessor.updateAccessToken(con, accTokenJson, function (accessResult) {
+        //console.log("access token: " + JSON.stringify(accessResult));
+        //console.log("authCodeJson: " + JSON.stringify(authCodeJson));
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (accessResult.success) {
+            authorizationCodeProcessor.updateAuthorizationCodeToken(con, authCodeJson, function (acResult) {
+                <span class="missing-if-branch" title="else path not taken" >E</span>if (acResult.success) {
+                    con.commit(function (err) {
+                        //console.log("commetting auth code add");
+                        <span class="missing-if-branch" title="if path not taken" >I</span>if (err) {
+<span class="cstat-no" title="statement not covered" >                            con.rollback();</span>
+                        } else {
+                            rtn.success = true;
+                        }
+                        con.release();
+                        callback(rtn);
+                    });
+                } else {
+<span class="cstat-no" title="statement not covered" >                    con.rollback();</span>
+<span class="cstat-no" title="statement not covered" >                    con.release();</span>
+<span class="cstat-no" title="statement not covered" >                    callback(rtn);</span>
+                }
+            });
+        } else {
+<span class="cstat-no" title="statement not covered" >            con.rollback();</span>
+<span class="cstat-no" title="statement not covered" >            con.release();</span>
+<span class="cstat-no" title="statement not covered" >            callback(rtn);</span>
+        }
+    });
+};
+&nbsp;
+exports.getAuthorizationCode = function (clientId, userId, callback) {
+    authorizationCodeProcessor.getAuthorizationCode(clientId, userId, callback);
+};
+&nbsp;
+exports.getAuthorizationCodeByCode = function (code, callback) {
+    authorizationCodeProcessor.getAuthorizationCodeByCode(code, callback);
+};
+&nbsp;
+exports.getAuthorizationCodeByScope = function (clientId, userId, scope, callback) {
+    authorizationCodeProcessor.getAuthorizationCodeByScope(clientId, userId, scope, callback);
+};
+&nbsp;
+exports.updateAuthorizationCode = function (json, callback) {
+    authorizationCodeProcessor.updateAuthorizationCode(null, json, callback);
+};
+&nbsp;
+exports.deleteAuthorizationCode = function (clientId, userId, callback) {
+    var rtn = {
+        success: false,
+        message: ""
+    };
+    //console.log("starting connection in delete code clientId: " + clientId + " userId: " + userId);
+    crud.getConnection(function (err, con) {
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (!err &amp;&amp; con) {
+            con.beginTransaction(function (err) {
+                <span class="missing-if-branch" title="else path not taken" >E</span>if (!err) {
+                   // console.log("starting transaction in delete code: ");
+                    var refreshTokenId;
+                    authorizationCodeProcessor.getAuthorizationCode(clientId, userId, function (acResult) {
+                        //console.log("getAuthorizationCode in delete: " + JSON.stringify(acResult));
+                        <span class="missing-if-branch" title="else path not taken" >E</span>if (acResult &amp;&amp; acResult.accessTokenId) {
+                            accessTokenProcessor.getAccessToken(acResult.accessTokenId, function (accTokenResult) {
+                                <span class="missing-if-branch" title="else path not taken" >E</span>if (accTokenResult &amp;&amp; accTokenResult.refreshTokenId) {
+                                    refreshTokenId = accTokenResult.refreshTokenId;
+                                }
+                                authCodeRevokeProcessor.deleteAuthCodeRevoke(null, acResult.authorizationCode, function (revokeResult) {
+                                    <span class="missing-if-branch" title="else path not taken" >E</span>if (revokeResult.success) {
+                                        authorizationCodeScopeProcessor.deleteAuthorizationCodeScopeList(con, acResult.authorizationCode, function (scopeDelResult) {
+                                            //console.log("deleteAuthorizationCodeScopeList in delete: " + JSON.stringify(scopeDelResult));
+                                            <span class="missing-if-branch" title="else path not taken" >E</span>if (scopeDelResult.success) {
+                                                authorizationCodeProcessor.deleteAuthorizationCode(con, clientId, userId, function (acDelResult) {
+                                                    <span class="missing-if-branch" title="else path not taken" >E</span>if (acDelResult.success) {
+                                                        accessTokenProcessor.deleteAccessToken(con, acResult.accessTokenId, function (accTokenDelResult) {
+                                                            //console.log("deleteAccessToken in delete: " + JSON.stringify(accTokenDelResult));
+                                                            <span class="missing-if-branch" title="else path not taken" >E</span>if (accTokenDelResult.success) {
+                                                                <span class="missing-if-branch" title="else path not taken" >E</span>if (refreshTokenId) {
+                                                                    refreshTokenProcessor.deleteRefreshToken(con, refreshTokenId, function (rfTokenDelResult) {
+                                                                        <span class="missing-if-branch" title="else path not taken" >E</span>if (rfTokenDelResult.success) {
+                                                                            con.commit(function (err) {
+                                                                                <span class="missing-if-branch" title="if path not taken" >I</span>if (err) {
+<span class="cstat-no" title="statement not covered" >                                                                                    con.rollback();</span>
+                                                                                } else {
+                                                                                    rtn.success = true;
+                                                                                }
+                                                                                con.release();
+                                                                                callback(rtn);
+                                                                            });
+                                                                        } else {
+<span class="cstat-no" title="statement not covered" >                                                                            con.rollback();</span>
+<span class="cstat-no" title="statement not covered" >                                                                            con.release();</span>
+<span class="cstat-no" title="statement not covered" >                                                                            callback(rtn);</span>
+                                                                        }
+                                                                    });
+                                                                } else {
+<span class="cstat-no" title="statement not covered" >                                                                    con.commit(<span class="fstat-no" title="function not covered" >function (err) {</span></span>
+<span class="cstat-no" title="statement not covered" >                                                                        if (err) {</span>
+<span class="cstat-no" title="statement not covered" >                                                                            con.rollback();</span>
+                                                                        } else {
+<span class="cstat-no" title="statement not covered" >                                                                            rtn.success = true;</span>
+                                                                        }
+<span class="cstat-no" title="statement not covered" >                                                                        con.release();</span>
+<span class="cstat-no" title="statement not covered" >                                                                        callback(rtn);</span>
+                                                                    });
+                                                                }
+                                                            } else {
+<span class="cstat-no" title="statement not covered" >                                                                con.rollback();</span>
+<span class="cstat-no" title="statement not covered" >                                                                con.release();</span>
+<span class="cstat-no" title="statement not covered" >                                                                callback(rtn);</span>
+                                                            }
+                                                        });
+                                                    } else {
+<span class="cstat-no" title="statement not covered" >                                                        con.rollback();</span>
+<span class="cstat-no" title="statement not covered" >                                                        con.release();</span>
+<span class="cstat-no" title="statement not covered" >                                                        callback(rtn);</span>
+                                                    }
+                                                });
+                                            } else {
+<span class="cstat-no" title="statement not covered" >                                                con.rollback();</span>
+<span class="cstat-no" title="statement not covered" >                                                con.release();</span>
+<span class="cstat-no" title="statement not covered" >                                                callback(rtn);</span>
+                                            }
+                                        });
+                                    } else {
+<span class="cstat-no" title="statement not covered" >                                        con.rollback();</span>
+<span class="cstat-no" title="statement not covered" >                                        con.release();</span>
+<span class="cstat-no" title="statement not covered" >                                        callback(rtn);</span>
+                                    }
+                                });
+                            });
+                        } else {
+<span class="cstat-no" title="statement not covered" >                            con.rollback();</span>
+<span class="cstat-no" title="statement not covered" >                            con.release();</span>
+<span class="cstat-no" title="statement not covered" >                            callback(rtn);</span>
+                        }
+                    });
+                } else {
+<span class="cstat-no" title="statement not covered" >                    console.log("error:" + JSON.stringify(err));</span>
+<span class="cstat-no" title="statement not covered" >                    con.release();</span>
+<span class="cstat-no" title="statement not covered" >                    callback(rtn);</span>
+                }
+            });
+        } else {
+<span class="cstat-no" title="statement not covered" >            console.log("error:" + JSON.stringify(err));</span>
+<span class="cstat-no" title="statement not covered" >            if (con) {</span>
+<span class="cstat-no" title="statement not covered" >                con.release();</span>
+            }
+<span class="cstat-no" title="statement not covered" >            callback(rtn);</span>
+        }
+    });
+};
+//end authorization code
+&nbsp;
+//authorization code scope
+exports.addAuthorizationCodeScope = function (json, callback) {
+    authorizationCodeScopeProcessor.addAuthorizationCodeScope(null, json, callback);
+};
+&nbsp;
+exports.getAuthorizationCodeScopeList = function (authorizationCode, callback) {
+    authorizationCodeScopeProcessor.getAuthorizationCodeScopeList(authorizationCode, callback);
+};
+&nbsp;
+exports.deleteAuthorizationCodeScope = function (id, callback) {
+    authorizationCodeScopeProcessor.deleteAuthorizationCodeScope(null, id, callback);
+};
+&nbsp;
+exports.deleteAuthorizationCodeScopeList = function (authorizationCode, callback) {
+    authorizationCodeScopeProcessor.deleteAuthorizationCodeScopeList(null, authorizationCode, callback);
+};
+//end authorization code scope
+&nbsp;
+// allowed grant types
+exports.addClientGrantType = function (json, callback) {
+    clientGrantTypeProcessor.addClientGrantType(null, json, callback);
+};
+&nbsp;
+exports.getClientGrantTypeList = function (clientId, callback) {
+    clientGrantTypeProcessor.getClientGrantTypeList(clientId, callback);
+};
+&nbsp;
+exports.deleteClientGrantType = function (id, callback) {
+    clientGrantTypeProcessor.deleteClientGrantType(null, id, callback);
+};
+//end grant types
+&nbsp;
+//implicit grant
+//authorization code
+exports.addImplicitGrant = function (implicitJson, accessTokenJson, scopeList, callback) {
+    var rtn = {
+        id: null,
+        success: false,
+        message: null
+    };
+    crud.getConnection(function (err, con) {
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (!err &amp;&amp; con) {
+            con.beginTransaction(function (err) {
+                <span class="missing-if-branch" title="else path not taken" >E</span>if (!err) {
+                    accessTokenProcessor.addAccessToken(con, accessTokenJson, function (accessResult) {
+                        <span class="missing-if-branch" title="else path not taken" >E</span>if (accessResult.id &gt; -1) {
+                            var impJson = implicitJson;
+                            impJson.accessTokenId = accessResult.id;
+                            implicitGrantProcessor.addImplicitGrant(con, impJson, function (impResult) {
+                                <span class="missing-if-branch" title="else path not taken" >E</span>if (impResult.id &gt; -1) {
+                                    //do for loop to all each scope---------------------
+                                    <span class="missing-if-branch" title="else path not taken" >E</span>if (scopeList &amp;&amp; scopeList.length &gt; 0) {
+                                        var scopeCnt = 0;
+                                        for (var cnt = 0; cnt &lt; scopeList.length; cnt++) {
+                                            var scopeJson = {
+                                                scope: scopeList[cnt],
+                                                implicitGrantId: impResult.id
+                                            };
+                                            implicitGrantScopeProcessor.addImplicitGrantScope(con, scopeJson, function (scopeInsResult) {
+                                                <span class="missing-if-branch" title="else path not taken" >E</span>if (scopeInsResult.success) {
+                                                    scopeCnt++;
+                                                } else {
+<span class="cstat-no" title="statement not covered" >                                                    con.rollback();</span>
+<span class="cstat-no" title="statement not covered" >                                                    con.release();</span>
+<span class="cstat-no" title="statement not covered" >                                                    callback(rtn);</span>
+                                                }
+                                                //console.log("scopeCnt === scopeList.length: " + (scopeCnt === scopeList.length));
+                                                if (scopeCnt === scopeList.length) {
+                                                    con.commit(function (err) {
+                                                        //console.log("commetting auth code add");
+                                                        <span class="missing-if-branch" title="if path not taken" >I</span>if (err) {
+<span class="cstat-no" title="statement not covered" >                                                            con.rollback();</span>
+                                                        } else {
+                                                            rtn.id = impResult.id;
+                                                            rtn.success = true;
+                                                        }
+                                                        con.release();
+                                                        callback(rtn);
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    } else {
+<span class="cstat-no" title="statement not covered" >                                        con.rollback();</span>
+<span class="cstat-no" title="statement not covered" >                                        con.release();</span>
+<span class="cstat-no" title="statement not covered" >                                        callback(rtn);</span>
+                                    }
+                                } else {
+<span class="cstat-no" title="statement not covered" >                                    con.rollback();</span>
+<span class="cstat-no" title="statement not covered" >                                    con.release();</span>
+<span class="cstat-no" title="statement not covered" >                                    callback(rtn);</span>
+                                }
+                            });
+                        } else {
+<span class="cstat-no" title="statement not covered" >                            con.rollback();</span>
+<span class="cstat-no" title="statement not covered" >                            con.release();</span>
+<span class="cstat-no" title="statement not covered" >                            callback(rtn);</span>
+                        }
+                    });
+                } else {
+<span class="cstat-no" title="statement not covered" >                    con.release();</span>
+<span class="cstat-no" title="statement not covered" >                    callback(rtn);</span>
+                }
+            });
+        } else {
+<span class="cstat-no" title="statement not covered" >            if (con) {</span>
+<span class="cstat-no" title="statement not covered" >                con.release();</span>
+            }
+<span class="cstat-no" title="statement not covered" >            callback(rtn);</span>
+        }
+    });
+};
+&nbsp;
+exports.getImplicitGrant = function (clientId, userId, callback) {
+    implicitGrantProcessor.getImplicitGrant(clientId, userId, callback);
+};
+&nbsp;
+exports.getImplicitGrantByScope = function (clientId, userId, scope, callback) {
+    implicitGrantProcessor.getImplicitGrantByScope(clientId, userId, scope, callback);
+};
+&nbsp;
+exports.deleteImplicitGrant = function (clientId, userId, callback) {
+    var rtn = {
+        success: false,
+        message: ""
+    };
+    crud.getConnection(function (err, con) {
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (!err &amp;&amp; con) {
+            con.beginTransaction(function (err) {
+                <span class="missing-if-branch" title="else path not taken" >E</span>if (!err) {
+                    implicitGrantProcessor.getImplicitGrant(clientId, userId, function (imResult) {
+                        <span class="missing-if-branch" title="else path not taken" >E</span>if (imResult &amp;&amp; imResult.accessTokenId) {
+                            implicitGrantScopeProcessor.deleteImplicitGrantScopeList(con, imResult.id, function (scopeResult) {
+                                <span class="missing-if-branch" title="else path not taken" >E</span>if (scopeResult.success) {
+                                    implicitGrantProcessor.deleteImplicitGrant(con, clientId, userId, function (imDelResult) {
+                                        <span class="missing-if-branch" title="else path not taken" >E</span>if (imDelResult.success) {
+                                            accessTokenProcessor.deleteAccessToken(con, imResult.accessTokenId, function (accTokenDelResult) {
+                                                <span class="missing-if-branch" title="else path not taken" >E</span>if (accTokenDelResult.success) {
+                                                    con.commit(function (err) {
+                                                        <span class="missing-if-branch" title="if path not taken" >I</span>if (err) {
+<span class="cstat-no" title="statement not covered" >                                                            con.rollback();</span>
+                                                        } else {
+                                                            rtn.success = true;
+                                                        }
+                                                        con.release();
+                                                        callback(rtn);
+                                                    });
+                                                } else {
+<span class="cstat-no" title="statement not covered" >                                                    con.rollback();</span>
+<span class="cstat-no" title="statement not covered" >                                                    con.release();</span>
+<span class="cstat-no" title="statement not covered" >                                                    callback(rtn);</span>
+                                                }
+                                            });
+                                        } else {
+<span class="cstat-no" title="statement not covered" >                                            con.rollback();</span>
+<span class="cstat-no" title="statement not covered" >                                            con.release();</span>
+<span class="cstat-no" title="statement not covered" >                                            callback(rtn);</span>
+                                        }
+                                    });
+                                } else {
+<span class="cstat-no" title="statement not covered" >                                    con.rollback();</span>
+<span class="cstat-no" title="statement not covered" >                                    con.release();</span>
+<span class="cstat-no" title="statement not covered" >                                    callback(rtn);</span>
+                                }
+                            });
+                        } else {
+<span class="cstat-no" title="statement not covered" >                            con.rollback();</span>
+<span class="cstat-no" title="statement not covered" >                            con.release();</span>
+<span class="cstat-no" title="statement not covered" >                            callback(rtn);</span>
+                        }
+                    });
+                } else {
+<span class="cstat-no" title="statement not covered" >                    con.release();</span>
+<span class="cstat-no" title="statement not covered" >                    callback(rtn);</span>
+                }
+            });
+        } else {
+<span class="cstat-no" title="statement not covered" >            if (con) {</span>
+<span class="cstat-no" title="statement not covered" >                con.release();</span>
+            }
+<span class="cstat-no" title="statement not covered" >            callback(rtn);</span>
+        }
+    });
+};
+//end implicit grant
+&nbsp;
+// implicit grant scope
+&nbsp;
+exports.addImplicitGrantScope = function (json, callback) {
+    implicitGrantScopeProcessor.addImplicitGrantScope(null, json, callback);
+};
+&nbsp;
+exports.getImplicitGrantScopeList = function (implicitGrantId, callback) {
+    implicitGrantScopeProcessor.getImplicitGrantScopeList(implicitGrantId, callback);
+};
+&nbsp;
+exports.deleteImplicitGrantScope = function (id, callback) {
+    implicitGrantScopeProcessor.deleteImplicitGrantScope(null, id, callback);
+};
+&nbsp;
+//end implicit scope
+&nbsp;
+//password grant
+//
+//authorization code
+exports.addPasswordGrant = function (pwgJson, accessTokenJson, refreshTokenJson, callback) {
+    var rtn = {
+        id: null,
+        success: false,
+        message: null
+    };
+    crud.getConnection(function (err, con) {
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (!err &amp;&amp; con) {
+            con.beginTransaction(function (err) {
+                <span class="missing-if-branch" title="else path not taken" >E</span>if (!err) {
+                    <span class="missing-if-branch" title="else path not taken" >E</span>if (refreshTokenJson) {
+                        refreshTokenProcessor.addRefreshToken(con, refreshTokenJson, function (refreshResult) {
+                            <span class="missing-if-branch" title="else path not taken" >E</span>if (refreshResult.id &gt; -1) {
+                                var accTokenJson = accessTokenJson;
+                                accTokenJson.refreshTokenId = refreshResult.id;
+                                doPwGrantAdd(con, rtn, pwgJson, accTokenJson, function (pwRtn) {
+                                    callback(pwRtn);
+                                });
+                            } else {
+<span class="cstat-no" title="statement not covered" >                                con.rollback();</span>
+<span class="cstat-no" title="statement not covered" >                                con.release();</span>
+<span class="cstat-no" title="statement not covered" >                                callback(rtn);</span>
+                            }
+                        });
+                    } else {
+<span class="cstat-no" title="statement not covered" >                        doPwGrantAdd(con, rtn, pwgJson, accessTokenJson, <span class="fstat-no" title="function not covered" >function (acRtn) {</span></span>
+<span class="cstat-no" title="statement not covered" >                            callback(acRtn);</span>
+                        });
+                    }
+                } else {
+<span class="cstat-no" title="statement not covered" >                    callback(rtn);</span>
+                }
+            });
+        } else {
+<span class="cstat-no" title="statement not covered" >            callback(rtn);</span>
+        }
+    });
+};
+&nbsp;
+var doPwGrantAdd = function (con, rtn, pwgJson, accTokenJson, callback) {
+    accessTokenProcessor.addAccessToken(con, accTokenJson, function (accessResult) {
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (accessResult.id &gt; -1) {
+            var pJson = pwgJson;
+            pJson.accessTokenId = accessResult.id;
+            passwordGrantProcessor.addPasswordGrant(con, pJson, function (pwResult) {
+                <span class="missing-if-branch" title="else path not taken" >E</span>if (pwResult.id &gt; -1) {
+                    con.commit(function (err) {
+                        <span class="missing-if-branch" title="if path not taken" >I</span>if (err) {
+<span class="cstat-no" title="statement not covered" >                            con.rollback();</span>
+                        } else {
+                            rtn.id = pwResult.id;
+                            rtn.success = true;
+                        }
+                        con.release();
+                        callback(rtn);
+                    });
+                } else {
+<span class="cstat-no" title="statement not covered" >                    con.rollback();</span>
+<span class="cstat-no" title="statement not covered" >                    con.release();</span>
+<span class="cstat-no" title="statement not covered" >                    callback(rtn);</span>
+                }
+            });
+        } else {
+<span class="cstat-no" title="statement not covered" >            con.rollback();</span>
+<span class="cstat-no" title="statement not covered" >            con.release();</span>
+<span class="cstat-no" title="statement not covered" >            callback(rtn);</span>
+        }
+    });
+};
+&nbsp;
+exports.getPasswordGrant = function (clientId, userId, callback) {
+    passwordGrantProcessor.getPasswordGrant(clientId, userId, callback);
+};
+&nbsp;
+exports.deletePasswordGrant = function (clientId, userId, callback) {
+    var rtn = {
+        success: false,
+        message: ""
+    };
+    crud.getConnection(function (err, con) {
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (!err &amp;&amp; con) {
+            con.beginTransaction(function (err) {
+                <span class="missing-if-branch" title="else path not taken" >E</span>if (!err) {
+                    var refreshTokenId;
+                    passwordGrantProcessor.getPasswordGrant(clientId, userId, function (pwResult) {
+                        <span class="missing-if-branch" title="else path not taken" >E</span>if (pwResult &amp;&amp; pwResult.accessTokenId) {
+                            accessTokenProcessor.getAccessToken(pwResult.accessTokenId, function (accTokenResult) {
+                                <span class="missing-if-branch" title="else path not taken" >E</span>if (accTokenResult &amp;&amp; accTokenResult.refreshTokenId) {
+                                    refreshTokenId = accTokenResult.refreshTokenId;
+                                }
+                                passwordGrantProcessor.deletePasswordGrant(con, clientId, userId, function (pwDelResult) {
+                                    <span class="missing-if-branch" title="else path not taken" >E</span>if (pwDelResult.success) {
+                                        accessTokenProcessor.deleteAccessToken(con, pwResult.accessTokenId, function (accTokenDelResult) {
+                                            <span class="missing-if-branch" title="else path not taken" >E</span>if (accTokenDelResult.success) {
+                                                <span class="missing-if-branch" title="else path not taken" >E</span>if (refreshTokenId) {
+                                                    refreshTokenProcessor.deleteRefreshToken(con, refreshTokenId, function (rfTokenDelResult) {
+                                                        <span class="missing-if-branch" title="else path not taken" >E</span>if (rfTokenDelResult.success) {
+                                                            con.commit(function (err) {
+                                                                <span class="missing-if-branch" title="if path not taken" >I</span>if (err) {
+<span class="cstat-no" title="statement not covered" >                                                                    con.rollback();</span>
+                                                                } else {
+                                                                    rtn.success = true;
+                                                                }
+                                                                con.release();
+                                                                callback(rtn);
+                                                            });
+                                                        } else {
+<span class="cstat-no" title="statement not covered" >                                                            con.rollback();</span>
+<span class="cstat-no" title="statement not covered" >                                                            con.release();</span>
+<span class="cstat-no" title="statement not covered" >                                                            callback(rtn);</span>
+                                                        }
+                                                    });
+                                                } else {
+<span class="cstat-no" title="statement not covered" >                                                    con.commit(<span class="fstat-no" title="function not covered" >function (err) {</span></span>
+<span class="cstat-no" title="statement not covered" >                                                        if (err) {</span>
+<span class="cstat-no" title="statement not covered" >                                                            con.rollback();</span>
+                                                        } else {
+<span class="cstat-no" title="statement not covered" >                                                            rtn.success = true;</span>
+                                                        }
+<span class="cstat-no" title="statement not covered" >                                                        con.release();</span>
+<span class="cstat-no" title="statement not covered" >                                                        callback(rtn);</span>
+                                                    });
+                                                }
+                                            } else {
+<span class="cstat-no" title="statement not covered" >                                                con.rollback();</span>
+<span class="cstat-no" title="statement not covered" >                                                con.release();</span>
+<span class="cstat-no" title="statement not covered" >                                                callback(rtn);</span>
+                                            }
+                                        });
+                                    } else {
+<span class="cstat-no" title="statement not covered" >                                        con.rollback();</span>
+<span class="cstat-no" title="statement not covered" >                                        con.release();</span>
+<span class="cstat-no" title="statement not covered" >                                        callback(rtn);</span>
+                                    }
+                                });
+                            });
+                        } else {
+<span class="cstat-no" title="statement not covered" >                            con.rollback();</span>
+<span class="cstat-no" title="statement not covered" >                            con.release();</span>
+<span class="cstat-no" title="statement not covered" >                            callback(rtn);</span>
+                        }
+                    });
+                } else {
+<span class="cstat-no" title="statement not covered" >                    con.release();</span>
+<span class="cstat-no" title="statement not covered" >                    callback(rtn);</span>
+                }
+            });
+        } else {
+<span class="cstat-no" title="statement not covered" >            if (con) {</span>
+<span class="cstat-no" title="statement not covered" >                con.release();</span>
+            }
+<span class="cstat-no" title="statement not covered" >            callback(rtn);</span>
+        }
+    });
+};
+//end password grant
+&nbsp;
+//credentials code
+exports.addCredentialsGrant = function (credJson, accessTokenJson, callback) {
+    var rtn = {
+        id: null,
+        success: false,
+        message: null
+    };
+    crud.getConnection(function (err, con) {
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (!err &amp;&amp; con) {
+            con.beginTransaction(function (err) {
+                <span class="missing-if-branch" title="else path not taken" >E</span>if (!err) {
+                    accessTokenProcessor.addAccessToken(con, accessTokenJson, function (accessResult) {
+                        <span class="missing-if-branch" title="else path not taken" >E</span>if (accessResult.id &gt; -1) {
+                            var cJson = credJson;
+                            cJson.accessTokenId = accessResult.id;
+                            credentialsGrantProcessor.addCredentialsGrant(con, cJson, function (impResult) {
+                                <span class="missing-if-branch" title="else path not taken" >E</span>if (impResult.id &gt; -1) {
+                                    con.commit(function (err) {
+                                        <span class="missing-if-branch" title="if path not taken" >I</span>if (err) {
+<span class="cstat-no" title="statement not covered" >                                            con.rollback();</span>
+                                        } else {
+                                            rtn.id = impResult.id;
+                                            rtn.success = true;
+                                        }
+                                        con.release();
+                                        callback(rtn);
+                                    });
+                                } else {
+<span class="cstat-no" title="statement not covered" >                                    con.rollback();</span>
+<span class="cstat-no" title="statement not covered" >                                    con.release();</span>
+<span class="cstat-no" title="statement not covered" >                                    callback(rtn);</span>
+                                }
+                            });
+                        } else {
+<span class="cstat-no" title="statement not covered" >                            con.rollback();</span>
+<span class="cstat-no" title="statement not covered" >                            con.release();</span>
+<span class="cstat-no" title="statement not covered" >                            callback(rtn);</span>
+                        }
+                    });
+                } else {
+<span class="cstat-no" title="statement not covered" >                    con.release();</span>
+<span class="cstat-no" title="statement not covered" >                    callback(rtn);</span>
+                }
+            });
+        } else {
+<span class="cstat-no" title="statement not covered" >            if (con) {</span>
+<span class="cstat-no" title="statement not covered" >                con.release();</span>
+            }
+<span class="cstat-no" title="statement not covered" >            callback(rtn);</span>
+        }
+    });
+};
+&nbsp;
+exports.getCredentialsGrant = function (clientId, callback) {
+    credentialsGrantProcessor.getCredentialsGrant(clientId, callback);
+};
+&nbsp;
+&nbsp;
+exports.deleteCredentialsGrant = function (clientId, callback) {
+    var rtn = {
+        success: false,
+        message: ""
+    };
+    crud.getConnection(function (err, con) {
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (!err &amp;&amp; con) {
+            con.beginTransaction(function (err) {
+                <span class="missing-if-branch" title="else path not taken" >E</span>if (!err) {
+                    credentialsGrantProcessor.getCredentialsGrant(clientId, function (imResult) {
+                        if (imResult &amp;&amp; imResult.accessTokenId) {
+                            credentialsGrantProcessor.deleteCredentialsGrant(con, clientId, function (imDelResult) {
+                                <span class="missing-if-branch" title="else path not taken" >E</span>if (imDelResult.success) {
+                                    accessTokenProcessor.deleteAccessToken(con, imResult.accessTokenId, function (accTokenDelResult) {
+                                        <span class="missing-if-branch" title="else path not taken" >E</span>if (accTokenDelResult.success) {
+                                            con.commit(function (err) {
+                                                <span class="missing-if-branch" title="if path not taken" >I</span>if (err) {
+<span class="cstat-no" title="statement not covered" >                                                    con.rollback();</span>
+                                                } else {
+                                                    rtn.success = true;
+                                                }
+                                                con.release();
+                                                callback(rtn);
+                                            });
+                                        } else {
+<span class="cstat-no" title="statement not covered" >                                            con.rollback();</span>
+<span class="cstat-no" title="statement not covered" >                                            con.release();</span>
+<span class="cstat-no" title="statement not covered" >                                            callback(rtn);</span>
+                                        }
+                                    });
+                                } else {
+<span class="cstat-no" title="statement not covered" >                                    con.rollback();</span>
+<span class="cstat-no" title="statement not covered" >                                    con.release();</span>
+<span class="cstat-no" title="statement not covered" >                                    callback(rtn);</span>
+                                }
+                            });
+                        } else {
+                            con.rollback();
+                            con.release();
+                            rtn.success = true;
+                            callback(rtn);
+                        }
+                    });
+                } else {
+<span class="cstat-no" title="statement not covered" >                    con.release();</span>
+<span class="cstat-no" title="statement not covered" >                    callback(rtn);</span>
+                }
+            });
+        } else {
+<span class="cstat-no" title="statement not covered" >            if (con) {</span>
+<span class="cstat-no" title="statement not covered" >                con.release();</span>
+            }
+<span class="cstat-no" title="statement not covered" >            callback(rtn);</span>
+        }
+    });
+};
+//end credentials grant
+&nbsp;
+//token keys
+&nbsp;
+exports.getAccessTokenKey = function (callback) {
+    tokenKeyProcessor.getAccessTokenKey(callback);
+};
+&nbsp;
+&nbsp;
+exports.getRefreshTokenKey = function (callback) {
+    tokenKeyProcessor.getRefreshTokenKey(callback);
+};
+//end token keys
+&nbsp;
+exports.getSessionKey = function (callback) {
+    sessionKeyProcessor.getSessionKey(callback);
+};
+&nbsp;
+exports.getSessionStore = function (session, callback) {
+    var MySQLStore = require('express-mysql-session')(session);
+    crud.getConnection(function (err, con) {
+        var sessionStore;
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (!err &amp;&amp; con) {
+            sessionStore = new MySQLStore({}, con);
+            callback(sessionStore);
+        } else {
+<span class="cstat-no" title="statement not covered" >            if (con) {</span>
+<span class="cstat-no" title="statement not covered" >                con.release();</span>
+            }
+<span class="cstat-no" title="statement not covered" >            callback(sessionStore);</span>
+        }
+    });
+};
+&nbsp;
+// allowed addAuthCodeRevoke
+exports.addAuthCodeRevoke = function (json, callback) {
+    authCodeRevokeProcessor.addAuthCodeRevoke(null, json, callback);
+};
+&nbsp;
+exports.getAuthCodeRevoke = function (authCode, callback) {
+    authCodeRevokeProcessor.getAuthCodeRevoke(authCode, callback);
+};
+&nbsp;
+exports.deleteAuthCodeRevoke = function (authCode, callback) {
+    authCodeRevokeProcessor.deleteAuthCodeRevoke(null, authCode, callback);
+};
+//end addAuthCodeRevoke</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sat Apr 14 2018 19:15:30 GMT-0400 (EDT)
+</div>
+</div>
+<script src="../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../sorter.js"></script>
+</body>
+</html>

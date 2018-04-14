@@ -6,6 +6,14 @@
 module.exports = function (grunt) {
     // Project configuration.
     grunt.initConfig({
+        mocha_istanbul: {
+            coverage: {
+                src: 'test', // a folder works nicely
+                options: {
+                    mask: '**/*Test.js'
+                }
+            }
+        },
         mochaTest: {
             test: {
                 options: {
@@ -87,6 +95,8 @@ module.exports = function (grunt) {
     });
 
     grunt.loadNpmTasks('grunt-mocha-test');
+    grunt.loadNpmTasks('grunt-mocha-istanbul');
+    grunt.registerTask('coverage-test-all', 'mocha_istanbul:coverage');
     grunt.registerTask('mocha-test-all', 'mochaTest:test');
     grunt.registerTask('mocha-mysqlTest', 'mochaTest:testMysql');
     grunt.registerTask('mocha-mysqlProcessorTest', 'mochaTest:testMysqlProcessors');

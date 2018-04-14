@@ -1,0 +1,683 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for Oauth2Server/webControllers/authorizeController.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">Oauth2Server/webControllers/</a> authorizeController.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">90.72% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>88/97</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">89.29% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>50/56</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">92.31% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>12/13</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">90.72% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>88/97</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">var authorizationCodeManager = require("../managers/authorizationCodeManager");
+var implicitGrantManager = require("../managers/implicitGrantManager");
+&nbsp;
+exports.init = function (db) {
+    authorizationCodeManager.init(db);
+    implicitGrantManager.init(db);
+};
+exports.authorize = function (req, res) {
+    var loggedIn = req.session.loggedIn;
+    var user = req.session.user;
+    //console.log("user: " + user + " logged in: " + loggedIn);
+    var responseType = req.query.response_type;
+    var clientIdStr = req.query.client_id;
+    var clientId;
+    <span class="missing-if-branch" title="else path not taken" >E</span>if(clientIdStr){
+        try{
+            clientId = parseInt(clientIdStr);
+        }catch(err){
+<span class="cstat-no" title="statement not covered" >            clientId = clientIdStr;</span>
+        }
+    }else{
+<span class="cstat-no" title="statement not covered" >        clientId = clientIdStr;</span>
+    }
+    var redirectUri = req.query.redirect_uri;
+    var scope = req.query.scope;
+    var state = req.query.state;   
+    var oauthGrantObj = {
+        responseType: responseType,
+        clientId: clientId,
+        redirectUri: redirectUri,
+        scope: scope,
+        state: state
+    };
+    if (!loggedIn || !user) {
+        req.session.oauthGrantObj = oauthGrantObj;
+        res.redirect('/login');
+    } else {
+        //console.log("oauthGrantObj in authController before response type: " + JSON.stringify(oauthGrantObj));
+        if (responseType === "code") {
+            //must authorize before adding
+            var authJson = {
+                clientId: clientId,
+                userId: user,
+                scope: scope
+            };
+            authorizationCodeManager.checkApplicationAuthorization(authJson, function (result) {
+                if (result &amp;&amp; result.authorized) {
+                    //console.log("oauthGrantObj in authController: " + JSON.stringify(oauthGrantObj));
+                    var json = {
+                        clientId: clientId,
+                        userId: user,
+                        scope: scope,
+                        redirectUri: redirectUri
+                    };
+                    authorizationCodeManager.authorize(json, function (result) {
+                        //console.log("authorization code: " + JSON.stringify(result));
+                        <span class="missing-if-branch" title="else path not taken" >E</span>if (result.success &amp;&amp; result.authorizationCode &amp;&amp; result.authorizationCode &gt; -1) {
+                            var cb = redirectUri + "?code=" + result.codeString+ "&amp;state=" + oauthGrantObj.state;
+                            //console.log("authorization code cb: " + cb);
+                            res.redirect(cb);
+                        } else {
+<span class="cstat-no" title="statement not covered" >                            res.redirect('/oauthError?error=' + result.error);</span>
+                        }
+                    });
+                } else {
+                    req.session.oauthGrantObj = oauthGrantObj;
+                    res.redirect('/authorizeApp');
+                }
+            });
+        } else if (responseType === "token") {
+            //must authorize before adding
+            var authJson = {
+                clientId: clientId,
+                userId: user,
+                scope: scope
+            };
+            implicitGrantManager.checkApplicationAuthorization(authJson, function (result) {
+                if (result &amp;&amp; result.authorized) {
+                    //console.log("oauthGrantObj in authController: " + JSON.stringify(oauthGrantObj));
+                    var json = {
+                        clientId: clientId,
+                        userId: user,
+                        scope: scope,
+                        redirectUri: redirectUri
+                    };
+                    implicitGrantManager.authorize(json, function (result) {
+                        //console.log("implicit: " + JSON.stringify(result));
+                        <span class="missing-if-branch" title="else path not taken" >E</span>if (result.success &amp;&amp; result.token) {
+                            var cb = redirectUri + "?token=" + result.token+ "&amp;token_type=bearer&amp;state=" + oauthGrantObj.state;
+                            //console.log("implicit cb: " + cb);
+                            res.redirect(cb);
+                        } else {
+<span class="cstat-no" title="statement not covered" >                            res.redirect('/oauthError?error=' + result.error);</span>
+                        }
+                    });
+                } else {
+                    req.session.oauthGrantObj = oauthGrantObj;
+                    res.redirect('/authorizeApp');
+                }
+            });
+        } else if (responseType) {
+            //res.render('oauthError', {error: "invalid_grant"});
+            res.redirect('/oauthError?error=invalid_grant');
+        } else {
+            //res.render('oauthError', {error: "invalid_grant"});
+            res.redirect('/oauthError?error=invalid_grant');
+        }
+    }
+};
+&nbsp;
+exports.authorizeApp = function (req, res) {
+    var params = {
+        title: "authorize application"
+    };
+    var oauthGrantObj = req.session.oauthGrantObj;
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!oauthGrantObj) {
+<span class="cstat-no" title="statement not covered" >        res.render('oauthError', {error: "Invalid Request"});</span>
+    }
+    else if(oauthGrantObj.responseType === "code"){
+        var cbJson = {
+            clientId: oauthGrantObj.clientId,
+            callbackUri: oauthGrantObj.redirectUri
+        };
+        authorizationCodeManager.validateClientAndCallback(cbJson, function (results) {
+            if (results.valid) {
+                params.clientName = results.clientName;
+                params.webSite = results.webSite;
+                params.scope = oauthGrantObj.scope;
+                res.render("authorizeApp", params);
+            } else {
+                res.render('oauthError', {error: "Invalid redirect URI"});
+            }
+        });
+    }else <span class="missing-if-branch" title="else path not taken" >E</span>if(oauthGrantObj.responseType === "token"){
+        var cbJson = {
+            clientId: oauthGrantObj.clientId,
+            callbackUri: oauthGrantObj.redirectUri
+        };
+        implicitGrantManager.validateClientAndCallback(cbJson, function (results) {
+            if (results.valid) {
+                params.clientName = results.clientName;
+                params.webSite = results.webSite;
+                params.scope = oauthGrantObj.scope;
+                res.render("authorizeApp", params);
+            } else {
+                res.render('oauthError', {error: "Invalid redirect URI"});
+            }
+        });
+    }else{
+<span class="cstat-no" title="statement not covered" >         res.render('oauthError', {error: "Invalid redirect URI"});</span>
+    }
+&nbsp;
+&nbsp;
+};
+&nbsp;
+exports.applicationAuthorization = function (req, res) {
+    var authorize = req.query.authorize;
+    //console.log("authorize: " + authorize);
+    var oauthGrantObj = req.session.oauthGrantObj;
+    req.session.oauthGrantObj = undefined;
+    var user = req.session.user;
+    if (authorize === "true" &amp;&amp; oauthGrantObj.responseType === "code") {
+        var json = {
+            clientId: oauthGrantObj.clientId,
+            userId: user,
+            scope: oauthGrantObj.scope,
+            redirectUri: oauthGrantObj.redirectUri
+        };
+        //console.log("authorization code json: " + JSON.stringify(json));
+        authorizationCodeManager.authorize(json, function (result) {
+            //console.log("authorization code: " + JSON.stringify(result));
+            if (result.success &amp;&amp; result.authorizationCode &amp;&amp; result.authorizationCode &gt; -1) {
+                var cb = oauthGrantObj.redirectUri + "?code=" + result.codeString + "&amp;state=" + oauthGrantObj.state;
+                res.redirect(cb);
+            } else {
+                res.render('oauthError', {error: result.error});
+            }
+        });
+    }else <span class="missing-if-branch" title="else path not taken" >E</span>if(authorize === "true" &amp;&amp; oauthGrantObj.responseType === "token"){
+         var json = {
+            clientId: oauthGrantObj.clientId,
+            userId: user,
+            scope: oauthGrantObj.scope,
+            redirectUri: oauthGrantObj.redirectUri
+        };
+        //console.log("authorization code json: " + JSON.stringify(json));
+        implicitGrantManager.authorize(json, function (result) {
+            //console.log("implicit grant: " + JSON.stringify(result));
+            if (result.success &amp;&amp; result.token) {
+                //var cb = oauthGrantObj.redirectUri + "?code=" + result.codeString + "&amp;state=" + oauthGrantObj.state;
+                var cb = oauthGrantObj.redirectUri + "?token=" + result.token+ "&amp;token_type=bearer&amp;state=" + oauthGrantObj.state;
+                res.redirect(cb);
+            } else {
+                res.render('oauthError', {error: result.error});
+            }
+        });
+    } else {
+<span class="cstat-no" title="statement not covered" >        res.redirect(oauthGrantObj.redirectUri + "?error=access_denied&amp;state=" + oauthGrantObj.state);</span>
+    }
+};
+&nbsp;
+&nbsp;
+exports.oauthError = <span class="fstat-no" title="function not covered" >function (req, res) {</span>
+<span class="cstat-no" title="statement not covered" >    var error = req.query.error;</span>
+<span class="cstat-no" title="statement not covered" >    res.render('oauthError', {error: error});</span>
+};
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sat Apr 14 2018 19:15:30 GMT-0400 (EDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

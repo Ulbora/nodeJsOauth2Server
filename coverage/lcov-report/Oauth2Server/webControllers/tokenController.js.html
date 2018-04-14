@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for Oauth2Server/webControllers/tokenController.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">Oauth2Server/webControllers/</a> tokenController.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">86% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>43/50</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">66.67% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>12/18</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>7/7</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">86% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>43/50</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">var tokenManager = require("../managers/tokenManager");
+exports.init = function (db) {
+    tokenManager.init(db);
+};
+exports.token = function (req, res) {
+    var grantType = req.query.grant_type;
+&nbsp;
+    if (grantType === "authorization_code") {
+        var clientIdStr = req.query.client_id;
+        var secret = req.query.client_secret;
+        var code = req.query.code;
+        var redirectUri = req.query.redirect_uri;
+        var clientId = getClientId(clientIdStr);
+&nbsp;
+        var tokenReq = {
+            clientId: clientId,
+            secret: secret,
+            code: code,
+            redirectUri: redirectUri
+        };
+        tokenManager.authCodeToken(tokenReq, function (tokenResult) {
+            if (tokenResult.error) {
+                res.status(401).send(tokenResult);
+            } else {
+                res.send(tokenResult);
+            }
+        });
+&nbsp;
+    } else <span class="missing-if-branch" title="if path not taken" >I</span>if (grantType === "password") {
+        
+<span class="cstat-no" title="statement not covered" >        res.redirect('/oauthError?error=invalid_grant');</span>
+        
+    } else if (grantType === "client_credentials") {
+        var clientIdStr = req.query.client_id;
+        var clientId = getClientId(clientIdStr);
+        var secret = req.query.client_secret;
+        var tokenClientReq = {
+            clientId: clientId,
+            secret: secret
+        };
+        tokenManager.credentialsGrantToken(tokenClientReq, function (tokenResult) {
+            <span class="missing-if-branch" title="if path not taken" >I</span>if (tokenResult.error) {
+<span class="cstat-no" title="statement not covered" >                res.status(401).send(tokenResult);</span>
+            } else {
+                res.send(tokenResult);
+            }
+        });
+    } else <span class="missing-if-branch" title="else path not taken" >E</span>if (grantType === "refresh_token") {
+        var clientIdStr = req.query.client_id;
+        var secret = req.query.client_secret;
+        var refToken = req.query.refresh_token;
+        var clientId = getClientId(clientIdStr);
+        var refTokenReq = {
+            clientId: clientId,
+            secret: secret,
+            refreshToken: refToken
+        };
+        refreshToken(refTokenReq, function (refreshedToken) {
+            if (refreshedToken.error) {
+                res.status(401).send(refreshedToken);
+            } else {
+                res.send(refreshedToken);
+            }
+        });
+    } else <span class="cstat-no" title="statement not covered" >if (grantType) {</span>
+        //res.render('oauthError', {error: "invalid_grant"});
+<span class="cstat-no" title="statement not covered" >        res.redirect('/oauthError?error=invalid_grant');</span>
+    } else {
+        //res.render('oauthError', {error: "invalid_grant"});
+<span class="cstat-no" title="statement not covered" >        res.redirect('/oauthError?error=invalid_grant');</span>
+    }
+&nbsp;
+};
+&nbsp;
+var refreshToken = function (json, callback) {
+    tokenManager.refreshToken(json, callback);
+};
+&nbsp;
+var getClientId = function (clientIdStr) {
+    var clientId;
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (clientIdStr) {
+        try {
+            clientId = parseInt(clientIdStr);
+        } catch (err) {
+<span class="cstat-no" title="statement not covered" >            clientId = clientIdStr;</span>
+        }
+    } else {
+<span class="cstat-no" title="statement not covered" >        clientId = clientIdStr;</span>
+    }
+    return clientId;
+};
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sat Apr 14 2018 19:15:30 GMT-0400 (EDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

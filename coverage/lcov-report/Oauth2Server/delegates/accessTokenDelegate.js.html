@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for Oauth2Server/delegates/accessTokenDelegate.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">Oauth2Server/delegates/</a> accessTokenDelegate.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">86.36% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>57/66</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">66.67% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>38/57</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>8/8</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">86.36% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>57/66</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">36×</span>
+<span class="cline-any cline-yes">36×</span>
+<span class="cline-any cline-yes">36×</span>
+<span class="cline-any cline-yes">36×</span>
+<span class="cline-any cline-yes">36×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">36×</span>
+<span class="cline-any cline-yes">36×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">36×</span>
+<span class="cline-any cline-yes">36×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">36×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/*     
+ Copyright (C) 2016 Ulbora Labs Inc. (www.ulboralabs.com)
+ All rights reserved.
+ 
+ Copyright (C) 2016 Ken Williamson
+ All rights reserved.
+ 
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published
+ by the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ 
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+ 
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+ */
+&nbsp;
+&nbsp;
+var jwt = require('jsonwebtoken');
+var config = require("../configuration");
+&nbsp;
+var db;
+&nbsp;
+exports.init = function (database) {
+    db = database;
+};
+&nbsp;
+exports.generateAccessToken = function (json, callback) {
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (json) {
+        db.getAccessTokenKey(function (result) {
+            <span class="missing-if-branch" title="else path not taken" >E</span>if (result &amp;&amp; result.key) {
+                json.iat = Math.floor(Date.now() / 1000);
+                json.tokenType = "access";
+                //options
+                var options = {};
+                options.expiresIn = json.expiresIn, //config.REFRESH_TOKEN_LIFE;
+                        options.issuer = config.TOKEN_ISSUER;
+                jwt.sign(json, result.key, options, function (err, token) {
+                    <span class="missing-if-branch" title="if path not taken" >I</span>if (err) {
+<span class="cstat-no" title="statement not covered" >                        console.log("access token error :" + err);</span>
+                    }
+                    callback(token);
+                });
+            } else {
+<span class="cstat-no" title="statement not covered" >                callback();</span>
+            }
+        });
+    } else {
+<span class="cstat-no" title="statement not covered" >        callback();</span>
+    }
+};
+&nbsp;
+exports.validateAccessToken = function (accessToken, claims, callback) {
+    var valid = false;
+    //console.log("access token: " + accessToken);
+    //console.log("claims: " + JSON.stringify(claims));
+    db.getAccessTokenKey(function (result) {
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (result &amp;&amp; result.key) {
+            jwt.verify(accessToken, result.key, function (err, decoded) {
+                //console.log("decoded access token: " + JSON.stringify(decoded));
+                <span class="missing-if-branch" title="if path not taken" >I</span>if (err) {
+<span class="cstat-no" title="statement not covered" >                    console.log("AccessToken verify err: " + err);</span>
+                } else <span class="missing-if-branch" title="else path not taken" >E</span>if (decoded) {
+                    var userIdMatch = true;
+                    <span class="missing-if-branch" title="else path not taken" >E</span>if (claims.userId) {
+                        userIdMatch = (decoded.userId === claims.userId) ? true : <span class="branch-1 cbranch-no" title="branch not covered" >false;</span>
+                    }
+                    console.log("userIdMatch: " + userIdMatch);
+                    <span class="missing-if-branch" title="else path not taken" >E</span>if (decoded.tokenType === "access" &amp;&amp; userIdMatch &amp;&amp;
+                            decoded.clientId === claims.clientId &amp;&amp; decoded.iss === config.TOKEN_ISSUER) {
+                        //console.log("decoded access token: " + JSON.stringify(decoded));
+                        //console.log("claims: " + JSON.stringify(claims));
+                        var foundRoleUri = false;
+                        var roleUris = decoded.roleUris;
+                        var checkUris = [];
+                        <span class="missing-if-branch" title="else path not taken" >E</span>if (roleUris &amp;&amp; roleUris.length &gt; 0) {
+                            for (var cnt = 0; cnt &lt; roleUris.length; cnt++) {
+                                checkUris.push(roleUris[cnt].uri);
+                                if (roleUris[cnt].role === claims.role &amp;&amp; roleUris[cnt].uri === claims.uri) {
+                                    foundRoleUri = true;
+                                    break;
+                                }
+                            }
+                            /*
+                             if (!foundRoleUri) {
+                             console.log("role uris not found fo far: ");
+                             console.log("checkUris: " + JSON.stringify(checkUris));
+                             //uri not mapped so token is valid
+                             //only uris that are mapped can be used to invalidate a token
+                             console.log("index of: " + claims.role + " " + (checkUris.indexOf(claims.uri)));
+                             foundRoleUri = (checkUris.indexOf(claims.uri) === -1) ? true : false;
+                             //console.log("index of: " + claims.role + " " +foundRoleUri +" " + (checkUris.indexOf(claims.uri)));
+                             }
+                             */
+                        } //else {
+                        //foundRoleUri = true;
+                        // }
+                        var scopeFound = false;
+                        <span class="missing-if-branch" title="else path not taken" >E</span>if (decoded.scopeList) {
+                            scopeFound = (decoded.scopeList.indexOf(claims.scope) &gt; -1) ? true : <span class="branch-1 cbranch-no" title="branch not covered" >false;</span>
+                            <span class="missing-if-branch" title="if path not taken" >I</span>if(scopeFound === false){
+<span class="cstat-no" title="statement not covered" >                                scopeFound = (decoded.scopeList.indexOf("write") &gt; -1) ? true : false;</span>
+                            }
+                            
+                        }
+                        console.log("scopeFound: " + scopeFound);
+                        console.log("foundRoleUri: " + foundRoleUri);
+                        //console.log("scopeFound: " + scopeFound );
+                        if ((decoded.grant === "code" || <span class="branch-1 cbranch-no" title="branch not covered" >decoded.grant === "implicit")</span> &amp;&amp; foundRoleUri &amp;&amp; scopeFound) {
+                            valid = true;
+                            console.log("in code or implicit grant if: value: " + valid);
+                        } else <span class="missing-if-branch" title="if path not taken" >I</span>if (decoded.grant === "client_credentials" &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >foundRoleUri)</span> {
+<span class="cstat-no" title="statement not covered" >                            valid = true;</span>
+<span class="cstat-no" title="statement not covered" >                            console.log("in client_credentials grant if: value: " + valid);</span>
+                        }
+                    } else {
+<span class="cstat-no" title="statement not covered" >                        console.log("token not valid ");</span>
+                    }
+                }
+                callback(valid);
+            });
+        } else {
+<span class="cstat-no" title="statement not covered" >            callback(valid);</span>
+        }
+    });
+};
+&nbsp;
+&nbsp;
+exports.decodeAccessToken = function (accessToken, callback) {
+    var rtn = {
+        clientId: null,
+        userId: null,
+        roleUris: null,
+        scopeList: null
+    };
+    //console.log("access token: " + accessToken);
+&nbsp;
+    var decoded = jwt.decode(accessToken);
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (decoded &amp;&amp; decoded.tokenType === "access" &amp;&amp; decoded.iss === config.TOKEN_ISSUER) {
+        //console.log("decoded access token: " + JSON.stringify(decoded));
+        //console.log("claims: " + JSON.stringify(claims));                    
+        rtn.clientId = decoded.clientId;
+        rtn.userId = decoded.userId;
+        rtn.roleUris = decoded.roleUris;
+        rtn.scopeList = decoded.scopeList;
+    }
+    callback(rtn);
+&nbsp;
+};
+&nbsp;
+//
+//exports.decodeAccessToken = function (accessToken, callback) {
+//    var rtn = {
+//        clientId: null,
+//        userId: null,
+//        roleUris: null,
+//        scopeList: null
+//    };
+//    console.log("access token: " + accessToken);
+//    db.getAccessTokenKey(function (result) {
+//        if (result &amp;&amp; result.key) {
+//            jwt.verify(accessToken, result.key, function (err, decoded) {
+//                if (err) {
+//                    console.log("AccessToken verify err: " + err);
+//                }
+//                if (decoded &amp;&amp; decoded.tokenType === "access" &amp;&amp; decoded.iss === config.TOKEN_ISSUER) {
+//                    //console.log("decoded access token: " + JSON.stringify(decoded));
+//                    //console.log("claims: " + JSON.stringify(claims));                    
+//                    rtn.clientId = decoded.clientId;
+//                    rtn.userId = decoded.userId;
+//                    rtn.roleUris = decoded.roleUris;
+//                    rtn.scopeList = decoded.scopeList;
+//                }
+//                callback(rtn);
+//            });
+//        } else {
+//            callback(rtn);
+//        }
+//    });
+//};
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sat Apr 14 2018 19:15:30 GMT-0400 (EDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>
