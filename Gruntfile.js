@@ -10,7 +10,7 @@ module.exports = function (grunt) {
             test: {
                 options: {
                     reporter: 'spec',
-                    //captureFile: 'results.txt', // Optionally capture the reporter output to a file 
+                    captureFile: 'results.txt', // Optionally capture the reporter output to a file 
                     quiet: false, // Optionally suppress output to standard out (defaults to false) 
                     clearRequireCache: false // Optionally clear the require cache before running tests (defaults to false) 
                 },
@@ -52,6 +52,15 @@ module.exports = function (grunt) {
                 },
                 src: ['test/database/**/db*Test.js']
             },
+            testWebOnly: {
+                options: {
+                    reporter: 'spec',
+                    //captureFile: 'results.txt', // Optionally capture the reporter output to a file 
+                    quiet: false, // Optionally suppress output to standard out (defaults to false) 
+                    clearRequireCache: false // Optionally clear the require cache before running tests (defaults to false) 
+                },
+                src: ['test/webControllers/**/*Test.js']
+            },
             testIndividualTestOnly: {
                 options: {
                     reporter: 'spec',
@@ -59,11 +68,13 @@ module.exports = function (grunt) {
                     quiet: false, // Optionally suppress output to standard out (defaults to false) 
                     clearRequireCache: false // Optionally clear the require cache before running tests (defaults to false) 
                 },
+               //src: ['test/webControllers/authorizeControllerTest.js']
                //src: ['test/webControllers/loginControllerTest.js']
+               src: ['test/webControllers/tokenControllerTest.js']
                 //src: ['test/database/dbClientTest.js']
                 //src: ['test/database/mysql/dbClientTest.js']
                 //src: ['test/database/mysql/processors/clientProcessorTest.js']
-                src: ['test/managers/clientAllowedUriManagerTest.js']
+                //src: ['test/managers/clientAllowedUriManagerTest.js']
                 //src: ['test/managers/clientRedirectUriManagerTest.js']
                 ///src: ['test/managers/managerTest.js']
                  //src: ['test/delegates/accessTokenRefreshDelegateTest.js']
@@ -81,6 +92,7 @@ module.exports = function (grunt) {
     grunt.registerTask('mocha-mysqlProcessorTest', 'mochaTest:testMysqlProcessors');
     grunt.registerTask('mocha-mysqlDbOnlyTest', 'mochaTest:testMysqlDbOnly');
     grunt.registerTask('mocha-DbOnlyTest', 'mochaTest:testDbOnly');
+    grunt.registerTask('mocha-WebOnly', 'mochaTest:testWebOnly');
     grunt.registerTask('mocha-IndividualOnlyTest', 'mochaTest:testIndividualTestOnly');
 
 };

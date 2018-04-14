@@ -597,8 +597,8 @@ describe('authorizeController', function () {
                     done();
                 };
                 res.redirect = function (path) {
-                    console.log("redirect path: " + path);
-                    var i = path.indexOf("http://www.google.com#token=");
+                    console.log("redirect path token auth: " + path);
+                    var i = path.indexOf("http://www.google.com?token=");
                     if (i > -1) {
                         assert(true);
                     } else {
@@ -735,7 +735,7 @@ describe('authorizeController', function () {
                 var res = {};
                 res.redirect = function (path) {
                     console.log("redirect path: " + path);
-                    var i = path.indexOf("http://www.google.com#token=");
+                    var i = path.indexOf("http://www.google.com?token=");
                     var o = path.indexOf("state=xyz");
                     if (i > -1 && o > -1) {
                         assert(true);
