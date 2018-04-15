@@ -1,0 +1,7 @@
+organization=ulboralabs
+projectKey=Oauth2Server
+serverUrl=https://sonarcloud.io
+serverVersion=7.1.1.10702
+dashboardUrl=https://sonarcloud.io/dashboard/index/Oauth2Server
+ceTaskId=AWLGocr4Xt8T3cY7QLt7
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AWLGocr4Xt8T3cY7QLt7
