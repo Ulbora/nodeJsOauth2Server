@@ -89,11 +89,9 @@ exports.hashUser = function (username) {
     var rtn = "";    
     if (username && username.length > 0) {
         for (var cnt = 0; cnt < username.length; cnt++) {
-            charcode = (username[cnt].charCodeAt()) + shifter;
+            var charcode = (username[cnt].charCodeAt()) + shifter;
             rtn += String.fromCharCode(charcode);
         }
-    } else {
-        rtn = "";
     }
     return rtn;
 };
@@ -102,11 +100,9 @@ exports.unHashUser = function (username) {
     var rtn = "";
     if (username && username.length > 0) {
         for (var cnt = 0; cnt < username.length; cnt++) {
-            charcode = (username[cnt].charCodeAt()) - shifter;
+            var charcode = (username[cnt].charCodeAt()) - shifter;
             rtn += String.fromCharCode(charcode);
         }
-    } else {
-        rtn = "";
-    }
+    } 
     return rtn;
 };

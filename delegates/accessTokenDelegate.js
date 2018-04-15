@@ -37,8 +37,8 @@ exports.generateAccessToken = function (json, callback) {
                 json.tokenType = "access";
                 //options
                 var options = {};
-                options.expiresIn = json.expiresIn, //config.REFRESH_TOKEN_LIFE;
-                        options.issuer = config.TOKEN_ISSUER;
+                options.expiresIn = json.expiresIn; //config.REFRESH_TOKEN_LIFE;
+                options.issuer = config.TOKEN_ISSUER;
                 jwt.sign(json, result.key, options, function (err, token) {
                     if (err) {
                         console.log("access token error :" + err);
@@ -76,10 +76,10 @@ exports.validateAccessToken = function (accessToken, claims, callback) {
                         //console.log("claims: " + JSON.stringify(claims));
                         var foundRoleUri = false;
                         var roleUris = decoded.roleUris;
-                        var checkUris = [];
+                        //var checkUris = [];
                         if (roleUris && roleUris.length > 0) {
                             for (var cnt = 0; cnt < roleUris.length; cnt++) {
-                                checkUris.push(roleUris[cnt].uri);
+                                //checkUris.push(roleUris[cnt].uri);
                                 if (roleUris[cnt].role === claims.role && roleUris[cnt].uri === claims.uri) {
                                     foundRoleUri = true;
                                     break;
@@ -102,10 +102,10 @@ exports.validateAccessToken = function (accessToken, claims, callback) {
                         var scopeFound = false;
                         if (decoded.scopeList) {
                             scopeFound = (decoded.scopeList.indexOf(claims.scope) > -1) ? true : false;
-                            if(scopeFound === false){
+                            if (scopeFound === false) {
                                 scopeFound = (decoded.scopeList.indexOf("write") > -1) ? true : false;
                             }
-                            
+
                         }
                         console.log("scopeFound: " + scopeFound);
                         console.log("foundRoleUri: " + foundRoleUri);

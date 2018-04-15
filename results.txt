@@ -1,0 +1,2049 @@
+
+
+  DB access token
+    #connect()
+      ✓ should connect to db and create pool (1034ms)
+    #addRefreshToken()
+      ✓ should add a refresh token in db (1062ms)
+    #addAccessToken()
+      ✓ should add a access token in processor (1067ms)
+    #updateAccessToken()
+      ✓ should update a access token in db (1124ms)
+    #getAccessToken()
+access token result:{"id":3727,"token":"111djfjoiqjldktrtryrtyrytrsflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf","expires":"2018-04-16T00:44:47.000Z","refreshTokenId":2468}
+      ✓ should read access token in processor (1008ms)
+    #deleteAccessToken()
+      ✓ should delete access token (1037ms)
+    #deleteRefreshToken()
+      ✓ should delete refresh token in db (1056ms)
+
+  DB authorization code
+    #connect()
+      ✓ should connect to db and create pool (1001ms)
+    #addClient()
+      ✓ should add a client (1112ms)
+    #addAuthorizationCode()
+authorization code in db: {"authorizationCode":2366,"codeString":"61656565dsdfd6sd6dsdf1dddsd15d","success":true,"message":null}
+      ✓ should add an authorization code in processor (1115ms)
+    #addAuthCodeRevoke()
+      ✓ should revoke an authorization code db (1045ms)
+    #getAuthCodeRevoke()
+      ✓ should get AuthCodeRevoke in db (1004ms)
+    #deleteAuthCodeRevoke()
+      ✓ should delete AuthCodeRevoke in db (1051ms)
+    #deleteAuthorizationCode()
+      ✓ should delete authorization code (1113ms)
+    #deleteClient()
+      ✓ should delete client (1056ms)
+
+  DB authorization code scope
+    #connect()
+      ✓ should connect to db and create pool (1001ms)
+    #addClient()
+      ✓ should add a client (1068ms)
+    #addAuthorizationCode()
+      ✓ should add an authorization code in processor (1135ms)
+    #addAuthorizationCodeScope()
+      ✓ should add an authorization code scope in db (1078ms)
+    #addAuthorizationCodeScopeAgain()
+      ✓ should add another authorization code scope in db (1225ms)
+    #getAuthorizationCodeScopeList()
+getAuthorizationCodeScopeList:[{"id":4228,"scope":"admin","authorizationCode":2367},{"id":4229,"scope":"read","authorizationCode":2367},{"id":4230,"scope":"scopeTest","authorizationCode":2367},{"id":4231,"scope":"scopeTest2","authorizationCode":2367}]
+      ✓ should read AuthorizationCodeScope in db (1005ms)
+    #deleteAuthorizationCodeScope()
+      ✓ should delete authorization code scopes in db (1050ms)
+    #deleteAuthorizationCodeScopeList()
+      ✓ should delete authorization code scope list in db (1078ms)
+    #deleteAuthorizationCode()
+      ✓ should delete authorization code (1171ms)
+    #deleteClient()
+      ✓ should delete client (1056ms)
+
+  DB authorization code
+    #connect()
+      ✓ should connect to db and create pool (1002ms)
+    #addClient()
+      ✓ should add a client (1045ms)
+    #addAuthorizationCode()
+authorization code in db: {"authorizationCode":2368,"codeString":"61656565dsdfd6sd6dsdf1dddsd15d","success":true,"message":null}
+      ✓ should add an authorization code in processor (1058ms)
+    #getAuthorizationCode()
+      ✓ should read AuthorizationCode in processor (1004ms)
+    #updateAuthorizationCode()
+      ✓ should update an authorization code in db (1055ms)
+    #updateAuthorizationCodeAndTokens()
+      ✓ should update an authorization code and token in db (1089ms)
+    #getAuthorizationCodeByCode()
+      ✓ should read AuthorizationCode by code in processor (1002ms)
+    #addAuthorizationCodeScope()
+      ✓ should add an authorization code scope in db (1046ms)
+    #getAuthorizationCodeByScope()
+      ✓ should read AuthorizationCodeScope in processor (1003ms)
+    #addAuthCodeRevoke()
+      ✓ should revoke an authorization code db (1091ms)
+    #deleteAuthorizationCodeScope()
+      ✓ should delete authorization code scopes in db (1133ms)
+    #deleteAuthorizationCode()
+      ✓ should delete authorization code (1311ms)
+    #deleteClient()
+      ✓ should delete client (1146ms)
+
+  DB client allow uri
+    #connect()
+      ✓ should connect to db and create pool (1002ms)
+    #addClient()
+      ✓ should add a client (1047ms)
+    #addClientAllowedUri()
+      ✓ should add a client allowed URI (1056ms)
+    #getClientAllowedUriById()
+      ✓ should a uri in mysql db (1003ms)
+    #updateClientAllowedUri()
+      ✓ should update a client allowed URI (1066ms)
+    #getClientAllowedUriList()
+      ✓ should read client allowed uri list (1002ms)
+    #getClientAllowedUri
+      ✓ should read client uri in processor (1002ms)
+    #deleteClientAllowedUri()
+      ✓ should delete client allowed URI (1044ms)
+    #deleteClient()
+      ✓ should delete client (1056ms)
+
+  DB client grant types
+    #connect()
+      ✓ should connect to db and create pool (1002ms)
+    #addClient()
+      ✓ should add a client (1080ms)
+    #addClientGrantType()
+      ✓ should add a client grant type in db (1149ms)
+    #getClientGrantTypeList()
+      ✓ should read client grant type list in db (1003ms)
+    #deleteClientGrantType()
+      ✓ should delete client grant type in db (1065ms)
+    #deleteClient()
+      ✓ should delete client (1078ms)
+
+  DB client redirect uri
+    #connect()
+      ✓ should connect to db and create pool (1001ms)
+    #addClient()
+      ✓ should add a client (1058ms)
+    #addClientRedirectUri()
+      ✓ should add a client redirect uri (1047ms)
+    #addClientRedirectUri()
+      ✓ should add another client redirect uri (1055ms)
+    #getClientRedirectUri()
+devMode: true
+isLocalHost: false
+      ✓ should get client redirect uri in db (1004ms)
+    #getClientRedirectUriList()
+devMode: true
+isLocalHost: false
+devMode: true
+isLocalHost: false
+      ✓ should read client redirect uri list in db (1003ms)
+    #deleteClientRedirectUri()
+      ✓ should delete client redirect uri (1053ms)
+    #deleteAllClientRedirectUri()
+      ✓ should delete client redirect uri (1066ms)
+    #deleteClient()
+      ✓ should delete client (1060ms)
+
+  DB client roles
+    #connect()
+      ✓ should connect to db and create pool (1001ms)
+    #addClient()
+      ✓ should add a client (1044ms)
+    #addClientRole()
+      ✓ should add a client role (1056ms)
+    #getClientRoleList()
+      ✓ should read client role list (1003ms)
+    #deleteClientRole()
+      ✓ should delete client role (1077ms)
+    #deleteClient()
+      ✓ should delete client (1058ms)
+
+  DB client roles uri
+    #connect()
+      ✓ should connect to db and create pool (1001ms)
+    #addClient()
+      ✓ should add a client (1045ms)
+    #addClientRole()
+      ✓ should add a client role (1046ms)
+    #addClientAllowedUri()
+      ✓ should add a client allowed URI (1061ms)
+    #addClientRoleUri()
+      ✓ should add a client Role Uri (1140ms)
+    #getClientRoleUriList()
+      ✓ should get a client Role Uri list (1004ms)
+    #getClientRoleAllowedUriListByClientId()
+      ✓ should get a client Role Uri list by clientId (1006ms)
+    #deleteClientRoleUri()
+      ✓ should delete a client Role Uri (1051ms)
+    #deleteClientRole()
+      ✓ should delete client role (1056ms)
+    #deleteClientAllowedUri()
+      ✓ should delete client allowed URI (1048ms)
+    #deleteClient()
+      ✓ should delete client (1133ms)
+
+  DB client scope
+    #connect()
+      ✓ should connect to db and create pool (1002ms)
+    #addClient()
+      ✓ should add a client (1066ms)
+    #addClientScope()
+      ✓ should add a client scope (1057ms)
+    #getClientScopeList()
+      ✓ should read client scope list (1003ms)
+    #deleteClientScope()
+      ✓ should delete client scope (1042ms)
+    #deleteClient()
+      ✓ should delete client (1045ms)
+
+  DB client
+    #connect()
+      ✓ should connect to db and create pool (1001ms)
+    #addClient()
+      ✓ should add a client (1080ms)
+    #updateClient()
+      ✓ should add a client (1057ms)
+    #getClient()
+      ✓ should read client (1004ms)
+    #getClientList()
+      ✓ should read client list (1004ms)
+    #getClientSearchList()
+name: Bob and Company 123
+      ✓ should read client list in search (1002ms)
+    #deleteClient()
+      ✓ should delete client (1138ms)
+
+  DB credentials grant
+    #connect()
+      ✓ should connect to db and create pool (1001ms)
+    #addClient()
+      ✓ should add a client (1102ms)
+    #addCredentialsGrant()
+      ✓ should add an addCredentialsGrant in db (1078ms)
+    #getCredentialsGrant()
+      ✓ should read CredentialsGrant in db (1003ms)
+    #deleteCredentialsGrant()
+      ✓ should delete CredentialsGrant in db (1211ms)
+    #deleteClient()
+      ✓ should delete client (1102ms)
+
+  DB implicite grant scope
+    #connect()
+      ✓ should connect to db and create pool (1002ms)
+    #addClient()
+      ✓ should add a client (1103ms)
+    #addImplicitGrant()
+      ✓ should add an addImplicitGrant in db (1189ms)
+    #addImplicitGrantScope()
+      ✓ should add an ImplicitGrant scope in db (1047ms)
+    #deleteImplicitGrantScope()
+      ✓ should delete ImplicitGrant scope (1044ms)
+    #deleteImplicitGrant()
+      ✓ should delete ImplicitGrant in db (1136ms)
+    #deleteClient()
+      ✓ should delete client (1118ms)
+
+  DB implicit grant
+    #connect()
+      ✓ should connect to db and create pool (1001ms)
+    #addClient()
+      ✓ should add a client (1050ms)
+    #addImplicitGrant()
+      ✓ should add an addImplicitGrant in db (1137ms)
+    #getImplicitGrant()
+      ✓ should read ImplicitGrant in db (1002ms)
+    #getImplicitGrantByScope()
+      ✓ should read getImplicitGrantByScope in db (1003ms)
+    #deleteImplicitGrant()
+      ✓ should delete ImplicitGrant in db (1151ms)
+    #deleteClient()
+      ✓ should delete client (1080ms)
+
+  DB password grant
+    #connect()
+      ✓ should connect to db and create pool (1002ms)
+    #addClient()
+      ✓ should add a client (1054ms)
+    #addPasswordGrant()
+      ✓ should add an password grant in db (1089ms)
+    #getPasswordGrant()
+      ✓ should read password grant in db (1003ms)
+    #deletePasswordGrant()
+      ✓ should delete password grant in db (1300ms)
+    #deleteClient()
+      ✓ should delete client (1125ms)
+
+  DB refresh token
+    #connect()
+      ✓ should connect to db and create pool (1001ms)
+    #addRefreshToken()
+      ✓ should add a refresh token in db (1098ms)
+    #updateRefreshToken()
+      ✓ should update a refresh token in db (1057ms)
+    #getRefreshToken()
+refresh token value:111djfjoiqjldksflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf
+      ✓ should read refresh token in db (1002ms)
+    #deleteRefreshToken()
+      ✓ should delete refresh token in db (1032ms)
+
+  DB token key
+    #connect()
+      ✓ should connect to db and create pool (1001ms)
+    #getAccessTokenKey()
+session key result:{"id":1,"key":"651f51v616dsfljdssSdff2dD63Dss"}
+      ✓ should get session key in processor
+
+  DB session store
+    #connect()
+      ✓ should connect to db and create pool (1001ms)
+    #getSessionStore()
+session store result:{"checkExpirationInterval":900000,"expiration":86400000,"createDatabaseTable":true,"connectionLimit":1,"charset":"utf8mb4_bin","schema":{"tableName":"sessions","columnNames":{"session_id":"session_id","expires":"expires","data":"data"}}}
+      ✓ should get session store in db (1008ms)
+
+  DB token key
+    #connect()
+      ✓ should connect to db and create pool (1001ms)
+    #getAccessTokenKey()
+access token key result:{"id":1,"key":"51ffgf1fdkhass651eeffvvgh65s6dFd45F15FFfffF51Klk445jE67JHH"}
+      ✓ should get access token key in processor (1002ms)
+    #getRefreshTokenKey()
+refresh token key result:{"id":4,"key":"kdls5dsdfdk;691dds51ds77dsd11ss"}
+      ✓ should get refresh token key in processor (1003ms)
+
+  MYSQLCrud
+    #connect()
+      ✓ should connect to db and create pool
+    #insert()
+      ✓ should insert into db (1055ms)
+    #update()
+      ✓ should update row from db (1055ms)
+    #get()
+      ✓ should read row from db (1003ms)
+    #getList()
+      ✓ should read row from db (1008ms)
+    #delete()
+      ✓ should delete row from db (1078ms)
+
+  mysql DB access token
+    #connect()
+      ✓ should connect to db and create pool
+    #addRefreshToken()
+      ✓ should add a refresh token in db (1088ms)
+    #addAccessToken()
+      ✓ should add a access token in processor (1045ms)
+    #updateAccessToken()
+      ✓ should update a access token in db (1078ms)
+    #getAccessToken()
+access token result:{"id":3735,"token":"111djfjoiqjldktrtryrtyrytrsflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf","expires":"2018-04-16T00:47:07.000Z","refreshTokenId":2474}
+      ✓ should read access token in processor (1003ms)
+    #deleteAccessToken()
+      ✓ should delete access token (1068ms)
+    #deleteRefreshToken()
+      ✓ should delete refresh token in db (1058ms)
+
+  mysql DB authorization code
+    #connect()
+      ✓ should connect to db and create pool
+    #addClient()
+      ✓ should add a client (1076ms)
+    #addAuthorizationCode()
+      ✓ should add an authorization code in processor (1380ms)
+    #addAuthCodeRevoke()
+      ✓ should revoke an authorization code mysql db (1078ms)
+    #getAuthCodeRevoke()
+      ✓ should get AuthCodeRevoke in mysql db (1002ms)
+    #deleteAuthCodeRevoke()
+      ✓ should delete AuthCodeRevoke in mysql db (1089ms)
+    #deleteAuthorizationCode()
+      ✓ should delete authorization code (1170ms)
+    #deleteClient()
+      ✓ should delete client (1066ms)
+
+  mysql DB authorization code scope
+    #connect()
+      ✓ should connect to db and create pool
+    #addClient()
+      ✓ should add a client (1045ms)
+    #addAuthorizationCode()
+      ✓ should add an authorization code in processor (1101ms)
+    #addAuthorizationCodeScope()
+      ✓ should add an authorization code scope in db (1046ms)
+    #addAuthorizationCodeScopeAgain()
+      ✓ should add another authorization code scope in db (1059ms)
+    #getAuthorizationCodeScopeList()
+      ✓ should read AuthorizationCodeScope in db (1002ms)
+    #deleteAuthorizationCodeScope()
+      ✓ should delete authorization code scopes in db (1066ms)
+    #deleteAuthorizationCodeScopeList()
+      ✓ should delete authorization code scope list in db (1046ms)
+    #deleteAuthorizationCode()
+      ✓ should delete authorization code (1166ms)
+    #deleteClient()
+      ✓ should delete client (1124ms)
+
+  mysql DB authorization code
+    #connect()
+      ✓ should connect to db and create pool
+    #addClient()
+      ✓ should add a client (1055ms)
+    #addAuthorizationCode()
+      ✓ should add an authorization code in processor (1059ms)
+    #getAuthorizationCode()
+      ✓ should read AuthorizationCode in processor (1002ms)
+    #updateAuthorizationCode()
+      ✓ should update an authorization code in db (1033ms)
+    #updateAuthorizationCodeAndTokens()
+      ✓ should update an authorization code and token in db (1111ms)
+    #getAuthorizationCodeByCode()
+      ✓ should read AuthorizationCode by code in processor (1002ms)
+    #addAuthorizationCodeScope()
+      ✓ should add an authorization code scope in db (1076ms)
+    #getAuthorizationCodeByScope()
+      ✓ should read AuthorizationCodeScope in processor (1002ms)
+    #addAuthCodeRevoke()
+      ✓ should revoke an authorization code mysql db (1066ms)
+    #deleteAuthorizationCodeScope()
+      ✓ should delete authorization code scopes in db (1232ms)
+    #deleteAuthorizationCode()
+      ✓ should delete authorization code (1416ms)
+    #deleteClient()
+      ✓ should delete client (1102ms)
+
+  mysql DB client allow uri
+    #connect()
+      ✓ should connect to db and create pool
+    #addClient()
+      ✓ should add a client (1066ms)
+    #addClientAllowedUri()
+      ✓ should add a client allowed URI (1046ms)
+    #getClientAllowedUriById()
+      ✓ should a uri in mysql db (1003ms)
+    #updateClientAllowedUri()
+      ✓ should update a client allowed URI (1055ms)
+    #getClientAllowedUriList()
+      ✓ should read client allowed uri list (1002ms)
+    #getClientAllowedUri
+      ✓ should read client uri in processor (1002ms)
+    #deleteClientAllowedUri()
+      ✓ should delete client allowed URI (1077ms)
+    #deleteClient()
+      ✓ should delete client (1090ms)
+
+  mysql DB client grant types
+    #connect()
+      ✓ should connect to db and create pool
+    #addClient()
+      ✓ should add a client (1054ms)
+    #addClientGrantType()
+      ✓ should add a client grant type in db (1115ms)
+    #getClientGrantTypeList()
+      ✓ should read client grant type list in db (1003ms)
+    #deleteClientGrantType()
+      ✓ should delete client grant type in db (1119ms)
+    #deleteClient()
+      ✓ should delete client (1066ms)
+
+  mysql DB client roles
+    #connect()
+      ✓ should connect to db and create pool
+    #addClient()
+      ✓ should add a client (1053ms)
+    #addClientRedirectUri()
+      ✓ should add a client redirect uri (1056ms)
+    #addClientRedirectUri()
+      ✓ should add another client redirect uri (1046ms)
+    #getClientRedirectUri()
+devMode: true
+isLocalHost: false
+      ✓ should get client redirect uri in db (1002ms)
+    #getClientRedirectUriList()
+devMode: true
+isLocalHost: false
+devMode: true
+isLocalHost: false
+      ✓ should read client redirect uri list in db (1003ms)
+    #deleteClientRedirectUri()
+      ✓ should delete client redirect uri (1096ms)
+    #deleteAllClientRedirectUri()
+      ✓ should delete client redirect uri (1046ms)
+    #deleteClient()
+      ✓ should delete client (1056ms)
+
+  mysql DB client roles
+    #connect()
+      ✓ should connect to db and create pool
+    #addClient()
+      ✓ should add a client (1057ms)
+    #addClientRole()
+      ✓ should add a client role (1089ms)
+    #getClientRoleList()
+      ✓ should read client role list (1003ms)
+    #deleteClientRole()
+      ✓ should delete client role (1054ms)
+    #deleteClient()
+      ✓ should delete client (1102ms)
+
+  mysql DB client roles uri
+    #connect()
+      ✓ should connect to db and create pool
+    #addClient()
+      ✓ should add a client (1043ms)
+    #addClientRole()
+      ✓ should add a client role (1125ms)
+    #addClientAllowedUri()
+      ✓ should add a client allowed URI (1054ms)
+    #addClientRoleUri()
+      ✓ should add a client Role Uri (1047ms)
+    #getClientRoleUriList()
+      ✓ should get a client Role Uri list (1004ms)
+    #getClientRoleAllowedUriListByClientId()
+      ✓ should get a client Role Uri list by clientId (1003ms)
+    #deleteClientRoleUri()
+      ✓ should delete a client Role Uri (1062ms)
+    #deleteClientRole()
+      ✓ should delete client role (1080ms)
+    #deleteClientAllowedUri()
+      ✓ should delete client allowed URI (1089ms)
+    #deleteClient()
+      ✓ should delete client (1057ms)
+
+  mysql DB client scope
+    #connect()
+      ✓ should connect to db and create pool
+    #addClient()
+      ✓ should add a client (1055ms)
+    #addClientScope()
+      ✓ should add a client scope (1058ms)
+    #getClientScopeList()
+      ✓ should read client scope list (1002ms)
+    #deleteClientScope()
+      ✓ should delete client scope (1061ms)
+    #deleteClient()
+      ✓ should delete client (1050ms)
+
+  mysql DB client
+    #connect()
+      ✓ should connect to db and create pool
+    #addClient()
+      ✓ should add a client (1054ms)
+    #updateClient()
+      ✓ should add a client (1079ms)
+    #getClient()
+      ✓ should read client (1002ms)
+    #getClientList()
+      ✓ should read client list (1002ms)
+    #getClientSearchList()
+      ✓ should read client list in search (1003ms)
+    #deleteClient()
+      ✓ should delete client (1264ms)
+
+  mysql DB credentials grant
+    #connect()
+      ✓ should connect to db and create pool
+    #addClient()
+      ✓ should add a client (1056ms)
+    #addCredentialsGrant()
+      ✓ should add an addCredentialsGrant in db (1145ms)
+    #getCredentialsGrant()
+      ✓ should read CredentialsGrant in db (1002ms)
+    #deleteCredentialsGrant()
+      ✓ should delete CredentialsGrant in db (1178ms)
+    #deleteClient()
+      ✓ should delete client (1113ms)
+
+  mysql DB authorization code
+    #connect()
+      ✓ should connect to db and create pool
+    #addClient()
+      ✓ should add a client (1045ms)
+    #addImplicitGrant()
+      ✓ should add an addImplicitGrant in db (1058ms)
+    #addImplicitGrantScope()
+      ✓ should add an ImplicitGrant scope in db (1054ms)
+    #deleteImplicitGrantScope()
+      ✓ should delete ImplicitGrant scope (1046ms)
+    #deleteImplicitGrant()
+      ✓ should delete ImplicitGrant in db (1223ms)
+    #deleteClient()
+      ✓ should delete client (1057ms)
+
+  mysql DB authorization code
+    #connect()
+      ✓ should connect to db and create pool
+    #addClient()
+      ✓ should add a client (1075ms)
+    #addImplicitGrant()
+      ✓ should add an addImplicitGrant in db (1056ms)
+    #getImplicitGrant()
+      ✓ should read ImplicitGrant in db (1003ms)
+    #getImplicitGrantByScope()
+      ✓ should read getImplicitGrantByScope in db (1005ms)
+    #deleteImplicitGrant()
+      ✓ should delete ImplicitGrant in db (1163ms)
+    #deleteClient()
+      ✓ should delete client (1168ms)
+
+  mysql DB password grant
+    #connect()
+      ✓ should connect to db and create pool
+    #addClient()
+      ✓ should add a client (1065ms)
+    #addPasswordGrant()
+      ✓ should add an password grant in db (1057ms)
+    #getPasswordGrant()
+      ✓ should read password grant in db (1003ms)
+    #deletePasswordGrant()
+      ✓ should delete password grant in db (1256ms)
+    #deleteClient()
+      ✓ should delete client (1101ms)
+
+  mysql DB refresh token
+    #connect()
+      ✓ should connect to db and create pool
+    #addRefreshToken()
+      ✓ should add a refresh token in db (1047ms)
+    #updateRefreshToken()
+      ✓ should update a refresh token in db (1078ms)
+    #getRefreshToken()
+refresh token value:111djfjoiqjldksflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf
+      ✓ should read refresh token in db (1003ms)
+    #deleteRefreshToken()
+      ✓ should delete refresh token in db (1055ms)
+
+  mysql DB session key
+    #connect()
+      ✓ should connect to db and create pool
+    #getSessionKey()
+session key result:{"id":1,"key":"651f51v616dsfljdssSdff2dD63Dss"}
+      ✓ should get session key in processor (1002ms)
+
+  mysql DB session store
+    #connect()
+      ✓ should connect to db and create pool
+    #getSessionStore()
+session store result:{"checkExpirationInterval":900000,"expiration":86400000,"createDatabaseTable":true,"connectionLimit":1,"charset":"utf8mb4_bin","schema":{"tableName":"sessions","columnNames":{"session_id":"session_id","expires":"expires","data":"data"}}}
+      ✓ should get session store in db (1003ms)
+
+  mysql DB token key
+    #connect()
+      ✓ should connect to db and create pool (1001ms)
+    #getAccessTokenKey()
+access token key result:{"id":1,"key":"51ffgf1fdkhass651eeffvvgh65s6dFd45F15FFfffF51Klk445jE67JHH"}
+      ✓ should get access token key in processor (1003ms)
+    #getRefreshTokenKey()
+refresh token key result:{"id":4,"key":"kdls5dsdfdk;691dds51ds77dsd11ss"}
+      ✓ should get refresh token key in processor (1002ms)
+
+  AccessTokenProcessor
+    #connect()
+      ✓ should connect to db and create pool
+    #addRefreshToken()
+      ✓ should add a refresh token in processor (1058ms)
+    #addAccessToken()
+      ✓ should add a access token in processor (1057ms)
+    #updateAccessToken()
+      ✓ should update a access token in processor (1055ms)
+    #getAccessToken()
+access token result:{"id":3743,"token":"111djfjoiqjldktrtryrtyrytrsflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf","expires":"2018-04-16T00:49:07.000Z","refreshTokenId":2480}
+      ✓ should read access token in processor (1002ms)
+    #deleteAccessToken()
+      ✓ should delete access token (1044ms)
+    #deleteRefreshToken()
+      ✓ should delete refresh token (1046ms)
+
+  authorizationCodeProcessor
+    #connect()
+      ✓ should connect to db and create pool
+    #addClient()
+      ✓ should add a client in clientProcessor (1054ms)
+    #addAccessToken()
+      ✓ should add a access token in processor (1058ms)
+    #addAuthorizationCode()
+      ✓ should add an authorization code in processor (1055ms)
+    #addAuthCodeRevoke()
+      ✓ should revoke an authorization code in processor (1047ms)
+    #getAuthCodeRevoke()
+      ✓ should get AuthCodeRevoke in processor (1003ms)
+    #deleteAuthCodeRevoke()
+      ✓ should delete AuthCodeRevoke in processor (1044ms)
+    #deleteAuthorizationCode()
+      ✓ should delete authorization code (1045ms)
+    #deleteAccessToken()
+      ✓ should delete access token (1047ms)
+    #deleteClient()
+      ✓ should delete client (1055ms)
+
+  authorizationCodeProcessor
+    #connect()
+      ✓ should connect to db and create pool
+    #addClient()
+      ✓ should add a client in clientProcessor (1056ms)
+    #addAccessToken()
+      ✓ should add a access token in processor (1044ms)
+    #addAuthorizationCode()
+      ✓ should add an authorization code in processor (1060ms)
+    #updateAuthorizationCode()
+      ✓ should update an authorization code in processor (1076ms)
+    #updateAuthorizationCodeToken()
+      ✓ should update an authorization token code in processor (1046ms)
+    #getAuthorizationCode()
+      ✓ should read AuthorizationCode in processor (1003ms)
+    #getAuthorizationCodeByCode()
+      ✓ should read AuthorizationCode by code in processor (1003ms)
+    #addAuthorizationCodeScope()
+      ✓ should add an authorization code scope in processor (1052ms)
+    #getAuthorizationCodeByScope()
+      ✓ should read AuthorizationCodeScope in processor (1003ms)
+    #deleteAuthorizationCodeScope()
+      ✓ should delete authorization code scope (1056ms)
+    #deleteAuthorizationCode()
+      ✓ should delete authorization code (1048ms)
+    #deleteAccessToken()
+      ✓ should delete access token (1044ms)
+    #deleteClient()
+      ✓ should delete client (1069ms)
+
+  authorizationCodeScopeProcessor
+    #connect()
+      ✓ should connect to db and create pool
+    #addClient()
+      ✓ should add a client in clientProcessor (1097ms)
+    #addAccessToken()
+      ✓ should add a access token in processor (1046ms)
+    #addAuthorizationCode()
+      ✓ should add an authorization code in processor (1100ms)
+    #addAuthorizationCodeScope()
+      ✓ should add an authorization code scope in processor (1057ms)
+    #addAuthorizationCodeScopeAgain()
+      ✓ should add another authorization code scope in processor (1066ms)
+    #getAuthorizationCodeScopeList()
+      ✓ should read AuthorizationCodeScope in processor (1002ms)
+    #deleteAuthorizationCodeScope()
+      ✓ should delete authorization code scope (1045ms)
+    #deleteAuthorizationCodeScopeList()
+      ✓ should delete authorization code scope list (1113ms)
+    #deleteAuthorizationCode()
+      ✓ should delete authorization code (1078ms)
+    #deleteAccessToken()
+      ✓ should delete access token (1058ms)
+    #deleteClient()
+      ✓ should delete client (1056ms)
+
+  ClientAllowedUriProcessor
+    #connect()
+      ✓ should connect to db and create pool
+    #addClient()
+      ✓ should add a client in clientProcessor (1043ms)
+    #addClientAllowedUri()
+      ✓ should add a client allowed URI (1088ms)
+    #getClientAllowedUriList()
+      ✓ should read client list in processor (1002ms)
+    #getClientAllowedUriById()
+      ✓ should a uri in processor (1003ms)
+    #updateClientAllowedUri()
+      ✓ should update a client allowed URI (1090ms)
+    #getClientAllowedUri
+      ✓ should read client uri in processor (1003ms)
+    #deleteClientAllowedUri()
+      ✓ should delete client allowed URI (1076ms)
+    #deleteClient()
+      ✓ should delete client (1100ms)
+
+  ClientGrantTypeProcessor
+    #connect()
+      ✓ should connect to db and create pool
+    #addClient()
+      ✓ should add a client in clientProcessor (1090ms)
+    #addClientGrantType()
+      ✓ should add a client grant type (1044ms)
+    #getClientGrantTypeList()
+      ✓ should read client grant type list in processor (1002ms)
+    #deleteClientGrantType()
+      ✓ should delete client grant type (1078ms)
+    #deleteClient()
+      ✓ should delete client (1231ms)
+
+  ClientProcessor
+    #connect()
+      ✓ should connect to db and create pool
+    #addClient()
+      ✓ should add a client in clientProcessor (1057ms)
+    #updateClient()
+      ✓ should add a client in processor (1046ms)
+    #getClient()
+      ✓ should read client in processor (1004ms)
+    #getClientList()
+      ✓ should read client list in processor (1002ms)
+    #getClientSearchList()
+      ✓ should read client list in search in processor (1002ms)
+    #deleteClient()
+      ✓ should delete client (1050ms)
+
+  ClientRedirectUriProcessor
+    #connect()
+      ✓ should connect to db and create pool
+    #addClient()
+      ✓ should add a client in clientProcessor (1043ms)
+    #addClientRedirectUri()
+      ✓ should add a client redirect uri (1058ms)
+    #addClientRedirectUri()
+      ✓ should add a client redirect uri (1134ms)
+    #addClientRedirectUri()
+      ✓ should add another client redirect uri (1046ms)
+    #getClientRedirectUri()
+devMode: true
+isLocalHost: false
+      ✓ should get client redirect uri in processor (1002ms)
+    #getClientRedirectUri()
+devMode: true
+isLocalHost: false
+      ✓ should fail to get client redirect localhost uri in processor (1002ms)
+    #getClientRedirectUri()
+devMode: false
+isLocalHost: true
+      ✓ should fail to get client redirect localhost uri in processor (1002ms)
+    #getClientRedirectUriList()
+devMode: true
+isLocalHost: false
+devMode: true
+isLocalHost: false
+devMode: true
+isLocalHost: false
+      ✓ should read client redirect uri list in processor (1003ms)
+    #getClientRedirectUriList()
+devMode: true
+isLocalHost: false
+devMode: true
+isLocalHost: false
+devMode: true
+isLocalHost: false
+      ✓ should read client redirect uri list in processor (1003ms)
+    #getClientRedirectUriList()
+devMode: true
+isLocalHost: false
+devMode: true
+isLocalHost: false
+devMode: true
+isLocalHost: false
+      ✓ should read client redirect uri list in processor (1002ms)
+    #deleteClientRedirectUri()
+      ✓ should delete client redirect uri (1071ms)
+    #deleteClientRedirectUri()
+      ✓ should delete client redirect uri (1047ms)
+    #deleteAllClientRedirectUri()
+      ✓ should delete client redirect uri (1067ms)
+    #deleteClient()
+      ✓ should delete client (1045ms)
+
+  ClientRoleProcessor
+    #connect()
+      ✓ should connect to db and create pool
+    #addClient()
+      ✓ should add a client in clientProcessor (1065ms)
+    #addClientRole()
+      ✓ should add a client Role (1046ms)
+    #getClientRoleiList()
+      ✓ should read client role list in processor (1002ms)
+    #deleteClientRole()
+      ✓ should delete client role (1089ms)
+    #deleteClient()
+      ✓ should delete client (1081ms)
+
+  ClientRoleUriProcessor
+    #connect()
+      ✓ should connect to db and create pool
+    #addClient()
+      ✓ should add a client in clientProcessor (1057ms)
+    #addClientRole()
+      ✓ should add a client Role (1056ms)
+    #addClientAllowedUri()
+      ✓ should add a client allowed URI (1046ms)
+    #addClientRoleUri()
+      ✓ should add a client Role Uri (1122ms)
+    #getClientRoleUriList()
+      ✓ should get a client Role Uri list (1002ms)
+    #getClientRoleUriListByClientId()
+role uris by client: [{"clientRoleId":137,"role":"user","uriId":713,"uri":"http://ulboralabs.com","clientId":844}]
+clientAllowedUriId: 713
+      ✓ should get a client Role Uri list by client id (1003ms)
+    #deleteClientRoleUri()
+      ✓ should delete a client Role Uri (1054ms)
+    #deleteClientRole()
+      ✓ should delete client role (1056ms)
+    #deleteClientAllowedUri()
+      ✓ should delete client allowed URI (1049ms)
+    #deleteClient()
+      ✓ should delete client (1067ms)
+
+  ClientScopeProcessor
+    #connect()
+      ✓ should connect to db and create pool
+    #addClient()
+      ✓ should add a client in clientProcessor (1055ms)
+    #addClientRole()
+      ✓ should add a client Scope (1079ms)
+    #getClientScopeList()
+      ✓ should read client scope list in processor (1002ms)
+    #deleteClientRole()
+      ✓ should delete client role (1066ms)
+    #deleteClient()
+      ✓ should delete client (1046ms)
+
+  credentialsGrantProcessor
+    #connect()
+      ✓ should connect to db and create pool
+    #addClient()
+      ✓ should add a client in clientProcessor (1045ms)
+    #addAccessToken()
+      ✓ should add a access token in processor (1066ms)
+    #addCredentialsGrant()
+      ✓ should add an crendentials grant in processor (1114ms)
+    #getCredentialsGrant()
+      ✓ should read credentials grant in processor (1002ms)
+    #deleteCredentialsGrant()
+      ✓ should delete credentials grant in processor (1476ms)
+    #deleteAccessToken()
+      ✓ should delete access token (1071ms)
+    #deleteClient()
+      ✓ should delete client (1078ms)
+
+  implicitGrantProcessor
+    #connect()
+      ✓ should connect to db and create pool
+    #addClient()
+      ✓ should add a client in clientProcessor (1054ms)
+    #addAccessToken()
+      ✓ should add a access token in processor (1089ms)
+    #addImplicitGrant()
+      ✓ should add an implicit grant in processor (1057ms)
+    #getImplicitGrant()
+      ✓ should read ImplicitGrant in processor (1002ms)
+    #addImplicitGrantScope()
+      ✓ should add an ImplicitGrant scope in processor (1055ms)
+    #getImplicitGrantByScope()
+      ✓ should read getImplicitGrantByScope in processor (1002ms)
+    #deleteImplicitGrantScopeList()
+      ✓ should delete ImplicitGrant scope list (1045ms)
+    #deleteImplicitGrant()
+      ✓ should delete ImplicitGrant in processor (1078ms)
+    #deleteAccessToken()
+      ✓ should delete access token (1056ms)
+    #deleteClient()
+      ✓ should delete client (1056ms)
+
+  authorizationCodeScopeProcessor
+    #connect()
+      ✓ should connect to db and create pool
+    #addClient()
+      ✓ should add a client in clientProcessor (1058ms)
+    #addAccessToken()
+      ✓ should add a access token in processor (1100ms)
+    #addImplicitGrant()
+      ✓ should add an ImplicitGrant in processor (1046ms)
+    #addImplicitGrantScope()
+      ✓ should add an ImplicitGrant scope in processor (1066ms)
+    #addImplicitGrantScopeAgain()
+      ✓ should add another ImplicitGrant scope in processor (1045ms)
+    #getImplicitGrantScopeList()
+      ✓ should read ImplicitGrantScope in processor (1003ms)
+    #deleteImplicitGrantScope()
+      ✓ should delete ImplicitGrant scope (1066ms)
+    #deleteImplicitGrantScopeList()
+      ✓ should delete ImplicitGrant scope list (1078ms)
+    #deleteImplicitGrant()
+      ✓ should delete ImplicitGrant (1059ms)
+    #deleteAccessToken()
+      ✓ should delete access token (1056ms)
+    #deleteClient()
+      ✓ should delete client (1046ms)
+
+  passwordGrantProcessor
+    #connect()
+      ✓ should connect to db and create pool
+    #addClient()
+      ✓ should add a client in processor (1071ms)
+    #addAccessToken()
+      ✓ should add a access token in processor (1067ms)
+    #addPasswordGrant()
+      ✓ should add an password grant in processor (1089ms)
+    #getPasswordGrant()
+      ✓ should read password grant in processor (1002ms)
+    #deletePasswordGrant()
+      ✓ should delete password grant in processor (1178ms)
+    #deleteAccessToken()
+      ✓ should delete access token (1049ms)
+    #deleteClient()
+      ✓ should delete client (1044ms)
+
+  RefreshTokenProcessor
+    #connect()
+      ✓ should connect to db and create pool
+    #addRefreshToken()
+      ✓ should add a refresh token in processor (1046ms)
+    #updateRefreshToken()
+      ✓ should update a refresh token in processor (1078ms)
+    #getRefreshToken()
+refresh token value:111djfjoiqjldksflkdfjdskdsoidsljdsjdsljdlsjfljsdlfjdlsfdsjfdslfkdsjffldskf
+      ✓ should read refresh token in processor (1002ms)
+    #deleteRefreshToken()
+      ✓ should delete refresh token (1055ms)
+
+  SessionKeyProcessor
+    #connect()
+      ✓ should connect to db and create pool
+    #getSessionTokenKey()
+session token key result:{"id":1,"key":"651f51v616dsfljdssSdff2dD63Dss"}
+      ✓ should get session key in processor (1002ms)
+
+  TokenKeyProcessor
+    #connect()
+      ✓ should connect to db and create pool
+    #getAccessTokenKey()
+access token key result:{"id":1,"key":"51ffgf1fdkhass651eeffvvgh65s6dFd45F15FFfffF51Klk445jE67JHH"}
+      ✓ should get access token key in processor (1002ms)
+    #getRefreshTokenKey()
+refresh token key result:{"id":4,"key":"kdls5dsdfdk;691dds51ds77dsd11ss"}
+      ✓ should get refresh token key in processor (1002ms)
+
+  Access token delegate
+    #init()
+      ✓ should init manager (1002ms)
+    #generateAccessToken()
+access token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJncmFudCI6ImNvZGUiLCJ1c2VySWQiOiJhZG1pbiIsImNsaWVudElkIjoiamRzbGRzbGRzbGRscyIsInJvbGVVcmlzIjpbeyJjbGllbnRSb2xlSWQiOjExLCJyb2xlIjoiYWRtaW4iLCJ1cmlJZCI6OTUsInVyaSI6Imh0dHBzOi8vYWJjLmNvbS9ycy9hZGRVc2VyIiwiY2xpZW50SWQiOjQyMX1dLCJzY29wZUxpc3QiOlsicmVhZCIsIndyaXRlIl0sImV4cGlyZXNJbiI6NTAwLCJpYXQiOjE1MjM4MTEwODgsInRva2VuVHlwZSI6ImFjY2VzcyIsImV4cCI6MTUyMzgxMTU4OCwiaXNzIjoiVWxib3JhIE9hdXRoMiBTZXJ2ZXIifQ.hYY2WSPRkkh2V3uE_i1yLNzwuhuIAiPMIQM8gz17wWU
+      ✓ should generateAccessToken (1007ms)
+    #validateAccessToken()
+userIdMatch: true
+scopeFound: true
+foundRoleUri: true
+in code or implicit grant if: value: true
+      ✓ should validateAccessToken (1004ms)
+    #decodeAccessToken()
+      ✓ should decodeAccessToken (1002ms)
+    #generateAccessToken()
+access token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJncmFudCI6ImNvZGUiLCJ1c2VySWQiOiJhZG1pbiIsImNsaWVudElkIjoiamRzbGRzbGRzbGRscyIsInNjb3BlTGlzdCI6WyJyZWFkIiwid3JpdGUiXSwiaWF0IjoxNTIzODExMDkxLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJpc3MiOiJVbGJvcmEgT2F1dGgyIFNlcnZlciJ9.PyloUveSjiFmtl33LKKvngkdrUc2dn7ynh8VD02fvwE
+      ✓ should generateAccessToken (1003ms)
+
+  Access Token Refresh Delegate
+    #init()
+      ✓ should init manager (1001ms)
+    #addClient()
+      ✓ should add a client (1125ms)
+    #addClientRole()
+      ✓ should add a client role (1091ms)
+    #addClientAllowedUri()
+      ✓ should add a client allowed URI (1089ms)
+    #addClientRoleUri()
+      ✓ should add a client Role Uri (1046ms)
+    #addClientGrantType()
+addClientGrantType: {"id":269,"success":true,"message":""}
+      ✓ should add a client grant type in db (1056ms)
+    #addClientRedirectUri()
+      ✓ should add a client redirect uri (1060ms)
+    #authorize()
+devMode: true
+isLocalHost: false
+couldn't find redirect url
+authorization code: {"authorizationCode":null,"codeString":null,"error":"access_denied","redirectUri":"http://www.google.org"}
+      ✓ should fail to authorize a client user because redirect uri is not allowed (1004ms)
+    #authorize()
+devMode: true
+isLocalHost: false
+authorization code: {"authorizationCode":2375,"codeString":"QvAfmMI2375oyC1A6Bbie2c","error":null,"redirectUri":"http://www.google.com","success":true}
+      ✓ should authorize a client user  (1321ms)
+    #authorize()
+devMode: true
+isLocalHost: false
+scopes before delete: ["read"]
+authorization code: {"authorizationCode":2376,"codeString":"JBsgcHS2376ScI8YUa9duaI","error":null,"redirectUri":"http://www.google.com","success":true}
+      ✓ should authorize a client user with the same scope  (1812ms)
+    #authorize()
+devMode: true
+isLocalHost: false
+scopes before delete: ["addUser","read"]
+delete of old auth code :{"success":true,"message":""}
+authorization code 2: {"authorizationCode":2377,"codeString":"rrEfI502377In8Zs6nmKJGm","error":null,"redirectUri":"http://www.google.com","success":true}
+      ✓ should authorize a second scope for a client user (1337ms)
+    #getAuthorizationCodeScopeList()
+getAuthorizationCodeScopeList:[{"id":4249,"scope":"addUser","authorizationCode":2377},{"id":4250,"scope":"read","authorizationCode":2377}]
+      ✓ should read AuthorizationCodeScope in db (1002ms)
+    #checkApplicationAuthorization()
+      ✓ should checkApplicationAuthorization (1002ms)
+    #updateAuthorizationCodeAndTokens()
+auth code: {"authorizationCode":2377,"clientId":850,"userId":"admin","expires":"2018-04-15T16:56:44.000Z","accessTokenId":3753,"codeString":"rrEfI502377In8Zs6nmKJGm","alreadyUsed":false}
+access token: {"id":3753,"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJncmFudCI6ImNvZGUiLCJ1c2VySWQiOiJmaXJucyIsImNsaWVudElkIjo4NTAsInJvbGVVcmlzIjpbeyJjbGllbnRSb2xlSWQiOjEzOCwicm9sZSI6InN1cGVydXNlciIsInVyaUlkIjo3MTQsInVyaSI6Imh0dHA6Ly91bGJvcmFsYWJzLmNvbSIsImNsaWVudElkIjo4NTB9XSwic2NvcGVMaXN0IjpbImFkZFVzZXIiLCJyZWFkIl0sImV4cGlyZXNJbiI6MzYwMCwiaWF0IjoxNTIzODExMTA0LCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJleHAiOjE1MjM4MTQ3MDQsImlzcyI6IlVsYm9yYSBPYXV0aDIgU2VydmVyIn0.7jwMVVlqT3pBa_OKEL4JsJBX_XEgWmegQRS1qDtFAD0","expires":"2018-04-18T04:51:44.000Z","refreshTokenId":2484}
+client: {"clientId":850,"secret":"rQ98KMxjgmKs6FJoDvt4QYA6JBuMtxvx1JlpHPDgO5Ih1dpQba","name":"ulbora","webSite":"www.ulboralabs.com","email":"ulbora@ulbora.com","enabled":true}
+refreshResult: {"id":2484,"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjb2RlIiwidXNlcklkIjoiZmlybnMiLCJjbGllbnRJZCI6ODUwLCJpYXQiOjE1MjM4MTExMDQsInRva2VuVHlwZSI6InJlZnJlc2giLCJleHAiOjE1MjM4NDcxMDQsImlzcyI6IlVsYm9yYSBPYXV0aDIgU2VydmVyIn0.nscvu8u8JCehDxFXbYxvXDbjWzVkGBcmK8v2qLKl-Z4"}
+refreshedTokenResult:{"access_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJncmFudCI6ImNvZGUiLCJ1c2VySWQiOiJmaXJucyIsImNsaWVudElkIjo4NTAsInJvbGVVcmlzIjpbeyJjbGllbnRSb2xlSWQiOjEzOCwicm9sZSI6InN1cGVydXNlciIsInVyaUlkIjo3MTQsInVyaSI6Imh0dHA6Ly91bGJvcmFsYWJzLmNvbSIsImNsaWVudElkIjo4NTB9XSwic2NvcGVMaXN0IjpbImFkZFVzZXIiLCJyZWFkIl0sImV4cGlyZXNJbiI6MzYwMCwiaWF0IjoxNTIzODExMTA3LCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJleHAiOjE1MjM4MTQ3MDcsImlzcyI6IlVsYm9yYSBPYXV0aDIgU2VydmVyIn0.qqn5xoM0bBi9OD3lNaJMV6AcXY7bvFjaS3LrUHNQLlk","token_type":"bearer","expires_in":3600,"refresh_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjb2RlIiwidXNlcklkIjoiZmlybnMiLCJjbGllbnRJZCI6ODUwLCJpYXQiOjE1MjM4MTExMDQsInRva2VuVHlwZSI6InJlZnJlc2giLCJleHAiOjE1MjM4NDcxMDQsImlzcyI6IlVsYm9yYSBPYXV0aDIgU2VydmVyIn0.nscvu8u8JCehDxFXbYxvXDbjWzVkGBcmK8v2qLKl-Z4"}
+      ✓ should update an authorization code and token in manager (1066ms)
+    #updateAuthorizationCodeAndTokens()
+refreshedTokenResult:{"error":"invalid_client"}
+      ✓ should fail to update an authorization code and token in manager (1007ms)
+    #validateClientCallback()
+devMode: true
+isLocalHost: false
+      ✓ should validateClientCallback (1005ms)
+    #deleteAuthorizationCode()
+deleteAuthorizationCode:{"success":true}
+      ✓ should delete authorization code (1078ms)
+    #deleteClientRedirectUri()
+      ✓ should delete client redirect uri (1047ms)
+    #deleteClientGrantType()
+      ✓ should delete client grant type (1044ms)
+    #deleteClientRoleUri()
+      ✓ should delete a client Role Uri (1048ms)
+    #deleteClientRole()
+      ✓ should delete client role (1055ms)
+    #deleteClientAllowedUri()
+      ✓ should delete client allowed URI (1057ms)
+    #deleteClient()
+      ✓ should delete client (1079ms)
+
+  authCodeTokenDelegate
+    #init()
+      ✓ should init manager (1002ms)
+    #addClient()
+      ✓ should add a client (1212ms)
+    #addClientRole()
+      ✓ should add a client role (1057ms)
+    #addClientAllowedUri()
+      ✓ should add a client allowed URI (1055ms)
+    #addClientRoleUri()
+      ✓ should add a client Role Uri (1059ms)
+    #addClientGrantType()
+addClientGrantType: {"id":270,"success":true,"message":""}
+      ✓ should add a client grant type in db (1077ms)
+    #addClientRedirectUri()
+      ✓ should add a client redirect uri (1046ms)
+    #authorize()
+devMode: true
+isLocalHost: false
+couldn't find redirect url
+authorization code: {"authorizationCode":null,"codeString":null,"error":"access_denied","redirectUri":"http://www.google.org"}
+      ✓ should fail to authorize a client user because redirect uri is not allowed (1003ms)
+    #authorize()
+devMode: true
+isLocalHost: false
+authorization code: {"authorizationCode":2378,"codeString":"Ctcm3tv2378MGZeyzX7CQ6v","error":null,"redirectUri":"http://www.google.com","success":true}
+      ✓ should authorize a client user  (1132ms)
+    #authorize()
+devMode: true
+isLocalHost: false
+scopes before delete: ["read"]
+authorization code: {"authorizationCode":2379,"codeString":"CVw1yp72379Y9T20Secy8bv","error":null,"redirectUri":"http://www.google.com","success":true}
+      ✓ should authorize a client user with the same scope  (1747ms)
+    #authorize()
+devMode: true
+isLocalHost: false
+scopes before delete: ["addUser","read"]
+delete of old auth code :{"success":true,"message":""}
+authorization code 2: {"authorizationCode":2380,"codeString":"JY1shPU2380gMuz4mN9LP6X","error":null,"redirectUri":"http://www.google.com","success":true}
+      ✓ should authorize a second scope for a client user (1189ms)
+    #getAuthorizationCodeScopeList()
+getAuthorizationCodeScopeList:[{"id":4253,"scope":"addUser","authorizationCode":2380},{"id":4254,"scope":"read","authorizationCode":2380}]
+      ✓ should read AuthorizationCodeScope in db (1003ms)
+    #checkApplicationAuthorization()
+      ✓ should checkApplicationAuthorization (1005ms)
+    #validateClientCallback()
+devMode: true
+isLocalHost: false
+      ✓ should validateClientCallback (1004ms)
+    #authCodeToken()
+authCodeToken client: {"clientId":851,"secret":"wkRxkGfvzxiCpprVDBgdzlh4aghza9ml0bnDtw9j72B7VW6HWm","name":"ulbora","webSite":"www.ulboralabs.com","email":"ulbora@ulbora.com","enabled":true}
+authCodeToken: {"error":"invalid_client"}
+      ✓ should get invalid_client in tokenmanager with wrong secret (1007ms)
+    #authCodeToken()
+devMode: true
+isLocalHost: false
+authCodeToken: {"error":"invalid_grant"}
+      ✓ should get invalid_grant in tokenmanager because of wrong redirect uri (1009ms)
+    #authCodeToken()
+devMode: true
+isLocalHost: false
+authCodeToken: {"access_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJncmFudCI6ImNvZGUiLCJ1c2VySWQiOiJmaXJucyIsImNsaWVudElkIjo4NTEsInJvbGVVcmlzIjpbeyJjbGllbnRSb2xlSWQiOjEzOSwicm9sZSI6InN1cGVydXNlciIsInVyaUlkIjo3MTUsInVyaSI6Imh0dHA6Ly91bGJvcmFsYWJzLmNvbSIsImNsaWVudElkIjo4NTF9XSwic2NvcGVMaXN0IjpbImFkZFVzZXIiLCJyZWFkIl0sImV4cGlyZXNJbiI6MzYwMCwiaWF0IjoxNTIzODExMTI5LCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJleHAiOjE1MjM4MTQ3MjksImlzcyI6IlVsYm9yYSBPYXV0aDIgU2VydmVyIn0.YO-DxhSu3U5d3K28r5jnUpGnwQrsng5zvijxDYVXlIA","token_type":"bearer","expires_in":3600,"refresh_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjb2RlIiwidXNlcklkIjoiZmlybnMiLCJjbGllbnRJZCI6ODUxLCJpYXQiOjE1MjM4MTExMjksInRva2VuVHlwZSI6InJlZnJlc2giLCJleHAiOjE1MjM4NDcxMjksImlzcyI6IlVsYm9yYSBPYXV0aDIgU2VydmVyIn0.5fGfGDbOkJmaM4_xc_uhbMl15iFxl6cGRFXtbWmgrWs"}
+      ✓ should get token in tokenmanager (1084ms)
+    #deleteAuthorizationCode()
+deleteAuthorizationCode:{"success":true}
+      ✓ should delete authorization code (1145ms)
+    #deleteClientRedirectUri()
+      ✓ should delete client redirect uri (1056ms)
+    #deleteClientGrantType()
+      ✓ should delete client grant type (1069ms)
+    #deleteClientRoleUri()
+      ✓ should delete a client Role Uri (1091ms)
+    #deleteClientRole()
+      ✓ should delete client role (1057ms)
+    #deleteClientAllowedUri()
+      ✓ should delete client allowed URI (1045ms)
+    #deleteClient()
+      ✓ should delete client (1046ms)
+
+  Authorization Code delegate
+    #init()
+      ✓ should init manager (1002ms)
+    #addClient()
+      ✓ should add a client (1101ms)
+    #addClientRole()
+      ✓ should add a client role (1055ms)
+    #addClientAllowedUri()
+      ✓ should add a client allowed URI (1060ms)
+    #addClientRoleUri()
+      ✓ should add a client Role Uri (1078ms)
+    #createAuthorizationCode()
+authorization code: {"authorizationCode":2381,"codeString":"ddrYQI32381VEtglF9GAcLX","success":true,"message":null}
+      ✓ should createAuthorizationCode (1179ms)
+    #deleteAuthorizationCode()
+      ✓ should delete authorization code (1067ms)
+    #deleteClientRoleUri()
+      ✓ should delete a client Role Uri (1046ms)
+    #deleteClientRole()
+      ✓ should delete client role (1067ms)
+    #deleteClientAllowedUri()
+      ✓ should delete client allowed URI (1049ms)
+    #deleteClient()
+      ✓ should delete client (1156ms)
+
+  clientGrantDelegate
+    #init()
+      ✓ should init manager (1000ms)
+    #addClient()
+      ✓ should add a client (1357ms)
+    #addClientRole()
+      ✓ should add a client role (1058ms)
+    #addClientAllowedUri()
+      ✓ should add a client allowed URI (1055ms)
+    #addClientRoleUri()
+      ✓ should add a client Role Uri (1057ms)
+    #addClientGrantType()
+addClientGrantType: {"id":271,"success":true,"message":""}
+      ✓ should add a client grant type in db (1045ms)
+    #addClientRedirectUri()
+      ✓ should add a client redirect uri (1059ms)
+    #createClientGrant()
+createClientGrant client: {"clientId":853,"secret":"qzZuG6cGDk8WIXmQrqcH1yQzZBrS9tP9GohAoQcoRkIi2x0ezV","name":"ulbora","webSite":"www.ulboralabs.com","email":"ulbora@ulbora.com","enabled":true}
+createClientGrant token: {"error":"invalid_client"}
+      ✓ should get invalid_client in createClientGrant with wrong secret (1004ms)
+    #createClientGrant()
+createClientGrant token: {"access_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJncmFudCI6ImNsaWVudF9jcmVkZW50aWFscyIsImNsaWVudElkIjo4NTMsInJvbGVVcmlzIjpbeyJjbGllbnRSb2xlSWQiOjE0MSwicm9sZSI6InN1cGVydXNlciIsInVyaUlkIjo3MTcsInVyaSI6Imh0dHA6Ly91bGJvcmFsYWJzLmNvbSIsImNsaWVudElkIjo4NTN9XSwiZXhwaXJlc0luIjozNjAwLCJpYXQiOjE1MjM4MTExNjQsInRva2VuVHlwZSI6ImFjY2VzcyIsImV4cCI6MTUyMzgxNDc2NCwiaXNzIjoiVWxib3JhIE9hdXRoMiBTZXJ2ZXIifQ.mrIfhpqaL55_dKMdduBJbw8zkjp_148kkM9Q9f1_fKU","token_type":"bearer","expires_in":3600}
+      ✓ should get token in createClientGrant (1054ms)
+    #getClient()
+devMode: true
+isLocalHost: false
+devMode: true
+isLocalHost: false
+devMode: true
+isLocalHost: false
+client: {"clientId":853,"secret":"qzZuG6cGDk8WIXmQrqcH1yQzZBrS9tP9GohAoQcoRkIi2x0ezV","name":"ulbora","webSite":"www.ulboralabs.com","email":"ulbora@ulbora.com","enabled":true,"redirectUrls":[{"id":924,"uri":"http://www.google.com","clientId":853},{"id":925,"uri":"http://www.ulboralabs.com","clientId":853},{"id":926,"uri":"http://www.google.com","clientId":853}]}
+      ✓ should read client (1003ms)
+    #updateClient()
+      ✓ should add a client (1089ms)
+    #createClientGrant()
+createClientGrant client: {"clientId":853,"secret":"qzZuG6cGDk8WIXmQrqcH1yQzZBrS9tP9GohAoQcoRkIi2x0ezV","name":"ulbora","webSite":"www.ulboralabs.com","email":"ulbora@ulbora.com","enabled":false}
+createClientGrant token: {"error":"invalid_client"}
+      ✓ should get invalid_client in createClientGrant with disabled client (1002ms)
+    #deleteCredentialsGrant()
+      ✓ should delete CredentialsGrant in db (1266ms)
+    #deleteClientRedirectUri()
+      ✓ should delete client redirect uri (1055ms)
+    #deleteClientGrantType()
+      ✓ should delete client grant type (1059ms)
+    #deleteClientRoleUri()
+      ✓ should delete a client Role Uri (1056ms)
+    #deleteClientRole()
+      ✓ should delete client role (1057ms)
+    #deleteClientAllowedUri()
+      ✓ should delete client allowed URI (1088ms)
+    #deleteClient()
+      ✓ should delete client (1092ms)
+
+  Implicit Grant delegate
+    #init()
+      ✓ should init manager (1001ms)
+    #addClient()
+      ✓ should add a client (1090ms)
+    #addClientRole()
+      ✓ should add a client role (1089ms)
+    #addClientAllowedUri()
+      ✓ should add a client allowed URI (1047ms)
+    #addClientRoleUri()
+      ✓ should add a client Role Uri (1055ms)
+    #createImplicitGrant()
+implicitResult: {"id":220,"success":true,"message":null,"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJncmFudCI6ImltcGxpY2l0IiwidXNlcklkIjoienhqdzYiLCJjbGllbnRJZCI6ODU0LCJyb2xlVXJpcyI6W3siY2xpZW50Um9sZUlkIjoxNDIsInJvbGUiOiJzdXBlcnVzZXIiLCJ1cmlJZCI6NzE4LCJ1cmkiOiJodHRwOi8vdWxib3JhbGFicy5jb20iLCJjbGllbnRJZCI6ODU0fV0sInNjb3BlTGlzdCI6WyJyZWFkIiwibW9kaWZ5Il0sImV4cGlyZXNJbiI6MzYwMDAsImlhdCI6MTUyMzgxMTE4MSwidG9rZW5UeXBlIjoiYWNjZXNzIiwiZXhwIjoxNTIzODQ3MTgxLCJpc3MiOiJVbGJvcmEgT2F1dGgyIFNlcnZlciJ9.V0A7sPP0bwtKvnpcPJGFdYOe8y5D4zhKVu3zdpcHT6c"}
+      ✓ should createImplicitGrant (1425ms)
+    #deleteImplicitGrant()
+      ✓ should delete ImplicitGrant (1056ms)
+    #deleteClientRoleUri()
+      ✓ should delete a client Role Uri (1058ms)
+    #deleteClientRole()
+      ✓ should delete client role (1066ms)
+    #deleteClientAllowedUri()
+      ✓ should delete client allowed URI (1049ms)
+    #deleteClient()
+      ✓ should delete client (1111ms)
+
+  Refresh token delegate
+    #init()
+      ✓ should init manager (1002ms)
+    #generateRefreshToken()
+refresh token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjb2RlIiwidXNlcklkIjoiYWRtaW4iLCJjbGllbnRJZCI6Impkc2xkc2xkc2xkbHMiLCJpYXQiOjE1MjM4MTExODksInRva2VuVHlwZSI6InJlZnJlc2giLCJleHAiOjE1MjM4NDcxODksImlzcyI6IlVsYm9yYSBPYXV0aDIgU2VydmVyIn0.hQEsaeU3EXWKMawo-xDpyr208GtLS3j7iGOtLc7S-ZE
+      ✓ should generateRefreshToken (1003ms)
+    #validateRefreshToken()
+      ✓ should validateRefreshToken (1004ms)
+    #decodeRefreshToken()
+      ✓ should decodeRefreshToken (1002ms)
+
+  Session delegate
+    #init()
+      ✓ should init manager (1002ms)
+    #createSessionStore()
+session success: true
+      ✓ should createSessionStore (1009ms)
+
+  TokenManager
+    #init()
+      ✓ should init manager (1002ms)
+    #addClient()
+      ✓ should add a client (1071ms)
+    #addClientRole()
+      ✓ should add a client role (1049ms)
+    #addClientAllowedUri()
+      ✓ should add a client allowed URI (1088ms)
+    #addClientRoleUri()
+      ✓ should add a client Role Uri (1058ms)
+    #addClientGrantType()
+addClientGrantType: {"id":272,"success":true,"message":""}
+      ✓ should add a client grant type in db (1044ms)
+    #addClientRedirectUri()
+      ✓ should add a client redirect uri (1113ms)
+    #authorize()
+devMode: true
+isLocalHost: false
+couldn't find redirect url
+authorization code: {"authorizationCode":null,"codeString":null,"error":"access_denied","redirectUri":"http://www.google.org"}
+      ✓ should fail to authorize a client user because redirect uri is not allowed (1004ms)
+    #authorize()
+devMode: true
+isLocalHost: false
+authorization code: {"authorizationCode":2382,"codeString":"6bmOv9V2382N9TGEQTpEEvU","error":null,"redirectUri":"http://www.google.com","success":true}
+      ✓ should authorize a client user  (1276ms)
+    #authorize()
+devMode: true
+isLocalHost: false
+scopes before delete: ["read"]
+authorization code: {"authorizationCode":2383,"codeString":"h9jpWhB2383MrNrDf5XDGT5","error":null,"redirectUri":"http://www.google.com","success":true}
+      ✓ should authorize a client user with the same scope  (2094ms)
+    #authorize()
+devMode: true
+isLocalHost: false
+scopes before delete: ["addUser","read"]
+delete of old auth code :{"success":true,"message":""}
+authorization code 2: {"authorizationCode":2384,"codeString":"I1ngoDP23843nzEpxgAhUSc","error":null,"redirectUri":"http://www.google.com","success":true}
+      ✓ should authorize a second scope for a client user (1335ms)
+    #getAuthorizationCodeScopeList()
+getAuthorizationCodeScopeList:[{"id":4259,"scope":"addUser","authorizationCode":2384},{"id":4260,"scope":"read","authorizationCode":2384}]
+      ✓ should read AuthorizationCodeScope in db (1003ms)
+    #checkApplicationAuthorization()
+      ✓ should checkApplicationAuthorization (1002ms)
+    #validateClientCallback()
+devMode: true
+isLocalHost: false
+      ✓ should validateClientCallback (1003ms)
+    #authCodeToken()
+authCodeToken client: {"clientId":855,"secret":"fkoMUdTdEaUt5YLQzPCsdBqfCakwsRmnKf61yP4F1TNbXvigVB","name":"ulbora","webSite":"www.ulboralabs.com","email":"ulbora@ulbora.com","enabled":true}
+authCodeToken: {"error":"invalid_client"}
+      ✓ should get invalid_client in tokenmanager with wrong secret (1004ms)
+    #authCodeToken()
+devMode: true
+isLocalHost: false
+authCodeToken: {"error":"invalid_grant"}
+      ✓ should get invalid_grant in tokenmanager because of wrong redirect uri (1004ms)
+    #authCodeToken()
+devMode: true
+isLocalHost: false
+authCodeToken: {"access_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJncmFudCI6ImNvZGUiLCJ1c2VySWQiOiJmaXJucyIsImNsaWVudElkIjo4NTUsInJvbGVVcmlzIjpbeyJjbGllbnRSb2xlSWQiOjE0Mywicm9sZSI6InN1cGVydXNlciIsInVyaUlkIjo3MTksInVyaSI6Imh0dHA6Ly91bGJvcmFsYWJzLmNvbSIsImNsaWVudElkIjo4NTV9XSwic2NvcGVMaXN0IjpbImFkZFVzZXIiLCJyZWFkIl0sImV4cGlyZXNJbiI6MzYwMCwiaWF0IjoxNTIzODExMjA2LCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJleHAiOjE1MjM4MTQ4MDYsImlzcyI6IlVsYm9yYSBPYXV0aDIgU2VydmVyIn0.UEhLZMSPBK9OttvH4xJq0qCVpMa_m8lrlwD5FWXKaYQ","token_type":"bearer","expires_in":3600,"refresh_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjb2RlIiwidXNlcklkIjoiZmlybnMiLCJjbGllbnRJZCI6ODU1LCJpYXQiOjE1MjM4MTEyMDYsInRva2VuVHlwZSI6InJlZnJlc2giLCJleHAiOjE1MjM4NDcyMDYsImlzcyI6IlVsYm9yYSBPYXV0aDIgU2VydmVyIn0.6oo-gaZNzxd2alXzTHJwrdB8Mab4TR3GuzIYaJf5V8c"}
+      ✓ should get token in tokenmanager (1089ms)
+    #authCodeToken()
+devMode: true
+isLocalHost: false
+authCodeToken: {"error":"invalid_client"}
+      ✓ should get token in tokenmanager a second time an get invalid_client (1047ms)
+    #authCodeToken()
+devMode: true
+isLocalHost: false
+authCodeToken: {"error":"invalid_client"}
+      ✓ should get token in tokenmanager a third time an get invalid_client (1005ms)
+    #deleteAuthorizationCode()
+deleteAuthorizationCode:{"success":true}
+      ✓ should delete authorization code (1264ms)
+    #deleteClientRedirectUri()
+      ✓ should delete client redirect uri (1056ms)
+    #deleteClientGrantType()
+      ✓ should delete client grant type (1057ms)
+    #deleteClientRoleUri()
+      ✓ should delete a client Role Uri (1100ms)
+    #deleteClientRole()
+      ✓ should delete client role (1059ms)
+    #deleteClientAllowedUri()
+      ✓ should delete client allowed URI (1044ms)
+    #deleteClient()
+      ✓ should delete client (1057ms)
+
+  Client authorization code Manager
+    #init()
+      ✓ should init manager (1001ms)
+    #addClient()
+      ✓ should add a client (1104ms)
+    #addClientRole()
+      ✓ should add a client role (1075ms)
+    #addClientAllowedUri()
+      ✓ should add a client allowed URI (1090ms)
+    #addClientRoleUri()
+      ✓ should add a client Role Uri (1067ms)
+    #addClientGrantType()
+addClientGrantType: {"id":273,"success":true,"message":""}
+      ✓ should add a client grant type in db (1069ms)
+    #addClientRedirectUri()
+      ✓ should add a client redirect uri (1115ms)
+    #authorize()
+devMode: true
+isLocalHost: false
+couldn't find redirect url
+authorization code: {"authorizationCode":null,"codeString":null,"error":"access_denied","redirectUri":"http://www.google.org"}
+      ✓ should fail to authorize a client user because redirect uri is not allowed (1005ms)
+    #authorize()
+devMode: true
+isLocalHost: false
+authorization code: {"authorizationCode":2385,"codeString":"iy2folK2385lQb8U7KcnmEK","error":null,"redirectUri":"http://www.google.com","success":true}
+      ✓ should authorize a client user  (1109ms)
+    #authorize()
+devMode: true
+isLocalHost: false
+scopes before delete: ["read"]
+authorization code: {"authorizationCode":2386,"codeString":"LdPAEbA2386vb47vM0xF3lH","error":null,"redirectUri":"http://www.google.com","success":true}
+      ✓ should authorize a client user with the same scope  (1514ms)
+    #authorize()
+devMode: true
+isLocalHost: false
+scopes before delete: ["addUser","read"]
+delete of old auth code :{"success":true,"message":""}
+authorization code 2: {"authorizationCode":2387,"codeString":"qTZ55tW2387BRUhJ9xmKztx","error":null,"redirectUri":"http://www.google.com","success":true}
+      ✓ should authorize a second scope for a client user (1713ms)
+    #getAuthorizationCodeScopeList()
+getAuthorizationCodeScopeList:[{"id":4263,"scope":"addUser","authorizationCode":2387},{"id":4264,"scope":"read","authorizationCode":2387}]
+      ✓ should read AuthorizationCodeScope in db (1004ms)
+    #checkApplicationAuthorization()
+      ✓ should checkApplicationAuthorization (1002ms)
+    #validateClientCallback()
+devMode: true
+isLocalHost: false
+      ✓ should validateClientCallback (1003ms)
+    #getClient()
+devMode: true
+isLocalHost: false
+devMode: true
+isLocalHost: false
+devMode: true
+isLocalHost: false
+client: {"clientId":856,"secret":"QWkHmGsc4ntpsKXnylBm5JGpCZC84smCdC7cB4420dtn7ThLI5","name":"ulbora","webSite":"www.ulboralabs.com","email":"ulbora@ulbora.com","enabled":true,"redirectUrls":[{"id":930,"uri":"http://www.google.com","clientId":856},{"id":931,"uri":"http://www.ulboralabs.com","clientId":856},{"id":932,"uri":"http://www.google.com","clientId":856}]}
+      ✓ should read client (1006ms)
+    #updateClient()
+      ✓ should add a client (1049ms)
+    #authorize()
+authorization code 3: {"authorizationCode":null,"codeString":null,"error":"access_denied","redirectUri":"http://www.google.com"}
+      ✓ should fail to authorize a thire scope for a client that is disabled (1003ms)
+    #deleteAuthorizationCode()
+deleteAuthorizationCode:{"success":true}
+      ✓ should delete authorization code (1178ms)
+    #deleteClientRedirectUri()
+      ✓ should delete client redirect uri (1079ms)
+    #deleteClientGrantType()
+      ✓ should delete client grant type (1047ms)
+    #deleteClientRoleUri()
+      ✓ should delete a client Role Uri (1068ms)
+    #deleteClientRole()
+      ✓ should delete client role (1057ms)
+    #deleteClientAllowedUri()
+      ✓ should delete client allowed URI (1055ms)
+    #deleteClient()
+      ✓ should delete client (1136ms)
+
+  Client Allowed URI Manager
+    #init()
+      ✓ should init manager (1002ms)
+    #addClient()
+      ✓ should add a client (1190ms)
+    #addClientAllowedUri()
+      ✓ should add a client allowed uri (1058ms)
+    #addClientAllowedUri()
+failed respnose: {"success":false}
+      ✓ should fail to add a client allowed uri (1002ms)
+    #addClientAllowedUriSuper()
+      ✓ should add a client super allowed uri (1045ms)
+    #getClientAllowedUriById()
+      ✓ should a uri in manager (1002ms)
+    #updateClientAllowedUri()
+      ✓ should update a client allowed URI in manager (1056ms)
+    #updateClientAllowedUriSuper()
+      ✓ should update a super client allowed URI in manager (1045ms)
+    #updateClientAllowedUri()
+failed update respnose: {"success":false,"message":""}
+      ✓ should fail to update a client allowed URI in manager (1002ms)
+    #getClientAllowedUriList()
+      ✓ should read client allowed uri list (1004ms)
+    #getClientAllowedUri
+      ✓ should read client uri in processor (1003ms)
+    #deleteClientAllowedUri()
+      ✓ should delete client allowed URI (1040ms)
+    #deleteClientAllowedUri()
+      ✓ should delete client allowed URI (1044ms)
+    #deleteClient()
+      ✓ should delete client (1046ms)
+
+  Client Grant Type Manager
+    #init()
+      ✓ should init manager (1002ms)
+    #addClient()
+      ✓ should add a client (1068ms)
+    #addClientGrantType()
+      ✓ should add a client grant type in db (1111ms)
+    #getClientGrantTypeList()
+      ✓ should read client grant type list in db (1002ms)
+    #deleteClientGrantType()
+      ✓ should delete client grant type in db (1066ms)
+    #deleteClient()
+      ✓ should delete client (1069ms)
+
+  Client Manager
+    #init()
+      ✓ should init manager (1002ms)
+    #addClient()
+      ✓ should add a client (1047ms)
+    #getClient()
+devMode: true
+isLocalHost: false
+devMode: true
+isLocalHost: false
+client: {"clientId":859,"secret":"r7xtSfKl1Lbw1IbOwP1QBJ00AU1dItlBUTvES6pfgpSkYwV9Z1","name":"ulbora","webSite":"www.ulboralabs.com","email":"ulbora@ulbora.com","enabled":true,"redirectUrls":[{"id":937,"uri":"http://www.google.com","clientId":859},{"id":938,"uri":"http://www.ulboralabs.com","clientId":859}]}
+      ✓ should read client (1004ms)
+    #updateClient()
+      ✓ should add a client (1105ms)
+    #getClient()
+devMode: true
+isLocalHost: false
+devMode: true
+isLocalHost: false
+client after adding uri: {"clientId":859,"secret":"r7xtSfKl1Lbw1IbOwP1QBJ00AU1dItlBUTvES6pfgpSkYwV9Z1","name":"ulbora","webSite":"www.ulboralabs.com","email":"ulbora@ulbora.com","enabled":false,"redirectUrls":[{"id":937,"uri":"http://www.google.com","clientId":859},{"id":938,"uri":"http://www.ulboralabs.com","clientId":859}]}
+      ✓ should read client (1004ms)
+    #getClientList()
+      ✓ should read client list (1001ms)
+    #getClientSearchList()
+      ✓ should read client list search (1003ms)
+    #deleteClient()
+      ✓ should delete client (1063ms)
+
+  Client Redirect URI Manager
+    #init()
+      ✓ should init manager (1001ms)
+    #addClient()
+      ✓ should add a client (1264ms)
+    #addClientRedirectUri()
+      ✓ should add a client redirect uri (1077ms)
+    #getClient()
+devMode: true
+isLocalHost: false
+devMode: true
+isLocalHost: false
+devMode: true
+isLocalHost: false
+client after adding uri: {"clientId":860,"secret":"eUTelAdZ7QJs3aZXbwjZhXH0odzkaekxjBNO1FjQqedB35W6Y6","name":"ulbora","webSite":"www.ulboralabs.com","email":"ulbora@ulbora.com","enabled":true,"redirectUrls":[{"id":939,"uri":"http://www.google.com","clientId":860},{"id":940,"uri":"http://www.ulboralabs.com","clientId":860},{"id":941,"uri":"http://www.google.com","clientId":860}]}
+      ✓ should read client (1004ms)
+    #getClientRedirectUriList()
+devMode: true
+isLocalHost: false
+devMode: true
+isLocalHost: false
+devMode: true
+isLocalHost: false
+      ✓ should read client redirect uri list in db (1005ms)
+    #deleteClientRedirectUri()
+      ✓ should delete client redirect uri (1050ms)
+    #deleteClient()
+      ✓ should delete client (1045ms)
+
+  Client Role Manager
+    #init()
+      ✓ should init manager (1002ms)
+    #addClient()
+      ✓ should add a client (1069ms)
+    #addClientRole()
+      ✓ should add a client role super (1057ms)
+    #addClientRole()
+failed response: {"success":false}
+      ✓ should fail to add a client role (1001ms)
+    #addClientRole()
+      ✓ should add a client role (1046ms)
+    #getClientRoleList()
+      ✓ should read client role list (1002ms)
+    #deleteClientRole()
+      ✓ should delete client role (1045ms)
+    #deleteClientRole()
+      ✓ should delete client role (1085ms)
+    #deleteClient()
+      ✓ should delete client (1075ms)
+
+  Client Role URI Manager
+    #init()
+      ✓ should init manager (1001ms)
+    #addClient()
+      ✓ should add a client (1169ms)
+    #addClientRole()
+      ✓ should add a client role (1102ms)
+    #addClientAllowedUri()
+      ✓ should add a client allowed uri (1045ms)
+    #addClientRoleUri()
+      ✓ should add a client Role Uri (1056ms)
+    #getClientRoleUriList()
+      ✓ should get a client Role Uri list (1003ms)
+    #deleteClientRoleUri()
+      ✓ should delete a client Role Uri (1046ms)
+    #deleteClientRole()
+      ✓ should delete client role (1046ms)
+    #deleteClientAllowedUri()
+      ✓ should delete client allowed URI (1067ms)
+    #deleteClient()
+      ✓ should delete client (1147ms)
+
+  Client Implicit Grant Manager
+    #init()
+      ✓ should init manager (1002ms)
+    #addClient()
+      ✓ should add a client (1070ms)
+    #addClientRole()
+      ✓ should add a client role (1068ms)
+    #addClientAllowedUri()
+      ✓ should add a client allowed URI (1046ms)
+    #addClientRoleUri()
+      ✓ should add a client Role Uri (1056ms)
+    #addClientGrantType()
+addClientGrantType: {"id":275,"success":true,"message":""}
+      ✓ should add a client grant type in db (1080ms)
+    #addClientRedirectUri()
+      ✓ should add a client redirect uri (1056ms)
+    #authorize()
+devMode: true
+isLocalHost: false
+implicit grant: {"id":null,"token":null,"error":"access_denied","redirectUri":"http://www.google.org"}
+      ✓ should fail to authorize a client user because redirect uri is not allowed (1005ms)
+    #authorize()
+devMode: true
+isLocalHost: false
+implicit grant: {"id":221,"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJncmFudCI6ImltcGxpY2l0IiwidXNlcklkIjoiZmlybnMiLCJjbGllbnRJZCI6ODYzLCJyb2xlVXJpcyI6W3siY2xpZW50Um9sZUlkIjoxNDgsInJvbGUiOiJzdXBlcnVzZXIiLCJ1cmlJZCI6NzI0LCJ1cmkiOiJodHRwOi8vdWxib3JhbGFicy5jb20iLCJjbGllbnRJZCI6ODYzfV0sInNjb3BlTGlzdCI6WyJyZWFkIl0sImV4cGlyZXNJbiI6MzYwMDAsImlhdCI6MTUyMzgxMTMxNCwidG9rZW5UeXBlIjoiYWNjZXNzIiwiZXhwIjoxNTIzODQ3MzE0LCJpc3MiOiJVbGJvcmEgT2F1dGgyIFNlcnZlciJ9.wvQZ4kOpx3XC3eA4m5dPOx57uIKn9hN98NOB9Rp0A8Q","error":null,"redirectUri":"http://www.google.com","success":true}
+      ✓ should authorize a client user  (1056ms)
+    #authorize()
+devMode: true
+isLocalHost: false
+scopes before delete: ["read"]
+implicit grant: {"id":222,"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJncmFudCI6ImltcGxpY2l0IiwidXNlcklkIjoiZmlybnMiLCJjbGllbnRJZCI6ODYzLCJyb2xlVXJpcyI6W3siY2xpZW50Um9sZUlkIjoxNDgsInJvbGUiOiJzdXBlcnVzZXIiLCJ1cmlJZCI6NzI0LCJ1cmkiOiJodHRwOi8vdWxib3JhbGFicy5jb20iLCJjbGllbnRJZCI6ODYzfV0sInNjb3BlTGlzdCI6WyJyZWFkIl0sImV4cGlyZXNJbiI6MzYwMDAsImlhdCI6MTUyMzgxMTMxNiwidG9rZW5UeXBlIjoiYWNjZXNzIiwiZXhwIjoxNTIzODQ3MzE2LCJpc3MiOiJVbGJvcmEgT2F1dGgyIFNlcnZlciJ9.l8-8rPs6zi9iUNhmClrcMUGXYuC_QKMyPlnkrR1hLU0","error":null,"redirectUri":"http://www.google.com","success":true}
+      ✓ should authorize a client user with the same scope  (1447ms)
+    #authorize()
+devMode: true
+isLocalHost: false
+scopes before delete: ["addUser","read"]
+implicit grant 2: {"id":223,"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJncmFudCI6ImltcGxpY2l0IiwidXNlcklkIjoiZmlybnMiLCJjbGllbnRJZCI6ODYzLCJyb2xlVXJpcyI6W3siY2xpZW50Um9sZUlkIjoxNDgsInJvbGUiOiJzdXBlcnVzZXIiLCJ1cmlJZCI6NzI0LCJ1cmkiOiJodHRwOi8vdWxib3JhbGFicy5jb20iLCJjbGllbnRJZCI6ODYzfV0sInNjb3BlTGlzdCI6WyJhZGRVc2VyIiwicmVhZCJdLCJleHBpcmVzSW4iOjM2MDAwLCJpYXQiOjE1MjM4MTEzMTcsInRva2VuVHlwZSI6ImFjY2VzcyIsImV4cCI6MTUyMzg0NzMxNywiaXNzIjoiVWxib3JhIE9hdXRoMiBTZXJ2ZXIifQ.Uljm41maTNhVAgaILek2eyI2g5XwQ9kQo12aw3vN7ds","error":null,"redirectUri":"http://www.google.com","success":true}
+      ✓ should authorize a second scope for a client user (1180ms)
+    #checkApplicationAuthorization()
+      ✓ should checkApplicationAuthorization (1004ms)
+    #validateClientCallback()
+devMode: true
+isLocalHost: false
+      ✓ should validateClientCallback (1004ms)
+    #getClient()
+devMode: true
+isLocalHost: false
+devMode: true
+isLocalHost: false
+devMode: true
+isLocalHost: false
+client: {"clientId":863,"secret":"AcfrbG8wtCXfAJGCrhOheXzAuRwQUdHaZ1HeeB3Wlj0ZS49vtj","name":"ulbora","webSite":"www.ulboralabs.com","email":"ulbora@ulbora.com","enabled":true,"redirectUrls":[{"id":946,"uri":"http://www.google.com","clientId":863},{"id":947,"uri":"http://www.ulboralabs.com","clientId":863},{"id":948,"uri":"http://www.google.com","clientId":863}]}
+      ✓ should read client (1005ms)
+    #updateClient()
+      ✓ should add a client (1051ms)
+    #authorize()
+implicit grant 3: {"id":null,"token":null,"error":"access_denied","redirectUri":"http://www.google.com"}
+      ✓ should fail to authorize a third scope for a client that is disabled (1002ms)
+    #deleteImplicitGrant()
+      ✓ should delete ImplicitGrant in db (1055ms)
+    #deleteClientRedirectUri()
+      ✓ should delete client redirect uri (1222ms)
+    #deleteClientGrantType()
+      ✓ should delete client grant type (1058ms)
+    #deleteClientRoleUri()
+      ✓ should delete a client Role Uri (1056ms)
+    #deleteClientRole()
+      ✓ should delete client role (1046ms)
+    #deleteClientAllowedUri()
+      ✓ should delete client allowed URI (1045ms)
+    #deleteClient()
+      ✓ should delete client (1126ms)
+
+  Manager
+    #init()
+      ✓ should init manager (1002ms)
+    #generateClientSecret()
+client secret: l1c4rPn8WNie2IzeEKBKfj13cBrqNi3XQwonqK5TBqZ0Yv4OyZ
+      ✓ should generate a client secret
+    #securityCheck()
+      ✓ should do a security check on json with no issues
+    #securityCheck()
+Security Alert: {"secret":null,"name":"ulbora","webSite":"www.ulboralabs.com","email":"ulbora@ulbora.com","enabled":true,"redirectUrls":[{"uri":"http://www.google.com","clientId":"function(){}"},{"uri":"http://www.ulboralabs.com","clientId":null}]}
+      ✓ should do a security check on json and find an issue
+    #addClient()
+      ✓ should add a client (1043ms)
+    #addClientGrantType()
+      ✓ should add a client grant type in db (1055ms)
+    #GrantTypeTurnedOn()
+      ✓ should check that the client grant type is turned on (1002ms)
+    #deleteClientGrantType()
+      ✓ should delete client grant type in db (1045ms)
+    #deleteClient()
+      ✓ should delete client (1047ms)
+    #hashUser()
+hash: pjs
+      ✓ should hash a user in manager (1002ms)
+    #hashUser()
+unhash: ken
+      ✓ should unhash a user in manager (1002ms)
+
+  Token Manager
+    #init()
+      ✓ should init manager (1001ms)
+    #addClient()
+      ✓ should add a client (1114ms)
+    #addClientRole()
+      ✓ should add a client role (1089ms)
+    #addClientAllowedUri()
+      ✓ should add a client allowed URI (1046ms)
+    #addClientRoleUri()
+      ✓ should add a client Role Uri (1120ms)
+    #addClientGrantType()
+addClientGrantType: {"id":277,"success":true,"message":""}
+      ✓ should add a client grant type in db (1094ms)
+    #addClientGrantType()
+addClientGrantType: {"id":278,"success":true,"message":""}
+      ✓ should add a client grant type in db (1078ms)
+    #addClientRedirectUri()
+      ✓ should add a client redirect uri (1058ms)
+    #authorize()
+devMode: true
+isLocalHost: false
+couldn't find redirect url
+authorization code: {"authorizationCode":null,"codeString":null,"error":"access_denied","redirectUri":"http://www.google.org"}
+      ✓ should fail to authorize a client user because redirect uri is not allowed (1004ms)
+    #authorize()
+devMode: true
+isLocalHost: false
+authorization code: {"authorizationCode":2388,"codeString":"Oct9Ijs2388plcnFkKjwCpo","error":null,"redirectUri":"http://www.google.com","success":true}
+      ✓ should authorize a client user  (1110ms)
+    #authorize()
+devMode: true
+isLocalHost: false
+scopes before delete: ["read"]
+authorization code: {"authorizationCode":2389,"codeString":"XDYCkwv2389Hdpej24qEawT","error":null,"redirectUri":"http://www.google.com","success":true}
+      ✓ should authorize a client user with the same scope  (1792ms)
+    #authorize()
+devMode: true
+isLocalHost: false
+scopes before delete: ["addUser","read"]
+delete of old auth code :{"success":true,"message":""}
+authorization code 2: {"authorizationCode":2390,"codeString":"nzEkUPl23907IYhCln56bXk","error":null,"redirectUri":"http://www.google.com","success":true}
+      ✓ should authorize a second scope for a client user (1468ms)
+    #getAuthorizationCodeScopeList()
+getAuthorizationCodeScopeList:[{"id":4267,"scope":"addUser","authorizationCode":2390},{"id":4268,"scope":"read","authorizationCode":2390}]
+      ✓ should read AuthorizationCodeScope in db (1002ms)
+    #checkApplicationAuthorization()
+      ✓ should checkApplicationAuthorization (1003ms)
+    #updateAuthorizationCodeAndTokens()
+refreshedTokenResult:{"access_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJncmFudCI6ImNvZGUiLCJ1c2VySWQiOiJmaXJucyIsImNsaWVudElkIjo4NjUsInJvbGVVcmlzIjpbeyJjbGllbnRSb2xlSWQiOjE0OSwicm9sZSI6InN1cGVydXNlciIsInVyaUlkIjo3MjUsInVyaSI6Imh0dHA6Ly91bGJvcmFsYWJzLmNvbSIsImNsaWVudElkIjo4NjV9XSwic2NvcGVMaXN0IjpbImFkZFVzZXIiLCJyZWFkIl0sImV4cGlyZXNJbiI6MzYwMCwiaWF0IjoxNTIzODExMzU1LCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJleHAiOjE1MjM4MTQ5NTUsImlzcyI6IlVsYm9yYSBPYXV0aDIgU2VydmVyIn0.7lzkV8JEgPEgx6Um14nVGIRJWLOAGzgMpI-YD5wuM-Q","token_type":"bearer","expires_in":3600,"refresh_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjb2RlIiwidXNlcklkIjoiZmlybnMiLCJjbGllbnRJZCI6ODY1LCJpYXQiOjE1MjM4MTEzNTIsInRva2VuVHlwZSI6InJlZnJlc2giLCJleHAiOjE1MjM4NDczNTIsImlzcyI6IlVsYm9yYSBPYXV0aDIgU2VydmVyIn0.7a39_VV01e8168KsJ4VWJugJECtCaj8Du0676rRXTcw"}
+      ✓ should update an authorization code and token in manager (1057ms)
+    #updateAuthorizationCodeAndTokens()
+refreshedTokenResult:{"error":"invalid_client"}
+      ✓ should fail to update an authorization code and token in manager (1005ms)
+    #validateClientCallback()
+devMode: true
+isLocalHost: false
+      ✓ should validateClientCallback (1003ms)
+    #credentialsGrantToken()
+credentialsGrantTokenResult:{"error":"invalid_client"}
+      ✓ should fail to get credentialsGrant token in manager because of wrong password (1002ms)
+    #credentialsGrantToken()
+credentialsGrantTokenResult:{"access_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJncmFudCI6ImNsaWVudF9jcmVkZW50aWFscyIsImNsaWVudElkIjo4NjUsInJvbGVVcmlzIjpbeyJjbGllbnRSb2xlSWQiOjE0OSwicm9sZSI6InN1cGVydXNlciIsInVyaUlkIjo3MjUsInVyaSI6Imh0dHA6Ly91bGJvcmFsYWJzLmNvbSIsImNsaWVudElkIjo4NjV9XSwiZXhwaXJlc0luIjozNjAwLCJpYXQiOjE1MjM4MTEzNTksInRva2VuVHlwZSI6ImFjY2VzcyIsImV4cCI6MTUyMzgxNDk1OSwiaXNzIjoiVWxib3JhIE9hdXRoMiBTZXJ2ZXIifQ.r6ZdnAGV7arg1mXaHcP-TGjdbtkZ9g5G7iTp36moqo0","token_type":"bearer","expires_in":3600}
+      ✓ should credentialsGrant token in manager (1060ms)
+    #getClient()
+devMode: true
+isLocalHost: false
+devMode: true
+isLocalHost: false
+devMode: true
+isLocalHost: false
+client: {"clientId":865,"secret":"NsH764fftJXSVf5CUC94hRgc6J9F3ym1SshVLUZVCzW8yyLIz0","name":"ulbora","webSite":"www.ulboralabs.com","email":"ulbora@ulbora.com","enabled":true,"redirectUrls":[{"id":951,"uri":"http://www.google.com","clientId":865},{"id":952,"uri":"http://www.ulboralabs.com","clientId":865},{"id":953,"uri":"http://www.google.com","clientId":865}]}
+      ✓ should read client (1004ms)
+    #updateClient()
+      ✓ should add a client (1045ms)
+    #credentialsGrantToken()
+credentialsGrantTokenResult:{"error":"invalid_client"}
+      ✓ should fail to get credentialsGrant token in manager because client is disabled (1003ms)
+    #deleteAuthorizationCode()
+deleteAuthorizationCode:{"success":true}
+      ✓ should delete authorization code (1054ms)
+    #deleteCredentialsGrant()
+      ✓ should delete CredentialsGrant in db (1390ms)
+    #deleteClientRedirectUri()
+      ✓ should delete client redirect uri (1080ms)
+    #deleteClientGrantType()
+      ✓ should delete client grant type (1057ms)
+    #deleteClientGrantType()
+      ✓ should delete client grant type (1091ms)
+    #deleteClientRoleUri()
+      ✓ should delete a client Role Uri (1078ms)
+    #deleteClientRole()
+      ✓ should delete client role (1048ms)
+    #deleteClientAllowedUri()
+      ✓ should delete client allowed URI (1068ms)
+    #deleteClient()
+      ✓ should delete client (1091ms)
+
+  TokenValidationManager
+    #init()
+      ✓ should init manager (1001ms)
+    #generateAccessToken()
+access token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJncmFudCI6ImNvZGUiLCJ1c2VySWQiOiJmaXJucyIsImNsaWVudElkIjoiamRzbGRzbGRzbGRscyIsInJvbGVVcmlzIjpbeyJjbGllbnRSb2xlSWQiOjExLCJyb2xlIjoiYWRtaW4iLCJ1cmlJZCI6OTUsInVyaSI6Imh0dHBzOi8vYWJjLmNvbS9ycy9hZGRVc2VyIiwiY2xpZW50SWQiOjQyMX1dLCJzY29wZUxpc3QiOlsicmVhZCIsIndyaXRlIl0sImV4cGlyZXNJbiI6NTAwLCJpYXQiOjE1MjM4MTEzNzQsInRva2VuVHlwZSI6ImFjY2VzcyIsImV4cCI6MTUyMzgxMTg3NCwiaXNzIjoiVWxib3JhIE9hdXRoMiBTZXJ2ZXIifQ.XyXxLtjabmOjFstw8jTs0tq_tuVv_cFhkcStRF4A4a8
+      ✓ should generateAccessToken (1004ms)
+    #validateAccessToken()
+userIdMatch: true
+scopeFound: true
+foundRoleUri: true
+in code or implicit grant if: value: true
+      ✓ should validateAccessToken (1003ms)
+    #decodeAccessToken()
+decoded access token: [object Object]
+      ✓ should decodeAccessToken (1001ms)
+    #generateAccessToken()
+access token2: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJncmFudCI6ImNvZGUiLCJ1c2VySWQiOiJmaXJucyIsImNsaWVudElkIjoiamRzbGRzbGRzbGRscyIsInNjb3BlTGlzdCI6WyJyZWFkIiwid3JpdGUiXSwiaWF0IjoxNTIzODExMzc3LCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJpc3MiOiJVbGJvcmEgT2F1dGgyIFNlcnZlciJ9.IDi5fD8DvLIPuUGlFcwuOUhPvEGnxYwTaPOGwFjoy7A
+      ✓ should generateAccessToken (1004ms)
+    #validateAccessToken()
+userIdMatch: true
+scopeFound: true
+foundRoleUri: false
+      ✓ should fail validateAccessToken because no role uris mapped (1001ms)
+
+  oauth2
+    #init()
+      ✓ should init manager (1001ms)
+    #generateAccessToken()
+access token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJncmFudCI6ImNvZGUiLCJ1c2VySWQiOiJmaXJucyIsImNsaWVudElkIjo1NDQsInJvbGVVcmlzIjpbeyJjbGllbnRSb2xlSWQiOjExLCJyb2xlIjoiYWRtaW4iLCJ1cmlJZCI6OTUsInVyaSI6Ii9ycy9hZGRVc2VyIiwiY2xpZW50SWQiOjQyMX1dLCJzY29wZUxpc3QiOlsicmVhZCIsIndyaXRlIl0sImV4cGlyZXNJbiI6NTAwLCJpYXQiOjE1MjM4MTEzODAsInRva2VuVHlwZSI6ImFjY2VzcyIsImV4cCI6MTUyMzgxMTg4MCwiaXNzIjoiVWxib3JhIE9hdXRoMiBTZXJ2ZXIifQ.KFlWidiJd2tkYDyl3v7fp5mZZQFkY5DaEYsYdHMkMBs
+      ✓ should generateAccessToken (1002ms)
+    #authorize()
+userIdMatch: true
+scopeFound: true
+foundRoleUri: true
+in code or implicit grant if: value: true
+In authorization callback
+      ✓ should authorize a request (1005ms)
+    #authorize()
+res status: 401
+      ✓ should fail to authorize a request (1003ms)
+    #authorize()
+res status: 401
+      ✓ should fail to authorize a request with no clientId (1003ms)
+
+  userProxy
+    #login()
+login:  {"valid":false,"message":""}
+      ✓ should fail to login (1028ms)
+
+  authorizeController
+    #init()
+      ✓ should init manager (1001ms)
+    #addClient()
+      ✓ should add a client (1052ms)
+    #addClientRole()
+      ✓ should add a client role (1078ms)
+    #addClientAllowedUri()
+      ✓ should add a client allowed uri (1103ms)
+    #addClientRoleUri()
+      ✓ should add a client Role Uri (1044ms)
+    #getClientRoleUriList()
+      ✓ should get a client Role Uri list (1057ms)
+    #addClientGrantType()
+addClientGrantType: {"id":279,"success":true,"message":""}
+      ✓ should add a client grant type in db (1056ms)
+    #addClientGrantType()
+addClientGrantType: {"id":280,"success":true,"message":""}
+      ✓ should add a client grant type in db (1046ms)
+    #addClientRedirectUri()
+      ✓ should add a client redirect uri (1055ms)
+    #authorize()
+      ✓ should redirect to login page (1002ms)
+    #authorize()
+      ✓ should redirect to login page (1002ms)
+    #authorize()
+authorizeApp path: /oauthError?error=invalid_grant
+      ✓ should send invalid_grant error (1001ms)
+    #authorize()
+authorizeApp path: /oauthError?error=invalid_grant
+      ✓ should send invalid_grant error (1002ms)
+    #authorize()
+      ✓ should send to authorize application page (1003ms)
+    #authorize()
+      ✓ should send to authorize application page (1004ms)
+    #authorizeApp()
+devMode: true
+isLocalHost: false
+authorizeApp path: authorizeApp
+authorizeApp params: {"title":"authorize application","clientName":"ulbora","webSite":"www.ulboralabs.com","scope":"read"}
+      ✓ should send to authorize application page (1005ms)
+    #authorizeApp()
+devMode: true
+isLocalHost: false
+authorizeApp path: authorizeApp
+authorizeApp params: {"title":"authorize application","clientName":"ulbora","webSite":"www.ulboralabs.com","scope":"read"}
+      ✓ should send to authorize application page (1004ms)
+    #authorizeApp()
+devMode: true
+isLocalHost: false
+authorizeApp bad redirect uri path: oauthError
+      ✓ should send to invalid uri page (1003ms)
+    #authorizeApp()
+devMode: true
+isLocalHost: false
+authorizeApp bad redirect uri path: oauthError
+      ✓ should send to invalid uri page (1003ms)
+    #applicationAuthorization()
+devMode: true
+isLocalHost: false
+redirect path: http://www.google.com?code=wLeL33b2391SYmSRDPPUzOz&state=xyz
+      ✓ should Authorization application (1220ms)
+    #applicationAuthorization()
+devMode: true
+isLocalHost: false
+redirect path token auth: http://www.google.com?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJncmFudCI6ImltcGxpY2l0IiwidXNlcklkIjoiZmlybnMiLCJjbGllbnRJZCI6ODY2LCJyb2xlVXJpcyI6W3siY2xpZW50Um9sZUlkIjoxNTAsInJvbGUiOiJzdXBlcnVzZXIiLCJ1cmlJZCI6NzI2LCJ1cmkiOiJodHRwOi8vd3d3Lmdvb2dsZS5jb20iLCJjbGllbnRJZCI6ODY2fV0sInNjb3BlTGlzdCI6WyJyZWFkIl0sImV4cGlyZXNJbiI6MzYwMDAsImlhdCI6MTUyMzgxMTQwNiwidG9rZW5UeXBlIjoiYWNjZXNzIiwiZXhwIjoxNTIzODQ3NDA2LCJpc3MiOiJVbGJvcmEgT2F1dGgyIFNlcnZlciJ9.oszwepH7BKWcc6ZM2aP9RiBt5JEQDVfAdfb2QCYV66k&token_type=bearer&state=xyz
+      ✓ should Authorization application (1090ms)
+    #applicationAuthorization()
+devMode: true
+isLocalHost: false
+couldn't find redirect url
+      ✓ should fail to Authorization application with redirect error (1006ms)
+    #applicationAuthorization()
+devMode: true
+isLocalHost: false
+      ✓ should fail to Authorization application with redirect error (1003ms)
+    #authorize()
+devMode: true
+isLocalHost: false
+scopes before delete: ["read"]
+redirect path: http://www.google.com?code=1AX0nxR2392SkMx64RRDPG9&state=xyz
+      ✓ should send to authorize application page (1474ms)
+    #authorize()
+devMode: true
+isLocalHost: false
+scopes before delete: ["read"]
+redirect path: http://www.google.com?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJncmFudCI6ImltcGxpY2l0IiwidXNlcklkIjoiZmlybnMiLCJjbGllbnRJZCI6ODY2LCJyb2xlVXJpcyI6W3siY2xpZW50Um9sZUlkIjoxNTAsInJvbGUiOiJzdXBlcnVzZXIiLCJ1cmlJZCI6NzI2LCJ1cmkiOiJodHRwOi8vd3d3Lmdvb2dsZS5jb20iLCJjbGllbnRJZCI6ODY2fV0sInNjb3BlTGlzdCI6WyJyZWFkIl0sImV4cGlyZXNJbiI6MzYwMDAsImlhdCI6MTUyMzgxMTQxMSwidG9rZW5UeXBlIjoiYWNjZXNzIiwiZXhwIjoxNTIzODQ3NDExLCJpc3MiOiJVbGJvcmEgT2F1dGgyIFNlcnZlciJ9.T9_TZGAWHR7nJlGfxFUQHtWFy9R9NZsCjjM2ItDQcOc&token_type=bearer&state=xyz
+      ✓ should send to authorize application page (1391ms)
+    #deleteAuthorizationCode()
+deleteAuthorizationCode:{"success":true}
+      ✓ should delete authorization code (1156ms)
+    #deleteImplicitGrant()
+      ✓ should delete ImplicitGrant in db (1057ms)
+    #deleteClientRedirectUri()
+      ✓ should delete client redirect uri (1055ms)
+    #deleteClientGrantType()
+      ✓ should delete client grant type (1057ms)
+    #deleteClientGrantType()
+      ✓ should delete client grant type (1078ms)
+    #deleteClientRoleUri()
+      ✓ should delete a client Role Uri (1080ms)
+    #deleteClientRole()
+      ✓ should delete client role (1057ms)
+    #deleteClientAllowedUri()
+      ✓ should delete client allowed URI (1058ms)
+    #deleteClient()
+      ✓ should delete client (1111ms)
+
+  loginController
+    #login()
+      ✓ should send to login screen (1001ms)
+    #loginUser()
+loginUser redirect: /login
+      ✓ should login a user (1005ms)
+
+  tokenController
+    #init()
+      ✓ should init manager (1001ms)
+    #addClient()
+      ✓ should add a client (1054ms)
+    #addClientRole()
+      ✓ should add a client role (1046ms)
+    #addClientAllowedUri()
+      ✓ should add a client allowed uri (1076ms)
+    #addClientRoleUri()
+      ✓ should add a client Role Uri (1057ms)
+    #getClientRoleUriList()
+      ✓ should get a client Role Uri list (1001ms)
+    #addClientGrantType()
+addClientGrantType: {"id":281,"success":true,"message":""}
+      ✓ should add a client grant type in db (1074ms)
+    #addClientGrantType()
+addClientGrantType: {"id":282,"success":true,"message":""}
+      ✓ should add a client grant type in db (1082ms)
+    #addClientRedirectUri()
+      ✓ should add a client redirect uri (1048ms)
+    #authorize()
+devMode: true
+isLocalHost: false
+authorization code: {"authorizationCode":2393,"codeString":"EBIbUDp23937hbxADsL507N","error":null,"redirectUri":"http://www.google.com","success":true}
+      ✓ should authorize a client user  (1133ms)
+    #token()
+res.status:401
+res.send:{"error":"invalid_request"}
+      ✓ get a token error (1002ms)
+    #token()
+devMode: true
+isLocalHost: false
+res.send:{"access_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJncmFudCI6ImNvZGUiLCJ1c2VySWQiOiJmaXJucyIsImNsaWVudElkIjo4NjcsInJvbGVVcmlzIjpbeyJjbGllbnRSb2xlSWQiOjE1MSwicm9sZSI6InN1cGVydXNlciIsInVyaUlkIjo3MjcsInVyaSI6Imh0dHA6Ly93d3cuZ29vZ2xlLmNvbSIsImNsaWVudElkIjo4Njd9XSwic2NvcGVMaXN0IjpbInJlYWQiXSwiZXhwaXJlc0luIjozNjAwLCJpYXQiOjE1MjM4MTE0MzMsInRva2VuVHlwZSI6ImFjY2VzcyIsImV4cCI6MTUyMzgxNTAzMywiaXNzIjoiVWxib3JhIE9hdXRoMiBTZXJ2ZXIifQ.ZyVFIdxPTzf-h5HK_Yo2V3K2AsY0KBxenGRwVN2Ev68","token_type":"bearer","expires_in":3600,"refresh_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjb2RlIiwidXNlcklkIjoiZmlybnMiLCJjbGllbnRJZCI6ODY3LCJpYXQiOjE1MjM4MTE0MzMsInRva2VuVHlwZSI6InJlZnJlc2giLCJleHAiOjE1MjM4NDc0MzMsImlzcyI6IlVsYm9yYSBPYXV0aDIgU2VydmVyIn0.h4W4Y7TPKaJ07bHH1OrCiCISSYYL87IPzI8tbRskOP0"}
+      ✓ get a token (1068ms)
+    #refreshToken()
+res.send:{"access_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJncmFudCI6ImNvZGUiLCJ1c2VySWQiOiJmaXJucyIsImNsaWVudElkIjo4NjcsInJvbGVVcmlzIjpbeyJjbGllbnRSb2xlSWQiOjE1MSwicm9sZSI6InN1cGVydXNlciIsInVyaUlkIjo3MjcsInVyaSI6Imh0dHA6Ly93d3cuZ29vZ2xlLmNvbSIsImNsaWVudElkIjo4Njd9XSwic2NvcGVMaXN0IjpbInJlYWQiXSwiZXhwaXJlc0luIjozNjAwLCJpYXQiOjE1MjM4MTE0MzYsInRva2VuVHlwZSI6ImFjY2VzcyIsImV4cCI6MTUyMzgxNTAzNiwiaXNzIjoiVWxib3JhIE9hdXRoMiBTZXJ2ZXIifQ.PwrmUyxKdleskymnGyXVVbM9JH6N2uaaaP8qqhubo2I","token_type":"bearer","expires_in":3600,"refresh_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjb2RlIiwidXNlcklkIjoiZmlybnMiLCJjbGllbnRJZCI6ODY3LCJpYXQiOjE1MjM4MTE0MzMsInRva2VuVHlwZSI6InJlZnJlc2giLCJleHAiOjE1MjM4NDc0MzMsImlzcyI6IlVsYm9yYSBPYXV0aDIgU2VydmVyIn0.h4W4Y7TPKaJ07bHH1OrCiCISSYYL87IPzI8tbRskOP0"}
+      ✓ get a refreshToken (1248ms)
+    #refreshToken()
+res.status:401
+res.send:{"error":"invalid_client"}
+      ✓ fail to get a refreshToken (1006ms)
+    #clientGrantToken()
+res.send:{"access_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJncmFudCI6ImNsaWVudF9jcmVkZW50aWFscyIsImNsaWVudElkIjo4NjcsInJvbGVVcmlzIjpbeyJjbGllbnRSb2xlSWQiOjE1MSwicm9sZSI6InN1cGVydXNlciIsInVyaUlkIjo3MjcsInVyaSI6Imh0dHA6Ly93d3cuZ29vZ2xlLmNvbSIsImNsaWVudElkIjo4Njd9XSwiZXhwaXJlc0luIjozNjAwLCJpYXQiOjE1MjM4MTE0MzksInRva2VuVHlwZSI6ImFjY2VzcyIsImV4cCI6MTUyMzgxNTAzOSwiaXNzIjoiVWxib3JhIE9hdXRoMiBTZXJ2ZXIifQ.TNmqqis-OsL2BQuXlArzFpf_5tS2iWScLcQDGbnAUzo","token_type":"bearer","expires_in":3600}
+      ✓ get a clientGrantToken (1039ms)
+    #deleteCredentialsGrant()
+      ✓ should delete CredentialsGrant in db (1167ms)
+    #deleteAuthorizationCode()
+deleteAuthorizationCode:{"success":true}
+      ✓ should delete authorization code (1464ms)
+    #deleteClientRedirectUri()
+      ✓ should delete client redirect uri (1109ms)
+    #deleteClientGrantType()
+      ✓ should delete client grant type (1136ms)
+    #deleteClientGrantType()
+      ✓ should delete client grant type (1092ms)
+    #deleteClientRoleUri()
+      ✓ should delete a client Role Uri (1868ms)
+    #deleteClientRole()
+      ✓ should delete client role (1129ms)
+    #deleteClientAllowedUri()
+      ✓ should delete client allowed URI (1154ms)
+    #deleteClient()
+      ✓ should delete client (1136ms)
+
+
+  758 passing (13m)
+
