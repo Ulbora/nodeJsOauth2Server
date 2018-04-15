@@ -31,7 +31,7 @@ exports.init = function (database) {
 
 exports.securityCheck = function (obj) {
     var returnVal = true;
-    if (obj !== undefined || obj !== null) {
+    if (obj !== undefined && obj !== null) {
         var json = JSON.stringify(obj);
         if (json !== undefined && json !== null) {
             var n = json.indexOf("function");
@@ -45,7 +45,6 @@ exports.securityCheck = function (obj) {
     } else {
         returnVal = false;
     }
-
     return returnVal;
 };
 
