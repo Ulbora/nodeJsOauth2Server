@@ -3,5 +3,5 @@ projectKey=Oauth2Server
 serverUrl=https://sonarcloud.io
 serverVersion=7.1.1.10702
 dashboardUrl=https://sonarcloud.io/dashboard/index/Oauth2Server
-ceTaskId=AWLKljMIXt8T3cY7QMRO
-ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AWLKljMIXt8T3cY7QMRO
+ceTaskId=AWLKmIsGXt8T3cY7QMRT
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AWLKmIsGXt8T3cY7QMRT

@@ -1,4 +1,6 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/e7d194ae6ae91a5f9add/maintainability)](https://codeclimate.com/github/Ulbora/nodeJsOauth2Server/maintainability)
+[![alert_status](https://sonarcloud.io/api/project_badges/measure?project=Oauth2Server&metric=alert_status)](https://sonarcloud.io/dashboard?id=Oauth2Server)
+[![coverage](https://sonarcloud.io/api/project_badges/measure?project=Oauth2Server&metric=coverage)](https://sonarcloud.io/dashboard?id=Oauth2Server)
 
 Ulbora Oauth2 Server 
 ==============

@@ -105,7 +105,8 @@ module.exports = function (grunt) {
                 ///src: ['test/managers/managerTest.js']
                 //src: ['test/delegates/accessTokenDelegateTest.js']
                 // src: ['test/delegates/implicitGrantDelegateTest.js']
-                src: ['test/services/tokenValidationServiceTest.js']
+                //src: ['test/services/tokenValidationServiceTest.js']
+                src: ['test/cors/corsTest.js']
                 //src: ['test/oauth2/oauth2Test.js']
                 //src: ['test/proxy/userProxyTest.js']
             }
