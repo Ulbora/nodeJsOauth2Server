@@ -20,28 +20,28 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">65.67% </span>
+        <span class="strong">83.58% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>44/67</span>
+        <span class='fraction'>56/67</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">50% </span>
+        <span class="strong">61.11% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>9/18</span>
+        <span class='fraction'>11/18</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">72.73% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>16/22</span>
+        <span class='fraction'>22/22</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">65.67% </span>
+        <span class="strong">83.58% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>44/67</span>
+        <span class='fraction'>56/67</span>
       </div>
     </div>
   </div>
-  <div class='status-line medium'></div>
+  <div class='status-line high'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -251,18 +251,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -294,18 +294,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -426,19 +426,19 @@ exports.init = function (database) {
     clientAllowedUriManager.init(db);
 };
 &nbsp;
-exports.addSuper = <span class="fstat-no" title="function not covered" >function (req, res) {</span>
-<span class="cstat-no" title="statement not covered" >    if (req.is('application/json')) {</span>
-<span class="cstat-no" title="statement not covered" >        var me = {</span>
+exports.addSuper = function (req, res) {
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (req.is('application/json')) {
+        var me = {
             role: "superAdmin",
             uri: "/ulbora/rs/clientAllowedUriSuper/add",
             scope: "write"
         };
-<span class="cstat-no" title="statement not covered" >        oauth2.authorize(req, res, me, <span class="fstat-no" title="function not covered" >function () {</span></span>
-<span class="cstat-no" title="statement not covered" >            var reqBody = req.body;</span>
+        oauth2.authorize(req, res, me, function () {
+            var reqBody = req.body;
             //var bodyJson = JSON.stringify(reqBody);
            // console.log("body: " + bodyJson);
-<span class="cstat-no" title="statement not covered" >            clientAllowedUriManager.addClientAllowedUriSuper(reqBody, <span class="fstat-no" title="function not covered" >function (result) {</span></span>
-<span class="cstat-no" title="statement not covered" >                res.send(result);</span>
+            clientAllowedUriManager.addClientAllowedUriSuper(reqBody, function (result) {
+                res.send(result);
             });
         });
     } else {
@@ -469,19 +469,19 @@ exports.add = function (req, res) {
     }
 };
 &nbsp;
-exports.updateSuper = <span class="fstat-no" title="function not covered" >function (req, res) {</span>
-<span class="cstat-no" title="statement not covered" >    if (req.is('application/json')) {</span>
-<span class="cstat-no" title="statement not covered" >        var me = {</span>
+exports.updateSuper = function (req, res) {
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (req.is('application/json')) {
+        var me = {
             role: "superAdmin",
             uri: "/ulbora/rs/clientAllowedUriSuper/update",
             scope: "write"
         };
-<span class="cstat-no" title="statement not covered" >        oauth2.authorize(req, res, me, <span class="fstat-no" title="function not covered" >function () {</span></span>
-<span class="cstat-no" title="statement not covered" >            var reqBody = req.body;</span>
+        oauth2.authorize(req, res, me, function () {
+            var reqBody = req.body;
             //var bodyJson = JSON.stringify(reqBody);
             //console.log("body: " + bodyJson);
-<span class="cstat-no" title="statement not covered" >            clientAllowedUriManager.updateClientAllowedUriSuper(reqBody, <span class="fstat-no" title="function not covered" >function (result) {</span></span>
-<span class="cstat-no" title="statement not covered" >                res.send(result);</span>
+            clientAllowedUriManager.updateClientAllowedUriSuper(reqBody, function (result) {
+                res.send(result);
             });
         });
     } else {
@@ -577,7 +577,7 @@ exports.delete = function (req, res) {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Apr 15 2018 15:26:39 GMT-0400 (EDT)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Apr 15 2018 16:55:14 GMT-0400 (EDT)
 </div>
 </div>
 <script src="../../prettify.js"></script>

@@ -20,28 +20,28 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">65.67% </span>
+        <span class="strong">86.57% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>44/67</span>
+        <span class='fraction'>58/67</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">44.44% </span>
+        <span class="strong">66.67% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>8/18</span>
+        <span class='fraction'>12/18</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">72.73% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>16/22</span>
+        <span class='fraction'>22/22</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">65.67% </span>
+        <span class="strong">86.57% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>44/67</span>
+        <span class='fraction'>58/67</span>
       </div>
     </div>
   </div>
-  <div class='status-line medium'></div>
+  <div class='status-line high'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -310,19 +310,19 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -346,18 +346,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -481,20 +481,20 @@ exports.get = function (req, res) {
 };
 &nbsp;
 &nbsp;
-exports.adminGet = <span class="fstat-no" title="function not covered" >function (req, res) {</span>
-<span class="cstat-no" title="statement not covered" >    console.log("in auth callback");</span>
-<span class="cstat-no" title="statement not covered" >    var me = {</span>
+exports.adminGet = function (req, res) {
+    console.log("in auth callback");
+    var me = {
         role: "admin",
         uri: "/ulbora/rs/client/admin/get",
         scope: "read"
     };
-<span class="cstat-no" title="statement not covered" >    oauth2.authorize(req, res, me, <span class="fstat-no" title="function not covered" >function () {</span></span>
+    oauth2.authorize(req, res, me, function () {
         //var id = req.params.id;
-<span class="cstat-no" title="statement not covered" >        var clientIdStr = req.header("clientId");</span>
-<span class="cstat-no" title="statement not covered" >        var id = service.getClientId(clientIdStr);</span>
-<span class="cstat-no" title="statement not covered" >        if (id !== null &amp;&amp; id !== undefined) {</span>
-<span class="cstat-no" title="statement not covered" >            clientManager.getClient(id, <span class="fstat-no" title="function not covered" >function (result) {</span></span>
-<span class="cstat-no" title="statement not covered" >                res.send(result);</span>
+        var clientIdStr = req.header("clientId");
+        var id = service.getClientId(clientIdStr);
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (id !== null &amp;&amp; id !== undefined) {
+            clientManager.getClient(id, function (result) {
+                res.send(result);
             });
         } else {
 <span class="cstat-no" title="statement not covered" >            res.send({});</span>
@@ -517,19 +517,19 @@ exports.list = function (req, res) {
 };
 &nbsp;
 &nbsp;
-exports.search = <span class="fstat-no" title="function not covered" >function (req, res) {</span>
-<span class="cstat-no" title="statement not covered" >    if (req.is('application/json')) {</span>
-<span class="cstat-no" title="statement not covered" >        var me = {</span>
+exports.search = function (req, res) {
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (req.is('application/json')) {
+        var me = {
             role: "superAdmin",
             uri: "/ulbora/rs/client/search",
             scope: "read"
         };
-<span class="cstat-no" title="statement not covered" >        oauth2.authorize(req, res, me, <span class="fstat-no" title="function not covered" >function () {</span></span>
-<span class="cstat-no" title="statement not covered" >            var reqBody = req.body;</span>
+        oauth2.authorize(req, res, me, function () {
+            var reqBody = req.body;
            // var bodyJson = JSON.stringify(reqBody);
             //console.log("body: " + bodyJson);
-<span class="cstat-no" title="statement not covered" >            clientManager.getClientSearchList(reqBody, <span class="fstat-no" title="function not covered" >function (result) {</span></span>
-<span class="cstat-no" title="statement not covered" >                res.send(result);</span>
+            clientManager.getClientSearchList(reqBody, function (result) {
+                res.send(result);
             });
         });
     } else {
@@ -565,7 +565,7 @@ exports.delete = function (req, res) {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Apr 15 2018 15:26:39 GMT-0400 (EDT)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Apr 15 2018 16:55:14 GMT-0400 (EDT)
 </div>
 </div>
 <script src="../../prettify.js"></script>

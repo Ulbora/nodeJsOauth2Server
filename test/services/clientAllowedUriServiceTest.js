@@ -32,9 +32,11 @@ describe('clientService', function () {
                 clientId: 5562,
                 roleUris: [
                     {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/ulbora/rs/clientAllowedUri/add", "clientId": 421},
+                    {"clientRoleId": 11, "role": "superAdmin", "uriId": 95, "uri": "/ulbora/rs/clientAllowedUriSuper/add", "clientId": 421},
                     {"clientRoleId": 11, "role": "superAdmin", "uriId": 95, "uri": "/ulbora/rs/client/add", "clientId": 421},
                     {"clientRoleId": 11, "role": "superAdmin", "uriId": 95, "uri": "/ulbora/rs/client/delete", "clientId": 421},
                     {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/ulbora/rs/clientAllowedUri/update", "clientId": 421},
+                    {"clientRoleId": 11, "role": "superAdmin", "uriId": 95, "uri": "/ulbora/rs/clientAllowedUriSuper/update", "clientId": 421},
                     {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/ulbora/rs/clientAllowedUri/get", "clientId": 421},
                     {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/ulbora/rs/clientAllowedUri/list", "clientId": 421},
                     {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/ulbora/rs/clientAllowedUri/delete", "clientId": 421}
@@ -171,6 +173,58 @@ describe('clientService', function () {
             }, 1000);
         });
     });
+    
+    
+    
+    describe('#addClientAllowedUriSuper()', function () {
+        it('should addClientAllowedUriSuper', function (done) {
+            setTimeout(function () {
+                var req = {};
+                var header = function (val) {
+                    if (val === "Authorization") {
+                        return "Bearer " + token;
+                    } else if (val === "userId") {
+                        return "admin";
+                    } else if (val === "clientId") {
+                        return "5562";
+                    }
+                };
+                req.header = header;
+                req.protocol = "https";
+                req.hostname = "abc.com";
+                req.body = {
+                    uri: 'http://www.google.com',
+                    clientId: clientId
+                };
+                req.is = function (val) {
+                    if (val === 'application/json') {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                };
+                var res = {};
+                res.statusCode;
+                res.status = function (val) {
+                    this.statusCode = val;
+                    console.log("res status: " + val);
+                };
+                res.send = function (val) {
+                    if (this.statusCode === 401) {
+                        assert(false);
+                    } else if (val && val.id) {
+                        clientAllowedUriId = val.id;
+                        console.log("add ClientAllowedUri reaponse: " + JSON.stringify(val));
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                };
+                clientAllowedUriService.addSuper(req, res);
+            }, 1000);
+        });
+    });
 
     describe('#updateClientAllowedUri()', function () {
         it('should updateClientAllowedUri', function (done) {
@@ -217,6 +271,56 @@ describe('clientService', function () {
                     done();
                 };
                 clientAllowedUriService.update(req, res);
+            }, 1000);
+        });
+    });
+    
+    
+    describe('#updateClientAllowedUriSuper()', function () {
+        it('should updateClientAllowedUriSuper', function (done) {
+            setTimeout(function () {
+                var req = {};
+                var header = function (val) {
+                    if (val === "Authorization") {
+                        return "Bearer " + token;
+                    } else if (val === "userId") {
+                        return "admin";
+                    } else if (val === "clientId") {
+                        return "5562";
+                    }
+                };
+                req.header = header;
+                req.protocol = "https";
+                req.hostname = "abc.com";
+                req.body = {
+                    uri: 'http://www.google1.com',
+                    id: clientAllowedUriId
+                };
+                req.is = function (val) {
+                    if (val === 'application/json') {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                };
+                var res = {};
+                res.statusCode;
+                res.status = function (val) {
+                    this.statusCode = val;
+                    console.log("res status: " + val);
+                };
+                res.send = function (val) {
+                    if (this.statusCode === 401) {
+                        assert(false);
+                    } else if (val && val.success) {                        
+                        console.log("update ClientAllowedUri reaponse: " + JSON.stringify(val));
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                };
+                clientAllowedUriService.updateSuper(req, res);
             }, 1000);
         });
     });

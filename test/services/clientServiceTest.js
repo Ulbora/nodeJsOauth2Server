@@ -32,7 +32,9 @@ describe('clientService', function () {
                     {"clientRoleId": 11, "role": "superAdmin", "uriId": 95, "uri": "/ulbora/rs/client/delete", "clientId": 421},
                     {"clientRoleId": 11, "role": "superAdmin", "uriId": 95, "uri": "/ulbora/rs/client/update", "clientId": 421},
                     {"clientRoleId": 11, "role": "superAdmin", "uriId": 95, "uri": "/ulbora/rs/client/get", "clientId": 421},
-                    {"clientRoleId": 11, "role": "superAdmin", "uriId": 95, "uri": "/ulbora/rs/client/list", "clientId": 421}
+                    {"clientRoleId": 11, "role": "superAdmin", "uriId": 95, "uri": "/ulbora/rs/client/list", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/ulbora/rs/client/admin/get", "clientId": 421},
+                    {"clientRoleId": 11, "role": "superAdmin", "uriId": 95, "uri": "/ulbora/rs/client/search", "clientId": 421}
                     
                 ],
                 scopeList: ["read", "write", "update"],
@@ -211,7 +213,7 @@ describe('clientService', function () {
                     } else {
                         return false;
                     }
-                }
+                };
                 var res = {};
                 res.statusCode;
                 res.status = function (val) {
@@ -272,6 +274,83 @@ describe('clientService', function () {
             }, 1000);
         });
     });
+    
+    
+    
+    describe('#adminGet()', function () {
+        it('should get a client for admin', function (done) {
+            setTimeout(function () {
+                var req = {};
+                var header = function (val) {
+                    if (val === "Authorization") {
+                        return "Bearer " + token;
+                    } else if (val === "userId") {
+                        return "admin";
+                    } else if (val === "clientId") {
+                        return "5562";
+                    }
+                };
+                req.header = header;
+                req.protocol = "https";
+                req.hostname = "abc.com";
+                req.params = {};
+                req.params.id = clientId;
+                var res = {};
+                res.statusCode;
+                res.status = function (val) {
+                    this.statusCode = val;
+                    console.log("res status: " + val);
+                };
+                res.send = function (val) {
+                    if (this.statusCode === 401) {
+                        assert(false);
+                    } else if (val && val.clientId) {
+                        console.log("get client reaponse: " + JSON.stringify(val));
+                        assert(true);
+                    }
+                    done();
+                };
+                clientService.adminGet(req, res);
+            }, 1000);
+        });
+    });
+        
+    
+    describe('#adminGet()', function () {
+        it('should fail get a client for admin', function (done) {
+            setTimeout(function () {
+                var req = {};
+                var header = function (val) {
+                    if (val === "Authorization") {
+                        return "Bearer " + token;
+                    } else if (val === "userId") {
+                        return "admin";
+                    } else if (val === "clientId") {
+                        return null;
+                    }
+                };
+                req.header = header;
+                req.protocol = "https";
+                req.hostname = "abc.com";
+                req.params = {};
+                req.params.id = clientId;
+                var res = {};
+                res.statusCode;
+                res.status = function (val) {
+                    this.statusCode = val;
+                    console.log("res status: " + val);
+                };
+                res.send = function (val) {
+                    if (this.statusCode === 401) {
+                        assert(true);
+                    }
+                    done();
+                };
+                clientService.adminGet(req, res);
+            }, 1000);
+        });
+    });
+
 
 
     describe('#list()', function () {
@@ -310,6 +389,53 @@ describe('clientService', function () {
             }, 1000);
         });
     });
+    
+    
+
+    describe('#search()', function () {
+        it('should search a list of clients', function (done) {
+            setTimeout(function () {
+                var req = {};
+                var header = function (val) {
+                    if (val === "Authorization") {
+                        return "Bearer " + token;
+                    } else if (val === "userId") {
+                        return "admin";
+                    } else if (val === "clientId") {
+                        return "5562";
+                    }
+                };
+                req.header = header;
+                req.protocol = "https";
+                req.hostname = "abc.com";
+                req.is = function (val) {
+                    if (val === 'application/json') {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                };
+                
+                var res = {};
+                res.statusCode;
+                res.status = function (val) {
+                    this.statusCode = val;
+                    console.log("res status: " + val);
+                };
+                res.send = function (val) {
+                    if (this.statusCode === 401) {
+                        assert(false);
+                    } else if (val) {
+                        console.log("get client search reaponse: " + JSON.stringify(val));
+                        assert(true);
+                    }
+                    done();
+                };
+                clientService.search(req, res);
+            }, 1000);
+        });
+    });
+
 
     describe('#delete()', function () {
         it('should delete a client', function (done) {

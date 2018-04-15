@@ -20,14 +20,14 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">67.95% </span>
+        <span class="strong">68.44% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>422/621</span>
+        <span class='fraction'>425/621</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">56.07% </span>
+        <span class="strong">56.49% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>134/239</span>
+        <span class='fraction'>135/239</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">96.13% </span>
@@ -35,9 +35,9 @@
         <span class='fraction'>149/155</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">67.95% </span>
+        <span class="strong">68.44% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>422/621</span>
+        <span class='fraction'>425/621</span>
       </div>
     </div>
   </div>
@@ -1356,7 +1356,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-yes">95×</span>
+<span class="cline-any cline-yes">96×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
@@ -1381,19 +1381,19 @@
 <span class="cline-any cline-yes">52×</span>
 <span class="cline-any cline-yes">52×</span>
 <span class="cline-any cline-yes">52×</span>
-<span class="cline-any cline-yes">52×</span>
-<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">51×</span>
+<span class="cline-any cline-yes">51×</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">51×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">52×</span>
-<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-yes">51×</span>
+<span class="cline-any cline-yes">51×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1420,11 +1420,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-yes">21×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">6×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
@@ -2328,7 +2328,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-yes">87×</span>
+<span class="cline-any cline-yes">91×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2543,7 +2543,7 @@ exports.deleteClient = function (clientId, callback) {
                     clientRedirectUriProcessor.deleteAllClientRedirectUri(con, clientId, function (uriDelResult) {
                         <span class="missing-if-branch" title="else path not taken" >E</span>if (uriDelResult.success) {
                             clientProcessor.deleteClient(con, clientId, function (clientDelResult) {
-                                <span class="missing-if-branch" title="else path not taken" >E</span>if (clientDelResult.success) {
+                                if (clientDelResult.success) {
                                     con.commit(function (err) {
                                         <span class="missing-if-branch" title="if path not taken" >I</span>if (err) {
 <span class="cstat-no" title="statement not covered" >                                            con.rollback();</span>
@@ -2554,9 +2554,9 @@ exports.deleteClient = function (clientId, callback) {
                                         callback(rtn);
                                     });
                                 } else {
-<span class="cstat-no" title="statement not covered" >                                    con.rollback();</span>
-<span class="cstat-no" title="statement not covered" >                                    con.release();</span>
-<span class="cstat-no" title="statement not covered" >                                    callback(rtn);</span>
+                                    con.rollback();
+                                    con.release();
+                                    callback(rtn);
                                 }
                             });
                         } else {
@@ -3538,7 +3538,7 @@ exports.deleteAuthCodeRevoke = function (authCode, callback) {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Apr 15 2018 15:26:39 GMT-0400 (EDT)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Apr 15 2018 16:55:14 GMT-0400 (EDT)
 </div>
 </div>
 <script src="../../../prettify.js"></script>
