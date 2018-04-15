@@ -78,6 +78,15 @@ module.exports = function (grunt) {
                 },
                 src: ['test/managers/**/*Test.js']
             },
+            testServicesOnly: {
+                options: {
+                    reporter: 'spec',
+                    //captureFile: 'results.txt', // Optionally capture the reporter output to a file 
+                    quiet: false, // Optionally suppress output to standard out (defaults to false) 
+                    clearRequireCache: false // Optionally clear the require cache before running tests (defaults to false) 
+                },
+                src: ['test/services/**/*Test.js']
+            },
             testIndividualTestOnly: {
                 options: {
                     reporter: 'spec',
@@ -94,9 +103,9 @@ module.exports = function (grunt) {
                 //src: ['test/managers/clientAllowedUriManagerTest.js']
                 //src: ['test/managers/clientRedirectUriManagerTest.js']
                 ///src: ['test/managers/managerTest.js']
-                src: ['test/delegates/accessTokenDelegateTest.js']
+                //src: ['test/delegates/accessTokenDelegateTest.js']
                 // src: ['test/delegates/implicitGrantDelegateTest.js']
-                //src: ['test/services/tokenValidationServiceTest.js']
+                src: ['test/services/tokenValidationServiceTest.js']
                 //src: ['test/oauth2/oauth2Test.js']
                 //src: ['test/proxy/userProxyTest.js']
             }
@@ -113,6 +122,7 @@ module.exports = function (grunt) {
     grunt.registerTask('mocha-DbOnlyTest', 'mochaTest:testDbOnly');
     grunt.registerTask('mocha-WebOnly', 'mochaTest:testWebOnly');
     grunt.registerTask('mocha-Managers', 'mochaTest:testManagersOnly');
+    grunt.registerTask('mocha-Services', 'mochaTest:testServicesOnly');
     grunt.registerTask('mocha-IndividualOnlyTest', 'mochaTest:testIndividualTestOnly');
 
 };

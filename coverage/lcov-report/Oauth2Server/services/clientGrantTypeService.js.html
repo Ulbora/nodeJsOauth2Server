@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Code coverage report for Oauth2Server/managers/tokenValidationManager.js</title>
+    <title>Code coverage report for Oauth2Server/services/clientGrantTypeService.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -16,28 +16,28 @@
 <div class='wrapper'>
   <div class='pad1'>
     <h1>
-      <a href="../../index.html">all files</a> / <a href="index.html">Oauth2Server/managers/</a> tokenValidationManager.js
+      <a href="../../index.html">all files</a> / <a href="index.html">Oauth2Server/services/</a> clientGrantTypeService.js
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">97.22% </span>
+        <span class="strong">87.1% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>35/36</span>
+        <span class='fraction'>27/31</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">76.19% </span>
+        <span class="strong">70% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>16/21</span>
+        <span class='fraction'>7/10</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>3/3</span>
+        <span class='fraction'>10/10</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">97.22% </span>
+        <span class="strong">87.1% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>35/36</span>
+        <span class='fraction'>27/31</span>
       </div>
     </div>
   </div>
@@ -123,9 +123,21 @@
 78
 79
 80
-81</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -152,56 +164,72 @@
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-yes">3×</span>
-<span class="cline-any cline-yes">3×</span>
-<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-yes">43×</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">43×</span>
-<span class="cline-any cline-yes">43×</span>
-<span class="cline-any cline-yes">43×</span>
-<span class="cline-any cline-yes">43×</span>
-<span class="cline-any cline-yes">43×</span>
-<span class="cline-any cline-yes">42×</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">43×</span>
-<span class="cline-any cline-yes">43×</span>
-<span class="cline-any cline-yes">43×</span>
-<span class="cline-any cline-yes">43×</span>
-<span class="cline-any cline-yes">43×</span>
-<span class="cline-any cline-yes">41×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">41×</span>
-<span class="cline-any cline-yes">41×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">41×</span>
-<span class="cline-any cline-yes">41×</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">41×</span>
-<span class="cline-any cline-yes">41×</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">41×</span>
-<span class="cline-any cline-yes">41×</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">41×</span>
-<span class="cline-any cline-yes">41×</span>
-<span class="cline-any cline-yes">39×</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/*     
  Copyright (C) 2016 Ulbora Labs Inc. (www.ulboralabs.com)
@@ -224,66 +252,80 @@
  along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
  */
 &nbsp;
-&nbsp;
-&nbsp;
-var accessTokenDelegate = require("../delegates/accessTokenDelegate");
-var manager = require("./manager");
+var clientGrantTypeManager = require("../managers/clientGrantTypeManager");
+var oauth2 = require("../oauth2/oauth2");
 &nbsp;
 var db;
 &nbsp;
 exports.init = function (database) {
     db = database;
-    manager.init(db);
-    accessTokenDelegate.init(db);
+    clientGrantTypeManager.init(db);
 };
 &nbsp;
-exports.validateAccessToken = function (json, callback) {
-    var rtn = {
-        valid: false
+exports.add = function (req, res) {
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (req.is('application/json')) {
+        var me = {
+            role: "admin",
+            uri: "/ulbora/rs/clientGrantType/add",
+            scope: "write"
+        };
+        oauth2.authorize(req, res, me, function () {
+            var reqBody = req.body;
+            //var bodyJson = JSON.stringify(reqBody);
+            //console.log("body: " + bodyJson);
+            clientGrantTypeManager.addClientGrantType(reqBody, function (result) {
+                res.send(result);
+            });
+        });
+    } else {
+<span class="cstat-no" title="statement not covered" >        res.status(415);</span>
+<span class="cstat-no" title="statement not covered" >        res.send({success: false});</span>
+    }
+};
+&nbsp;
+&nbsp;
+exports.list = function (req, res) {
+    var me = {
+        role: "admin",
+        uri: "/ulbora/rs/clientGrantType/list",
+        scope: "read"
     };
-    //console.log("json: " + JSON.stringify(json));
-    <span class="missing-if-branch" title="else path not taken" >E</span>if (json) {
-        var isOk = manager.securityCheck(json);
-        var accessToken = json.accessToken;
-        var userId;
-        if(json.hashed !== true &amp;&amp; json.userId){
-            userId = manager.hashUser(json.userId);
+    oauth2.authorize(req, res, me, function () {
+        //console.log("in auth callback");
+        var clientId = req.params.clientId;
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (clientId !== null &amp;&amp; clientId !== undefined) {
+            clientGrantTypeManager.getClientGrantTypeList(clientId, function (result) {
+                res.send(result);
+            });
         }else{
-            userId = json.userId;
-        }        
-        var clientId = json.clientId;
-        var role = json.role;
-        var uri = json.uri;
-        var scope = json.scope;
-        if (isOk &amp;&amp; accessToken &amp;&amp; clientId) {
-            var claims = {
-                clientId: clientId
-            };
-            <span class="missing-if-branch" title="else path not taken" >E</span>if (userId) {
-                claims.userId = userId;
-            }
-            <span class="missing-if-branch" title="else path not taken" >E</span>if (role) {
-                claims.role = role;
-            }
-            <span class="missing-if-branch" title="else path not taken" >E</span>if (uri) {
-                claims.uri = uri;
-            }
-            <span class="missing-if-branch" title="else path not taken" >E</span>if (scope) {
-                claims.scope = scope;
-            }
-            accessTokenDelegate.validateAccessToken(accessToken, claims, function (valid) {
-                if (valid) {
-                    rtn.valid = true;
-                }
-                callback(rtn);
+<span class="cstat-no" title="statement not covered" >            res.send([]);</span>
+        }
+&nbsp;
+    });
+};
+&nbsp;
+exports.delete = function (req, res) {
+    //console.log("in auth callback");
+    var me = {
+        role: "admin",
+        uri: "/ulbora/rs/clientGrantType/delete",
+        scope: "write"
+    };
+    oauth2.authorize(req, res, me, function () {
+        var id = req.params.id;
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (id !== null &amp;&amp; id !== undefined) {
+            clientGrantTypeManager.deleteClientGrantType(id, function (result) {
+                res.send(result);
             });
         } else {
-            callback(rtn);
+<span class="cstat-no" title="statement not covered" >            res.send({success: false});</span>
         }
-    } else {
-<span class="cstat-no" title="statement not covered" >        callback(rtn);</span>
-    }
-};</pre></td></tr>
+    });
+};
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;</pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->
 </div><!-- /wrapper -->

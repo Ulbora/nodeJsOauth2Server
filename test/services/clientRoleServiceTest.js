@@ -2,14 +2,14 @@ var assert = require('assert');
 var db = require("../../database/db");
 //var service = require("../../../services/service");
 var clientService = require("../../services/clientService");
-var clientAllowedUriService = require("../../services/clientAllowedUriService");
+var clientRoleService = require("../../services/clientRoleService");
 var accessTokenDelegate = require("../../delegates/accessTokenDelegate");
 var token;
 var clientId;
 var clientObj;
-var clientAllowedUriId;
+var clientRoleId;
 
-describe('clientService', function () {
+describe('clientRoleService', function () {
     this.timeout(20000);
     describe('#init()', function () {
         it('should init manager', function (done) {
@@ -17,7 +17,7 @@ describe('clientService', function () {
             setTimeout(function () {
                 clientService.init(db);
                 accessTokenDelegate.init(db);
-                clientAllowedUriService.init(db);
+                clientRoleService.init(db);
                 done();
             }, 1000);
         });
@@ -28,16 +28,16 @@ describe('clientService', function () {
             var payload = {
                 sub: "access",
                 grant: "code",
-                userId: "admin",
+                userId: "firns",
                 clientId: 5562,
                 roleUris: [
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/clientAllowedUri/add", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/client/add", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/client/delete", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/clientAllowedUri/update", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/clientAllowedUri/get", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/clientAllowedUri/list", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/clientAllowedUri/delete", "clientId": 421}
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/ulbora/rs/clientRole/add", "clientId": 421},
+                    {"clientRoleId": 11, "role": "superAdmin", "uriId": 95, "uri": "/ulbora/rs/client/add", "clientId": 421},
+                    {"clientRoleId": 11, "role": "superAdmin", "uriId": 95, "uri": "/ulbora/rs/client/delete", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/ulbora/rs/clientRole/update", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/ulbora/rs/clientRole/get", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/ulbora/rs/clientRole/list", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/ulbora/rs/clientRole/delete", "clientId": 421}
                 ],
                 scopeList: ["read", "write", "update"],
                 expiresIn: 500
@@ -122,8 +122,8 @@ describe('clientService', function () {
     });
 
 
-    describe('#addClientAllowedUri()', function () {
-        it('should addClientAllowedUri', function (done) {
+    describe('#addClientRole()', function () {
+        it('should add clientRole', function (done) {
             setTimeout(function () {
                 var req = {};
                 var header = function (val) {
@@ -139,7 +139,7 @@ describe('clientService', function () {
                 req.protocol = "https";
                 req.hostname = "abc.com";
                 req.body = {
-                    uri: 'http://www.google.com',
+                    role: 'tester',
                     clientId: clientId
                 };
                 req.is = function (val) {
@@ -159,109 +159,23 @@ describe('clientService', function () {
                     if (this.statusCode === 401) {
                         assert(false);
                     } else if (val && val.id) {
-                        clientAllowedUriId = val.id;
-                        console.log("add ClientAllowedUri reaponse: " + JSON.stringify(val));
+                        clientRoleId = val.id;
+                        console.log("add clientRole reaponse: " + JSON.stringify(val));
                         assert(true);
                     } else {
                         assert(false);
                     }
                     done();
                 };
-                clientAllowedUriService.add(req, res);
-            }, 1000);
-        });
-    });
-
-    describe('#updateClientAllowedUri()', function () {
-        it('should updateClientAllowedUri', function (done) {
-            setTimeout(function () {
-                var req = {};
-                var header = function (val) {
-                    if (val === "Authorization") {
-                        return "Bearer " + token;
-                    } else if (val === "userId") {
-                        return "admin";
-                    } else if (val === "clientId") {
-                        return "5562";
-                    }
-                };
-                req.header = header;
-                req.protocol = "https";
-                req.hostname = "abc.com";
-                req.body = {
-                    uri: 'http://www.google1.com',
-                    id: clientAllowedUriId
-                };
-                req.is = function (val) {
-                    if (val === 'application/json') {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                };
-                var res = {};
-                res.statusCode;
-                res.status = function (val) {
-                    this.statusCode = val;
-                    console.log("res status: " + val);
-                };
-                res.send = function (val) {
-                    if (this.statusCode === 401) {
-                        assert(false);
-                    } else if (val && val.success) {                        
-                        console.log("update ClientAllowedUri reaponse: " + JSON.stringify(val));
-                        assert(true);
-                    } else {
-                        assert(false);
-                    }
-                    done();
-                };
-                clientAllowedUriService.update(req, res);
-            }, 1000);
-        });
-    });
-
-    
-    describe('#getClientAllowedUri()', function () {
-        it('should get ClientAllowedUri', function (done) {
-            setTimeout(function () {
-                var req = {};
-                var header = function (val) {
-                    if (val === "Authorization") {
-                        return "Bearer " + token;
-                    } else if (val === "userId") {
-                        return "admin";
-                    } else if (val === "clientId") {
-                        return "5562";
-                    }
-                };
-                req.header = header;
-                req.protocol = "https";
-                req.hostname = "abc.com";
-                req.params = {};
-                req.params.id = clientAllowedUriId;
-                var res = {};
-                res.statusCode;
-                res.status = function (val) {
-                    this.statusCode = val;
-                    console.log("res status: " + val);
-                };
-                res.send = function (val) {
-                    if (this.statusCode === 401) {
-                        assert(false);
-                    } else if (val && val.uri === "http://www.google1.com") {
-                        console.log("get ClientAllowedUri reaponse: " + JSON.stringify(val));
-                        assert(true);
-                    }
-                    done();
-                };
-                clientAllowedUriService.get(req, res);
+                clientRoleService.add(req, res);
             }, 1000);
         });
     });
     
-    describe('#getClientAllowedUriList()', function () {
-        it('should get ClientAllowedUriList', function (done) {
+   
+    
+    describe('#clientRoleList()', function () {
+        it('should get ClientRoleList', function (done) {
             setTimeout(function () {
                 var req = {};
                 var header = function (val) {
@@ -288,20 +202,20 @@ describe('clientService', function () {
                     if (this.statusCode === 401) {
                         assert(false);
                     } else if (val && val.length === 1) {
-                        console.log("get List ClientAllowedUri reaponse: " + JSON.stringify(val));
+                        console.log("get ClientRoleList reaponse: " + JSON.stringify(val));
                         assert(true);
                     }
                     done();
                 };
-                clientAllowedUriService.list(req, res);
+                clientRoleService.list(req, res);
             }, 1000);
         });
     });
     
     
     
-    describe('#deleteClientAllowedUri()', function () {
-        it('should delete ClientAllowedUri', function (done) {
+    describe('#deleteClientRole()', function () {
+        it('should delete ClientRole', function (done) {
             setTimeout(function () {
                 var req = {};
                 var header = function (val) {
@@ -317,7 +231,7 @@ describe('clientService', function () {
                 req.protocol = "https";
                 req.hostname = "abc.com";
                 req.params = {};
-                req.params.id = clientAllowedUriId;
+                req.params.id = clientRoleId;
                 var res = {};
                 res.statusCode;
                 res.status = function (val) {
@@ -328,12 +242,12 @@ describe('clientService', function () {
                     if (this.statusCode === 401) {
                         assert(false);
                     } else if (val && val.success) {
-                        console.log("delete ClientAllowedUri reaponse: " + JSON.stringify(val));
+                        console.log("delete ClientRole reaponse: " + JSON.stringify(val));
                         assert(true);
                     }
                     done();
                 };
-                clientAllowedUriService.delete(req, res);
+                clientRoleService.delete(req, res);
             }, 1000);
         });
     });

@@ -34,20 +34,20 @@ describe('clientRoleUriService', function () {
             var payload = {
                 sub: "access",
                 grant: "code",
-                userId: "admin",
+                userId: "firns",
                 clientId: 5562,
                 roleUris: [                    
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/client/add", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/client/delete", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/clientRole/add", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/clientRole/delete", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/clientAllowedUri/add", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/clientAllowedUri/delete", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/clientRoleUri/add", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/clientRoleUri/update", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/clientRoleUri/get", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/clientRoleUri/list", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/clientRoleUri/delete", "clientId": 421}
+                    {"clientRoleId": 11, "role": "superAdmin", "uriId": 95, "uri": "/ulbora/rs/client/add", "clientId": 421},
+                    {"clientRoleId": 11, "role": "superAdmin", "uriId": 95, "uri": "/ulbora/rs/client/delete", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/ulbora/rs/clientRole/add", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/ulbora/rs/clientRole/delete", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/ulbora/rs/clientAllowedUri/add", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/ulbora/rs/clientAllowedUri/delete", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/ulbora/rs/clientRoleUri/add", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/ulbora/rs/clientRoleUri/update", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/ulbora/rs/clientRoleUri/get", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/ulbora/rs/clientRoleUri/list", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/ulbora/rs/clientRoleUri/delete", "clientId": 421}
                 ],
                 scopeList: ["read", "write", "update"],
                 expiresIn: 500

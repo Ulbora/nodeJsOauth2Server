@@ -2,14 +2,14 @@ var assert = require('assert');
 var db = require("../../database/db");
 //var service = require("../../../services/service");
 var clientService = require("../../services/clientService");
-var clientRedirectUriService = require("../../services/clientRedirectUriService");
+var clientAllowedUriService = require("../../services/clientAllowedUriService");
 var accessTokenDelegate = require("../../delegates/accessTokenDelegate");
 var token;
 var clientId;
 var clientObj;
-var clientUriId;
+var clientAllowedUriId;
 
-describe('clientRedirectUriService', function () {
+describe('clientService', function () {
     this.timeout(20000);
     describe('#init()', function () {
         it('should init manager', function (done) {
@@ -17,7 +17,7 @@ describe('clientRedirectUriService', function () {
             setTimeout(function () {
                 clientService.init(db);
                 accessTokenDelegate.init(db);
-                clientRedirectUriService.init(db);
+                clientAllowedUriService.init(db);
                 done();
             }, 1000);
         });
@@ -28,16 +28,16 @@ describe('clientRedirectUriService', function () {
             var payload = {
                 sub: "access",
                 grant: "code",
-                userId: "admin",
+                userId: "firns",
                 clientId: 5562,
                 roleUris: [
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/clientRedirectUri/add", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/client/add", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/client/delete", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/clientRedirectUri/update", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/clientRedirectUri/get", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/clientRedirectUri/list", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/clientRedirectUri/delete", "clientId": 421}
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/ulbora/rs/clientAllowedUri/add", "clientId": 421},
+                    {"clientRoleId": 11, "role": "superAdmin", "uriId": 95, "uri": "/ulbora/rs/client/add", "clientId": 421},
+                    {"clientRoleId": 11, "role": "superAdmin", "uriId": 95, "uri": "/ulbora/rs/client/delete", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/ulbora/rs/clientAllowedUri/update", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/ulbora/rs/clientAllowedUri/get", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/ulbora/rs/clientAllowedUri/list", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/ulbora/rs/clientAllowedUri/delete", "clientId": 421}
                 ],
                 scopeList: ["read", "write", "update"],
                 expiresIn: 500
@@ -122,8 +122,8 @@ describe('clientRedirectUriService', function () {
     });
 
 
-    describe('#clientRedirectUriService()', function () {
-        it('should add clientRedirectUri', function (done) {
+    describe('#addClientAllowedUri()', function () {
+        it('should addClientAllowedUri', function (done) {
             setTimeout(function () {
                 var req = {};
                 var header = function (val) {
@@ -159,23 +159,109 @@ describe('clientRedirectUriService', function () {
                     if (this.statusCode === 401) {
                         assert(false);
                     } else if (val && val.id) {
-                        clientUriId = val.id;
-                        console.log("add clientRedirectUriService reaponse: " + JSON.stringify(val));
+                        clientAllowedUriId = val.id;
+                        console.log("add ClientAllowedUri reaponse: " + JSON.stringify(val));
                         assert(true);
                     } else {
                         assert(false);
                     }
                     done();
                 };
-                clientRedirectUriService.add(req, res);
+                clientAllowedUriService.add(req, res);
+            }, 1000);
+        });
+    });
+
+    describe('#updateClientAllowedUri()', function () {
+        it('should updateClientAllowedUri', function (done) {
+            setTimeout(function () {
+                var req = {};
+                var header = function (val) {
+                    if (val === "Authorization") {
+                        return "Bearer " + token;
+                    } else if (val === "userId") {
+                        return "admin";
+                    } else if (val === "clientId") {
+                        return "5562";
+                    }
+                };
+                req.header = header;
+                req.protocol = "https";
+                req.hostname = "abc.com";
+                req.body = {
+                    uri: 'http://www.google1.com',
+                    id: clientAllowedUriId
+                };
+                req.is = function (val) {
+                    if (val === 'application/json') {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                };
+                var res = {};
+                res.statusCode;
+                res.status = function (val) {
+                    this.statusCode = val;
+                    console.log("res status: " + val);
+                };
+                res.send = function (val) {
+                    if (this.statusCode === 401) {
+                        assert(false);
+                    } else if (val && val.success) {                        
+                        console.log("update ClientAllowedUri reaponse: " + JSON.stringify(val));
+                        assert(true);
+                    } else {
+                        assert(false);
+                    }
+                    done();
+                };
+                clientAllowedUriService.update(req, res);
+            }, 1000);
+        });
+    });
+
+    
+    describe('#getClientAllowedUri()', function () {
+        it('should get ClientAllowedUri', function (done) {
+            setTimeout(function () {
+                var req = {};
+                var header = function (val) {
+                    if (val === "Authorization") {
+                        return "Bearer " + token;
+                    } else if (val === "userId") {
+                        return "admin";
+                    } else if (val === "clientId") {
+                        return "5562";
+                    }
+                };
+                req.header = header;
+                req.protocol = "https";
+                req.hostname = "abc.com";
+                req.params = {};
+                req.params.id = clientAllowedUriId;
+                var res = {};
+                res.statusCode;
+                res.status = function (val) {
+                    this.statusCode = val;
+                    console.log("res status: " + val);
+                };
+                res.send = function (val) {
+                    if (this.statusCode === 401) {
+                        assert(false);
+                    } else if (val && val.uri === "http://www.google1.com") {
+                        console.log("get ClientAllowedUri reaponse: " + JSON.stringify(val));
+                        assert(true);
+                    }
+                    done();
+                };
+                clientAllowedUriService.get(req, res);
             }, 1000);
         });
     });
     
-   
-    
-    describe('#getclientRedirectUriList()', function () {
-        it('should get ClientRedirectUriList', function (done) {
+    describe('#getClientAllowedUriList()', function () {
+        it('should get ClientAllowedUriList', function (done) {
             setTimeout(function () {
                 var req = {};
                 var header = function (val) {
@@ -202,20 +288,20 @@ describe('clientRedirectUriService', function () {
                     if (this.statusCode === 401) {
                         assert(false);
                     } else if (val && val.length === 1) {
-                        console.log("get ClientRedirectUriList reaponse: " + JSON.stringify(val));
+                        console.log("get List ClientAllowedUri reaponse: " + JSON.stringify(val));
                         assert(true);
                     }
                     done();
                 };
-                clientRedirectUriService.list(req, res);
+                clientAllowedUriService.list(req, res);
             }, 1000);
         });
     });
     
     
     
-    describe('#deleteClientRedirectUri()', function () {
-        it('should delete ClientRedirectUri', function (done) {
+    describe('#deleteClientAllowedUri()', function () {
+        it('should delete ClientAllowedUri', function (done) {
             setTimeout(function () {
                 var req = {};
                 var header = function (val) {
@@ -231,7 +317,7 @@ describe('clientRedirectUriService', function () {
                 req.protocol = "https";
                 req.hostname = "abc.com";
                 req.params = {};
-                req.params.id = clientUriId;
+                req.params.id = clientAllowedUriId;
                 var res = {};
                 res.statusCode;
                 res.status = function (val) {
@@ -242,12 +328,12 @@ describe('clientRedirectUriService', function () {
                     if (this.statusCode === 401) {
                         assert(false);
                     } else if (val && val.success) {
-                        console.log("delete ClientRedirectUri reaponse: " + JSON.stringify(val));
+                        console.log("delete ClientAllowedUri reaponse: " + JSON.stringify(val));
                         assert(true);
                     }
                     done();
                 };
-                clientRedirectUriService.delete(req, res);
+                clientAllowedUriService.delete(req, res);
             }, 1000);
         });
     });

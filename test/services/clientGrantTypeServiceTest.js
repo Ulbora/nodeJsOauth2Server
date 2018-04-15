@@ -2,14 +2,14 @@ var assert = require('assert');
 var db = require("../../database/db");
 //var service = require("../../../services/service");
 var clientService = require("../../services/clientService");
-var clientRoleService = require("../../services/clientRoleService");
+var clientGrantTypeService = require("../../services/clientGrantTypeService");
 var accessTokenDelegate = require("../../delegates/accessTokenDelegate");
 var token;
 var clientId;
+var grantTypeId;
 var clientObj;
-var clientRoleId;
 
-describe('clientRoleService', function () {
+describe('clientGrantTypeService', function () {
     this.timeout(20000);
     describe('#init()', function () {
         it('should init manager', function (done) {
@@ -17,7 +17,7 @@ describe('clientRoleService', function () {
             setTimeout(function () {
                 clientService.init(db);
                 accessTokenDelegate.init(db);
-                clientRoleService.init(db);
+                clientGrantTypeService.init(db);
                 done();
             }, 1000);
         });
@@ -28,16 +28,16 @@ describe('clientRoleService', function () {
             var payload = {
                 sub: "access",
                 grant: "code",
-                userId: "admin",
+                userId: "firns",
                 clientId: 5562,
                 roleUris: [
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/clientRole/add", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/client/add", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/client/delete", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/clientRole/update", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/clientRole/get", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/clientRole/list", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/clientRole/delete", "clientId": 421}
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/ulbora/rs/clientGrantType/add", "clientId": 421},
+                    {"clientRoleId": 11, "role": "superAdmin", "uriId": 95, "uri": "/ulbora/rs/client/add", "clientId": 421},
+                    {"clientRoleId": 11, "role": "superAdmin", "uriId": 95, "uri": "/ulbora/rs/client/delete", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/ulbora/rs/clientGrantType/update", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/ulbora/rs/clientGrantType/get", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/ulbora/rs/clientGrantType/list", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/ulbora/rs/clientGrantType/delete", "clientId": 421}
                 ],
                 scopeList: ["read", "write", "update"],
                 expiresIn: 500
@@ -121,9 +121,8 @@ describe('clientRoleService', function () {
         });
     });
 
-
-    describe('#addClientRole()', function () {
-        it('should add clientRole', function (done) {
+    describe('#addGrantType()', function () {
+        it('should addGrantType', function (done) {
             setTimeout(function () {
                 var req = {};
                 var header = function (val) {
@@ -139,7 +138,7 @@ describe('clientRoleService', function () {
                 req.protocol = "https";
                 req.hostname = "abc.com";
                 req.body = {
-                    role: 'tester',
+                    grantType: 'code',
                     clientId: clientId
                 };
                 req.is = function (val) {
@@ -159,23 +158,22 @@ describe('clientRoleService', function () {
                     if (this.statusCode === 401) {
                         assert(false);
                     } else if (val && val.id) {
-                        clientRoleId = val.id;
-                        console.log("add clientRole reaponse: " + JSON.stringify(val));
+                        grantTypeId = val.id;
+                        console.log("add grant type reaponse: " + JSON.stringify(val));
                         assert(true);
                     } else {
                         assert(false);
                     }
                     done();
                 };
-                clientRoleService.add(req, res);
+                clientGrantTypeService.add(req, res);
             }, 1000);
         });
     });
-    
-   
-    
-    describe('#clientRoleList()', function () {
-        it('should get ClientRoleList', function (done) {
+
+
+    describe('#grantTypelist()', function () {
+        it('should get a list of client grant types', function (done) {
             setTimeout(function () {
                 var req = {};
                 var header = function (val) {
@@ -202,20 +200,19 @@ describe('clientRoleService', function () {
                     if (this.statusCode === 401) {
                         assert(false);
                     } else if (val && val.length === 1) {
-                        console.log("get ClientRoleList reaponse: " + JSON.stringify(val));
+                        console.log("get client list reaponse: " + JSON.stringify(val));
                         assert(true);
                     }
                     done();
                 };
-                clientRoleService.list(req, res);
+                clientGrantTypeService.list(req, res);
             }, 1000);
         });
     });
-    
-    
-    
-    describe('#deleteClientRole()', function () {
-        it('should delete ClientRole', function (done) {
+
+
+    describe('#deleteGrantType()', function () {
+        it('should delete a client grant type', function (done) {
             setTimeout(function () {
                 var req = {};
                 var header = function (val) {
@@ -231,7 +228,7 @@ describe('clientRoleService', function () {
                 req.protocol = "https";
                 req.hostname = "abc.com";
                 req.params = {};
-                req.params.id = clientRoleId;
+                req.params.id = grantTypeId;
                 var res = {};
                 res.statusCode;
                 res.status = function (val) {
@@ -242,12 +239,12 @@ describe('clientRoleService', function () {
                     if (this.statusCode === 401) {
                         assert(false);
                     } else if (val && val.success) {
-                        console.log("delete ClientRole reaponse: " + JSON.stringify(val));
+                        console.log("delete grant type reaponse: " + JSON.stringify(val));
                         assert(true);
                     }
                     done();
                 };
-                clientRoleService.delete(req, res);
+                clientGrantTypeService.delete(req, res);
             }, 1000);
         });
     });

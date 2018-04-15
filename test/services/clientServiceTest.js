@@ -2,14 +2,12 @@ var assert = require('assert');
 var db = require("../../database/db");
 //var service = require("../../../services/service");
 var clientService = require("../../services/clientService");
-var clientGrantTypeService = require("../../services/clientGrantTypeService");
 var accessTokenDelegate = require("../../delegates/accessTokenDelegate");
 var token;
 var clientId;
-var grantTypeId;
 var clientObj;
 
-describe('clientGrantTypeService', function () {
+describe('clientService', function () {
     this.timeout(20000);
     describe('#init()', function () {
         it('should init manager', function (done) {
@@ -17,7 +15,6 @@ describe('clientGrantTypeService', function () {
             setTimeout(function () {
                 clientService.init(db);
                 accessTokenDelegate.init(db);
-                clientGrantTypeService.init(db);
                 done();
             }, 1000);
         });
@@ -28,16 +25,15 @@ describe('clientGrantTypeService', function () {
             var payload = {
                 sub: "access",
                 grant: "code",
-                userId: "admin",
+                userId: "firns",
                 clientId: 5562,
-                roleUris: [
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/clientGrantType/add", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/client/add", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/client/delete", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/clientGrantType/update", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/clientGrantType/get", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/clientGrantType/list", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/clientGrantType/delete", "clientId": 421}
+                roleUris: [                    
+                    {"clientRoleId": 11, "role": "superAdmin", "uriId": 95, "uri": "/ulbora/rs/client/add", "clientId": 421},
+                    {"clientRoleId": 11, "role": "superAdmin", "uriId": 95, "uri": "/ulbora/rs/client/delete", "clientId": 421},
+                    {"clientRoleId": 11, "role": "superAdmin", "uriId": 95, "uri": "/ulbora/rs/client/update", "clientId": 421},
+                    {"clientRoleId": 11, "role": "superAdmin", "uriId": 95, "uri": "/ulbora/rs/client/get", "clientId": 421},
+                    {"clientRoleId": 11, "role": "superAdmin", "uriId": 95, "uri": "/ulbora/rs/client/list", "clientId": 421}
+                    
                 ],
                 scopeList: ["read", "write", "update"],
                 expiresIn: 500
@@ -111,7 +107,7 @@ describe('clientGrantTypeService', function () {
                         clientId = val.clientId;
                         console.log("add client reaponse: " + JSON.stringify(val));
                         assert(true);
-                    } else {
+                    }else{
                         assert(false);
                     }
                     done();
@@ -121,8 +117,72 @@ describe('clientGrantTypeService', function () {
         });
     });
 
-    describe('#addGrantType()', function () {
-        it('should addGrantType', function (done) {
+
+    describe('#addClient()', function () {
+        it('should fail to add addClient because of bad token', function (done) {
+            setTimeout(function () {
+                var req = {};
+                var header = function (val) {
+                    if (val === "Authorization") {
+                        return "Bearer " + "516dsfdfdsfdsf";
+                    } else if (val === "userId") {
+                        return "admin";
+                    } else if (val === "clientId") {
+                        return "5562";
+                    }
+                };
+                req.header = header;
+                req.protocol = "https";
+                req.hostname = "abc.com";
+                req.body = {                    
+                    name: 'ulbora',
+                    webSite: 'www.ulboralabs.com',
+                    email: 'ulbora@ulbora.com',
+                    enabled: true,
+                    redirectUrls: [
+                        {
+                            uri: 'http://www.google.com',
+                            clientId: null
+                        },
+                        {
+                            uri: 'http://www.ulboralabs.com',
+                            clientId: null
+                        }
+                    ]
+                };
+                req.is = function (val) {
+                    if (val === 'application/json') {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+                var res = {};
+                res.statusCode;
+                res.status = function (val) {
+                    this.statusCode = val;
+                    console.log("res status: " + val);
+                };
+                res.send = function (val) {
+                    if (this.statusCode === 401) {
+                        assert(true);
+                    } else if (val && val.clientId) {
+                        clientId = val.clientId;
+                        console.log("add client reaponse: " + JSON.stringify(val));
+                        assert(true);
+                    }else{
+                        assert(false);
+                    }
+                    done();
+                };
+                clientService.add(req, res);
+            }, 1000);
+        });
+    });
+
+
+     describe('#updateClient()', function () {
+        it('should updateClient', function (done) {
             setTimeout(function () {
                 var req = {};
                 var header = function (val) {
@@ -138,8 +198,12 @@ describe('clientGrantTypeService', function () {
                 req.protocol = "https";
                 req.hostname = "abc.com";
                 req.body = {
-                    grantType: 'code',
-                    clientId: clientId
+                    clientId: clientId,
+                    secret: null,
+                    name: 'ulbora',
+                    webSite: 'www.ulboralabs.com',
+                    email: 'ulbora@ulbora.com',
+                    enabled: false                   
                 };
                 req.is = function (val) {
                     if (val === 'application/json') {
@@ -147,7 +211,7 @@ describe('clientGrantTypeService', function () {
                     } else {
                         return false;
                     }
-                };
+                }
                 var res = {};
                 res.statusCode;
                 res.status = function (val) {
@@ -157,23 +221,22 @@ describe('clientGrantTypeService', function () {
                 res.send = function (val) {
                     if (this.statusCode === 401) {
                         assert(false);
-                    } else if (val && val.id) {
-                        grantTypeId = val.id;
-                        console.log("add grant type reaponse: " + JSON.stringify(val));
+                    } else if (val && val.success) {                        
+                        console.log("update client reaponse: " + JSON.stringify(val));
                         assert(true);
-                    } else {
+                    }else{
                         assert(false);
                     }
                     done();
                 };
-                clientGrantTypeService.add(req, res);
+                clientService.update(req, res);
             }, 1000);
         });
     });
 
-
-    describe('#grantTypelist()', function () {
-        it('should get a list of client grant types', function (done) {
+    
+    describe('#get()', function () {
+        it('should get a client', function (done) {
             setTimeout(function () {
                 var req = {};
                 var header = function (val) {
@@ -189,7 +252,7 @@ describe('clientGrantTypeService', function () {
                 req.protocol = "https";
                 req.hostname = "abc.com";
                 req.params = {};
-                req.params.clientId = clientId;
+                req.params.id = clientId;
                 var res = {};
                 res.statusCode;
                 res.status = function (val) {
@@ -199,57 +262,54 @@ describe('clientGrantTypeService', function () {
                 res.send = function (val) {
                     if (this.statusCode === 401) {
                         assert(false);
-                    } else if (val && val.length === 1) {
+                    } else if (val && val.clientId) {
+                        console.log("get client reaponse: " + JSON.stringify(val));
+                        assert(true);
+                    }
+                    done();
+                };
+                clientService.get(req, res);
+            }, 1000);
+        });
+    });
+
+
+    describe('#list()', function () {
+        it('should get a list of clients', function (done) {
+            setTimeout(function () {
+                var req = {};
+                var header = function (val) {
+                    if (val === "Authorization") {
+                        return "Bearer " + token;
+                    } else if (val === "userId") {
+                        return "admin";
+                    } else if (val === "clientId") {
+                        return "5562";
+                    }
+                };
+                req.header = header;
+                req.protocol = "https";
+                req.hostname = "abc.com";
+                
+                var res = {};
+                res.statusCode;
+                res.status = function (val) {
+                    this.statusCode = val;
+                    console.log("res status: " + val);
+                };
+                res.send = function (val) {
+                    if (this.statusCode === 401) {
+                        assert(false);
+                    } else if (val) {
                         console.log("get client list reaponse: " + JSON.stringify(val));
                         assert(true);
                     }
                     done();
                 };
-                clientGrantTypeService.list(req, res);
+                clientService.list(req, res);
             }, 1000);
         });
     });
-
-
-    describe('#deleteGrantType()', function () {
-        it('should delete a client grant type', function (done) {
-            setTimeout(function () {
-                var req = {};
-                var header = function (val) {
-                    if (val === "Authorization") {
-                        return "Bearer " + token;
-                    } else if (val === "userId") {
-                        return "admin";
-                    } else if (val === "clientId") {
-                        return "5562";
-                    }
-                };
-                req.header = header;
-                req.protocol = "https";
-                req.hostname = "abc.com";
-                req.params = {};
-                req.params.id = grantTypeId;
-                var res = {};
-                res.statusCode;
-                res.status = function (val) {
-                    this.statusCode = val;
-                    console.log("res status: " + val);
-                };
-                res.send = function (val) {
-                    if (this.statusCode === 401) {
-                        assert(false);
-                    } else if (val && val.success) {
-                        console.log("delete grant type reaponse: " + JSON.stringify(val));
-                        assert(true);
-                    }
-                    done();
-                };
-                clientGrantTypeService.delete(req, res);
-            }, 1000);
-        });
-    });
-
-
 
     describe('#delete()', function () {
         it('should delete a client', function (done) {

@@ -2,12 +2,14 @@ var assert = require('assert');
 var db = require("../../database/db");
 //var service = require("../../../services/service");
 var clientService = require("../../services/clientService");
+var clientRedirectUriService = require("../../services/clientRedirectUriService");
 var accessTokenDelegate = require("../../delegates/accessTokenDelegate");
 var token;
 var clientId;
 var clientObj;
+var clientUriId;
 
-describe('clientService', function () {
+describe('clientRedirectUriService', function () {
     this.timeout(20000);
     describe('#init()', function () {
         it('should init manager', function (done) {
@@ -15,6 +17,7 @@ describe('clientService', function () {
             setTimeout(function () {
                 clientService.init(db);
                 accessTokenDelegate.init(db);
+                clientRedirectUriService.init(db);
                 done();
             }, 1000);
         });
@@ -25,15 +28,16 @@ describe('clientService', function () {
             var payload = {
                 sub: "access",
                 grant: "code",
-                userId: "admin",
+                userId: "firns",
                 clientId: 5562,
-                roleUris: [                    
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/client/add", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/client/delete", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/client/update", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/client/get", "clientId": 421},
-                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/rs/client/list", "clientId": 421}
-                    
+                roleUris: [
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/ulbora/rs/clientRedirectUri/add", "clientId": 421},
+                    {"clientRoleId": 11, "role": "superAdmin", "uriId": 95, "uri": "/ulbora/rs/client/add", "clientId": 421},
+                    {"clientRoleId": 11, "role": "superAdmin", "uriId": 95, "uri": "/ulbora/rs/client/delete", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/ulbora/rs/clientRedirectUri/update", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/ulbora/rs/clientRedirectUri/get", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/ulbora/rs/clientRedirectUri/list", "clientId": 421},
+                    {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "/ulbora/rs/clientRedirectUri/delete", "clientId": 421}
                 ],
                 scopeList: ["read", "write", "update"],
                 expiresIn: 500
@@ -107,70 +111,7 @@ describe('clientService', function () {
                         clientId = val.clientId;
                         console.log("add client reaponse: " + JSON.stringify(val));
                         assert(true);
-                    }else{
-                        assert(false);
-                    }
-                    done();
-                };
-                clientService.add(req, res);
-            }, 1000);
-        });
-    });
-
-
-    describe('#addClient()', function () {
-        it('should fail to add addClient because of bad token', function (done) {
-            setTimeout(function () {
-                var req = {};
-                var header = function (val) {
-                    if (val === "Authorization") {
-                        return "Bearer " + "516dsfdfdsfdsf";
-                    } else if (val === "userId") {
-                        return "admin";
-                    } else if (val === "clientId") {
-                        return "5562";
-                    }
-                };
-                req.header = header;
-                req.protocol = "https";
-                req.hostname = "abc.com";
-                req.body = {                    
-                    name: 'ulbora',
-                    webSite: 'www.ulboralabs.com',
-                    email: 'ulbora@ulbora.com',
-                    enabled: true,
-                    redirectUrls: [
-                        {
-                            uri: 'http://www.google.com',
-                            clientId: null
-                        },
-                        {
-                            uri: 'http://www.ulboralabs.com',
-                            clientId: null
-                        }
-                    ]
-                };
-                req.is = function (val) {
-                    if (val === 'application/json') {
-                        return true;
                     } else {
-                        return false;
-                    }
-                }
-                var res = {};
-                res.statusCode;
-                res.status = function (val) {
-                    this.statusCode = val;
-                    console.log("res status: " + val);
-                };
-                res.send = function (val) {
-                    if (this.statusCode === 401) {
-                        assert(true);
-                    } else if (val && val.clientId) {
-                        clientId = val.clientId;
-                        console.log("add client reaponse: " + JSON.stringify(val));
-                        assert(true);
-                    }else{
                         assert(false);
                     }
                     done();
@@ -181,8 +122,8 @@ describe('clientService', function () {
     });
 
 
-     describe('#updateClient()', function () {
-        it('should updateClient', function (done) {
+    describe('#clientRedirectUriService()', function () {
+        it('should add clientRedirectUri', function (done) {
             setTimeout(function () {
                 var req = {};
                 var header = function (val) {
@@ -198,12 +139,8 @@ describe('clientService', function () {
                 req.protocol = "https";
                 req.hostname = "abc.com";
                 req.body = {
-                    clientId: clientId,
-                    secret: null,
-                    name: 'ulbora',
-                    webSite: 'www.ulboralabs.com',
-                    email: 'ulbora@ulbora.com',
-                    enabled: false                   
+                    uri: 'http://www.google.com',
+                    clientId: clientId
                 };
                 req.is = function (val) {
                     if (val === 'application/json') {
@@ -211,7 +148,7 @@ describe('clientService', function () {
                     } else {
                         return false;
                     }
-                }
+                };
                 var res = {};
                 res.statusCode;
                 res.status = function (val) {
@@ -221,22 +158,24 @@ describe('clientService', function () {
                 res.send = function (val) {
                     if (this.statusCode === 401) {
                         assert(false);
-                    } else if (val && val.success) {                        
-                        console.log("update client reaponse: " + JSON.stringify(val));
+                    } else if (val && val.id) {
+                        clientUriId = val.id;
+                        console.log("add clientRedirectUriService reaponse: " + JSON.stringify(val));
                         assert(true);
-                    }else{
+                    } else {
                         assert(false);
                     }
                     done();
                 };
-                clientService.update(req, res);
+                clientRedirectUriService.add(req, res);
             }, 1000);
         });
     });
-
     
-    describe('#get()', function () {
-        it('should get a client', function (done) {
+   
+    
+    describe('#getclientRedirectUriList()', function () {
+        it('should get ClientRedirectUriList', function (done) {
             setTimeout(function () {
                 var req = {};
                 var header = function (val) {
@@ -252,7 +191,7 @@ describe('clientService', function () {
                 req.protocol = "https";
                 req.hostname = "abc.com";
                 req.params = {};
-                req.params.id = clientId;
+                req.params.clientId = clientId;
                 var res = {};
                 res.statusCode;
                 res.status = function (val) {
@@ -262,20 +201,21 @@ describe('clientService', function () {
                 res.send = function (val) {
                     if (this.statusCode === 401) {
                         assert(false);
-                    } else if (val && val.clientId) {
-                        console.log("get client reaponse: " + JSON.stringify(val));
+                    } else if (val && val.length === 1) {
+                        console.log("get ClientRedirectUriList reaponse: " + JSON.stringify(val));
                         assert(true);
                     }
                     done();
                 };
-                clientService.get(req, res);
+                clientRedirectUriService.list(req, res);
             }, 1000);
         });
     });
-
-
-    describe('#list()', function () {
-        it('should get a list of clients', function (done) {
+    
+    
+    
+    describe('#deleteClientRedirectUri()', function () {
+        it('should delete ClientRedirectUri', function (done) {
             setTimeout(function () {
                 var req = {};
                 var header = function (val) {
@@ -290,7 +230,8 @@ describe('clientService', function () {
                 req.header = header;
                 req.protocol = "https";
                 req.hostname = "abc.com";
-                
+                req.params = {};
+                req.params.id = clientUriId;
                 var res = {};
                 res.statusCode;
                 res.status = function (val) {
@@ -300,16 +241,18 @@ describe('clientService', function () {
                 res.send = function (val) {
                     if (this.statusCode === 401) {
                         assert(false);
-                    } else if (val) {
-                        console.log("get client list reaponse: " + JSON.stringify(val));
+                    } else if (val && val.success) {
+                        console.log("delete ClientRedirectUri reaponse: " + JSON.stringify(val));
                         assert(true);
                     }
                     done();
                 };
-                clientService.list(req, res);
+                clientRedirectUriService.delete(req, res);
             }, 1000);
         });
     });
+
+
 
     describe('#delete()', function () {
         it('should delete a client', function (done) {

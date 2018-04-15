@@ -23,7 +23,7 @@ describe('tokenValidationService', function () {
             var payload = {
                 sub: "access",
                 grant: "code",
-                userId: "admin",
+                userId: "firns",
                 clientId: "jdsldsldsldls",
                 roleUris: [
                     {"clientRoleId": 11, "role": "admin", "uriId": 95, "uri": "https://abc.com/rs/addUser", "clientId": 421}
