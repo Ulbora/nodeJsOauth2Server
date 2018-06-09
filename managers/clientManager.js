@@ -1,5 +1,5 @@
 /*     
- Copyright (C) 2016 Ulbora Labs Inc. (www.ulboralabs.com)
+ Copyright (C) 2016 Ulbora Labs LLC. (www.ulboralabs.com)
  All rights reserved.
  
  Copyright (C) 2016 Ken Williamson
@@ -36,6 +36,8 @@ exports.addClient = function (json, callback) {
     };
     var isOk = manager.securityCheck(json);
     if (isOk) {
+        var bodyJson = JSON.stringify(json);
+        console.log("json: " + bodyJson);
         var redirectUrls = json.redirectUrls;
         if (redirectUrls) {
             json.secret = manager.generateClientSecret();

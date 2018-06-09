@@ -1,5 +1,5 @@
 /*     
- Copyright (C) 2016 Ulbora Labs Inc. (www.ulboralabs.com)
+ Copyright (C) 2016 Ulbora Labs LLC. (www.ulboralabs.com)
  All rights reserved.
  
  Copyright (C) 2016 Ken Williamson
@@ -82,13 +82,18 @@ exports.addClient = function (clientJson, redirectUrls, callback) {
             con.beginTransaction(function (err) {
                 if (!err) {
                     var insertedUri = 0;
+                    var bodyJson = JSON.stringify(clientJson);
+                    console.log("json in add client in db: " + bodyJson);
                     clientProcessor.addClient(con, clientJson, function (clientResult) {
+                        console.log("json after add client in db: " + JSON.stringify(clientResult));
                         if (clientResult && clientResult.clientId > 0 && clientResult.success) {
                             if (redirectUrls && redirectUrls.length > 0) {
                                 for (var cnt = 0; cnt < redirectUrls.length; cnt++) {
                                     var redUriJson = redirectUrls[cnt];
                                     redUriJson.clientId = clientResult.clientId;
+                                    console.log("json url in db: " + JSON.stringify(redUriJson));
                                     clientRedirectUriProcessor.addClientRedirectUri(con, redUriJson, function (uriResult) {
+                                        console.log("json after add url in db: " + JSON.stringify(uriResult));
                                         if (uriResult && uriResult.id > 0) {
                                             insertedUri++;
                                             if (insertedUri === redirectUrls.length) {
@@ -394,7 +399,7 @@ exports.addAuthorizationCode = function (authCodeJson, accessTokenJson, refreshT
 var doAuthCodeAdd = function (con, rtn, authCodeJson, accTokenJson, scopeList, callback) {
     accessTokenProcessor.addAccessToken(con, accTokenJson, function (accessResult) {
         //console.log("access token: " + JSON.stringify(accessResult));
-       // console.log("authCodeJson: " + JSON.stringify(authCodeJson));
+        // console.log("authCodeJson: " + JSON.stringify(authCodeJson));
         if (accessResult.id > -1) {
             var acJson = authCodeJson;
             //acJson.expires = accTokenJson.expires;
@@ -543,7 +548,7 @@ exports.deleteAuthorizationCode = function (clientId, userId, callback) {
         if (!err && con) {
             con.beginTransaction(function (err) {
                 if (!err) {
-                   // console.log("starting transaction in delete code: ");
+                    // console.log("starting transaction in delete code: ");
                     var refreshTokenId;
                     authorizationCodeProcessor.getAuthorizationCode(clientId, userId, function (acResult) {
                         //console.log("getAuthorizationCode in delete: " + JSON.stringify(acResult));

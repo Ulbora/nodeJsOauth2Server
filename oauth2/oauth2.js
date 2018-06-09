@@ -1,5 +1,5 @@
 /*     
- Copyright (C) 2016 Ulbora Labs Inc. (www.ulboralabs.com)
+ Copyright (C) 2016 Ulbora Labs LLC. (www.ulboralabs.com)
  All rights reserved.
  
  Copyright (C) 2016 Ken Williamson
@@ -36,7 +36,7 @@ exports.authorize = function (req, res, me, callback) {
     var clientId = service.getClientId(clientIdStr);
     //var prot = req.protocol;
     //var host = req.hostname;
-    //console.log("token:" + token);
+   // console.log("token:" + tokenHeader);
     if (tokenHeader !== undefined && tokenHeader !== null) {
         var tokenArray = tokenHeader.split(' ');
         if (tokenArray !== undefined && tokenArray !== null && tokenArray.length === 2) {
